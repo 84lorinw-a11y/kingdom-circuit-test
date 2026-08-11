@@ -1,1 +1,1 @@
-Kingdom Circuit multi-page test site v2. Loads live event and artist data from the production repository.
+Kingdom Circuit multi-page test site v3. Live data, standard event images, and intentionally blank artist images.
