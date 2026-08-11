@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://84lorinw-a11y.github.io/kingdom-circuit-test/sitemap.xml

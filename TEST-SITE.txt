@@ -1,0 +1,3 @@
+Kingdom Circuit multi-page preview. This repository is separate from the live site.
+Data snapshot: 42 verified future manual events and 33 related artists.
+Google Analytics is intentionally disabled on the preview.
