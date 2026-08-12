@@ -8,22 +8,23 @@
   <meta name="theme-color" content="#080808">
   <link rel="icon" href="/kingdom-circuit-test/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/kingdom-circuit-test/styles.css">
+  <link rel="stylesheet" href="/kingdom-circuit-test/patch.css">
   <script src="/kingdom-circuit-test/app.js" defer></script>
   <title>Christian Hip-Hop Shows &amp; Festivals | The Kingdom Circuit</title>
 </head>
 <body data-page="home">
-  <div class="test-site-banner">TEST SITE — Live calendar data, preview design. <a href="https://kingdomcircuit.com">Open the live site</a></div>
+  <div class="test-site-banner">TEST SITE - Live calendar data, preview design. <a href="https://kingdomcircuit.com">Open the live site</a></div>
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="/kingdom-circuit-test/" aria-label="The Kingdom Circuit home">
-        <img src="/kingdom-circuit-test/assets/logo.png" alt="The Kingdom Circuit — Christian hip-hop, live and connected">
+        <img src="/kingdom-circuit-test/assets/logo.png" alt="The Kingdom Circuit - Christian hip-hop, live and connected">
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open navigation"><span></span><span></span><span></span></button>
     </div>
   </header>
   <div class="menu-backdrop" hidden></div>
   <nav class="menu-drawer" id="site-menu" aria-label="Primary navigation" aria-hidden="true">
-    <div class="menu-drawer-head"><span>Explore Kingdom Circuit</span><button class="menu-close" type="button" aria-label="Close navigation">×</button></div>
+    <div class="menu-drawer-head"><span>Explore Kingdom Circuit</span><button class="menu-close" type="button" aria-label="Close navigation">x</button></div>
     <div class="menu-links"><a href="/kingdom-circuit-test/" aria-current="page">Home</a><a href="/kingdom-circuit-test/shows/">All Shows</a><a href="/kingdom-circuit-test/shows/this-month/">This Month</a><a href="/kingdom-circuit-test/festivals/">Festivals</a><a href="/kingdom-circuit-test/new-shows/">New Shows</a><a href="/kingdom-circuit-test/artists/">Artists</a><a href="/kingdom-circuit-test/submit/">Submit a Show</a></div>
     <p class="menu-mission">Christian hip-hop, live and connected.</p>
   </nav>
@@ -33,50 +34,38 @@
   <h1>Find Christian hip-hop shows.</h1>
   <p class="mission-statement">The Kingdom Circuit exists to connect people with CHH music, concerts, festivals, and community so the music reaches farther and more people have the opportunity to hear the gospel.</p>
   <p class="hero-text">Discover Christian hip-hop concerts, festivals, tours, and independent events across the United States. Search by artist, location, date, or event type, then connect directly to the official event or ticket source.</p>
-  <p class="trust-line">Updated daily • U.S. music performances only • Official sources prioritized</p>
-
+  <p class="trust-line">Updated daily - U.S. music performances only - Official sources prioritized</p>
   <div class="home-paths" aria-label="Explore The Kingdom Circuit">
     <a class="home-path-card" href="/kingdom-circuit-test/shows/this-month/">
-      <span class="home-path-number">01</span>
-      <span class="home-path-title">This Month</span>
-      <span class="home-path-copy">See every CHH show happening this month.</span>
-      <span class="home-path-arrow" aria-hidden="true">→</span>
+      <span class="home-path-number">01</span><span class="home-path-title">This Month</span><span class="home-path-arrow" aria-hidden="true">&rarr;</span>
     </a>
     <a class="home-path-card" href="/kingdom-circuit-test/artists/">
-      <span class="home-path-number">02</span>
-      <span class="home-path-title">Artists</span>
-      <span class="home-path-copy">Browse every artist and group Kingdom Circuit monitors.</span>
-      <span class="home-path-arrow" aria-hidden="true">→</span>
+      <span class="home-path-number">02</span><span class="home-path-title">Artists</span><span class="home-path-arrow" aria-hidden="true">&rarr;</span>
     </a>
     <a class="home-path-card" href="/kingdom-circuit-test/festivals/">
-      <span class="home-path-number">03</span>
-      <span class="home-path-title">Festivals</span>
-      <span class="home-path-copy">Find upcoming multi-artist CHH festivals and special events.</span>
-      <span class="home-path-arrow" aria-hidden="true">→</span>
+      <span class="home-path-number">03</span><span class="home-path-title">Festivals</span><span class="home-path-arrow" aria-hidden="true">&rarr;</span>
     </a>
   </div>
 </section>
-
 <section class="calendar" id="calendar" data-event-list-mode="all" aria-labelledby="calendar-title">
-  <div class="calendar-heading"><div><p class="eyebrow">Verified listings</p><h2 id="calendar-title">Find Your Next Show</h2><p class="section-intro">Browse the complete live Kingdom Circuit calendar. Use the filters to search by artist, state, date, festival, or event type.</p></div><p class="results-count" data-results-count>Loading…</p></div>
-  
-<div class="filter-dock" data-filter-dock>
-  <div class="quick-filters" role="group" aria-label="Quick event filters">
-    <button class="filter-chip active" type="button" data-date-mode="all">All dates</button>
-    <button class="filter-chip" type="button" data-date-mode="weekend">This weekend</button>
-    <button class="filter-chip" type="button" data-date-mode="next30">Next 30 days</button>
-    <button class="filter-chip" type="button" data-date-mode="month">This month</button>
-    <button class="filter-chip" type="button" data-type-mode="festival">Festivals</button>
+  <div class="calendar-heading"><div><p class="eyebrow">Verified listings</p><h2 id="calendar-title">Find Your Next Show</h2><p class="section-intro">Browse the complete live Kingdom Circuit calendar. Use the filters to search by artist, state, date, festival, or event type.</p></div><p class="results-count" data-results-count>Loading...</p></div>
+  <div class="filter-dock" data-filter-dock>
+    <div class="quick-filters" role="group" aria-label="Quick event filters">
+      <button class="filter-chip active" type="button" data-date-mode="all">All dates</button>
+      <button class="filter-chip" type="button" data-date-mode="weekend">This weekend</button>
+      <button class="filter-chip" type="button" data-date-mode="next30">Next 30 days</button>
+      <button class="filter-chip" type="button" data-date-mode="month">This month</button>
+      <button class="filter-chip" type="button" data-type-mode="festival">Festivals</button>
+    </div>
+    <form class="filters" role="search" data-event-filters>
+      <label class="field field-search"><span>Search</span><input data-search-filter type="search" placeholder="Artist, city, venue, or event" autocomplete="off"></label>
+      <label class="field"><span>Artist</span><select data-artist-filter><option value="">All artists</option></select></label>
+      <label class="field"><span>State</span><select data-state-filter><option value="">All states</option></select></label>
+      <label class="field"><span>Type</span><select data-type-filter><option value="">All events</option><option value="concert">Concerts</option><option value="festival">Festivals</option></select></label>
+      <button class="reset-button" data-reset-filters type="button">Clear filters</button>
+    </form>
   </div>
-  <form class="filters" role="search" data-event-filters>
-    <label class="field field-search"><span>Search</span><input data-search-filter type="search" placeholder="Artist, city, venue, or event" autocomplete="off"></label>
-    <label class="field"><span>Artist</span><select data-artist-filter><option value="">All artists</option></select></label>
-    <label class="field"><span>State</span><select data-state-filter><option value="">All states</option></select></label>
-    <label class="field"><span>Type</span><select data-type-filter><option value="">All events</option><option value="concert">Concerts</option><option value="festival">Festivals</option></select></label>
-    <button class="reset-button" data-reset-filters type="button">Clear filters</button>
-  </form>
-</div>
-  <div class="loading-panel" data-loading-panel>Loading the current live calendar…</div>
+  <div class="loading-panel" data-loading-panel>Loading the current live calendar...</div>
   <div class="event-grid" data-event-grid></div>
   <div class="empty-panel" data-filtered-empty hidden>No shows currently match those filters.</div>
 </section>
