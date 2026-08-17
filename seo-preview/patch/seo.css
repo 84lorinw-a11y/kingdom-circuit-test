@@ -1,0 +1,14 @@
+/* Kingdom Circuit SEO presentation layer.
+   Reuses the approved black, cream, and muted-gold system without changing the logo or core layout. */
+.seo-breadcrumbs{max-width:1180px;margin:0 auto;padding:22px clamp(18px,4vw,48px) 0;display:flex;gap:9px;align-items:center;flex-wrap:wrap;color:var(--muted,#aaa59b);font-size:.78rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.seo-breadcrumbs a{color:var(--gold,#c69a46);text-decoration:none}
+.seo-breadcrumbs a:hover,.seo-breadcrumbs a:focus-visible{text-decoration:underline;text-underline-offset:4px}
+.seo-browse,.seo-related,.seo-methodology{max-width:1180px;margin:0 auto 54px;padding:clamp(22px,4vw,42px);border:1px solid rgba(198,154,70,.28);border-radius:18px;background:linear-gradient(145deg,rgba(198,154,70,.08),rgba(255,255,255,.015))}
+.seo-browse>div:first-child{margin-bottom:22px}.seo-browse h2,.seo-related h2,.seo-methodology h2{margin:0;color:var(--cream,#f2efe7)}
+.seo-browse-group+.seo-browse-group{margin-top:22px}.seo-browse-group h3{margin:0 0 10px;color:var(--cream,#f2efe7);font-size:.9rem;text-transform:uppercase;letter-spacing:.09em}
+.seo-link-row{display:flex;flex-wrap:wrap;gap:9px}.seo-link-row a{display:inline-flex;align-items:center;min-height:38px;padding:8px 12px;border:1px solid rgba(198,154,70,.42);border-radius:999px;color:var(--cream,#f2efe7);background:#0b0b0b;text-decoration:none;font-size:.8rem;font-weight:850}
+.seo-link-row a:hover,.seo-link-row a:focus-visible{border-color:var(--gold,#c69a46);color:var(--gold,#c69a46);outline:none}
+.seo-methodology{max-width:900px}.seo-methodology h2{margin-top:28px;font-size:1.3rem}.seo-methodology h2:first-child{margin-top:0}.seo-methodology p,.seo-methodology li{color:var(--muted,#b0aca3);line-height:1.75}.seo-methodology a{color:var(--gold,#c69a46)}
+.seo-static-card .artist-visual-empty{display:grid;place-items:center}.seo-artist-initial{display:grid;place-items:center;width:100%;height:100%;font-size:clamp(2rem,7vw,4.5rem);font-weight:950;color:rgba(198,154,70,.86);background:radial-gradient(circle at 50% 30%,rgba(198,154,70,.18),transparent 62%)}
+.seo-related{margin-top:30px}.seo-related h2{margin-bottom:14px}
+@media(max-width:700px){.seo-breadcrumbs{padding-top:16px;font-size:.68rem}.seo-browse,.seo-related,.seo-methodology{margin-bottom:30px;padding:20px;border-radius:14px}.seo-link-row{gap:7px}.seo-link-row a{min-height:34px;padding:7px 10px;font-size:.72rem}}
