@@ -1,0 +1,102 @@
+name: Kingdom Circuit SEO Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: kingdom-circuit-seo-test-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout test repository
+        uses: actions/checkout@v6
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build SEO test artifact
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path('seo-test-fixed.yml').read_text(encoding='utf-8')
+          start_marker = "          cat > /tmp/build_kc_seo.py <<'PY'\n"
+          end_marker = "\n          PY\n          python /tmp/build_kc_seo.py"
+          start = source.index(start_marker) + len(start_marker)
+          end = source.index(end_marker, start)
+          block = source[start:end]
+          lines = [line[10:] if line.startswith('          ') else line for line in block.splitlines()]
+          Path('/tmp/build_kc_seo.py').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+          python /tmp/build_kc_seo.py
+
+      - name: Regression-check generated site
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          root = pathlib.Path('_site')
+          manifest = json.loads((root / 'seo-build-manifest.json').read_text())
+          assert manifest['artists'] >= 250, manifest
+          assert manifest['events'] >= 20, manifest
+          assert manifest['eventPages'] >= 20, manifest
+          assert manifest['artistPages'] >= 250, manifest
+          assert 'Disallow: /' in (root / 'robots.txt').read_text()
+          assert (root / 'sitemap.xml').exists()
+          assert (root / 'assets/logo.png').exists()
+          home = (root / 'index.html').read_text()
+          assert 'The Kingdom Circuit exists to connect people with CHH music' in home
+          assert 'noindex,nofollow' in home
+          assert 'rel="canonical"' in home
+          event = next((root / 'event').glob('*/index.html'))
+          event_text = event.read_text()
+          assert '"@type":"MusicEvent"' in event_text
+          assert 'Official details' in event_text
+          artist = next(p for p in (root / 'artists').glob('*/index.html') if p.parent.name != 'profile')
+          assert 'upcoming U.S. show' in artist.read_text()
+          print('Regression checks passed:', manifest)
+          PY
+
+          rm -rf /tmp/kc-pages-qa
+          mkdir -p /tmp/kc-pages-qa/kingdom-circuit-test
+          cp -a _site/. /tmp/kc-pages-qa/kingdom-circuit-test/
+          python3 -m http.server 8765 --directory /tmp/kc-pages-qa >/tmp/kc-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          sleep 1
+          curl -fsS http://127.0.0.1:8765/kingdom-circuit-test/ >/dev/null
+          curl -fsS http://127.0.0.1:8765/kingdom-circuit-test/shows/ >/dev/null
+          curl -fsS http://127.0.0.1:8765/kingdom-circuit-test/artists/ >/dev/null
+          SAMPLE_EVENT=$(find _site/event -mindepth 2 -maxdepth 2 -name index.html -print -quit | sed 's#_site/##;s#index.html##')
+          test -n "$SAMPLE_EVENT"
+          curl -fsS "http://127.0.0.1:8765/kingdom-circuit-test/${SAMPLE_EVENT}" >/dev/null
+          kill $SERVER_PID
+          trap - EXIT
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: https://84lorinw-a11y.github.io/kingdom-circuit-test/
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy SEO test site
+        id: deployment
+        uses: actions/deploy-pages@v4
