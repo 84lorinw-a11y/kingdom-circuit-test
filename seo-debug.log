@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/tmp/build_kc_seo.py", line 727, in <module>
+    main()
+  File "/tmp/build_kc_seo.py", line 710, in main
+    validate(all_urls, current_events, artists)
+  File "/tmp/build_kc_seo.py", line 645, in validate
+    raise RuntimeError(f"Test page accidentally indexable: {html_file.relative_to(OUT)}")
+RuntimeError: Test page accidentally indexable: states/south-dakota/index.html
+__EXIT_CODE=1
