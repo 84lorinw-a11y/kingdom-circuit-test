@@ -1,0 +1,44 @@
+name: Capture SEO Test Status
+
+on:
+  workflow_run:
+    workflows: ["Kingdom Circuit SEO Test"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Save workflow result
+        shell: bash
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_STATUS: ${{ github.event.workflow_run.status }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          python - <<'PY'
+          import json, os
+          data = {
+              "run_id": int(os.environ["RUN_ID"]),
+              "status": os.environ["RUN_STATUS"],
+              "conclusion": os.environ["RUN_CONCLUSION"],
+              "html_url": os.environ["RUN_URL"],
+              "head_sha": os.environ["HEAD_SHA"],
+          }
+          with open("seo-run-status.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, indent=2)
+              f.write("\n")
+          print(json.dumps(data, indent=2))
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add seo-run-status.json
+          git commit -m "Capture SEO workflow result [skip ci]" || true
+          git push origin HEAD:main || true
