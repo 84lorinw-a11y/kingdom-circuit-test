@@ -1,0 +1,43 @@
+name: Fix Test Noindex
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/seo-noindex-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Add noindex to every test HTML page
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          changed = 0
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8', errors='ignore')
+              if 'name="robots"' in text:
+                  continue
+              if '<head>' not in text:
+                  continue
+              text = text.replace('<head>', '<head>\n  <meta name="robots" content="noindex,nofollow">', 1)
+              path.write_text(text, encoding='utf-8')
+              changed += 1
+          print(f'Updated {changed} HTML files')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add '*.html' '**/*.html' || true
+          git commit -m "Ensure all test pages are noindex [skip ci]" || true
+          git push origin HEAD:main || true
