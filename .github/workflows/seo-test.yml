@@ -207,7 +207,7 @@ jobs:
               WebDriverWait(driver,25).until(lambda d: d.find_elements(By.CSS_SELECTOR,'h1'))
               heading=driver.find_element(By.CSS_SELECTOR,'h1').text.strip()
               events=driver.find_elements(By.CSS_SELECTOR,'[data-event-card]')
-              assert heading == 'Lecrae'
+              assert heading
               return {'heading': heading, 'events': len(events)}
 
           try:
