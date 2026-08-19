@@ -1,4 +1,4 @@
-name: Kingdom Circuit SEO Test
+name: Kingdom Circuit Live Baseline Mirror
 
 on:
   push:
@@ -6,13 +6,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: kingdom-circuit-seo-test-pages
+  group: kingdom-circuit-live-baseline-mirror
   cancel-in-progress: true
+
+env:
+  LIVE_REPO: 84lorinw-a11y/kingdom-circuit
+  LIVE_COMMIT: 88fab267531e2b5061bad679b2ab1b401511a8bc
+  TEST_BASE: /kingdom-circuit-test/
 
 jobs:
   build:
@@ -20,239 +25,161 @@ jobs:
     steps:
       - name: Checkout test repository
         uses: actions/checkout@v6
+
+      - name: Checkout exact live-site snapshot
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          repository: ${{ env.LIVE_REPO }}
+          ref: ${{ env.LIVE_COMMIT }}
+          path: _live
+          fetch-depth: 1
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-      - name: Build baseline SEO test artifact
+      - name: Verify live snapshot before mirroring
         shell: bash
         run: |
+          set -euo pipefail
+          cd _live
+          test -s index.html
+          test -s styles.css
+          test -s app.js
+          test -s events.json
+          test -s run-status.json
+          test -s supplemental-events.json
+          test -s config/artists.json
+          test -s scripts/build_seo_site.py
+          test -s scripts/verify_multipage_site.py
+          test -s artists/index.html
+          test -s artists/profile/index.html
+          python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Build the same production artifact as live
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd _live
+          rm -rf _site
+          mkdir -p _site/config
+
+          cp index.html styles.css app.js events.json run-status.json \
+             supplemental-events.json 404.html robots.txt sitemap.xml _site/
+          cp config/artists.json _site/config/artists.json
+          cp -R shows festivals new-shows artists event submit assets _site/
+          if [ -f CNAME ]; then cp CNAME _site/; fi
+
+          python scripts/build_seo_site.py
+          python scripts/verify_multipage_site.py _site
+
+      - name: Convert exact live artifact for safe test hosting
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/mirror_live_baseline.py
+          python scripts/mirror_live_baseline.py _live/_site _prod_reference _site
+
+      - name: Verify source/data/style parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp _live/_site/styles.css _site/styles.css
+          cmp _live/_site/events.json _site/events.json
+          cmp _live/_site/config/artists.json _site/config/artists.json
+          cmp _live/_site/supplemental-events.json _site/supplemental-events.json
+          cmp _live/_site/assets/logo.png _site/assets/logo.png
+
+          test ! -e _site/CNAME
+          test ! -e _site/seo-phase2.css
+          test ! -e _site/seo-phase2.js
+          grep -q '"mode": "live-baseline-mirror"' _site/test-live-mirror-manifest.json
+          grep -q 'Disallow: /' _site/robots.txt
+
           python - <<'PY'
+          import json
           from pathlib import Path
-          source = Path('seo-test-fixed.yml').read_text(encoding='utf-8')
-          start_marker = "          cat > /tmp/build_kc_seo.py <<'PY'\n"
-          end_marker = "\n          PY\n          python /tmp/build_kc_seo.py"
-          start = source.index(start_marker) + len(start_marker)
-          end = source.index(end_marker, start)
-          block = source[start:end]
-          lines = [line[10:] if line.startswith('          ') else line for line in block.splitlines()]
-          Path('/tmp/build_kc_seo.py').write_text('\n'.join(lines) + '\n', encoding='utf-8')
-          PY
-          python /tmp/build_kc_seo.py
-
-      - name: Sync verified artist data from live
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile scripts/sync_live_verified_artists.py
-          python scripts/sync_live_verified_artists.py
-
-      - name: Build SEO Phase 2 experience
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile scripts/seo_phase2.py scripts/seo_phase2_cleanup.py
-          python scripts/seo_phase2.py --write-archive
-          python scripts/seo_phase2_cleanup.py
-
-      - name: Regression-check SEO Phase 2
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json, pathlib, xml.etree.ElementTree as ET
-          root = pathlib.Path('_site')
-          baseline = json.loads((root / 'seo-build-manifest.json').read_text())
-          phase2 = json.loads((root / 'seo-phase2-manifest.json').read_text())
-          sync = json.loads((root / 'live-artist-sync-manifest.json').read_text())
-
-          assert baseline['artists'] >= 250, baseline
-          assert baseline['events'] >= 20, baseline
-          assert sync['verifiedRegistryProfiles'] >= 40, sync
-          assert sync['verifiedProfilesWithPrimaryImage'] >= 40, sync
-          assert sync['verifiedProfilesWithSocialOrWebsite'] >= 40, sync
-          assert phase2['status'] == 'pass', phase2
-          assert phase2['artists'] >= 250, phase2
-          assert phase2['currentEvents'] >= 20, phase2
-          assert phase2['artistProductionIndexable'] >= 40, phase2
-          assert phase2['artistPagesWithPrimaryImage'] >= 40, phase2
-          assert phase2['artistPagesWithVerifiedSocials'] >= 40, phase2
-          assert phase2['productionSitemapUrls'] > 100, phase2
-          assert phase2['problems'] == [], phase2
-
-          assert 'Disallow: /' in (root / 'robots.txt').read_text()
-          for html_file in root.rglob('index.html'):
-              assert 'noindex' in html_file.read_text(errors='ignore'), html_file
-
-          for relative in ['shows/2026/index.html', 'shows/this-week/index.html', 'shows/this-weekend/index.html', 'about/index.html']:
-              path = root / relative
-              assert path.is_file() and path.stat().st_size > 0, relative
-
-          kb = (root / 'artists/kb/index.html').read_text()
-          for token in ['kc-artist-overview','kc-social-links','Next KB Shows','All Upcoming KB Shows','data-kc-filter-scope','data-state-filter','data-type-filter','kc-production-index-policy','ProfilePage']:
-              assert token in kb, token
-
-          phew = (root / 'artists/1k-phew/index.html').read_text()
-          assert 'kc-artist-image' in phew
-          assert '/assets/artists/1k-phew.webp' in phew
-
-          lecrae = (root / 'artists/lecrae/index.html').read_text()
-          for token in [
-              'kc-artist-image',
-              'https://lecrae.com',
-              'https://www.instagram.com/lecrae/',
-              'https://open.spotify.com/artist/1CFCsEqKrCyvAFKOATQHiW',
-              'https://www.youtube.com/@lecraeofficial',
-          ]:
-              assert token in lecrae, token
-
-          assert not list((root / 'shows').glob('sponsor-*/index.html'))
-          assert not (root / 'states').exists()
-          dirty_event_dirs = []
-          for child in (root / 'event').iterdir():
-              if not child.is_dir():
-                  continue
-              name = child.name.lower()
-              if 'sponsor-' in name or '-leander-austin-' in name or '-richmond-houston-' in name or '-southlake-dallas-' in name or '-fair-oaks-sacramento-' in name:
-                  dirty_event_dirs.append(child.name)
-          assert dirty_event_dirs == [], dirty_event_dirs
-
-          sitemap_text = (root / 'sitemap.xml').read_text()
-          for bad in ['sponsor-kansas-city','sponsor-charlotte','leander-austin-texas','richmond-houston-texas','southlake-dallas-texas']:
-              assert bad not in sitemap_text.lower(), bad
-          tree = ET.fromstring(sitemap_text)
-          ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
-          urls = [el.text for el in tree.findall('sm:url/sm:loc', ns)]
-          assert len(urls) == len(set(urls)), 'duplicate sitemap URLs'
-          assert all(url.startswith('https://84lorinw-a11y.github.io/kingdom-circuit-test/') for url in urls)
-
-          event_pages = list((root / 'event').glob('*/index.html'))
-          assert event_pages
-          music_event_count = sum('"@type":"MusicEvent"' in p.read_text(errors='ignore') for p in event_pages)
-          assert music_event_count >= 20
-          assert all('kingdom-circuit-test' in p.read_text(errors='ignore') for p in event_pages)
-
-          artists_index = (root / 'artists/index.html').read_text()
-          festivals = (root / 'festivals/index.html').read_text()
-          shows = (root / 'shows/index.html').read_text()
-          assert 'Christian Hip-Hop Artists &amp; Christian Rappers' in artists_index or 'Christian Hip-Hop Artists & Christian Rappers' in artists_index
-          assert 'Christian Hip-Hop Festivals 2026' in festivals
-          assert 'Christian Hip-Hop Shows &amp; Concerts 2026' in shows or 'Christian Hip-Hop Shows & Concerts 2026' in shows
-          assert 'kc-browse-links' in shows
-          assert (root / 'seo-phase2.css').stat().st_size > 1000
-          assert (root / 'seo-phase2.js').stat().st_size > 1000
-          print('SEO Phase 2 regression checks passed:', phase2)
-          print('Live artist sync passed:', sync)
+          m=json.loads(Path('_site/test-live-mirror-manifest.json').read_text())
+          assert m['productionMarkupParity'] is True, m
+          assert m['assetsByteIdentical'] is True, m
+          assert m['testNoindex'] is True, m
+          assert m['liveCommit'] == '88fab267531e2b5061bad679b2ab1b401511a8bc', m
+          print('Live baseline mirror verified:', m)
           PY
 
       - name: Install browser test dependency
         run: python -m pip install --quiet selenium
 
-      - name: Browser-test artist filters and responsive layout
+      - name: Browser smoke-test mirrored live experience
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf /tmp/kc-pages-qa
-          mkdir -p /tmp/kc-pages-qa/kingdom-circuit-test
-          cp -a _site/. /tmp/kc-pages-qa/kingdom-circuit-test/
-          python3 -m http.server 8765 --directory /tmp/kc-pages-qa >/tmp/kc-http.log 2>&1 &
+          rm -rf /tmp/kc-live-mirror
+          mkdir -p /tmp/kc-live-mirror/kingdom-circuit-test
+          cp -a _site/. /tmp/kc-live-mirror/kingdom-circuit-test/
+          python3 -m http.server 8765 --directory /tmp/kc-live-mirror >/tmp/kc-live-mirror-http.log 2>&1 &
           SERVER_PID=$!
-          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           sleep 1
+
           python - <<'PY'
           from selenium import webdriver
           from selenium.webdriver.common.by import By
-          from selenium.webdriver.support.ui import Select, WebDriverWait
+          from selenium.webdriver.support.ui import WebDriverWait
           import time
+
           BASE='http://127.0.0.1:8765/kingdom-circuit-test/'
-          def driver(width,height):
-              o=webdriver.ChromeOptions(); o.add_argument('--headless=new'); o.add_argument('--no-sandbox'); o.add_argument('--disable-dev-shm-usage'); o.add_argument(f'--window-size={width},{height}')
-              return webdriver.Chrome(options=o)
-          d=driver(1440,1000)
+          o=webdriver.ChromeOptions()
+          o.add_argument('--headless=new')
+          o.add_argument('--no-sandbox')
+          o.add_argument('--disable-dev-shm-usage')
+          o.add_argument('--window-size=1440,1000')
+          d=webdriver.Chrome(options=o)
           try:
-              d.get(BASE+'artists/kb/')
-              WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'.kc-artist-overview'))
-              cards=d.find_elements(By.CSS_SELECTOR,'[data-kc-filter-scope] [data-event-card]')
-              assert len(cards)>=1
-              assert d.find_element(By.CSS_SELECTOR,'.kc-social-links')
-              assert d.find_element(By.CSS_SELECTOR,'.kc-next-grid')
-              state=Select(d.find_element(By.CSS_SELECTOR,'[data-state-filter]'))
-              if len(state.options)>1:
-                  state.select_by_index(1); time.sleep(.3)
-                  visible=[c for c in cards if c.is_displayed()]
-                  assert 1<=len(visible)<=len(cards)
-              search=d.find_element(By.CSS_SELECTOR,'[data-search-filter]')
-              search.clear(); search.send_keys('zzzz-no-match-kingdom-circuit'); time.sleep(.2)
-              assert len([c for c in cards if c.is_displayed()])==0
-              assert d.find_element(By.CSS_SELECTOR,'[data-filtered-empty]').is_displayed()
-              d.find_element(By.CSS_SELECTOR,'[data-reset-filters]').click(); time.sleep(.2)
-              assert len([c for c in cards if c.is_displayed()])==len(cards)
+              d.get(BASE)
+              WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'[data-event-card]')) >= 20)
+              assert d.find_element(By.CSS_SELECTOR,'.brand img').get_attribute('naturalWidth') > 0
+              d.find_element(By.CSS_SELECTOR,'.menu-toggle').click(); time.sleep(.2)
+              assert 'open' in d.find_element(By.CSS_SELECTOR,'.menu-drawer').get_attribute('class')
 
-              d.get(BASE+'artists/lecrae/')
-              WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'.kc-artist-overview'))
-              assert d.find_element(By.CSS_SELECTOR,'.kc-artist-image')
-              social_links=d.find_elements(By.CSS_SELECTOR,'.kc-social-links a')
-              assert len(social_links)>=4
-              hrefs={link.get_attribute('href') for link in social_links}
-              assert 'https://lecrae.com/' in hrefs or 'https://lecrae.com' in hrefs
-              assert 'https://www.instagram.com/lecrae/' in hrefs
+              d.get(BASE+'artists/')
+              WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'[data-artist-card]')) >= 250)
+              cards=d.find_elements(By.CSS_SELECTOR,'[data-artist-card]')
+              assert len(cards) >= 250
+              image_cards=[c for c in cards if c.find_elements(By.CSS_SELECTOR,'img')]
+              assert len(image_cards) >= 40, len(image_cards)
 
-              d.get(BASE+'shows/2026/')
-              WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'[data-event-card]'))
-              assert d.find_element(By.CSS_SELECTOR,'[data-event-filters]')
-              assert len(d.find_elements(By.CSS_SELECTOR,'[data-event-card]'))>=20
-              d.get(BASE+'about/')
-              assert 'How Kingdom Circuit Verifies CHH Shows' in d.page_source
+              d.get(BASE+'artists/profile/?artist=Lecrae')
+              WebDriverWait(d,20).until(lambda x: not x.find_elements(By.CSS_SELECTOR,'.loading-panel'))
+              assert 'Lecrae' in d.page_source
+              assert 'instagram.com/lecrae' in d.page_source
+              assert 'open.spotify.com/artist/1CFCsEqKrCyvAFKOATQHiW' in d.page_source
+              profile_images=d.find_elements(By.CSS_SELECTOR,'.profile-visual img')
+              assert profile_images and profile_images[0].get_attribute('naturalWidth') > 0
           finally:
               d.quit()
-          m=driver(390,844)
-          try:
-              m.get(BASE+'artists/1k-phew/')
-              WebDriverWait(m,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'.kc-artist-overview'))
-              metrics=m.execute_script('return {inner:window.innerWidth,body:document.body.scrollWidth,doc:document.documentElement.scrollWidth};')
-              assert max(metrics['body'],metrics['doc'])<=metrics['inner']+2,metrics
-              image=m.find_element(By.CSS_SELECTOR,'.kc-artist-image')
-              rect=m.execute_script('const r=arguments[0].getBoundingClientRect();return {left:r.left,right:r.right,width:r.width};',image)
-              assert rect['left']>=-2 and rect['right']<=metrics['inner']+2,(rect,metrics)
-              m.find_element(By.CSS_SELECTOR,'.menu-toggle').click(); time.sleep(.2)
-              assert 'open' in m.find_element(By.CSS_SELECTOR,'.menu-drawer').get_attribute('class')
-          finally:
-              m.quit()
-          print('SEO Phase 2 browser checks passed')
+          print('Mirrored live browser experience passed')
           PY
-          kill $SERVER_PID
+
+          kill "$SERVER_PID"
           trap - EXIT
 
-      - name: Persist test event archive snapshot
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ -s event-archive.json ]; then
-            git config user.name "kingdom-circuit-test-bot"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add event-archive.json
-            if git diff --cached --quiet; then
-              echo "Event archive unchanged."
-            else
-              git commit -m "chore: refresh test event archive [skip ci]"
-              git push || echo "WARNING: archive snapshot could not be persisted; deployment can continue."
-            fi
-          fi
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
-      - name: Upload GitHub Pages artifact
+      - name: Upload mirrored live-site artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
 
   deploy:
+    runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: https://84lorinw-a11y.github.io/kingdom-circuit-test/
-    runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Deploy SEO Phase 2 test site
+      - name: Deploy exact live baseline to test
         id: deployment
         uses: actions/deploy-pages@v4
