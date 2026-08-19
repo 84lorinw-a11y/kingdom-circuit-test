@@ -31,7 +31,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           source = Path('seo-test-fixed.yml').read_text(encoding='utf-8')
           start_marker = "          cat > /tmp/build_kc_seo.py <<'PY'\n"
           end_marker = "\n          PY\n          python /tmp/build_kc_seo.py"
@@ -47,21 +46,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile scripts/seo_phase2.py
+          python -m py_compile scripts/seo_phase2.py scripts/seo_phase2_cleanup.py
           python scripts/seo_phase2.py --write-archive
+          python scripts/seo_phase2_cleanup.py
 
       - name: Regression-check SEO Phase 2
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, pathlib, re, xml.etree.ElementTree as ET
-
+          import json, pathlib, xml.etree.ElementTree as ET
           root = pathlib.Path('_site')
-          base = '/kingdom-circuit-test/'
           baseline = json.loads((root / 'seo-build-manifest.json').read_text())
           phase2 = json.loads((root / 'seo-phase2-manifest.json').read_text())
-
           assert baseline['artists'] >= 250, baseline
           assert baseline['events'] >= 20, baseline
           assert phase2['status'] == 'pass', phase2
@@ -71,61 +68,47 @@ jobs:
           assert phase2['productionSitemapUrls'] > 100, phase2
           assert phase2['problems'] == [], phase2
 
-          # Test environment can never become indexable.
           assert 'Disallow: /' in (root / 'robots.txt').read_text()
           for html_file in root.rglob('index.html'):
-              text = html_file.read_text(errors='ignore')
-              assert 'noindex' in text, html_file
+              assert 'noindex' in html_file.read_text(errors='ignore'), html_file
 
-          # New high-intent search pages.
           for relative in ['shows/2026/index.html', 'shows/this-week/index.html', 'shows/this-weekend/index.html', 'about/index.html']:
               path = root / relative
               assert path.is_file() and path.stat().st_size > 0, relative
 
-          # Artist page: primary-image/social architecture + at-a-glance + full filtered show list.
           kb = (root / 'artists/kb/index.html').read_text()
-          assert 'kc-artist-overview' in kb
-          assert 'kc-social-links' in kb
-          assert 'Next KB Shows' in kb
-          assert 'All Upcoming KB Shows' in kb
-          assert 'data-kc-filter-scope' in kb
-          assert 'data-state-filter' in kb
-          assert 'data-type-filter' in kb
-          assert 'kc-production-index-policy' in kb
-          assert 'ProfilePage' in kb
-
+          for token in ['kc-artist-overview','kc-social-links','Next KB Shows','All Upcoming KB Shows','data-kc-filter-scope','data-state-filter','data-type-filter','kc-production-index-policy','ProfilePage']:
+              assert token in kb, token
           phew = (root / 'artists/1k-phew/index.html').read_text()
           assert 'kc-artist-image' in phew
           assert '/assets/artists/1k-phew.webp' in phew
 
-          # Geographic cleanup: no accidental Sponsor city pages or parenthetical metro slugs.
           assert not list((root / 'shows').glob('sponsor-*/index.html'))
-          sitemap_text = (root / 'sitemap.xml').read_text()
-          assert 'sponsor-kansas-city' not in sitemap_text.lower()
-          assert 'sponsor-charlotte' not in sitemap_text.lower()
-          assert 'leander-austin-texas' not in sitemap_text.lower()
-          assert 'richmond-houston-texas' not in sitemap_text.lower()
-          assert 'southlake-dallas-texas' not in sitemap_text.lower()
+          assert not (root / 'states').exists()
+          dirty_event_dirs = []
+          for child in (root / 'event').iterdir():
+              if not child.is_dir():
+                  continue
+              name = child.name.lower()
+              if 'sponsor-' in name or '-leander-austin-' in name or '-richmond-houston-' in name or '-southlake-dallas-' in name or '-fair-oaks-sacramento-' in name:
+                  dirty_event_dirs.append(child.name)
+          assert dirty_event_dirs == [], dirty_event_dirs
 
-          # Sitemap must be valid, unique, and test-domain only.
+          sitemap_text = (root / 'sitemap.xml').read_text()
+          for bad in ['sponsor-kansas-city','sponsor-charlotte','leander-austin-texas','richmond-houston-texas','southlake-dallas-texas']:
+              assert bad not in sitemap_text.lower(), bad
           tree = ET.fromstring(sitemap_text)
           ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
           urls = [el.text for el in tree.findall('sm:url/sm:loc', ns)]
           assert len(urls) == len(set(urls)), 'duplicate sitemap URLs'
           assert all(url.startswith('https://84lorinw-a11y.github.io/kingdom-circuit-test/') for url in urls)
 
-          # Event schema: use a real ticket URL for Offer, never an arbitrary official page.
           event_pages = list((root / 'event').glob('*/index.html'))
           assert event_pages
-          music_event_count = 0
-          for event_page in event_pages:
-              text = event_page.read_text(errors='ignore')
-              if '"@type":"MusicEvent"' in text:
-                  music_event_count += 1
-              assert 'kingdom-circuit-test' in text
+          music_event_count = sum('"@type":"MusicEvent"' in p.read_text(errors='ignore') for p in event_pages)
           assert music_event_count >= 20
+          assert all('kingdom-circuit-test' in p.read_text(errors='ignore') for p in event_pages)
 
-          # Core titles upgraded without adding navigation clutter.
           artists_index = (root / 'artists/index.html').read_text()
           festivals = (root / 'festivals/index.html').read_text()
           shows = (root / 'shows/index.html').read_text()
@@ -133,7 +116,6 @@ jobs:
           assert 'Christian Hip-Hop Festivals 2026' in festivals
           assert 'Christian Hip-Hop Shows &amp; Concerts 2026' in shows or 'Christian Hip-Hop Shows & Concerts 2026' in shows
           assert 'kc-browse-links' in shows
-
           assert (root / 'seo-phase2.css').stat().st_size > 1000
           assert (root / 'seo-phase2.js').stat().st_size > 1000
           print('SEO Phase 2 regression checks passed:', phase2)
@@ -153,72 +135,57 @@ jobs:
           SERVER_PID=$!
           trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
           sleep 1
-
           python - <<'PY'
           from selenium import webdriver
           from selenium.webdriver.common.by import By
           from selenium.webdriver.support.ui import Select, WebDriverWait
           import time
-
           BASE='http://127.0.0.1:8765/kingdom-circuit-test/'
-
           def driver(width,height):
-              options=webdriver.ChromeOptions()
-              options.add_argument('--headless=new')
-              options.add_argument('--no-sandbox')
-              options.add_argument('--disable-dev-shm-usage')
-              options.add_argument(f'--window-size={width},{height}')
-              return webdriver.Chrome(options=options)
-
+              o=webdriver.ChromeOptions(); o.add_argument('--headless=new'); o.add_argument('--no-sandbox'); o.add_argument('--disable-dev-shm-usage'); o.add_argument(f'--window-size={width},{height}')
+              return webdriver.Chrome(options=o)
           d=driver(1440,1000)
           try:
               d.get(BASE+'artists/kb/')
               WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'.kc-artist-overview'))
               cards=d.find_elements(By.CSS_SELECTOR,'[data-kc-filter-scope] [data-event-card]')
-              assert len(cards) >= 1
+              assert len(cards)>=1
               assert d.find_element(By.CSS_SELECTOR,'.kc-social-links')
               assert d.find_element(By.CSS_SELECTOR,'.kc-next-grid')
               state=Select(d.find_element(By.CSS_SELECTOR,'[data-state-filter]'))
-              if len(state.options) > 1:
-                  state.select_by_index(1)
-                  time.sleep(.3)
-                  visible=[card for card in cards if card.is_displayed()]
-                  assert len(visible) >= 1
-                  assert len(visible) <= len(cards)
+              if len(state.options)>1:
+                  state.select_by_index(1); time.sleep(.3)
+                  visible=[c for c in cards if c.is_displayed()]
+                  assert 1<=len(visible)<=len(cards)
               search=d.find_element(By.CSS_SELECTOR,'[data-search-filter]')
               search.clear(); search.send_keys('zzzz-no-match-kingdom-circuit'); time.sleep(.2)
-              assert len([card for card in cards if card.is_displayed()]) == 0
+              assert len([c for c in cards if c.is_displayed()])==0
               assert d.find_element(By.CSS_SELECTOR,'[data-filtered-empty]').is_displayed()
               d.find_element(By.CSS_SELECTOR,'[data-reset-filters]').click(); time.sleep(.2)
-              assert len([card for card in cards if card.is_displayed()]) == len(cards)
-
+              assert len([c for c in cards if c.is_displayed()])==len(cards)
               d.get(BASE+'shows/2026/')
               WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'[data-event-card]'))
               assert d.find_element(By.CSS_SELECTOR,'[data-event-filters]')
-              assert len(d.find_elements(By.CSS_SELECTOR,'[data-event-card]')) >= 20
-
+              assert len(d.find_elements(By.CSS_SELECTOR,'[data-event-card]'))>=20
               d.get(BASE+'about/')
               assert 'How Kingdom Circuit Verifies CHH Shows' in d.page_source
           finally:
               d.quit()
-
           m=driver(390,844)
           try:
               m.get(BASE+'artists/1k-phew/')
               WebDriverWait(m,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'.kc-artist-overview'))
               metrics=m.execute_script('return {inner:window.innerWidth,body:document.body.scrollWidth,doc:document.documentElement.scrollWidth};')
-              assert max(metrics['body'],metrics['doc']) <= metrics['inner'] + 2, metrics
+              assert max(metrics['body'],metrics['doc'])<=metrics['inner']+2,metrics
               image=m.find_element(By.CSS_SELECTOR,'.kc-artist-image')
               rect=m.execute_script('const r=arguments[0].getBoundingClientRect();return {left:r.left,right:r.right,width:r.width};',image)
-              assert rect['left'] >= -2 and rect['right'] <= metrics['inner'] + 2, (rect,metrics)
-              menu=m.find_element(By.CSS_SELECTOR,'.menu-toggle'); menu.click(); time.sleep(.2)
+              assert rect['left']>=-2 and rect['right']<=metrics['inner']+2,(rect,metrics)
+              m.find_element(By.CSS_SELECTOR,'.menu-toggle').click(); time.sleep(.2)
               assert 'open' in m.find_element(By.CSS_SELECTOR,'.menu-drawer').get_attribute('class')
           finally:
               m.quit()
-
           print('SEO Phase 2 browser checks passed')
           PY
-
           kill $SERVER_PID
           trap - EXIT
 
