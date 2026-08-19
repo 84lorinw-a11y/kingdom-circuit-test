@@ -23,16 +23,25 @@ def sha256(path: pathlib.Path) -> str:
     return h.hexdigest()
 
 
+def force_noindex(text: str) -> str:
+    robots_pattern = re.compile(r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*["\']\s*/?>', re.I)
+    replacement = '<meta name="robots" content="noindex,nofollow">'
+    if robots_pattern.search(text):
+        return robots_pattern.sub(replacement, text, count=1)
+    return re.sub(r'(<head\b[^>]*>)', r'\1\n  ' + replacement, text, count=1, flags=re.I)
+
+
 def rewrite_html(text: str) -> str:
     text = text.replace(LIVE_SITE + "/", TEST_SITE + "/")
     text = text.replace(LIVE_SITE, TEST_SITE)
     text = text.replace(LIVE_GA, TEST_GA)
-    text = re.sub(r'(?P<prefix>\b(?:href|src|action)=["\'])/(?!/)', lambda m: m.group("prefix") + TEST_BASE, text)
-    text = re.sub(r'content="index,follow"', 'content="noindex,nofollow"', text)
-    text = re.sub(r'content="index, follow"', 'content="noindex,nofollow"', text)
-    if '<meta name="robots"' not in text and "<head>" in text:
-        text = text.replace("<head>", '<head><meta name="robots" content="noindex,nofollow">', 1)
-    return text
+    text = re.sub(
+        r'(?P<attr>\b(?:href|src|action)\s*=\s*)(?P<quote>["\'])/(?!/)',
+        lambda m: m.group("attr") + m.group("quote") + TEST_BASE,
+        text,
+        flags=re.I,
+    )
+    return force_noindex(text)
 
 
 def rewrite_js(text: str) -> str:
@@ -40,7 +49,12 @@ def rewrite_js(text: str) -> str:
     text = text.replace(LIVE_SITE, TEST_SITE)
     text = text.replace(LIVE_GA, TEST_GA)
     text = text.replace('const BASE = "/";', f'const BASE = "{TEST_BASE}";')
-    text = re.sub(r'(?P<prefix>\b(?:href|src|action)=\\?["\'])/(?!/)', lambda m: m.group("prefix") + TEST_BASE, text)
+    text = re.sub(
+        r'(?P<attr>\b(?:href|src|action)\s*=\s*\\?)(?P<quote>["\'])/(?!/)',
+        lambda m: m.group("attr") + m.group("quote") + TEST_BASE,
+        text,
+        flags=re.I,
+    )
     return text
 
 
@@ -136,11 +150,15 @@ def main() -> None:
             asset_failures.append(str(relative))
 
     safety_failures = []
+    unsafe_root_pattern = re.compile(
+        r'\b(?:href|src|action)\s*=\s*["\']/(?!/|kingdom-circuit-test/)',
+        re.I,
+    )
     for path in out_dir.rglob("*.html"):
         text = path.read_text(encoding="utf-8")
         if 'name="robots" content="noindex,nofollow"' not in text:
             safety_failures.append(f"missing-noindex:{path.relative_to(out_dir)}")
-        if re.search(r'\b(?:href|src|action)=["\']/(?!/)', text):
+        if unsafe_root_pattern.search(text):
             safety_failures.append(f"root-path:{path.relative_to(out_dir)}")
         if LIVE_GA in text:
             safety_failures.append(f"live-ga:{path.relative_to(out_dir)}")
