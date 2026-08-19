@@ -217,4 +217,21 @@ jobs:
           fi
 
           git commit -m "Sync validated public test tree to live + SEO overlay"
-          git push origin HEAD:main
+
+          # Another status/maintenance workflow can update main while this run validates.
+          # Rebase our generated public-tree commit onto the newest main before pushing.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+            else
+              git rebase --abort || true
+            fi
+            echo "Public-tree push raced with another workflow; retrying ($attempt/3)."
+            sleep 2
+          done
+
+          echo "Unable to push validated public tree after three race-safe retries."
+          exit 1
