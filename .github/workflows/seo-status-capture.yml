@@ -2,7 +2,7 @@ name: Capture SEO Test Status
 
 on:
   workflow_run:
-    workflows: ["Kingdom Circuit Live Baseline Mirror"]
+    workflows: ["Kingdom Circuit Live Baseline + SEO Test Overlay"]
     types: [completed]
 
 permissions:
