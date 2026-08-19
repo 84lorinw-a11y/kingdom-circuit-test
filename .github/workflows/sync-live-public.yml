@@ -19,6 +19,7 @@ env:
 
 jobs:
   sync:
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout test repository
@@ -94,7 +95,6 @@ jobs:
           cp -R _public_sync/shows _public_sync/festivals _public_sync/new-shows \
                 _public_sync/artists _public_sync/event _public_sync/submit _public_sync/assets ./
 
-          # Old preview assets may remain in git history, but no public page may reference them.
           if grep -R -nE 'app-v[0-9]+\.js|patch-v[0-9]+\.css|test-site-banner' \
                index.html shows festivals new-shows artists event submit; then
             echo "Old preview references remain in the public tree."
@@ -124,5 +124,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Sync public test tree to current live baseline [skip ci]"
+          git commit -m "Sync public test tree to current live baseline"
           git push origin HEAD:main
