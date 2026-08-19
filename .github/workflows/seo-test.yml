@@ -139,7 +139,8 @@ jobs:
           try:
               d.get(BASE)
               WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'[data-event-card]')) >= 20)
-              assert d.find_element(By.CSS_SELECTOR,'.brand img').get_attribute('naturalWidth') > 0
+              logo=d.find_element(By.CSS_SELECTOR,'.brand img')
+              assert d.execute_script('return arguments[0].naturalWidth', logo) > 0
               d.find_element(By.CSS_SELECTOR,'.menu-toggle').click(); time.sleep(.2)
               assert 'open' in d.find_element(By.CSS_SELECTOR,'.menu-drawer').get_attribute('class')
 
@@ -156,7 +157,7 @@ jobs:
               assert 'instagram.com/lecrae' in d.page_source
               assert 'open.spotify.com/artist/1CFCsEqKrCyvAFKOATQHiW' in d.page_source
               profile_images=d.find_elements(By.CSS_SELECTOR,'.profile-visual img')
-              assert profile_images and profile_images[0].get_attribute('naturalWidth') > 0
+              assert profile_images and d.execute_script('return arguments[0].naturalWidth', profile_images[0]) > 0
           finally:
               d.quit()
           print('Mirrored live browser experience passed')
