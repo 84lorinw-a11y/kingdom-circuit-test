@@ -156,8 +156,12 @@ jobs:
               assert 'Lecrae' in d.page_source
               assert 'instagram.com/lecrae' in d.page_source
               assert 'open.spotify.com/artist/1CFCsEqKrCyvAFKOATQHiW' in d.page_source
+              social_links=d.find_elements(By.CSS_SELECTOR,'[data-artist-social]')
+              assert len(social_links) >= 4, len(social_links)
+              assert len(d.find_elements(By.CSS_SELECTOR,'.profile-platform-icon')) >= 4
               profile_images=d.find_elements(By.CSS_SELECTOR,'.profile-visual img')
-              assert profile_images and d.execute_script('return arguments[0].naturalWidth', profile_images[0]) > 0
+              assert profile_images
+              assert 'open.voidware.de/artist/1CFCsEqKrCyvAFKOATQHiW' in profile_images[0].get_attribute('src')
           finally:
               d.quit()
           print('Mirrored live browser experience passed')
