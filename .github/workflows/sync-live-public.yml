@@ -73,8 +73,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile scripts/apply_test_overlay.py
+          python -m py_compile scripts/apply_test_overlay.py scripts/finalize_test_seo.py
           python scripts/apply_test_overlay.py _public_sync
+          python scripts/finalize_test_seo.py _public_sync
 
       - name: Replace checked-in public test tree with enhanced live mirror
         shell: bash
@@ -115,6 +116,7 @@ jobs:
           grep -q 'KB Concerts &amp; Tour Dates' artists/kb/index.html
           grep -q '/kingdom-circuit-test/app.js' artists/index.html
           grep -q '/kingdom-circuit-test/styles.css' artists/index.html
+          ! grep -R -q 'kingdom-circuit-test/kingdom-circuit-test/' artists shows event index.html sitemap.xml
 
       - name: Commit synchronized public test tree
         shell: bash
