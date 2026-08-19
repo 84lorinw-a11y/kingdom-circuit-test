@@ -1,4 +1,4 @@
-name: Kingdom Circuit Live Baseline Mirror
+name: Kingdom Circuit Live Baseline + SEO Test Overlay
 
 on:
   push:
@@ -221,13 +221,13 @@ jobs:
           finally:
               driver.quit()
 
-          print('Runtime production/test parity passed: directory, artist images, social icons/links, artist page, menu')
+          print('Runtime production/test baseline parity passed')
           PY
 
           kill "$PROD_PID" "$TEST_PID"
           trap - EXIT
 
-      - name: Prepare deployable test site and apply optional test overlay
+      - name: Prepare deployable test site and apply SEO overlay
         shell: bash
         run: |
           set -euo pipefail
@@ -235,18 +235,20 @@ jobs:
           cp -a _baseline _site
 
           if [ -d test-overlay ]; then
-            echo "Applying test-overlay/ on top of current live baseline"
             cp -a test-overlay/. _site/
           fi
 
-          if [ -f scripts/apply_test_overlay.py ]; then
-            echo "Applying scripted test overlay"
-            python scripts/apply_test_overlay.py _site
-          fi
+          python -m py_compile scripts/apply_test_overlay.py scripts/finalize_test_seo.py
+          python scripts/apply_test_overlay.py _site
+          python scripts/finalize_test_seo.py _site
 
           test ! -e _site/CNAME
           grep -q 'Disallow: /' _site/robots.txt
+          grep -q 'data-seo-enhanced-directory' _site/artists/index.html
+          grep -q 'KB Concerts &amp; Tour Dates' _site/artists/kb/index.html
+          ! grep -R -q 'kingdom-circuit-test/kingdom-circuit-test/' _site/artists _site/shows _site/event _site/index.html _site/sitemap.xml
           node --check _site/app.js
+          node --check _site/seo-test-enhancements.js
 
           python - <<'PY'
           from pathlib import Path
@@ -260,13 +262,61 @@ jobs:
                   failures.append(f'live-ga:{p}')
           if failures:
               raise SystemExit('\n'.join(failures[:50]))
-          print('Deployable test-site safety checks passed')
+          print('Deployable SEO test-site safety checks passed')
           PY
+
+      - name: Runtime browser check for SEO-enhanced pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/kc-seo-host
+          mkdir -p /tmp/kc-seo-host/kingdom-circuit-test
+          cp -a _site/. /tmp/kc-seo-host/kingdom-circuit-test/
+          python3 -m http.server 8766 --directory /tmp/kc-seo-host >/tmp/kc-seo-http.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          sleep 1
+
+          python - <<'PY'
+          from selenium import webdriver
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait, Select
+
+          BASE='http://127.0.0.1:8766/kingdom-circuit-test/'
+          options=webdriver.ChromeOptions()
+          options.add_argument('--headless=new')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--window-size=1440,1200')
+          driver=webdriver.Chrome(options=options)
+          try:
+              driver.get(BASE+'artists/kb/')
+              WebDriverWait(driver,20).until(lambda d: 'Concerts & Tour Dates' in d.find_element(By.CSS_SELECTOR,'h1').text)
+              assert len(driver.find_elements(By.CSS_SELECTOR,'.seo-social-link')) >= 4
+              assert driver.find_elements(By.CSS_SELECTOR,'.seo-profile-image img')
+              state=Select(driver.find_element(By.CSS_SELECTOR,'[data-artist-state-filter]'))
+              assert len(state.options) >= 2
+              state.select_by_value('MN')
+              WebDriverWait(driver,10).until(lambda d: len([x for x in d.find_elements(By.CSS_SELECTOR,'[data-event-card]') if x.is_displayed()]) == 1)
+
+              driver.get(BASE+'artists/')
+              WebDriverWait(driver,20).until(lambda d: len(d.find_elements(By.CSS_SELECTOR,'.seo-artist-card')) >= 250)
+              assert len(driver.find_elements(By.CSS_SELECTOR,'.seo-card-socials .seo-social-link')) >= 80
+
+              driver.get(BASE+'artists/kb/minnesota/')
+              WebDriverWait(driver,20).until(lambda d: 'KB Concerts in Minnesota' in d.find_element(By.CSS_SELECTOR,'h1').text)
+          finally:
+              driver.quit()
+          print('SEO-enhanced browser checks passed: KB profile, social links, state filter, directory and artist-state page')
+          PY
+
+          kill "$PID"
+          trap - EXIT
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload mirrored live-site artifact
+      - name: Upload enhanced test-site artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
@@ -278,6 +328,6 @@ jobs:
       name: github-pages
       url: https://84lorinw-a11y.github.io/kingdom-circuit-test/
     steps:
-      - name: Deploy current live baseline to test
+      - name: Deploy live baseline plus SEO test overlay
         id: deployment
         uses: actions/deploy-pages@v4
