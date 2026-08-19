@@ -100,16 +100,19 @@ jobs:
 
           BASE='http://127.0.0.1:8767/kingdom-circuit-test/'
           opts=webdriver.ChromeOptions()
+          opts.page_load_strategy='eager'
           opts.add_argument('--headless=new')
           opts.add_argument('--no-sandbox')
           opts.add_argument('--disable-dev-shm-usage')
           opts.add_argument('--window-size=1440,1200')
           driver=webdriver.Chrome(options=opts)
+          driver.set_page_load_timeout(20)
           try:
               driver.get(BASE+'artists/kb/')
               WebDriverWait(driver,20).until(lambda d: 'Concerts & Tour Dates' in d.find_element(By.CSS_SELECTOR,'h1').text)
               assert len(driver.find_elements(By.CSS_SELECTOR,'.seo-social-link')) >= 4
-              assert driver.find_elements(By.CSS_SELECTOR,'.seo-profile-image img')
+              images=driver.find_elements(By.CSS_SELECTOR,'.seo-profile-image img')
+              assert images and images[0].get_attribute('src')
               assert len(driver.find_elements(By.CSS_SELECTOR,'[data-event-card]')) == 4
 
               states=Select(driver.find_element(By.CSS_SELECTOR,'[data-artist-state-filter]'))
