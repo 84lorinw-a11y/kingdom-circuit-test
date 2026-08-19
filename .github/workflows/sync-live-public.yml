@@ -69,7 +69,14 @@ jobs:
           python scripts/mirror_live_baseline.py \
             _live/_site _prod_reference _public_sync "$LIVE_SHA" "$CACHE_TOKEN"
 
-      - name: Replace checked-in public test tree with current live mirror
+      - name: Apply approved SEO test overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/apply_test_overlay.py
+          python scripts/apply_test_overlay.py _public_sync
+
+      - name: Replace checked-in public test tree with enhanced live mirror
         shell: bash
         run: |
           set -euo pipefail
@@ -87,6 +94,8 @@ jobs:
           cp _public_sync/robots.txt .
           cp _public_sync/sitemap.xml .
           cp _public_sync/test-live-mirror-manifest.json .
+          cp _public_sync/seo-test-enhancements.js .
+          cp _public_sync/seo-test-overlay-manifest.json .
 
           if [ -f _public_sync/seo-static.js ]; then cp _public_sync/seo-static.js .; fi
           if [ -f _public_sync/seo-build-manifest.json ]; then cp _public_sync/seo-build-manifest.json .; fi
@@ -102,6 +111,8 @@ jobs:
           fi
 
           grep -q 'name="robots" content="noindex,nofollow"' artists/index.html
+          grep -q 'data-seo-enhanced-directory' artists/index.html
+          grep -q 'KB Concerts &amp; Tour Dates' artists/kb/index.html
           grep -q '/kingdom-circuit-test/app.js' artists/index.html
           grep -q '/kingdom-circuit-test/styles.css' artists/index.html
 
@@ -114,15 +125,16 @@ jobs:
 
           git add index.html styles.css app.js events.json run-status.json \
                   supplemental-events.json 404.html robots.txt sitemap.xml \
-                  test-live-mirror-manifest.json config shows festivals \
+                  test-live-mirror-manifest.json seo-test-enhancements.js \
+                  seo-test-overlay-manifest.json config shows festivals \
                   new-shows artists event submit assets
           if [ -f seo-static.js ]; then git add seo-static.js; fi
           if [ -f seo-build-manifest.json ]; then git add seo-build-manifest.json; fi
 
           if git diff --cached --quiet; then
-            echo "Public test tree already matches current live."
+            echo "Public test tree already matches current live + SEO overlay."
             exit 0
           fi
 
-          git commit -m "Sync public test tree to current live baseline"
+          git commit -m "Sync public test tree to live + SEO overlay"
           git push origin HEAD:main
