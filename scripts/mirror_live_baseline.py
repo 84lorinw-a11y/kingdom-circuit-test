@@ -31,7 +31,25 @@ def force_noindex(text: str) -> str:
     return re.sub(r'(<head\b[^>]*>)', r'\1\n  ' + replacement, text, count=1, flags=re.I)
 
 
-def rewrite_html(text: str) -> str:
+def cache_bust_local_assets(text: str, token: str) -> str:
+    if not token:
+        return text
+    pattern = re.compile(
+        r'(?P<prefix>\b(?:href|src)\s*=\s*["\'])(?P<url>'
+        + re.escape(TEST_BASE)
+        + r'[^"\']+\.(?:css|js)(?:\?[^"\']*)?)(?P<suffix>["\'])',
+        re.I,
+    )
+
+    def replace(match: re.Match[str]) -> str:
+        url = re.sub(r'([?&])kc_mirror=[^&"\']*', "", match.group("url"))
+        separator = "&" if "?" in url else "?"
+        return f'{match.group("prefix")}{url}{separator}kc_mirror={token}{match.group("suffix")}'
+
+    return pattern.sub(replace, text)
+
+
+def rewrite_html(text: str, cache_token: str) -> str:
     text = text.replace(LIVE_SITE + "/", TEST_SITE + "/")
     text = text.replace(LIVE_SITE, TEST_SITE)
     text = text.replace(LIVE_GA, TEST_GA)
@@ -41,6 +59,7 @@ def rewrite_html(text: str) -> str:
         text,
         flags=re.I,
     )
+    text = cache_bust_local_assets(text, cache_token)
     return force_noindex(text)
 
 
@@ -66,6 +85,7 @@ def rewrite_css(text: str) -> str:
 
 
 def normalize_test_html(text: str) -> str:
+    text = re.sub(r'([?&])kc_mirror=[A-Za-z0-9._-]+', "", text)
     text = text.replace(TEST_SITE + "/", LIVE_SITE + "/")
     text = text.replace(TEST_SITE, LIVE_SITE)
     text = text.replace(TEST_BASE, "/")
@@ -75,12 +95,16 @@ def normalize_test_html(text: str) -> str:
 
 
 def main() -> None:
-    if len(sys.argv) != 4:
-        raise SystemExit("usage: mirror_live_baseline.py LIVE_SITE_DIR PROD_REFERENCE_DIR TEST_OUTPUT_DIR")
+    if len(sys.argv) not in (4, 5, 6):
+        raise SystemExit(
+            "usage: mirror_live_baseline.py LIVE_SITE_DIR PROD_REFERENCE_DIR TEST_OUTPUT_DIR [LIVE_COMMIT] [CACHE_TOKEN]"
+        )
 
     live_dir = pathlib.Path(sys.argv[1]).resolve()
     reference_dir = pathlib.Path(sys.argv[2]).resolve()
     out_dir = pathlib.Path(sys.argv[3]).resolve()
+    live_commit = sys.argv[4] if len(sys.argv) >= 5 else "unknown"
+    cache_token = sys.argv[5] if len(sys.argv) >= 6 else live_commit[:12]
 
     if not (live_dir / "index.html").is_file():
         raise SystemExit(f"Missing production artifact: {live_dir}")
@@ -103,7 +127,7 @@ def main() -> None:
         suffix = path.suffix.lower()
         if suffix == ".html":
             text = path.read_text(encoding="utf-8", errors="strict")
-            path.write_text(rewrite_html(text), encoding="utf-8")
+            path.write_text(rewrite_html(text, cache_token), encoding="utf-8")
         elif suffix == ".js":
             text = path.read_text(encoding="utf-8", errors="strict")
             path.write_text(rewrite_js(text), encoding="utf-8")
@@ -176,7 +200,8 @@ def main() -> None:
 
     manifest = {
         "mode": "live-baseline-mirror",
-        "liveCommit": "88fab267531e2b5061bad679b2ab1b401511a8bc",
+        "liveCommit": live_commit,
+        "cacheToken": cache_token,
         "testBase": TEST_BASE,
         "productionMarkupParityChecks": len(compare_paths),
         "productionMarkupParity": True,
