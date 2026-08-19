@@ -1,6 +1,6 @@
 [
   {
-    "id": "test:skema-boy-2026-10-27-chicago-il",
+    "id": "supplemental:skema-boy-2026-10-27-chicago-il",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-10-27",
     "startTime": "20:00",
@@ -19,7 +19,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108659684-skema-boy-at-subterranean",
     "officialUrl": "https://www.bandsintown.com/e/108659684-skema-boy-at-subterranean",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -41,12 +41,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-10-28-columbus-oh",
+    "id": "supplemental:skema-boy-2026-10-28-columbus-oh",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-10-28",
     "startTime": "20:00",
@@ -65,7 +66,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.ticketweb.com/event/zauntee-god-remembers-tour-skullys-music-diner-tickets/14260644",
     "officialUrl": "https://www.ticketweb.com/event/zauntee-god-remembers-tour-skullys-music-diner-tickets/14260644",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -87,12 +88,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-10-29-ferndale-mi",
+    "id": "supplemental:skema-boy-2026-10-29-ferndale-mi",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-10-29",
     "startTime": "20:00",
@@ -111,7 +113,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.ticketweb.com/event/kickstand-productions-presents-zauntee-god-the-loving-touch-tickets/14259604?pl=lovingtouch",
     "officialUrl": "https://www.ticketweb.com/event/kickstand-productions-presents-zauntee-god-the-loving-touch-tickets/14259604?pl=lovingtouch",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -133,12 +135,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-01-new-york-ny",
+    "id": "supplemental:skema-boy-2026-11-01-new-york-ny",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-01",
     "startTime": "18:30",
@@ -157,7 +160,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108659929-skema-boy-at-mercury-lounge",
     "officialUrl": "https://www.bandsintown.com/e/108659929-skema-boy-at-mercury-lounge",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -179,12 +182,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-04-charlotte-nc",
+    "id": "supplemental:skema-boy-2026-11-04-charlotte-nc",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-04",
     "startTime": "20:00",
@@ -203,7 +207,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108659964-skema-boy-at-neighborhood-theatre",
     "officialUrl": "https://www.bandsintown.com/e/108659964-skema-boy-at-neighborhood-theatre",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -225,12 +229,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-06-nashville-tn",
+    "id": "supplemental:skema-boy-2026-11-06-nashville-tn",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-06",
     "startTime": "20:00",
@@ -249,7 +254,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108660004-skema-boy-at-cannery-hall",
     "officialUrl": "https://www.bandsintown.com/e/108660004-skema-boy-at-cannery-hall",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -271,12 +276,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-08-atlanta-ga",
+    "id": "supplemental:skema-boy-2026-11-08-atlanta-ga",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-08",
     "startTime": "20:00",
@@ -295,7 +301,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108660040",
     "officialUrl": "https://www.bandsintown.com/e/108660040",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -317,12 +323,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-10-jacksonville-fl",
+    "id": "supplemental:skema-boy-2026-11-10-jacksonville-fl",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-10",
     "startTime": "20:00",
@@ -341,7 +348,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108653118",
     "officialUrl": "https://www.bandsintown.com/e/108653118",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -363,12 +370,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-11-tampa-fl",
+    "id": "supplemental:skema-boy-2026-11-11-tampa-fl",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-11",
     "startTime": "20:00",
@@ -387,7 +395,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108653123",
     "officialUrl": "https://www.bandsintown.com/e/108653123",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -409,12 +417,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-16-dallas-tx",
+    "id": "supplemental:skema-boy-2026-11-16-dallas-tx",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-16",
     "startTime": "20:00",
@@ -433,7 +442,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108660132-zauntee-at-sons-of-hermann-hall",
     "officialUrl": "https://www.bandsintown.com/e/108660132-zauntee-at-sons-of-hermann-hall",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -455,12 +464,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-18-phoenix-az",
+    "id": "supplemental:skema-boy-2026-11-18-phoenix-az",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-18",
     "startTime": "20:00",
@@ -479,7 +489,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.ticketweb.com/event/zauntee-god-remembers-tour-valley-bar-tickets/14252734",
     "officialUrl": "https://www.ticketweb.com/event/zauntee-god-remembers-tour-valley-bar-tickets/14252734",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -501,12 +511,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-19-los-angeles-ca",
+    "id": "supplemental:skema-boy-2026-11-19-los-angeles-ca",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-19",
     "startTime": "22:00",
@@ -525,7 +536,7 @@
     "status": "onsale",
     "ticketUrl": "https://www.bandsintown.com/e/108660162-zauntee-at-moroccan-lounge",
     "officialUrl": "https://www.bandsintown.com/e/108660162-zauntee-at-moroccan-lounge",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -547,12 +558,13 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
   },
   {
-    "id": "test:skema-boy-2026-11-21-denver-co",
+    "id": "supplemental:skema-boy-2026-11-21-denver-co",
     "title": "Zauntee: God Remembers Tour - with Skema Boy",
     "startDate": "2026-11-21",
     "startTime": "20:00",
@@ -571,7 +583,7 @@
     "status": "onsale",
     "ticketUrl": "https://lost-lake.com/event/zauntee-w-skema-boy/lost-lake/denver-colorado/",
     "officialUrl": "https://lost-lake.com/event/zauntee-w-skema-boy/lost-lake/denver-colorado/",
-    "image": "assets/artists/skema-boy.webp",
+    "image": "assets/artists/zauntee.webp",
     "price": "",
     "sourceName": "Skema Boy official tour page",
     "sources": [
@@ -593,8 +605,63 @@
     "lastVerified": "2026-08-11T22:00:00Z",
     "confidence": "high",
     "imageType": "artist",
-    "imagePosition": "50% 35%",
-    "verifiedVersion": "test-v4",
-    "firstSeen": "2026-08-11T22:00:00Z"
+    "imagePosition": "50% 32%",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-11T22:00:00Z",
+    "imageOverride": true
+  },
+  {
+    "id": "supplemental:image-override-hope-fest-daytona-2026",
+    "title": "Hope Fest 2026",
+    "startDate": "2026-08-22",
+    "startTime": "15:00",
+    "timezone": "",
+    "venue": "Riverfront Esplanade - Manatee Island",
+    "address": "355 North Beach Street",
+    "city": "Daytona Beach",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "ASAP Preach",
+      "Nicky Gracious",
+      "Brother Bo",
+      "Tommy Chapa",
+      "B. Cody Shields",
+      "Santana Rose",
+      "DJ Winn",
+      "BIG HOLY"
+    ],
+    "headliner": "ASAP Preach",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/hope-fest-tickets-1984166920672",
+    "officialUrl": "https://www.riverfrontesplanade.com/upcoming-events/hope-fest",
+    "image": "assets/events/hope-fest-2026.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "Free",
+    "sourceName": "Hope Fest official venue and ticket page",
+    "sources": [
+      {
+        "name": "Hope Fest official venue and ticket page",
+        "url": "https://www.riverfrontesplanade.com/upcoming-events/hope-fest",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 112
+      },
+      {
+        "name": "Hope Fest Eventbrite listing",
+        "url": "https://www.eventbrite.com/e/hope-fest-tickets-1984166920672",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 100
+      }
+    ],
+    "lastVerified": "2026-08-12T00:00:00Z",
+    "confidence": "high",
+    "endDate": "2026-08-22",
+    "verifiedVersion": 10,
+    "firstSeen": "2026-08-09T00:00:00Z"
   }
 ]

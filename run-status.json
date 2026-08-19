@@ -1,8 +1,737 @@
 {
-  "finishedAt": "2026-08-11T18:21:47Z",
-  "checkedAt": "2026-08-11T18:21:47Z",
-  "eventsPublished": 42,
-  "warnings": [],
+  "status": "warning",
+  "collectorVersion": 8,
+  "lastAttempt": "2026-08-19T12:01:10Z",
+  "lastSuccessfulUpdate": "2026-08-19T12:01:10Z",
+  "eventsPublished": 96,
+  "candidatesCollected": 198,
+  "artistsConfigured": 299,
+  "artistsByPriority": {
+    "priority1": 100,
+    "priority2": 100,
+    "priority3": 99
+  },
+  "ticketmasterArtistsEnabled": 204,
+  "socialSearchArtistsEnabled": 99,
+  "freeTextAliasesProtected": 97,
+  "artistsMatchedOnTicketmaster": 70,
+  "officialEventsFound": 79,
+  "ticketmasterEventsFound": 73,
+  "instagramArtistsConfigured": 99,
+  "instagramQueriesRun": 101,
+  "instagramQueriesAttempted": 99,
+  "instagramResultsFound": 8,
+  "instagramEventsFound": 0,
+  "instagramCandidates": [
+    {
+      "url": "https://www.instagram.com/reel/DbrHCgUSqBk/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "Denver",
+      "state": "CO",
+      "score": 4,
+      "reason": "official artist ownership was not clear; a future date was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/p/DboKM3GJM4A/",
+      "title": "Official EGR 2026 schedule graphic supplied to The Kingdom Circuit and manually transcribed.",
+      "artists": [
+        "EGR"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 2,
+      "reason": "the known post was not publicly indexed with enough event details"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DadaZKqPnGY/",
+      "title": "Mike Malagies 2026 show announcement supplied by The Kingdom Circuit",
+      "artists": [
+        "Mike Malagies"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 2,
+      "reason": "the known post was not publicly indexed with enough event details"
+    },
+    {
+      "url": "https://www.instagram.com/reel/Db8qD1CSLa5/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 2,
+      "reason": "official artist ownership was not clear; a future date was not explicit; a U.S. city/state was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/reel/Dbv5yKryiFX/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 0,
+      "reason": "official artist ownership was not clear; live-music language was missing; a future date was not explicit; a U.S. city/state was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DbuM_gtuq00/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 0,
+      "reason": "official artist ownership was not clear; live-music language was missing; a future date was not explicit; a U.S. city/state was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DaoRxlEuJkL/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 0,
+      "reason": "official artist ownership was not clear; live-music language was missing; a future date was not explicit; a U.S. city/state was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/reel/Dbltl7wSqlm/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 0,
+      "reason": "official artist ownership was not clear; live-music language was missing; a future date was not explicit; a U.S. city/state was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/p/DOPpCVyjuop/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 0,
+      "reason": "official artist ownership was not clear; live-music language was missing; a future date was not explicit; a U.S. city/state was not explicit"
+    },
+    {
+      "url": "https://www.instagram.com/p/DPFlGGCDnzY/",
+      "title": "Instagram",
+      "artists": [
+        "Zauntee"
+      ],
+      "date": "",
+      "city": "",
+      "state": "",
+      "score": 0,
+      "reason": "official artist ownership was not clear; live-music language was missing; a future date was not explicit; a U.S. city/state was not explicit"
+    }
+  ],
+  "instagramMode": "free priority-tier public-index scan; Stories, private posts, and unindexed posts are not visible",
+  "sourcesChecked": 232,
+  "unmatchedArtists": [
+    "Pregador Luo",
+    "Sondae",
+    "Scootie Wop",
+    "Kieran the Light",
+    "Childlike CiCi",
+    "Eluzai",
+    "Parris Chariz",
+    "EmanuelDaProphet",
+    "Mike Teezy",
+    "Red Tips",
+    "Mogli the Iceburg",
+    "Tommy Royale",
+    "Ty Brasel",
+    "J. Monty",
+    "Jered Sanders",
+    "Bryann T",
+    "Nicky Gracious",
+    "ASAP Preach",
+    "Mike Malagies",
+    "Eshon Burgundy",
+    "Sho Baraka",
+    "DaeShawn Forrest",
+    "Alexxander",
+    "2819 Worship",
+    "Jude Barclay",
+    "Kaleb Mitchell",
+    "Xay Hill",
+    "Nathan Davis Jr.",
+    "Angie Rose",
+    "Aasha Marie",
+    "404 Chew",
+    "Alphein",
+    "G3rm 43",
+    "GiNŌSKŌ",
+    "IDEGO",
+    "Isreal Perez",
+    "JWoodz",
+    "Kaden Jordan",
+    "Megan Tossi",
+    "Myles Maestro",
+    "Nat Lauren",
+    "Saint Jones",
+    "Stixx aka Conejo",
+    "Tay Stunna",
+    "YakiTheKid",
+    "yumiya!",
+    "Vic Lucas",
+    "Kevi Morse",
+    "Chris Caro",
+    "EJ Swavv",
+    "Tds Cam",
+    "WHEREISDAVINCI",
+    "Tukool Tiff",
+    "Tylynn",
+    "De'Aris",
+    "Will Kellum",
+    "Jonah Daniel",
+    "outr.cty",
+    "B. Cooper",
+    "YP aka Young Paul",
+    "Kvng Flvcko",
+    "Y Shadey",
+    "MotionPlus",
+    "Dante' Pride",
+    "Adriel Cruz",
+    "Drea LP",
+    "Solachi Voz",
+    "Jeannie Ortega",
+    "A Mose",
+    "Arielle Nichole",
+    "Jekasole",
+    "Mahogany Jones",
+    "Linga TheBoss",
+    "Shy Speaks",
+    "Serious Voice",
+    "Tarcea Renee",
+    "Ada Betsabé",
+    "BreeKay & Kasairi",
+    "Bri Smilez",
+    "Butta P",
+    "Carita Cole",
+    "Dice Gamble",
+    "Licy Be",
+    "Pristavia",
+    "Erica Mason",
+    "Kay Sade",
+    "Jackie Legere",
+    "V. Rose",
+    "Mike REAL",
+    "Dre Murray",
+    "Corey Paul",
+    "Alex Faith",
+    "Tony Tillman",
+    "Chad Jones",
+    "Json",
+    "Stephen the Levite",
+    "Timothy Brindle",
+    "Hazakim",
+    "BrvndonP",
+    "Coby James",
+    "Tommy Chapa",
+    "Monster Tarver",
+    "Taelor Gray",
+    "IMRSQD",
+    "J. Han",
+    "Sam Ock",
+    "Surf Gvng",
+    "Ki'Shon Furlow",
+    "Dru Bex",
+    "Brinson",
+    "Pettidee",
+    "Fresh IE",
+    "Applejaxx",
+    "Antwoine Hill",
+    "Brandon Trejo",
+    "Monica Hill Trejo",
+    "Moe Grant",
+    "Isaiah Robin",
+    "Faith Child",
+    "Feed'Em",
+    "Reblah",
+    "Triple O",
+    "J Vessel",
+    "Manny Montes",
+    "Musiko",
+    "Indiomar",
+    "Gabriel EMC",
+    "Jay Kalyl",
+    "Niko Eme",
+    "Lizzy Parra",
+    "Rubinsky RBK",
+    "Madiel Lara",
+    "Ariel Kelly",
+    "Oba Reengy"
+  ],
+  "sourceResults": [
+    {
+      "name": "Reach Records consolidated calendar",
+      "status": "ok",
+      "eventsFound": 35
+    },
+    {
+      "name": "Reach Records - 1K Phew",
+      "status": "ok",
+      "eventsFound": 3
+    },
+    {
+      "name": "Reach Records - 2819 Worship",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Reach Records - Alexxander",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Reach Records - Anike",
+      "status": "ok",
+      "eventsFound": 4
+    },
+    {
+      "name": "Reach Records - Hulvey",
+      "status": "ok",
+      "eventsFound": 4
+    },
+    {
+      "name": "Reach Records - Jackie Hill Perry",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Reach Records - Lecrae",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Reach Records - Limoblaze",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Reach Records - Tedashii",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Reach Records - Trip Lee",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Reach Records - WHATUPRG",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Holy Smoke official festival",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Space City Fest official organizer",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Space City Fest venue listing",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Rural Music Festival official event",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "OneFest official schedule",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Uprise Festival official 2026 page",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Off The Charts official schedule",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "TPR - Caleb Gordon Eden Experience",
+      "status": "ok",
+      "eventsFound": 5
+    },
+    {
+      "name": "TPR - Forrest Frank Jesus Generation Tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "TPR - Lecrae Reconstruction World Tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "TPR - KB Signal Tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "KB official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Andy Mineo official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "nobigdyl. official shows",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Forrest Frank official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Hulvey official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Miles Minnick official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Zauntee official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Derek Minor official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "NF official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Mike Malagies official events",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Canon official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Social Club Misfits official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Trendsetter Sense official events",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Awakening Events calendar",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Reflection Music Group official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "NF Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Mike Malagies Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Parris Chariz Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Torey D'Shaun Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Derek Minor Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Byron Juane Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Social Club Misfits Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Holy Culture CHH calendar",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "ChristianHits consolidated show feed",
+      "status": "ok",
+      "eventsFound": 4
+    },
+    {
+      "name": "ChristianHits festival directory",
+      "status": "ok",
+      "eventsFound": 4
+    },
+    {
+      "name": "Konnect Concert Series - Space City Church",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Steven Malcolm official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Steven Malcolm Apple Music concerts",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Scootie Wop official artist page",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Scootie Wop Apple Music concert",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Mike Teezy official tour",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Sevin / HOG MOB official tour",
+      "status": "ok",
+      "eventsFound": 9
+    },
+    {
+      "name": "Hope Fest official venue",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Nicky Gracious official show calendar",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "Faith Jam 2026 official ticket page",
+      "status": "ok",
+      "eventsFound": 1
+    },
+    {
+      "name": "ASAP Preach official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "B. Cody Shields official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "KJ-52 official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "K-Drama official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "GAWVI official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Taelor Gray official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "IMRSQD official Alienz Alive profile",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "TJ Carroll official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "CJ Emulous official site",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "EGR official YouTube Community",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Manafest official tour",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Manafest Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "GRITS Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Nic D Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Pastor Mike Jr. Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Yung Kriss Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Paul Russell Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Funky Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Redimi2 Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "FLAME Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Alex Jean Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "KB Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "Anike Bandsintown public calendar",
+      "status": "warning",
+      "eventsFound": 0
+    },
+    {
+      "name": "LifeLight Sioux Falls official lineup",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "FLAME Plano official registration",
+      "status": "ok",
+      "eventsFound": 0
+    },
+    {
+      "name": "Instagram public announcement scan",
+      "status": "ok",
+      "eventsFound": 0,
+      "artistsChecked": 99,
+      "queriesRun": 101
+    }
+  ],
+  "warningCount": 22,
+  "errorCount": 0,
+  "warnings": [
+    "Mike Malagies official events: Unable to retrieve https://www.mikemalagiesofficial.com/event-list: HTTP Error 429: Too Many Requests",
+    "Trendsetter Sense official events: Unable to retrieve https://www.trendsettersense.com/event-list: HTTP Error 429: Too Many Requests",
+    "NF Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/11969355-nf: HTTP Error 403: Forbidden",
+    "Mike Malagies Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/15593996-mike-malagies: HTTP Error 403: Forbidden",
+    "Parris Chariz Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/14726057-parris-chariz: HTTP Error 403: Forbidden",
+    "Torey D'Shaun Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/14363770-torey-d%27shaun: HTTP Error 403: Forbidden",
+    "Derek Minor Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/12211056-derek-minor: HTTP Error 403: Forbidden",
+    "Byron Juane Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/14690526-byron-juane: HTTP Error 403: Forbidden",
+    "Social Club Misfits Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/13345973-social-club-misfits: HTTP Error 403: Forbidden",
+    "Mike Teezy official tour: Unable to retrieve https://www.miketeezymusic.com/tour: HTTP Error 429: Too Many Requests",
+    "Manafest Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/4465-manafest: HTTP Error 403: Forbidden",
+    "GRITS Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/805-grits: HTTP Error 403: Forbidden",
+    "Nic D Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/11283620-nic-d: HTTP Error 403: Forbidden",
+    "Pastor Mike Jr. Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/15540358-pastor-mike-jr.: HTTP Error 403: Forbidden",
+    "Yung Kriss Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/14481378-yung-kriss: HTTP Error 403: Forbidden",
+    "Paul Russell Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/463417-paul-russell: HTTP Error 403: Forbidden",
+    "Funky Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/4329-funky: HTTP Error 403: Forbidden",
+    "Redimi2 Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/371097-redimi2: HTTP Error 403: Forbidden",
+    "FLAME Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/16627-flame: HTTP Error 403: Forbidden",
+    "Alex Jean Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/15570394-alex-jean: HTTP Error 403: Forbidden",
+    "KB Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/165768-kb: HTTP Error 403: Forbidden",
+    "Anike Bandsintown public calendar: Unable to retrieve https://www.bandsintown.com/a/4673148-anike: HTTP Error 403: Forbidden"
+  ],
   "errors": [],
-  "testSnapshot": true
+  "message": "Verified U.S. music listings updated across the 300-artist monitoring roster with identity-safe matching, source health, duplicate merging, and protected manual listings."
 }
