@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-08-19T20:42:18.916397+00:00",
+  "mode": "seo-test-overlay-v1",
+  "artistsEnhanced": 299,
+  "eventsEnhanced": 110,
+  "artistStatePages": 127,
+  "verifiedRegistryEntries": 40,
+  "features": [
+    "artist-directory",
+    "artist-profiles",
+    "verified-social-icons",
+    "artist-show-filters",
+    "artist-state-pages",
+    "location-pages",
+    "event-internal-links",
+    "organization-schema",
+    "sitemap-expansion"
+  ]
+}

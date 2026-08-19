@@ -1722,7 +1722,8 @@ async function boot() {
   }
   renderEventList();
   ensureArtistEnhancementStyles();
-  renderArtistDirectory();
+  /* KC SEO TEST DIRECTORY GUARD */
+  if (!document.querySelector('[data-seo-enhanced-directory]')) renderArtistDirectory();
   renderArtistProfile();
   renderEventDetail();
   setupSubmissionForm();
