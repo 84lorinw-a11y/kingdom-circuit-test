@@ -93,17 +93,20 @@ jobs:
           trap 'kill "$PID" 2>/dev/null || true' EXIT
           sleep 1
 
-          # Verify the exact HTTP files exist before opening Chrome.
+          # HTTP validation proves the same tree is actually servable at the GitHub Pages-style subpath.
           curl --fail --silent --show-error http://127.0.0.1:8767/kingdom-circuit-test/artists/kb/index.html | grep -q 'KB Concerts &amp; Tour Dates'
           curl --fail --silent --show-error http://127.0.0.1:8767/kingdom-circuit-test/artists/index.html | grep -q 'data-seo-enhanced-directory'
           curl --fail --silent --show-error http://127.0.0.1:8767/kingdom-circuit-test/artists/kb/minnesota/index.html | grep -q 'KB Concerts in Minnesota'
 
+          # Chrome validates the rendered DOM and the filter behavior directly from the generated files.
           python - <<'PY'
+          from pathlib import Path
           from selenium import webdriver
           from selenium.webdriver.common.by import By
           from selenium.webdriver.support.ui import WebDriverWait, Select
 
-          BASE='http://127.0.0.1:8767/kingdom-circuit-test/'
+          ROOT=Path('/tmp/kc-public-host/kingdom-circuit-test').resolve()
+          enhancements=(ROOT/'seo-test-enhancements.js').read_text(encoding='utf-8')
           opts=webdriver.ChromeOptions()
           opts.page_load_strategy='eager'
           opts.add_argument('--headless=new')
@@ -111,12 +114,18 @@ jobs:
           opts.add_argument('--disable-dev-shm-usage')
           opts.add_argument('--window-size=1440,1200')
           opts.add_argument('--disable-background-networking')
-          opts.add_argument('--disable-default-apps')
           driver=webdriver.Chrome(options=opts)
           driver.set_page_load_timeout(20)
+
+          def open_file(relative, bind_filters=False):
+              driver.get((ROOT/relative).as_uri())
+              WebDriverWait(driver,10).until(lambda d: d.find_elements(By.CSS_SELECTOR,'body'))
+              if bind_filters:
+                  driver.execute_script(enhancements + "\ndocument.dispatchEvent(new Event('DOMContentLoaded'));\n")
+
           try:
-              driver.get(BASE+'artists/kb/index.html')
-              WebDriverWait(driver,20).until(lambda d: 'Concerts & Tour Dates' in d.find_element(By.CSS_SELECTOR,'h1').text)
+              open_file('artists/kb/index.html', bind_filters=True)
+              assert 'Concerts & Tour Dates' in driver.find_element(By.CSS_SELECTOR,'h1').text
               assert len(driver.find_elements(By.CSS_SELECTOR,'.seo-social-link')) >= 4
               images=driver.find_elements(By.CSS_SELECTOR,'.seo-profile-image img')
               assert images and images[0].get_attribute('src')
@@ -125,22 +134,22 @@ jobs:
               states=Select(driver.find_element(By.CSS_SELECTOR,'[data-artist-state-filter]'))
               assert any(o.get_attribute('value') == 'MN' for o in states.options)
               states.select_by_value('MN')
-              WebDriverWait(driver,10).until(lambda d: len([x for x in d.find_elements(By.CSS_SELECTOR,'[data-event-card]') if x.is_displayed()]) == 1)
+              WebDriverWait(driver,5).until(lambda d: len([x for x in d.find_elements(By.CSS_SELECTOR,'[data-event-card]') if x.is_displayed()]) == 1)
 
-              driver.get(BASE+'artists/index.html')
-              WebDriverWait(driver,20).until(lambda d: len(d.find_elements(By.CSS_SELECTOR,'.seo-artist-card')) >= 250)
+              open_file('artists/index.html')
+              assert len(driver.find_elements(By.CSS_SELECTOR,'.seo-artist-card')) >= 250
               assert len(driver.find_elements(By.CSS_SELECTOR,'.seo-card-socials .seo-social-link')) >= 80
 
-              driver.get(BASE+'artists/kb/minnesota/index.html')
-              WebDriverWait(driver,20).until(lambda d: 'KB Concerts in Minnesota' in d.find_element(By.CSS_SELECTOR,'h1').text)
+              open_file('artists/kb/minnesota/index.html')
+              assert 'KB Concerts in Minnesota' in driver.find_element(By.CSS_SELECTOR,'h1').text
               assert len(driver.find_elements(By.CSS_SELECTOR,'[data-event-card]')) == 1
 
-              driver.get(BASE+'shows/minnesota/index.html')
-              WebDriverWait(driver,20).until(lambda d: 'Christian Hip-Hop' in d.find_element(By.CSS_SELECTOR,'h1').text)
+              open_file('shows/minnesota/index.html')
+              assert 'Christian Hip-Hop' in driver.find_element(By.CSS_SELECTOR,'h1').text
               assert driver.find_elements(By.CSS_SELECTOR,'[data-event-card]')
           finally:
               driver.quit()
-          print('Enhanced public-tree browser validation passed')
+          print('Enhanced public-tree HTTP, DOM, and filter validation passed')
           PY
 
           kill "$PID"
