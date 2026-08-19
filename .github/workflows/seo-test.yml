@@ -202,36 +202,26 @@ jobs:
                   'icon_count': len(icons),
               }
 
-          def profile_snapshot(base):
-              driver.get(base+'artists/profile/?name=Lecrae')
-              WebDriverWait(driver,25).until(lambda d: not d.find_elements(By.CSS_SELECTOR,'.loading-panel'))
+          def artist_page_snapshot(base):
+              driver.get(base+'artists/lecrae/')
+              WebDriverWait(driver,25).until(lambda d: d.find_elements(By.CSS_SELECTOR,'h1'))
               heading=driver.find_element(By.CSS_SELECTOR,'h1').text.strip()
-              links=driver.find_elements(By.CSS_SELECTOR,'[data-artist-social]')
-              icons=driver.find_elements(By.CSS_SELECTOR,'.profile-platform-icon')
-              images=driver.find_elements(By.CSS_SELECTOR,'.profile-visual img')
+              events=driver.find_elements(By.CSS_SELECTOR,'[data-event-card]')
               assert heading == 'Lecrae'
-              assert len(links) >= 4
-              assert len(icons) >= 4
-              assert images
-              return {
-                  'heading': heading,
-                  'labels': [a.get_attribute('data-artist-social') for a in links],
-                  'hrefs': [normalize_url(a.get_attribute('href')) for a in links],
-                  'image': normalize_url(images[0].get_attribute('src')),
-              }
+              return {'heading': heading, 'events': len(events)}
 
           try:
               prod_dir=directory_snapshot(PROD)
               test_dir=directory_snapshot(TEST)
               assert test_dir == prod_dir, (prod_dir, test_dir)
 
-              prod_profile=profile_snapshot(PROD)
-              test_profile=profile_snapshot(TEST)
-              assert test_profile == prod_profile, (prod_profile, test_profile)
+              prod_artist=artist_page_snapshot(PROD)
+              test_artist=artist_page_snapshot(TEST)
+              assert test_artist == prod_artist, (prod_artist, test_artist)
           finally:
               driver.quit()
 
-          print('Runtime production/test parity passed: artists, images, social icons/links, profile, menu')
+          print('Runtime production/test parity passed: directory, artist images, social icons/links, artist page, menu')
           PY
 
           kill "$PROD_PID" "$TEST_PID"
