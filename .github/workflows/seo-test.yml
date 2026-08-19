@@ -42,6 +42,13 @@ jobs:
           PY
           python /tmp/build_kc_seo.py
 
+      - name: Sync verified artist data from live
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/sync_live_verified_artists.py
+          python scripts/sync_live_verified_artists.py
+
       - name: Build SEO Phase 2 experience
         shell: bash
         run: |
@@ -59,12 +66,19 @@ jobs:
           root = pathlib.Path('_site')
           baseline = json.loads((root / 'seo-build-manifest.json').read_text())
           phase2 = json.loads((root / 'seo-phase2-manifest.json').read_text())
+          sync = json.loads((root / 'live-artist-sync-manifest.json').read_text())
+
           assert baseline['artists'] >= 250, baseline
           assert baseline['events'] >= 20, baseline
+          assert sync['verifiedRegistryProfiles'] >= 40, sync
+          assert sync['verifiedProfilesWithPrimaryImage'] >= 40, sync
+          assert sync['verifiedProfilesWithSocialOrWebsite'] >= 40, sync
           assert phase2['status'] == 'pass', phase2
           assert phase2['artists'] >= 250, phase2
           assert phase2['currentEvents'] >= 20, phase2
-          assert phase2['artistProductionIndexable'] > 0, phase2
+          assert phase2['artistProductionIndexable'] >= 40, phase2
+          assert phase2['artistPagesWithPrimaryImage'] >= 40, phase2
+          assert phase2['artistPagesWithVerifiedSocials'] >= 40, phase2
           assert phase2['productionSitemapUrls'] > 100, phase2
           assert phase2['problems'] == [], phase2
 
@@ -79,9 +93,20 @@ jobs:
           kb = (root / 'artists/kb/index.html').read_text()
           for token in ['kc-artist-overview','kc-social-links','Next KB Shows','All Upcoming KB Shows','data-kc-filter-scope','data-state-filter','data-type-filter','kc-production-index-policy','ProfilePage']:
               assert token in kb, token
+
           phew = (root / 'artists/1k-phew/index.html').read_text()
           assert 'kc-artist-image' in phew
           assert '/assets/artists/1k-phew.webp' in phew
+
+          lecrae = (root / 'artists/lecrae/index.html').read_text()
+          for token in [
+              'kc-artist-image',
+              'https://lecrae.com',
+              'https://www.instagram.com/lecrae/',
+              'https://open.spotify.com/artist/1CFCsEqKrCyvAFKOATQHiW',
+              'https://www.youtube.com/@lecraeofficial',
+          ]:
+              assert token in lecrae, token
 
           assert not list((root / 'shows').glob('sponsor-*/index.html'))
           assert not (root / 'states').exists()
@@ -119,6 +144,7 @@ jobs:
           assert (root / 'seo-phase2.css').stat().st_size > 1000
           assert (root / 'seo-phase2.js').stat().st_size > 1000
           print('SEO Phase 2 regression checks passed:', phase2)
+          print('Live artist sync passed:', sync)
           PY
 
       - name: Install browser test dependency
@@ -163,6 +189,16 @@ jobs:
               assert d.find_element(By.CSS_SELECTOR,'[data-filtered-empty]').is_displayed()
               d.find_element(By.CSS_SELECTOR,'[data-reset-filters]').click(); time.sleep(.2)
               assert len([c for c in cards if c.is_displayed()])==len(cards)
+
+              d.get(BASE+'artists/lecrae/')
+              WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'.kc-artist-overview'))
+              assert d.find_element(By.CSS_SELECTOR,'.kc-artist-image')
+              social_links=d.find_elements(By.CSS_SELECTOR,'.kc-social-links a')
+              assert len(social_links)>=4
+              hrefs={link.get_attribute('href') for link in social_links}
+              assert 'https://lecrae.com/' in hrefs or 'https://lecrae.com' in hrefs
+              assert 'https://www.instagram.com/lecrae/' in hrefs
+
               d.get(BASE+'shows/2026/')
               WebDriverWait(d,20).until(lambda x: x.find_elements(By.CSS_SELECTOR,'[data-event-card]'))
               assert d.find_element(By.CSS_SELECTOR,'[data-event-filters]')
