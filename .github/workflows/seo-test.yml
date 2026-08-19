@@ -3,6 +3,8 @@ name: Kingdom Circuit Live Baseline Mirror
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "17,47 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -16,7 +18,6 @@ concurrency:
 
 env:
   LIVE_REPO: 84lorinw-a11y/kingdom-circuit
-  LIVE_COMMIT: 88fab267531e2b5061bad679b2ab1b401511a8bc
   TEST_BASE: /kingdom-circuit-test/
 
 jobs:
@@ -26,20 +27,33 @@ jobs:
       - name: Checkout test repository
         uses: actions/checkout@v6
 
-      - name: Checkout exact live-site snapshot
+      - name: Checkout current live-site source
         uses: actions/checkout@v6
         with:
           repository: ${{ env.LIVE_REPO }}
-          ref: ${{ env.LIVE_COMMIT }}
+          ref: main
           path: _live
           fetch-depth: 1
+
+      - name: Capture source revisions
+        id: revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          LIVE_SHA=$(git -C _live rev-parse HEAD)
+          TEST_SHA=$(git rev-parse HEAD)
+          CACHE_TOKEN="${LIVE_SHA:0:12}-${TEST_SHA:0:12}"
+          echo "live_sha=$LIVE_SHA" >> "$GITHUB_OUTPUT"
+          echo "test_sha=$TEST_SHA" >> "$GITHUB_OUTPUT"
+          echo "cache_token=$CACHE_TOKEN" >> "$GITHUB_OUTPUT"
+          echo "Mirroring live $LIVE_SHA from ${LIVE_REPO}"
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Verify live snapshot before mirroring
+      - name: Verify live source before mirroring
         shell: bash
         run: |
           set -euo pipefail
@@ -74,101 +88,190 @@ jobs:
           python scripts/build_seo_site.py
           python scripts/verify_multipage_site.py _site
 
-      - name: Convert exact live artifact for safe test hosting
+      - name: Convert live artifact for safe test hosting
         shell: bash
+        env:
+          LIVE_SHA: ${{ steps.revisions.outputs.live_sha }}
+          CACHE_TOKEN: ${{ steps.revisions.outputs.cache_token }}
         run: |
           set -euo pipefail
           python -m py_compile scripts/mirror_live_baseline.py
-          python scripts/mirror_live_baseline.py _live/_site _prod_reference _site
+          rm -rf _baseline _prod_reference
+          python scripts/mirror_live_baseline.py \
+            _live/_site _prod_reference _baseline "$LIVE_SHA" "$CACHE_TOKEN"
 
-      - name: Verify source/data/style parity
+      - name: Verify source, data, style and cache parity
         shell: bash
+        env:
+          LIVE_SHA: ${{ steps.revisions.outputs.live_sha }}
+          CACHE_TOKEN: ${{ steps.revisions.outputs.cache_token }}
         run: |
           set -euo pipefail
-          cmp _live/_site/styles.css _site/styles.css
-          cmp _live/_site/events.json _site/events.json
-          cmp _live/_site/config/artists.json _site/config/artists.json
-          cmp _live/_site/supplemental-events.json _site/supplemental-events.json
-          cmp _live/_site/assets/logo.png _site/assets/logo.png
+          cmp _live/_site/styles.css _baseline/styles.css
+          cmp _live/_site/events.json _baseline/events.json
+          cmp _live/_site/config/artists.json _baseline/config/artists.json
+          cmp _live/_site/supplemental-events.json _baseline/supplemental-events.json
+          cmp _live/_site/assets/logo.png _baseline/assets/logo.png
 
-          test ! -e _site/CNAME
-          test ! -e _site/seo-phase2.css
-          test ! -e _site/seo-phase2.js
-          grep -q '"mode": "live-baseline-mirror"' _site/test-live-mirror-manifest.json
-          grep -q 'Disallow: /' _site/robots.txt
+          test ! -e _baseline/CNAME
+          grep -q '"mode": "live-baseline-mirror"' _baseline/test-live-mirror-manifest.json
+          grep -q 'Disallow: /' _baseline/robots.txt
+          grep -q "kc_mirror=${CACHE_TOKEN}" _baseline/artists/index.html
 
           python - <<'PY'
-          import json
+          import json, os
           from pathlib import Path
-          m=json.loads(Path('_site/test-live-mirror-manifest.json').read_text())
+          m=json.loads(Path('_baseline/test-live-mirror-manifest.json').read_text())
           assert m['productionMarkupParity'] is True, m
           assert m['assetsByteIdentical'] is True, m
           assert m['testNoindex'] is True, m
-          assert m['liveCommit'] == '88fab267531e2b5061bad679b2ab1b401511a8bc', m
+          assert m['liveCommit'] == os.environ['LIVE_SHA'], m
+          assert m['cacheToken'] == os.environ['CACHE_TOKEN'], m
           print('Live baseline mirror verified:', m)
           PY
 
       - name: Install browser test dependency
         run: python -m pip install --quiet selenium
 
-      - name: Browser smoke-test mirrored live experience
+      - name: Runtime browser parity against production build
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf /tmp/kc-live-mirror
-          mkdir -p /tmp/kc-live-mirror/kingdom-circuit-test
-          cp -a _site/. /tmp/kc-live-mirror/kingdom-circuit-test/
-          python3 -m http.server 8765 --directory /tmp/kc-live-mirror >/tmp/kc-live-mirror-http.log 2>&1 &
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          rm -rf /tmp/kc-test-host
+          mkdir -p /tmp/kc-test-host/kingdom-circuit-test
+          cp -a _baseline/. /tmp/kc-test-host/kingdom-circuit-test/
+
+          python3 -m http.server 8764 --directory _prod_reference >/tmp/kc-prod-http.log 2>&1 &
+          PROD_PID=$!
+          python3 -m http.server 8765 --directory /tmp/kc-test-host >/tmp/kc-test-http.log 2>&1 &
+          TEST_PID=$!
+          trap 'kill "$PROD_PID" "$TEST_PID" 2>/dev/null || true' EXIT
           sleep 1
 
           python - <<'PY'
           from selenium import webdriver
           from selenium.webdriver.common.by import By
           from selenium.webdriver.support.ui import WebDriverWait
+          import re
           import time
 
-          BASE='http://127.0.0.1:8765/kingdom-circuit-test/'
-          o=webdriver.ChromeOptions()
-          o.add_argument('--headless=new')
-          o.add_argument('--no-sandbox')
-          o.add_argument('--disable-dev-shm-usage')
-          o.add_argument('--window-size=1440,1000')
-          d=webdriver.Chrome(options=o)
-          try:
-              d.get(BASE)
-              WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'[data-event-card]')) >= 20)
-              logo=d.find_element(By.CSS_SELECTOR,'.brand img')
-              assert d.execute_script('return arguments[0].naturalWidth', logo) > 0
-              d.find_element(By.CSS_SELECTOR,'.menu-toggle').click(); time.sleep(.2)
-              assert 'open' in d.find_element(By.CSS_SELECTOR,'.menu-drawer').get_attribute('class')
+          PROD='http://127.0.0.1:8764/'
+          TEST='http://127.0.0.1:8765/kingdom-circuit-test/'
 
-              d.get(BASE+'artists/')
-              WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'[data-artist-card]')) >= 250)
-              cards=d.find_elements(By.CSS_SELECTOR,'[data-artist-card]')
+          options=webdriver.ChromeOptions()
+          options.add_argument('--headless=new')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--window-size=1440,1000')
+          driver=webdriver.Chrome(options=options)
+
+          def normalize_url(value):
+              value=str(value or '')
+              value=value.replace(TEST, PROD)
+              value=value.replace('/kingdom-circuit-test/', '/')
+              value=re.sub(r'([?&])kc_mirror=[A-Za-z0-9._-]+', '', value)
+              return value
+
+          def directory_snapshot(base):
+              driver.get(base+'artists/')
+              WebDriverWait(driver,25).until(
+                  lambda d: len(d.find_elements(By.CSS_SELECTOR,'[data-artist-card]')) >= 250
+                  and len(d.find_elements(By.CSS_SELECTOR,'.artist-card-links')) >= 250
+              )
+              cards=driver.find_elements(By.CSS_SELECTOR,'[data-artist-card]')
+              names=[e.text.strip() for e in driver.find_elements(By.CSS_SELECTOR,'[data-artist-card] h2')]
+              images=driver.find_elements(By.CSS_SELECTOR,'[data-artist-card] .artist-visual img')
+              social=driver.find_elements(By.CSS_SELECTOR,'[data-artist-social]')
+              icons=driver.find_elements(By.CSS_SELECTOR,'.artist-platform-link svg.platform-icon')
               assert len(cards) >= 250
-              image_cards=[c for c in cards if c.find_elements(By.CSS_SELECTOR,'img')]
-              assert len(image_cards) >= 40, len(image_cards)
+              assert len(images) >= 40, len(images)
+              assert len(social) >= 80, len(social)
+              assert len(icons) >= 80, len(icons)
+              assert all(i.size['width'] > 0 and i.size['height'] > 0 for i in icons[:20])
 
-              d.get(BASE+'artists/profile/?name=Lecrae')
-              WebDriverWait(d,20).until(lambda x: not x.find_elements(By.CSS_SELECTOR,'.loading-panel'))
-              assert 'Lecrae' in d.page_source
-              assert 'instagram.com/lecrae' in d.page_source
-              assert 'open.spotify.com/artist/1CFCsEqKrCyvAFKOATQHiW' in d.page_source
-              social_links=d.find_elements(By.CSS_SELECTOR,'[data-artist-social]')
-              assert len(social_links) >= 4, len(social_links)
-              assert len(d.find_elements(By.CSS_SELECTOR,'.profile-platform-icon')) >= 4
-              profile_images=d.find_elements(By.CSS_SELECTOR,'.profile-visual img')
-              assert profile_images
-              assert 'open.voidware.de/artist/1CFCsEqKrCyvAFKOATQHiW' in profile_images[0].get_attribute('src')
+              menu=driver.find_element(By.CSS_SELECTOR,'.menu-toggle')
+              menu.click(); time.sleep(.15)
+              assert 'open' in driver.find_element(By.CSS_SELECTOR,'.menu-drawer').get_attribute('class')
+
+              return {
+                  'count': len(cards),
+                  'names': names,
+                  'images': [normalize_url(i.get_attribute('src')) for i in images],
+                  'social_labels': [s.get_attribute('data-artist-social') for s in social],
+                  'social_hrefs': [normalize_url(s.get_attribute('href')) for s in social],
+                  'icon_count': len(icons),
+              }
+
+          def profile_snapshot(base):
+              driver.get(base+'artists/profile/?name=Lecrae')
+              WebDriverWait(driver,25).until(lambda d: not d.find_elements(By.CSS_SELECTOR,'.loading-panel'))
+              heading=driver.find_element(By.CSS_SELECTOR,'h1').text.strip()
+              links=driver.find_elements(By.CSS_SELECTOR,'[data-artist-social]')
+              icons=driver.find_elements(By.CSS_SELECTOR,'.profile-platform-icon')
+              images=driver.find_elements(By.CSS_SELECTOR,'.profile-visual img')
+              assert heading == 'Lecrae'
+              assert len(links) >= 4
+              assert len(icons) >= 4
+              assert images
+              return {
+                  'heading': heading,
+                  'labels': [a.get_attribute('data-artist-social') for a in links],
+                  'hrefs': [normalize_url(a.get_attribute('href')) for a in links],
+                  'image': normalize_url(images[0].get_attribute('src')),
+              }
+
+          try:
+              prod_dir=directory_snapshot(PROD)
+              test_dir=directory_snapshot(TEST)
+              assert test_dir == prod_dir, (prod_dir, test_dir)
+
+              prod_profile=profile_snapshot(PROD)
+              test_profile=profile_snapshot(TEST)
+              assert test_profile == prod_profile, (prod_profile, test_profile)
           finally:
-              d.quit()
-          print('Mirrored live browser experience passed')
+              driver.quit()
+
+          print('Runtime production/test parity passed: artists, images, social icons/links, profile, menu')
           PY
 
-          kill "$SERVER_PID"
+          kill "$PROD_PID" "$TEST_PID"
           trap - EXIT
+
+      - name: Prepare deployable test site and apply optional test overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          cp -a _baseline _site
+
+          if [ -d test-overlay ]; then
+            echo "Applying test-overlay/ on top of current live baseline"
+            cp -a test-overlay/. _site/
+          fi
+
+          if [ -f scripts/apply_test_overlay.py ]; then
+            echo "Applying scripted test overlay"
+            python scripts/apply_test_overlay.py _site
+          fi
+
+          test ! -e _site/CNAME
+          grep -q 'Disallow: /' _site/robots.txt
+          node --check _site/app.js
+
+          python - <<'PY'
+          from pathlib import Path
+          live_ga='G-N2KK9XF4TJ'
+          failures=[]
+          for p in Path('_site').rglob('*.html'):
+              text=p.read_text(encoding='utf-8')
+              if 'name="robots" content="noindex,nofollow"' not in text:
+                  failures.append(f'missing-noindex:{p}')
+              if live_ga in text:
+                  failures.append(f'live-ga:{p}')
+          if failures:
+              raise SystemExit('\n'.join(failures[:50]))
+          print('Deployable test-site safety checks passed')
+          PY
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -185,6 +288,6 @@ jobs:
       name: github-pages
       url: https://84lorinw-a11y.github.io/kingdom-circuit-test/
     steps:
-      - name: Deploy exact live baseline to test
+      - name: Deploy current live baseline to test
         id: deployment
         uses: actions/deploy-pages@v4
