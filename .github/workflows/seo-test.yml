@@ -151,7 +151,7 @@ jobs:
               image_cards=[c for c in cards if c.find_elements(By.CSS_SELECTOR,'img')]
               assert len(image_cards) >= 40, len(image_cards)
 
-              d.get(BASE+'artists/profile/?artist=Lecrae')
+              d.get(BASE+'artists/profile/?name=Lecrae')
               WebDriverWait(d,20).until(lambda x: not x.find_elements(By.CSS_SELECTOR,'.loading-panel'))
               assert 'Lecrae' in d.page_source
               assert 'instagram.com/lecrae' in d.page_source
