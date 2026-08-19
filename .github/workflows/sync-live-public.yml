@@ -1,0 +1,128 @@
+name: Sync Current Live Site Into Public Test Tree
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "11,41 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kingdom-circuit-test-public-sync
+  cancel-in-progress: true
+
+env:
+  LIVE_REPO: 84lorinw-a11y/kingdom-circuit
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout test repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Checkout current live repository
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ env.LIVE_REPO }}
+          ref: main
+          path: _live
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build current live production artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd _live
+          python -m unittest discover -s tests -p 'test_*.py' -v
+
+          rm -rf _site
+          mkdir -p _site/config
+          cp index.html styles.css app.js events.json run-status.json \
+             supplemental-events.json 404.html robots.txt sitemap.xml _site/
+          cp config/artists.json _site/config/artists.json
+          cp -R shows festivals new-shows artists event submit assets _site/
+          if [ -f CNAME ]; then cp CNAME _site/; fi
+
+          python scripts/build_seo_site.py
+          python scripts/verify_multipage_site.py _site
+
+      - name: Convert live artifact to safe GitHub Pages test paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          LIVE_SHA=$(git -C _live rev-parse HEAD)
+          TEST_SHA=$(git rev-parse HEAD)
+          CACHE_TOKEN="${LIVE_SHA:0:12}-${TEST_SHA:0:12}"
+          rm -rf _public_sync _prod_reference
+          python scripts/mirror_live_baseline.py \
+            _live/_site _prod_reference _public_sync "$LIVE_SHA" "$CACHE_TOKEN"
+
+      - name: Replace checked-in public test tree with current live mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf shows festivals new-shows artists event submit assets config
+          mkdir -p config
+
+          cp _public_sync/index.html .
+          cp _public_sync/styles.css .
+          cp _public_sync/app.js .
+          cp _public_sync/events.json .
+          cp _public_sync/run-status.json .
+          cp _public_sync/supplemental-events.json .
+          cp _public_sync/404.html .
+          cp _public_sync/robots.txt .
+          cp _public_sync/sitemap.xml .
+          cp _public_sync/test-live-mirror-manifest.json .
+
+          if [ -f _public_sync/seo-static.js ]; then cp _public_sync/seo-static.js .; fi
+          if [ -f _public_sync/seo-build-manifest.json ]; then cp _public_sync/seo-build-manifest.json .; fi
+
+          cp _public_sync/config/artists.json config/artists.json
+          cp -R _public_sync/shows _public_sync/festivals _public_sync/new-shows \
+                _public_sync/artists _public_sync/event _public_sync/submit _public_sync/assets ./
+
+          # Old preview assets may remain in git history, but no public page may reference them.
+          if grep -R -nE 'app-v[0-9]+\.js|patch-v[0-9]+\.css|test-site-banner' \
+               index.html shows festivals new-shows artists event submit; then
+            echo "Old preview references remain in the public tree."
+            exit 1
+          fi
+
+          grep -q 'name="robots" content="noindex,nofollow"' artists/index.html
+          grep -q '/kingdom-circuit-test/app.js' artists/index.html
+          grep -q '/kingdom-circuit-test/styles.css' artists/index.html
+
+      - name: Commit synchronized public test tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "kingdom-circuit-test-sync"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add index.html styles.css app.js events.json run-status.json \
+                  supplemental-events.json 404.html robots.txt sitemap.xml \
+                  test-live-mirror-manifest.json config shows festivals \
+                  new-shows artists event submit assets
+          if [ -f seo-static.js ]; then git add seo-static.js; fi
+          if [ -f seo-build-manifest.json ]; then git add seo-build-manifest.json; fi
+
+          if git diff --cached --quiet; then
+            echo "Public test tree already matches current live."
+            exit 0
+          fi
+
+          git commit -m "Sync public test tree to current live baseline [skip ci]"
+          git push origin HEAD:main
