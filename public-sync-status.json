@@ -1,7 +1,7 @@
 {
-  "run_id": 32303449636,
+  "run_id": 32303704204,
   "status": "completed",
-  "conclusion": "failure",
-  "html_url": "https://github.com/84lorinw-a11y/kingdom-circuit-test/actions/runs/32303449636",
-  "head_sha": "9fd2c96c8cd952c086a81eb18e4dbeafb98541d5"
+  "conclusion": "cancelled",
+  "html_url": "https://github.com/84lorinw-a11y/kingdom-circuit-test/actions/runs/32303704204",
+  "head_sha": "a79d50a1401464ba597cace893399dda58652da4"
 }
