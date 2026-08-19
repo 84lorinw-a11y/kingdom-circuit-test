@@ -73,9 +73,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile scripts/apply_test_overlay.py scripts/finalize_test_seo.py
+          python -m py_compile scripts/apply_test_overlay.py scripts/finalize_test_seo.py scripts/align_artist_schema.py
           python scripts/apply_test_overlay.py _public_sync
           python scripts/finalize_test_seo.py _public_sync
+          python scripts/align_artist_schema.py _public_sync
           ! grep -R -q 'kingdom-circuit-test/kingdom-circuit-test/' _public_sync/artists _public_sync/shows _public_sync/event _public_sync/index.html _public_sync/sitemap.xml
 
       - name: Install browser test dependency
