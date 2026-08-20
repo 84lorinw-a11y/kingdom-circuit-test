@@ -3,12 +3,15 @@ name: Mirror Live Site to Test
 on:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/mirror-live.yml'
+      - 'scripts/live_mirror_v2.py'
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -78,6 +81,7 @@ jobs:
           LIVE_SHA=$(git -C _live rev-parse HEAD)
           python -m py_compile scripts/live_mirror_v2.py
           python scripts/live_mirror_v2.py _live/_site _site "$LIVE_SHA"
+          touch _site/.nojekyll
 
       - name: Verify baseline-only mirror
         shell: bash
@@ -141,7 +145,6 @@ jobs:
               wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR,'.artist-card')) >= 250)
               cards=driver.find_elements(By.CSS_SELECTOR,'.artist-card')
               assert len(cards) >= 250
-              # The live artist registry enriches verified artists with images and social links.
               assert len(driver.find_elements(By.CSS_SELECTOR,'.artist-card img')) >= 30
               instagram=[a for a in driver.find_elements(By.CSS_SELECTOR,'.artist-card a[href*="instagram.com"]')]
               assert len(instagram) >= 30
@@ -159,6 +162,23 @@ jobs:
 
           kill "$PID"
           trap - EXIT
+
+      - name: Publish mirrored snapshot into test main
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf 404.html index.html styles.css app.js events.json run-status.json \
+            supplemental-events.json robots.txt sitemap.xml shows festivals new-shows \
+            artists event submit assets config test-live-mirror-manifest.json .nojekyll
+          cp -a _site/. .
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- 404.html index.html styles.css app.js events.json run-status.json \
+            supplemental-events.json robots.txt sitemap.xml shows festivals new-shows \
+            artists event submit assets config test-live-mirror-manifest.json .nojekyll
+          git commit -m "Publish mirrored live snapshot [skip ci]" || true
+          git push origin HEAD:main
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
