@@ -150,3 +150,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# Trigger test mirror after artist filter fix.
