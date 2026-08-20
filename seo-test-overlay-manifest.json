@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-19T23:56:39.346783+00:00",
+  "generatedAt": "2026-08-20T03:14:41.146413+00:00",
   "mode": "seo-test-overlay-v1",
-  "artistsEnhanced": 299,
-  "eventsEnhanced": 111,
-  "artistStatePages": 128,
+  "artistsEnhanced": 298,
+  "eventsEnhanced": 103,
+  "artistStatePages": 123,
   "verifiedRegistryEntries": 40,
   "features": [
     "artist-directory",
