@@ -1,0 +1,13 @@
+{
+  "mode": "live-baseline-only",
+  "liveCommit": "a29886fe0a98733adf2430bbdaab25dfa5df1849",
+  "source": "84lorinw-a11y/kingdom-circuit@main",
+  "testBase": "/kingdom-circuit-test/",
+  "liveStylesByteIdentical": true,
+  "liveDataByteIdentical": true,
+  "liveAssetsByteIdentical": true,
+  "testNoindex": true,
+  "liveAnalyticsDisabled": true,
+  "cnameRemoved": true,
+  "seoPhase2OverlayApplied": false
+}
