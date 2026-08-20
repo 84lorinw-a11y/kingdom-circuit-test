@@ -1,7 +1,7 @@
 {
   "mode": "live-baseline-mirror",
-  "liveCommit": "f4dbe12a0dc11df19e0b09094e443432e50da7cc",
-  "cacheToken": "f4dbe12a0dc1-6f8766c1018d",
+  "liveCommit": "789a0a7c3907b0d9d76d230c6edf9eeb3cbbbbf9",
+  "cacheToken": "789a0a7c3907-8c16d653f5a2",
   "testBase": "/kingdom-circuit-test/",
   "productionMarkupParityChecks": 9,
   "productionMarkupParity": true,
