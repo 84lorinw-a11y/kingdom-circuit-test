@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-23T15:00:51.131Z",
+  "generatedAt": "2026-08-23T15:02:34.644Z",
   "results": [
     {
       "artist": "1K Phew",
@@ -8,30 +8,93 @@
         "url": "https://rest.bandsintown.com/artists/id_12546964/events/?app_id=js_kingdomcircuit.com&date=upcoming",
         "status": "accessible",
         "httpStatus": 200,
-        "contentType": "application/json",
-        "bodySample": "\n\n[{\"id\":\"1039604873\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/1039604873?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-08-23T11:00:00\",\"title\":\"\",\"description\":\"\",\"artist\":{\"id\":\"12546964\",\"name\":\"1K Phew\",\"url\":\"https:\\/\\/www.bandsintown.com\\/a\\/12546964?came_from=267&app_id=js_kingdomcircuit.com\",\"mbid\":\"7e026293-d2b5-4dcb-a834-16b58dc66cc0\",\"options\":{\"display_listen_unit\":false},\"tracking\":[],\"image_url\":\"https:\\/\\/photos.bandsintown.com\\/large\\/16249795.jpeg\",\"thumb_url\":\"https:\\/\\/photos.bandsintown.com\\/thumb\\/16249795.jpeg\",\"facebook_page_url\":\"http:\\/\\/www.facebook.com\\/413831685401628\",\"tracker_count\":32543,\"upcoming_event_count\":6,\"support_url\":\"\",\"links\":[{\"type\":\"youtube\",\"url\":\"https:\\/\\/www.youtube.com\\/channel\\/UCI1dJa3-_zaJG0HZD7sUzUg\"},{\"type\":\"twitter\",\"url\":\"https:\\/\\/x.com\\/1kphew\"},{\"type\":\"website\",\"url\":\"https:\\/\\/www.1kphew.com\"},{\"type\":\"spotify\",\"url\":\"https:\\/\\/open.spotify.com\\/artist\\/6CQGrt3AJ2gx5oMSR0mwbl\"},{\"type\":\"itunes\",\"url\":\"https:\\/\\/music.apple.com\\/artist\\/1168127389\"},{\"type\":\"shazam\",\"url\":\"https:\\/\\/www.shazam.com\\/artist\\/-\\/1168127389\"},{\"type\":\"instagram\",\"url\":\"https:\\/\\/www.instagram.com\\/1kphew\\/\"},{\"type\":\"amazon\",\"url\":\"https:\\/\\/music.amazon.com\\/artists\\/B01N5TPA7A\"},{\"type\":\"facebook\",\"url\":\"https:\\/\\/www.facebook.com\\/1kphew\\/\"}],\"artist_optin_show_phone_number\":false,\"show_multi_ticket\":true},\"venue\":{\"location\":\"Whites Creek, TN\",\"name\":\"Mt. Zion Baptist Church\",\"latitude\":\"36.26589\",\"longitude\":\"-86.83083\",\"street_address\":\"7594 Old Hickory Blvd\",\"postal_code\":\"37189\",\"city\":\"Whites Creek\",\"country\":\"United States\",\"region\":\"TN\"},\"lineup\":[\"1K Phew\"],\"offers\":[],\"free\":false,\"artist_id\":\"12546964\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"\",\"festival_end_date\":\"\",\"festival_datetime_display_rule\":\"\",\"starts_at\":\"2026-08-23T11:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"108796058\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/108796058?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-08-29T15:00:00\",\"title\":\"1K Phew Field Day\",\"description\":\"\",\"venue\":{\"location\":\"Atlanta, GA\",\"name\":\"1K Phew Field Day\",\"latitude\":\"33.7515384\",\"longitude\":\"-84.3555916\",\"street_address\":\"100 Flat Shoals Ave SE\",\"postal_code\":\"30316\",\"city\":\"Atlanta\",\"country\":\"United States\",\"region\":\"GA\"},\"lineup\":[\"1K Phew\"],\"offers\":[{\"status\":\"available\",\"type\":\"Free\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/108796058?app_id=js_kingdomcircuit.com&came_from=267&custom=true&utm_medium=api&utm_source=public_api&utm_campaign=ticket\"}],\"free\":true,\"artist_id\":\"12546964\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"\",\"festival_end_date\":\"\",\"festival_datetime_display_rule\":\"\",\"starts_at\":\"2026-08-29T15:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"108562200\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/108562200?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-09-05T12:00:00\",\"title\":\"Immersion Music & Arts Festival 2026\",\"description\":\"\",\"venue\":{\"location\":\"Circleville, OH\",\"name\":\"Immersion Music & Arts Festival 2026\",\"latitude\":\"39.60046\",\"longitude\":\"-82.9257736\",\"street_address\":\"415 Lancaster Pike\",\"postal_code\":\"43113\",\"city\":\"Circleville\",\"country\":\"United States\",\"region\":\"OH\"},\"lineup\":[\"1K Phew\"],\"offers\":[{\"status\":\"available\",\"type\":\"Tickets\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/108562200?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket\"}],\"free\":false,\"artist_id\":\"12546964\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"2026-09-04\",\"festival_end_date\":\"2026-09-05\",\"festival_datetime_display_rule\":\"range\",\"starts_at\":\"2026-09-05T12:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"108002989\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/108002989?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-09-12T14:15:00\",\"title\":\"Uprise Festival 2026\",\"description\":\"\",\"venue\":{\"location\":\"Shippensburg, PA\",\"name\":\"Uprise Festival 2026\",\"latitude\":\"40.0450583\",\"longitude\":\"-77.5258948\",\"street_address\":\"10131 Possum Hollow Rd\",\"postal_code\":\"17257\",\"city\":\"Shippensburg\",\"country\":\"United States\",\"region\":\"PA\"},\"lineup\":[\"1K Phew\"],\"offers\":[{\"status\":\"available\",\"type\":\"Tickets\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/108002989?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket\"}],\"free\":false,\"artist_id\":\"12546964\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"2026-09-11\",\"festival_end_date\":\"2026-09-12\",\"festival_datetime_display_rule\":\"range\",\"starts_at\":\"2026-09-12T14:15:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"108395515\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/108395515?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-09-26T19:00:00\",\"title\":\"Fastivalle 2026\",\"description\":\"\",\"venue\":{\"location\":\"Indianapolis, IN\",\"name\":\"Fastivalle 2026\",\"latitude\":\"39.8730499\",\"longitude\":\"-86.18198029999999\",\"street_address\":\"1010 W 64th St\",\"postal_code\":\"46260\",\"city\":\"Indianapolis\",\"country\":\"United States\",\"region\":\"IN\"},\"lineup\":[\"1K Phew\"],\"offers\":[{\"status\":\"available\",\"type\":\"Tickets\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/108395515?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket\"}],\"free\":false,\"artist_id\":\"12546964\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"2026-09-26\",\"festival_end_date\":\"2026-09-26\",\"festival_datetime_display_rule\":\"datetime\",\"starts_at\":\"2026-09-26T19:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"1039603525\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/1039603525?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-10-03T16:00:00\",\"title\":\"\",\"description\":\"\",\"venue\":{\"location\":\"Oceanside, CA\",\"name\":\"Oceanside Pier Amphitheater\",\"latitude\":\"33.1941317\",\"longitude\":\"-117.3845529\",\"street_address\":\"301 The Strand N\",\"postal_code\":\"92054\",\"city\":\"Oceanside\",\"country\":\"United States\",\"region\":\"CA\"},\"lineup\":[\"1K Phew\"],\"offers\":[],\"free\":false,\"artist_id\":\"12546964\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"\",\"festival_end_date\":\"\",\"festival_datetime_display_rule\":\"\",\"starts_at\":\"2026-10-03T16:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false}]\n",
         "eventCount": 6,
+        "events": [
+          {
+            "id": "1039604873",
+            "datetime": "2026-08-23T11:00:00",
+            "title": "",
+            "venue": "Mt. Zion Baptist Church",
+            "city": "Whites Creek",
+            "state": "TN",
+            "lineup": [
+              "1K Phew"
+            ],
+            "ticketUrl": "",
+            "eventUrl": "https://www.bandsintown.com/e/1039604873?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "108796058",
+            "datetime": "2026-08-29T15:00:00",
+            "title": "1K Phew Field Day",
+            "venue": "1K Phew Field Day",
+            "city": "Atlanta",
+            "state": "GA",
+            "lineup": [
+              "1K Phew"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/108796058?app_id=js_kingdomcircuit.com&came_from=267&custom=true&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/108796058?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "108562200",
+            "datetime": "2026-09-05T12:00:00",
+            "title": "Immersion Music & Arts Festival 2026",
+            "venue": "Immersion Music & Arts Festival 2026",
+            "city": "Circleville",
+            "state": "OH",
+            "lineup": [
+              "1K Phew"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/108562200?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/108562200?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "108002989",
+            "datetime": "2026-09-12T14:15:00",
+            "title": "Uprise Festival 2026",
+            "venue": "Uprise Festival 2026",
+            "city": "Shippensburg",
+            "state": "PA",
+            "lineup": [
+              "1K Phew"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/108002989?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/108002989?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "108395515",
+            "datetime": "2026-09-26T19:00:00",
+            "title": "Fastivalle 2026",
+            "venue": "Fastivalle 2026",
+            "city": "Indianapolis",
+            "state": "IN",
+            "lineup": [
+              "1K Phew"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/108395515?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/108395515?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "1039603525",
+            "datetime": "2026-10-03T16:00:00",
+            "title": "",
+            "venue": "Oceanside Pier Amphitheater",
+            "city": "Oceanside",
+            "state": "CA",
+            "lineup": [
+              "1K Phew"
+            ],
+            "ticketUrl": "",
+            "eventUrl": "https://www.bandsintown.com/e/1039603525?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          }
+        ],
         "errors": []
       },
       "direct": {
         "status": "blocked_or_error",
-        "title": "Attention Required! | Cloudflare",
-        "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2fafc438955025a • Your IP: Click to reveal • Performance & security by Cloudflare",
-        "eventLinks": [],
-        "errors": [],
         "httpStatus": 403,
         "blocked": true
-      },
-      "widget": {
-        "url": "https://widgetv3.bandsintown.com/widget_iframe.html?affil_code=js_kingdomcircuit.com&app_id=js_kingdomcircuit.com&artist_id=12546964&artist_name=1K%20Phew&betaGroup=L&came_from_code=700",
-        "status": "accessible",
-        "title": "",
-        "textSample": "",
-        "eventLinks": [],
-        "restResponses": [],
-        "errors": [],
-        "httpStatus": 200,
-        "blocked": false
       }
     },
     {
@@ -41,30 +104,29 @@
         "url": "https://rest.bandsintown.com/artists/id_14726057/events/?app_id=js_kingdomcircuit.com&date=upcoming",
         "status": "accessible",
         "httpStatus": 200,
-        "contentType": "application/json",
-        "bodySample": "\n\n[{\"id\":\"108802282\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/108802282?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-10-11T19:30:00\",\"title\":\"THE WORLD IS WATCHING LIVE\",\"description\":\"Parris Chariz hits Dallas with THE WORLD IS WATCHING LIVE!\\nDirect support from Toschii + Eli Montanna & JWoodz. \\nDoors @ 730pm Merch on deck. Pull up.\",\"artist\":{\"id\":\"14726057\",\"name\":\"Parris Chariz\",\"url\":\"https:\\/\\/www.bandsintown.com\\/a\\/14726057?came_from=267&app_id=js_kingdomcircuit.com\",\"mbid\":\"\",\"options\":{\"display_listen_unit\":false},\"tracking\":[],\"image_url\":\"https:\\/\\/photos.bandsintown.com\\/large\\/25972013.jpeg\",\"thumb_url\":\"https:\\/\\/photos.bandsintown.com\\/thumb\\/25972013.jpeg\",\"facebook_page_url\":\"\",\"tracker_count\":5035,\"upcoming_event_count\":1,\"support_url\":\"\",\"links\":[{\"type\":\"amazon\",\"url\":\"https:\\/\\/music.amazon.com\\/artists\\/B01LWBP6EY\"},{\"type\":\"instagram\",\"url\":\"http:\\/\\/instagram.com\\/parrischariz\\/\"},{\"type\":\"itunes\",\"url\":\"https:\\/\\/music.apple.com\\/artist\\/772171124?utm_source=bandsintown\"},{\"type\":\"shazam\",\"url\":\"https:\\/\\/www.shazam.com\\/artist\\/-\\/772171124?utm_source=bandsintown\"},{\"type\":\"facebook\",\"url\":\"http:\\/\\/facebook.com\\/parrischariz\"},{\"type\":\"twitter\",\"url\":\"http:\\/\\/x.com\\/parrischariz\\/\"}],\"artist_optin_show_phone_number\":false,\"show_multi_ticket\":true},\"venue\":{\"location\":\"Dallas, TX\",\"name\":\"THE WORLD IS WATCHING LIVE\",\"latitude\":\"32.7975477\",\"longitude\":\"-96.8243408\",\"street_address\":\"1950 Market Center Blvd\",\"postal_code\":\"75207\",\"city\":\"Dallas\",\"country\":\"United States\",\"region\":\"TX\"},\"lineup\":[\"Parris Chariz\",\"JWOODZ\"],\"offers\":[{\"status\":\"available\",\"type\":\"Tickets\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/108802282?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket\"}],\"free\":false,\"artist_id\":\"14726057\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"\",\"festival_end_date\":\"\",\"festival_datetime_display_rule\":\"\",\"starts_at\":\"2026-10-11T19:30:00\",\"ends_at\":\"2026-10-11T22:30:00\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false}]\n",
         "eventCount": 1,
+        "events": [
+          {
+            "id": "108802282",
+            "datetime": "2026-10-11T19:30:00",
+            "title": "THE WORLD IS WATCHING LIVE",
+            "venue": "THE WORLD IS WATCHING LIVE",
+            "city": "Dallas",
+            "state": "TX",
+            "lineup": [
+              "Parris Chariz",
+              "JWOODZ"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/108802282?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/108802282?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          }
+        ],
         "errors": []
       },
       "direct": {
         "status": "blocked_or_error",
-        "title": "Attention Required! | Cloudflare",
-        "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2fafc829ace025a • Your IP: Click to reveal • Performance & security by Cloudflare",
-        "eventLinks": [],
-        "errors": [],
         "httpStatus": 403,
         "blocked": true
-      },
-      "widget": {
-        "url": "https://widgetv3.bandsintown.com/widget_iframe.html?affil_code=js_kingdomcircuit.com&app_id=js_kingdomcircuit.com&artist_id=14726057&artist_name=Parris%20Chariz&betaGroup=L&came_from_code=700",
-        "status": "accessible",
-        "title": "",
-        "textSample": "",
-        "eventLinks": [],
-        "restResponses": [],
-        "errors": [],
-        "httpStatus": 200,
-        "blocked": false
       }
     },
     {
@@ -74,30 +136,62 @@
         "url": "https://rest.bandsintown.com/artists/id_165768/events/?app_id=js_kingdomcircuit.com&date=upcoming",
         "status": "accessible",
         "httpStatus": 200,
-        "contentType": "application/json",
-        "bodySample": "\n\n[{\"id\":\"108126875\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/108126875?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-09-12T19:00:00\",\"title\":\"Uprise Festival 2026\",\"description\":\"\",\"artist\":{\"id\":\"165768\",\"name\":\"KB\",\"url\":\"https:\\/\\/www.bandsintown.com\\/a\\/165768?came_from=267&app_id=js_kingdomcircuit.com\",\"mbid\":\"4e46f0a3-166d-4d4a-a77c-9c077861958a\",\"options\":{\"display_listen_unit\":false},\"tracking\":[],\"image_url\":\"https:\\/\\/photos.bandsintown.com\\/large\\/24739798.jpeg\",\"thumb_url\":\"https:\\/\\/photos.bandsintown.com\\/thumb\\/24739798.jpeg\",\"facebook_page_url\":\"http:\\/\\/www.facebook.com\\/255407517931479\",\"tracker_count\":316467,\"upcoming_event_count\":3,\"support_url\":\"\",\"links\":[{\"type\":\"website\",\"url\":\"https:\\/\\/whoiskb.com\\/\"},{\"type\":\"instagram\",\"url\":\"http:\\/\\/instagram.com\\/kb_hga\"},{\"type\":\"facebook\",\"url\":\"https:\\/\\/www.facebook.com\\/KB116\\/\"},{\"type\":\"other\",\"url\":\"https:\\/\\/kb.native.supply\\/\"},{\"type\":\"soundcloud\",\"url\":\"https:\\/\\/soundcloud.com\\/whoiskb\"},{\"type\":\"amazon\",\"url\":\"https:\\/\\/music.amazon.com\\/artists\\/B000QKHD7C\"},{\"type\":\"spotify\",\"url\":\"https:\\/\\/open.spotify.com\\/artist\\/77IKXFvO7SpWrq8hflrUXc\"},{\"type\":\"twitter\",\"url\":\"https:\\/\\/x.com\\/KB_HGA\"},{\"type\":\"shazam\",\"url\":\"https:\\/\\/www.shazam.com\\/artist\\/-\\/997564981\"},{\"type\":\"itunes\",\"url\":\"https:\\/\\/music.apple.com\\/us\\/artist\\/kb\\/74520603\"},{\"type\":\"youtube\",\"url\":\"https:\\/\\/www.youtube.com\\/channel\\/UCegcsRx3sbZcNYyS2aqaCGQ\"}],\"artist_optin_show_phone_number\":false,\"show_multi_ticket\":true},\"venue\":{\"location\":\"Shippensburg, PA\",\"name\":\"Uprise Festival 2026\",\"latitude\":\"40.0450583\",\"longitude\":\"-77.5258948\",\"street_address\":\"10131 Possum Hollow Rd\",\"postal_code\":\"17257\",\"city\":\"Shippensburg\",\"country\":\"United States\",\"region\":\"PA\"},\"lineup\":[\"KB\"],\"offers\":[],\"free\":false,\"artist_id\":\"165768\",\"on_sale_datetime\":\"\",\"festival_start_date\":\"2026-09-11\",\"festival_end_date\":\"2026-09-12\",\"festival_datetime_display_rule\":\"range\",\"starts_at\":\"2026-09-12T19:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"1038863286\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/1038863286?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-09-19T18:00:00\",\"title\":\"\",\"description\":\"Doors 4:30pm \\/ Show 6:00pm All ages, alcohol-free event\",\"venue\":{\"location\":\"Waite Park, MN\",\"name\":\"The Ledge Amphitheater\",\"latitude\":\"45.5444761\",\"longitude\":\"-94.23899879999999\",\"street_address\":\"1700 Parkway Dr\",\"postal_code\":\"56387\",\"city\":\"Waite Park\",\"country\":\"United States\",\"region\":\"MN\"},\"lineup\":[\"KB\",\"Celebrate Minnesota\",\"TobyMac\"],\"offers\":[{\"type\":\"Tickets\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/1038863286?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket\",\"status\":\"available\"}],\"free\":false,\"artist_id\":\"165768\",\"on_sale_datetime\":\"2026-05-01T10:00:00\",\"festival_start_date\":\"\",\"festival_end_date\":\"\",\"festival_datetime_display_rule\":\"\",\"starts_at\":\"2026-09-19T18:00:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false},{\"id\":\"1038671974\",\"url\":\"https:\\/\\/www.bandsintown.com\\/e\\/1038671974?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event\",\"datetime\":\"2026-11-07T19:30:00\",\"title\":\"\",\"description\":\"Doors open at 7:30pm. Music begins at 8:00pm. This is an All Ages event. This event is General Admission (GA,) standing room only. All GA tickets are for standing room only. For accessible tickets, use the Filter option on the right of the purchase page and click SHOW ACCESSIBLE TICKETS button. Event lineup is subject to change without notice.\",\"venue\":{\"location\":\"Cleveland, OH\",\"name\":\"House of Blues Cleveland\",\"latitude\":\"41.49951739999999\",\"longitude\":\"-81.690957\",\"street_address\":\"308 Euclid Ave\",\"postal_code\":\"44114-2207\",\"city\":\"Cleveland\",\"country\":\"United States\",\"region\":\"OH\"},\"lineup\":[\"KB\",\"DJ Taylor Wells\",\"Brenno\",\"Mike Teezy\",\"Porsha Love\",\"Eli Williams\",\"Taylor Wells\"],\"offers\":[{\"type\":\"Tickets\",\"url\":\"https:\\/\\/www.bandsintown.com\\/t\\/1038671974?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket\",\"status\":\"available\"}],\"free\":false,\"artist_id\":\"165768\",\"on_sale_datetime\":\"2026-04-17T10:00:00\",\"festival_start_date\":\"\",\"festival_end_date\":\"\",\"festival_datetime_display_rule\":\"\",\"starts_at\":\"2026-11-07T19:30:00\",\"ends_at\":\"\",\"datetime_display_rule\":\"datetime\",\"bandsintown_plus\":false,\"presale\":\"\",\"sold_out\":false}]\n",
         "eventCount": 3,
+        "events": [
+          {
+            "id": "108126875",
+            "datetime": "2026-09-12T19:00:00",
+            "title": "Uprise Festival 2026",
+            "venue": "Uprise Festival 2026",
+            "city": "Shippensburg",
+            "state": "PA",
+            "lineup": [
+              "KB"
+            ],
+            "ticketUrl": "",
+            "eventUrl": "https://www.bandsintown.com/e/108126875?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "1038863286",
+            "datetime": "2026-09-19T18:00:00",
+            "title": "",
+            "venue": "The Ledge Amphitheater",
+            "city": "Waite Park",
+            "state": "MN",
+            "lineup": [
+              "KB",
+              "Celebrate Minnesota",
+              "TobyMac"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/1038863286?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/1038863286?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          },
+          {
+            "id": "1038671974",
+            "datetime": "2026-11-07T19:30:00",
+            "title": "",
+            "venue": "House of Blues Cleveland",
+            "city": "Cleveland",
+            "state": "OH",
+            "lineup": [
+              "KB",
+              "DJ Taylor Wells",
+              "Brenno",
+              "Mike Teezy",
+              "Porsha Love",
+              "Eli Williams",
+              "Taylor Wells"
+            ],
+            "ticketUrl": "https://www.bandsintown.com/t/1038671974?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+            "eventUrl": "https://www.bandsintown.com/e/1038671974?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event"
+          }
+        ],
         "errors": []
       },
       "direct": {
         "status": "blocked_or_error",
-        "title": "Attention Required! | Cloudflare",
-        "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2fafcc0ac96025a • Your IP: Click to reveal • Performance & security by Cloudflare",
-        "eventLinks": [],
-        "errors": [],
         "httpStatus": 403,
         "blocked": true
-      },
-      "widget": {
-        "url": "https://widgetv3.bandsintown.com/widget_iframe.html?affil_code=js_kingdomcircuit.com&app_id=js_kingdomcircuit.com&artist_id=165768&artist_name=KB&betaGroup=L&came_from_code=700",
-        "status": "accessible",
-        "title": "",
-        "textSample": "",
-        "eventLinks": [],
-        "restResponses": [],
-        "errors": [],
-        "httpStatus": 200,
-        "blocked": false
       }
     },
     {
@@ -107,30 +201,14 @@
         "url": "https://rest.bandsintown.com/artists/id_11969355/events/?app_id=js_kingdomcircuit.com&date=upcoming",
         "status": "accessible",
         "httpStatus": 200,
-        "contentType": "application/json",
-        "bodySample": "\n\n[]\n",
         "eventCount": 0,
+        "events": [],
         "errors": []
       },
       "direct": {
         "status": "blocked_or_error",
-        "title": "Attention Required! | Cloudflare",
-        "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2fafcff2e02025a • Your IP: Click to reveal • Performance & security by Cloudflare",
-        "eventLinks": [],
-        "errors": [],
         "httpStatus": 403,
         "blocked": true
-      },
-      "widget": {
-        "url": "https://widgetv3.bandsintown.com/widget_iframe.html?affil_code=js_kingdomcircuit.com&app_id=js_kingdomcircuit.com&artist_id=11969355&artist_name=NF&betaGroup=L&came_from_code=700",
-        "status": "accessible",
-        "title": "",
-        "textSample": "",
-        "eventLinks": [],
-        "restResponses": [],
-        "errors": [],
-        "httpStatus": 200,
-        "blocked": false
       }
     }
   ]
