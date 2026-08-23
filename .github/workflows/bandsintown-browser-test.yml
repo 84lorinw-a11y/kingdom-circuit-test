@@ -1,0 +1,42 @@
+name: Bandsintown browser diagnostic
+
+on:
+  push:
+    branches: [bandsintown-browser-test]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+
+jobs:
+  browser-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Test Bandsintown with real browser engine
+        run: node scripts/test_bandsintown_playwright.mjs
+
+      - name: Upload diagnostic results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandsintown-browser-test-results
+          path: bandsintown-browser-test-results.json
+          if-no-files-found: warn
