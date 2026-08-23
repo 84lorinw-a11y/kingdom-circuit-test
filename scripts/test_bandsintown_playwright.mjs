@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 
 const APP_ID = 'js_kingdomcircuit.com';
 const ARTISTS_PATH = 'config/artists.json';
+const PROD_ARTISTS_URL = 'https://raw.githubusercontent.com/84lorinw-a11y/kingdom-circuit/main/config/artists.json';
 const OUTPUT_PATH = 'bandsintown-browser-test-results.json';
 const BASE = 'https://rest.bandsintown.com';
 
@@ -95,7 +96,16 @@ function compactEvent(event, trackedArtist) {
   };
 }
 
-const artistConfig = JSON.parse(await fs.readFile(ARTISTS_PATH, 'utf8'));
+let artistConfig;
+try {
+  const prod = await getJson(PROD_ARTISTS_URL, 2);
+  if (!prod.ok || !Array.isArray(prod.json)) throw new Error(`production roster fetch failed: ${prod.status}`);
+  artistConfig = prod.json;
+} catch (error) {
+  console.warn(`Falling back to test-branch roster: ${error}`);
+  artistConfig = JSON.parse(await fs.readFile(ARTISTS_PATH, 'utf8'));
+}
+
 const artists = artistConfig.filter(a => a && a.enabled !== false && a.name);
 const perArtist = [];
 const uniqueUsEvents = new Map();
