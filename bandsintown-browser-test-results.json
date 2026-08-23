@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-08-23T14:53:07.332Z",
+  "results": [
+    {
+      "artist": "1K Phew",
+      "url": "https://www.bandsintown.com/a/12546964-1k-phew",
+      "status": "blocked_or_error",
+      "title": "Attention Required! | Cloudflare",
+      "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2faf18259dca243 • Your IP: Click to reveal • Performance & security by Cloudflare",
+      "eventLinks": [],
+      "errors": [],
+      "httpStatus": 403,
+      "blocked": true
+    },
+    {
+      "artist": "Parris Chariz",
+      "url": "https://www.bandsintown.com/a/14726057-parris-chariz",
+      "status": "blocked_or_error",
+      "title": "Attention Required! | Cloudflare",
+      "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2faf19c1f76a243 • Your IP: Click to reveal • Performance & security by Cloudflare",
+      "eventLinks": [],
+      "errors": [],
+      "httpStatus": 403,
+      "blocked": true
+    },
+    {
+      "artist": "KB",
+      "url": "https://www.bandsintown.com/a/165768-kb",
+      "status": "blocked_or_error",
+      "title": "Attention Required! | Cloudflare",
+      "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2faf1b5bc95a243 • Your IP: Click to reveal • Performance & security by Cloudflare",
+      "eventLinks": [],
+      "errors": [],
+      "httpStatus": 403,
+      "blocked": true
+    },
+    {
+      "artist": "NF",
+      "url": "https://www.bandsintown.com/a/11969355-nf",
+      "status": "blocked_or_error",
+      "title": "Attention Required! | Cloudflare",
+      "textSample": "Sorry, you have been blocked You are unable to access bandsintown.com Why have I been blocked? This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. What can I do to resolve this? You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page. Cloudflare Ray ID: a2faf1cf4aaea243 • Your IP: Click to reveal • Performance & security by Cloudflare",
+      "eventLinks": [],
+      "errors": [],
+      "httpStatus": 403,
+      "blocked": true
+    }
+  ]
+}
