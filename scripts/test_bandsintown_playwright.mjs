@@ -16,13 +16,47 @@ const context = await browser.newContext({
   viewport: { width: 1440, height: 1200 },
 });
 
+async function testRest(artist) {
+  const url = `https://rest.bandsintown.com/artists/id_${artist.id}/events/?app_id=js_kingdomcircuit.com&date=upcoming`;
+  const item = { url, status: 'unknown', httpStatus: null, contentType: '', bodySample: '', eventCount: null, errors: [] };
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json,text/plain,*/*',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36',
+        'Referer': 'https://kingdomcircuit.com/',
+        'Origin': 'https://kingdomcircuit.com',
+      },
+    });
+    item.httpStatus = response.status;
+    item.contentType = response.headers.get('content-type') || '';
+    const text = await response.text();
+    item.bodySample = text.slice(0, 7000);
+    if (response.ok) {
+      try {
+        const json = JSON.parse(text);
+        item.eventCount = Array.isArray(json) ? json.length : null;
+        item.status = 'accessible';
+      } catch {
+        item.status = 'accessible_non_json';
+      }
+    } else {
+      item.status = 'blocked_or_error';
+    }
+  } catch (error) {
+    item.status = 'error';
+    item.errors.push(String(error).slice(0, 500));
+  }
+  return item;
+}
+
 async function testDirect(artist) {
   const page = await context.newPage();
   const item = { status: 'unknown', title: '', textSample: '', eventLinks: [], errors: [] };
   try {
     const response = await page.goto(artist.knownUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
     item.httpStatus = response?.status() ?? null;
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(2500);
     item.title = await page.title();
     const bodyText = (await page.locator('body').innerText({ timeout: 10000 })).replace(/\s+/g, ' ').trim();
     item.textSample = bodyText.slice(0, 700);
@@ -42,7 +76,7 @@ async function testDirect(artist) {
 async function testWidget(artist) {
   const page = await context.newPage();
   const encodedName = encodeURIComponent(artist.name);
-  const widgetUrl = `https://widgetv3.bandsintown.com/widget_iframe.html?affil_code=js_kingdomcircuit.com&app_id=js_kingdomcircuit.com&artist_id=${artist.id}&artist_name=${encodedName}&came_from_code=700`;
+  const widgetUrl = `https://widgetv3.bandsintown.com/widget_iframe.html?affil_code=js_kingdomcircuit.com&app_id=js_kingdomcircuit.com&artist_id=${artist.id}&artist_name=${encodedName}&betaGroup=L&came_from_code=700`;
   const item = { url: widgetUrl, status: 'unknown', title: '', textSample: '', eventLinks: [], restResponses: [], errors: [] };
 
   page.on('response', async response => {
@@ -50,7 +84,7 @@ async function testWidget(artist) {
     if (!/rest\.bandsintown\.com|api\.bandsintown\.com/i.test(url)) return;
     const record = { url, status: response.status(), contentType: response.headers()['content-type'] || '' };
     try {
-      if (/json/i.test(record.contentType)) {
+      if (/json|text/i.test(record.contentType)) {
         const text = await response.text();
         record.bodySample = text.slice(0, 5000);
       }
@@ -59,7 +93,7 @@ async function testWidget(artist) {
   });
 
   try {
-    const response = await page.goto(widgetUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    const response = await page.goto(widgetUrl, { waitUntil: 'domcontentloaded', timeout: 45000, referer: 'https://kingdomcircuit.com/' });
     item.httpStatus = response?.status() ?? null;
     await page.waitForTimeout(7000);
     item.title = await page.title();
@@ -79,12 +113,16 @@ async function testWidget(artist) {
 }
 
 for (const artist of artists) {
+  const rest = await testRest(artist);
   const direct = await testDirect(artist);
   const widget = await testWidget(artist);
-  const item = { artist: artist.name, artistId: artist.id, direct, widget };
+  const item = { artist: artist.name, artistId: artist.id, rest, direct, widget };
   results.push(item);
   console.log(JSON.stringify({
     artist: artist.name,
+    rest: rest.status,
+    restHttp: rest.httpStatus,
+    restEvents: rest.eventCount,
     direct: direct.status,
     directHttp: direct.httpStatus,
     widget: widget.status,
