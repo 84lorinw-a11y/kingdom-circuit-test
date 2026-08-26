@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/mirror-live.yml'
       - 'scripts/live_mirror_v2.py'
+      - 'scripts/test_cleanup_overlay.py'
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
@@ -67,6 +68,7 @@ jobs:
           # compares like-for-like without changing the production repository.
           sed -i 's|const BASE = "/";|const BASE = "/kingdom-circuit-test/";|' _live/_site/assets/artist-filter-fix.js
           python scripts/live_mirror_v2.py _live/_site _site "$LIVE_SHA"
+          python scripts/test_cleanup_overlay.py _site
           # Removed artists must not remain even in client-side ordering constants.
           sed -i '/^[[:space:]]*"BIG HOLY",[[:space:]]*$/d; /^[[:space:]]*"Erica Mason",[[:space:]]*$/d; /^[[:space:]]*"Chad Jones",[[:space:]]*$/d' _site/app.js
           touch _site/.nojekyll
