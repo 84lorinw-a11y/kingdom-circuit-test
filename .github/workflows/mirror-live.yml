@@ -67,6 +67,8 @@ jobs:
           # compares like-for-like without changing the production repository.
           sed -i 's|const BASE = "/";|const BASE = "/kingdom-circuit-test/";|' _live/_site/assets/artist-filter-fix.js
           python scripts/live_mirror_v2.py _live/_site _site "$LIVE_SHA"
+          # Removed artists must not remain even in client-side ordering constants.
+          sed -i '/^[[:space:]]*"BIG HOLY",[[:space:]]*$/d; /^[[:space:]]*"Erica Mason",[[:space:]]*$/d; /^[[:space:]]*"Chad Jones",[[:space:]]*$/d' _site/app.js
           touch _site/.nojekyll
           test -s _site/index.html
           test -s _site/styles.css
@@ -76,6 +78,9 @@ jobs:
           grep -q 'name="robots" content="noindex,nofollow"' _site/index.html
           grep -q '/kingdom-circuit-test/styles.css' _site/index.html
           grep -q '/kingdom-circuit-test/app.js' _site/index.html
+          ! grep -q '"BIG HOLY"' _site/app.js
+          ! grep -q '"Erica Mason"' _site/app.js
+          ! grep -q '"Chad Jones"' _site/app.js
 
       - name: Publish snapshot into test main
         shell: bash
@@ -85,7 +90,7 @@ jobs:
             supplemental-events.json robots.txt sitemap.xml shows festivals new-shows \
             artists event submit assets config test-live-mirror-manifest.json .nojekyll
           cp -a _site/. .
-          git config user.name "github-actions[bot]]"
+          git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- 404.html index.html styles.css app.js events.json run-status.json \
             supplemental-events.json robots.txt sitemap.xml shows festivals new-shows \
