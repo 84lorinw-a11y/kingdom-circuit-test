@@ -82,7 +82,6 @@ const ARTIST_ROSTER_ORDER = [
   "B. Cody Shields",
   "Santana Rose",
   "DJ Winn",
-  "BIG HOLY",
   "REDEEMED",
   "Rua Young",
   "Kurtis Hoppie",
@@ -232,7 +231,6 @@ const ARTIST_ROSTER_ORDER = [
   "Keiana",
   "Licy Be",
   "Pristavia",
-  "Erica Mason",
   "Kay Sade",
   "Jackie Legere",
   "Foure",
@@ -247,7 +245,6 @@ const ARTIST_ROSTER_ORDER = [
   "Corey Paul",
   "Alex Faith",
   "Tony Tillman",
-  "Chad Jones",
   "Dillon Chase",
   "Json",
   "J.R.",
@@ -1123,7 +1120,6 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
   },
   "big holy": {
     "aliases": [
-      "BIG HOLY",
       "Big Holy"
     ],
     "website": "https://www.google.com/search?q=BIG+HOLY+official+website",
