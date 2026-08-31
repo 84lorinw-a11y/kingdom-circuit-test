@@ -1,6 +1,6 @@
 {
   "mode": "live-baseline-with-test-registry-overlay",
-  "liveCommit": "aeed7ad6a2ea547d7cbf9e28e36407fcab6e295a",
+  "liveCommit": "3b3c257d9d215e76f6a6839c1fcc503ed3c66f36",
   "source": "84lorinw-a11y/kingdom-circuit@main",
   "testBase": "/kingdom-circuit-test/",
   "liveStylesByteIdentical": true,
