@@ -342,8 +342,9 @@
         "priority": 98
       }
     ],
-    "image": "https://img1.wsimg.com/isteam/ip/6ed0aa91-488e-49ff-a53b-8d885654844e/DSC07306%20Edited.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:600,cg:true",
-    "imageType": "artist"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb3d2d9f74de93906d1f5996f3",
+    "imageType": "artist",
+    "imagePosition": "center"
   },
   {
     "id": "bandsintown:108812644",
