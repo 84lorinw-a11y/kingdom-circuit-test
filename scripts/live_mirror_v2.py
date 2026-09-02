@@ -308,13 +308,12 @@ def patch_events(path: pathlib.Path) -> None:
 
 
 def patch_marty_event_pages(out_dir: pathlib.Path) -> None:
-    page = out_dir / "event" / "an-evening-with-project-nation-ft-marty-from-social-club-misfits-2026-09-10-kuna-cc9415" / "index.html"
-    if not page.is_file():
-        return
-    text = page.read_text(encoding="utf-8")
     old_image = "https://img1.wsimg.com/isteam/ip/6ed0aa91-488e-49ff-a53b-8d885654844e/DSC07306%20Edited.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:600,cg:true"
-    text = text.replace(old_image, REGISTRY_UPDATES["marty"]["imageUrl"])
-    page.write_text(text, encoding="utf-8")
+    for page in out_dir.rglob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        if old_image not in text:
+            continue
+        page.write_text(text.replace(old_image, REGISTRY_UPDATES["marty"]["imageUrl"]), encoding="utf-8")
 
 
 def artist_link_html(artist: dict) -> str:
