@@ -18,6 +18,24 @@ TEST_GA = "G-TEST-DISABLED"
 EXCLUDED_ARTISTS = {"chad jones", "erica mason", "big holy"}
 
 REGISTRY_UPDATES = {
+    "marty": {
+        "name": "Marty",
+        "aliases": ["Marty", "Marty of Social Club Misfits", "Marty Mar"],
+        "category": "solo",
+        "monitoringPriority": 2,
+        "ticketmasterEnabled": False,
+        "textMatchEnabled": False,
+        "website": "https://www.instagram.com/deathbymartymar/?hl=en",
+        "instagramProfile": "https://www.instagram.com/deathbymartymar/",
+        "spotifyProfile": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
+        "youtubeProfile": "https://www.youtube.com/@deathbymartymar",
+        "officialImageSource": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
+        "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3d2d9f74de93906d1f5996f3",
+        "imagePosition": "center",
+        "preferArtistImage": True,
+        "sourceRegistryVerified": True,
+        "sourceRegistryRosterOrder": 25,
+    },
     "caleb gordon": {
         "name": "Caleb Gordon",
         "aliases": ["Caleb Gordon"],
@@ -265,6 +283,10 @@ def patch_events(path: pathlib.Path) -> None:
         return
     cleaned = []
     for event in events:
+        if event.get("id") == "supplemental:marty-project-nation-kuna-2026":
+            event["image"] = REGISTRY_UPDATES["marty"]["imageUrl"]
+            event["imageType"] = "artist"
+            event["imagePosition"] = REGISTRY_UPDATES["marty"]["imagePosition"]
         original_artists = list(event.get("artists") or [])
         remaining = [name for name in original_artists if normalize(name) not in EXCLUDED_ARTISTS]
         removed = len(remaining) != len(original_artists)
@@ -283,6 +305,16 @@ def patch_events(path: pathlib.Path) -> None:
                     event.pop("headliner", None)
         cleaned.append(event)
     path.write_text(json.dumps(cleaned, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def patch_marty_event_pages(out_dir: pathlib.Path) -> None:
+    page = out_dir / "event" / "an-evening-with-project-nation-ft-marty-from-social-club-misfits-2026-09-10-kuna-cc9415" / "index.html"
+    if not page.is_file():
+        return
+    text = page.read_text(encoding="utf-8")
+    old_image = "https://img1.wsimg.com/isteam/ip/6ed0aa91-488e-49ff-a53b-8d885654844e/DSC07306%20Edited.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:600,cg:true"
+    text = text.replace(old_image, REGISTRY_UPDATES["marty"]["imageUrl"])
+    page.write_text(text, encoding="utf-8")
 
 
 def artist_link_html(artist: dict) -> str:
@@ -411,6 +443,7 @@ def main() -> None:
     patch_events(out_dir / "events.json")
     patch_events(out_dir / "supplemental-events.json")
     patch_static_artist_pages(out_dir, artists)
+    patch_marty_event_pages(out_dir)
     remove_excluded_static_pages(out_dir)
     (out_dir / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
 
