@@ -632,7 +632,10 @@ const VERIFIED_ARTIST_REGISTRY = {
     "instagramProfile": "https://www.instagram.com/deathbymartymar/",
     "spotifyProfile": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
     "youtubeProfile": "https://www.youtube.com/@deathbymartymar",
-    "officialImageSource": "https://www.instagram.com/deathbymartymar/?hl=en",
+    "officialImageSource": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3d2d9f74de93906d1f5996f3",
+    "imagePosition": "center",
+    "preferArtistImage": true,
     "sourceRegistryVerified": true
   },
   "brvndonp": {
@@ -808,7 +811,10 @@ const VERIFIED_ARTIST_REGISTRY = {
     "instagramProfile": "https://www.instagram.com/indiextribe/",
     "spotifyProfile": "https://open.spotify.com/artist/1sPm31qmcbk9EFoRCS8eRl",
     "youtubeProfile": "https://www.youtube.com/@indietribe",
-    "officialImageSource": "https://www.instagram.com/indiextribe/",
+    "officialImageSource": "https://open.spotify.com/artist/1sPm31qmcbk9EFoRCS8eRl",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3d6de4e8ecd60713745d2b77",
+    "imagePosition": "center",
+    "preferArtistImage": true,
     "sourceRegistryVerified": true
   },
   "brenno": {
