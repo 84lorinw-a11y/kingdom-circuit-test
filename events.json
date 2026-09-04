@@ -46,7 +46,7 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -85,7 +85,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -139,7 +139,7 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -185,7 +185,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -239,7 +239,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -277,7 +277,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -315,12 +315,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-waldoboro-me-2026-09-08",
@@ -353,12 +353,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-maine-morning-2026-09-09",
@@ -391,12 +391,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-mechanic-falls-me-2026-09-09",
@@ -429,12 +429,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "official:3e8f30d2486e734b42c1",
@@ -476,7 +476,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -514,7 +514,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -572,7 +572,7 @@
         "priority": 46
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "endDate": "2026-09-12",
     "imageType": "artist",
@@ -611,7 +611,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -649,7 +649,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -696,7 +696,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -743,7 +743,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -781,12 +781,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-mulberry-grove-il-2026-09-17",
@@ -819,12 +819,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-ohio-0845-2026-09-18",
@@ -857,12 +857,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-ohio-0945-2026-09-18",
@@ -895,12 +895,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "official:cfd29f658249c76cd8e2",
@@ -942,7 +942,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -980,7 +980,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1018,7 +1018,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -1057,7 +1057,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1104,7 +1104,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1142,7 +1142,7 @@
         "priority": 86
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -1180,7 +1180,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -1225,7 +1225,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -1270,7 +1270,7 @@
         "priority": 90
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1317,7 +1317,7 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -1356,12 +1356,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-illinois-afternoon-2026-09-21",
@@ -1394,12 +1394,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-illinois-0815-2026-09-22",
@@ -1432,12 +1432,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-illinois-1020-2026-09-22",
@@ -1470,12 +1470,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-princeton-il-2026-09-22",
@@ -1508,12 +1508,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:caleb-gordon-eden-2026-09-22-leander",
@@ -1546,7 +1546,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1593,7 +1593,7 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1632,12 +1632,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:808-beezy-rwg-mokena-il-2026-09-23",
@@ -1670,12 +1670,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "official:9f793162ae1bb3cab7f3",
@@ -1717,7 +1717,7 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -1756,12 +1756,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "manual:caleb-gordon-eden-2026-09-24-richmond",
@@ -1794,7 +1794,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1832,12 +1832,12 @@
         "priority": 76
       }
     ],
-    "lastVerified": "2026-09-04T11:53:14Z",
+    "lastVerified": "2026-09-04T15:12:22Z",
     "confidence": "high",
     "imageType": "fallback",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-09-04T11:53:14Z"
+    "firstSeen": "2026-09-04T15:12:22Z"
   },
   {
     "id": "official:4f72402532a6edb7c4ba",
@@ -1879,7 +1879,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1922,7 +1922,7 @@
         "priority": 80
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "endDate": "2026-09-26",
     "imageType": "event_artwork",
@@ -1970,7 +1970,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2015,7 +2015,7 @@
         "priority": 90
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2060,7 +2060,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 24%",
@@ -2098,7 +2098,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2145,7 +2145,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2185,7 +2185,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
@@ -2223,7 +2223,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 24%",
@@ -2261,7 +2261,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2299,7 +2299,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2337,7 +2337,7 @@
         "priority": 74
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "endDate": "2026-10-12",
     "imageType": "fallback",
@@ -2376,7 +2376,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2424,7 +2424,7 @@
         "priority": 104
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2462,7 +2462,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2501,7 +2501,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2540,7 +2540,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2580,7 +2580,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2618,7 +2618,7 @@
         "priority": 74
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "endDate": "2026-11-08",
     "imageType": "artist",
@@ -2657,7 +2657,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2695,7 +2695,7 @@
         "priority": 74
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "endDate": "2026-11-15",
     "imageType": "artist",
@@ -2735,7 +2735,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -2773,7 +2773,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2811,7 +2811,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2849,7 +2849,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -2887,7 +2887,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-04T11:46:01Z",
+    "lastVerified": "2026-09-04T14:59:18Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
