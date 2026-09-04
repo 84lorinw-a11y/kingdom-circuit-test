@@ -1201,7 +1201,8 @@
     "imageUrl": "https://ugc.production.linktr.ee/f87bf85e-d8ca-4d35-92f8-ac16dd0f03f3_Copy-of-Feb-2026---White-Press-Pic--elijah-sten-1.jpeg",
     "imagePosition": "center",
     "preferArtistImage": true,
-    "bandsintownProfile": "https://www.bandsintown.com/a/11718080-don-ready"
+    "bandsintownProfile": "https://www.bandsintown.com/a/11718080-don-ready",
+    "websiteRegistryVerified": true
   },
   {
     "name": "Y Shadey",
@@ -1639,7 +1640,8 @@
     "youtubeProfile": "https://www.youtube.com/@dkgkie",
     "officialImageSource": "https://www.instagram.com/dkg.kie",
     "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 80
+    "sourceRegistryRosterOrder": 80,
+    "websiteRegistryVerified": true
   },
   {
     "name": "Braille",
@@ -1661,7 +1663,8 @@
     "youtubeProfile": "https://www.youtube.com/@bryanbraille",
     "officialImageSource": "https://www.humblebeast.com/music/braille",
     "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 81
+    "sourceRegistryRosterOrder": 81,
+    "websiteRegistryVerified": true
   },
   {
     "name": "Canton Jones",
@@ -1706,7 +1709,8 @@
     "youtubeProfile": "https://www.youtube.com/@JayWayTheAlien",
     "officialImageSource": "https://www.jaywaythealien.com/",
     "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 83
+    "sourceRegistryRosterOrder": 83,
+    "websiteRegistryVerified": true
   },
   {
     "name": "Stixx aka Conejo",
@@ -1732,7 +1736,8 @@
     "sourceRegistryRosterOrder": 84,
     "bandsintownRejectedArtistIds": [
       "861812"
-    ]
+    ],
+    "websiteRegistryVerified": true
   },
   {
     "name": "Ruslan",
@@ -1759,6 +1764,194 @@
     "sourceRegistryRosterOrder": 85
   },
   {
+    "name": "J J L",
+    "aliases": [
+      "J J L",
+      "JJL"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "core",
+    "monitoringPriority": 2,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "rosterOrder": 85,
+    "website": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "instagramProfile": "https://www.instagram.com/jjl_music/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "youtubeProfile": "https://music.youtube.com/channel/UC0vTVAlJijP9UvlEeezSmjw",
+    "officialImageSource": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb04e00b6b9c43eecf6f19ca78",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 86
+  },
+  {
+    "name": "Priest Jones",
+    "aliases": [
+      "Priest Jones"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "core",
+    "monitoringPriority": 2,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "website": "https://www.instagram.com/priestjonesmn/",
+    "instagramProfile": "https://www.instagram.com/priestjonesmn/",
+    "spotifyProfile": "https://open.spotify.com/artist/6GZw5pNbFDBOr6h8ha48BX",
+    "youtubeProfile": "https://www.youtube.com/channel/UCJ1QKIUrg93G-BJJ2cV-4fw",
+    "officialImageSource": "https://open.spotify.com/artist/6GZw5pNbFDBOr6h8ha48BX",
+    "imageUrl": "https://i.scdn.co/image/ab67616d0000b27365766fabd158615e000e0033",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 87,
+    "rosterOrder": 86
+  },
+  {
+    "name": "Corincris",
+    "aliases": [
+      "Corincris"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "core",
+    "monitoringPriority": 2,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "website": "https://www.cockybeliefproduction.com/",
+    "instagramProfile": "https://www.instagram.com/corincris/",
+    "spotifyProfile": "https://open.spotify.com/artist/3HPj0fTgMGByddrYrdNPLn",
+    "youtubeProfile": "https://www.youtube.com/channel/UCF-g5-rykdXV5O5uEoz5ggA",
+    "officialImageSource": "https://www.cockybeliefproduction.com/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb9c8a3893503dc3d2ec584a4c",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 88,
+    "rosterOrder": 87,
+    "websiteRegistryVerified": true
+  },
+  {
+    "name": "F’rael",
+    "aliases": [
+      "F’rael",
+      "F'rael",
+      "Frael"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "core",
+    "monitoringPriority": 2,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "website": "https://www.instagram.com/fraelmusic/",
+    "instagramProfile": "https://www.instagram.com/fraelmusic/",
+    "spotifyProfile": "https://open.spotify.com/artist/1bjGUP5zjge68RaUaBSPvW",
+    "youtubeProfile": "https://www.youtube.com/channel/UCuvrJ4Mvi90DWdb9pg98rYw",
+    "officialImageSource": "https://www.instagram.com/fraelmusic/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb13e6fe9f6409ac3fd1efb541",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 89,
+    "rosterOrder": 88
+  },
+  {
+    "name": "Sis N Lil Bro",
+    "aliases": [
+      "Sis N Lil Bro",
+      "Sis N' Lil Bro",
+      "Sis N’ Lil Bro"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "core",
+    "monitoringPriority": 2,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "website": "https://www.instagram.com/wesisnlilbro/",
+    "instagramProfile": "https://www.instagram.com/wesisnlilbro/",
+    "spotifyProfile": "https://open.spotify.com/artist/1Ep8bP4kvEagicoKdAVU9P",
+    "youtubeProfile": "https://www.youtube.com/channel/UCw4Y1XT0kIff0f3kmrs8tSw",
+    "officialImageSource": "https://www.instagram.com/wesisnlilbro/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5ebb41480e744d87b5682478744",
+    "imagePosition": "center",
+    "state": "MN",
+    "bandsintownProfile": "https://www.bandsintown.com/a/15634546-sis-n-lil-bro",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 90,
+    "rosterOrder": 89
+  },
+  {
+    "name": "Kaboose",
+    "aliases": [
+      "Kaboose"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "legacy",
+    "monitoringPriority": 3,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "website": "https://syntaxrecords.com/artist/kaboose/",
+    "instagramProfile": "https://www.instagram.com/kaboose.hiphop/",
+    "spotifyProfile": "https://open.spotify.com/artist/2zD5NNTrgXT3o2RVrRBvv1",
+    "youtubeProfile": "https://music.youtube.com/channel/UCIWddYLDHGIGZJHQ_G46noQ",
+    "officialImageSource": "https://open.spotify.com/artist/2zD5NNTrgXT3o2RVrRBvv1",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3c5bdcc093f62a89789c0f53",
+    "imagePosition": "center",
+    "state": "MN",
+    "bandsintownProfile": "https://www.bandsintown.com/a/66122-kaboose",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 91,
+    "rosterOrder": 90,
+    "websiteRegistryVerified": true
+  },
+  {
+    "name": "TRU-SERVA",
+    "aliases": [
+      "TRU-SERVA",
+      "Tru-Serva",
+      "Tru Serva"
+    ],
+    "enabled": true,
+    "ticketmasterEnabled": false,
+    "category": "legacy",
+    "monitoringPriority": 2,
+    "topStreamingPriority": false,
+    "socialSearchEnabled": true,
+    "activeStatus": "active_or_unknown",
+    "textMatchEnabled": false,
+    "website": "https://www.iamtruserva.com/",
+    "instagramProfile": "https://www.instagram.com/truserva/",
+    "spotifyProfile": "https://open.spotify.com/artist/3LzTEdiDZnEA721VqMYpdV",
+    "youtubeProfile": "https://www.youtube.com/@truserva",
+    "officialImageSource": "https://www.iamtruserva.com/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5ebb5bd510760cb418516ded933",
+    "imagePosition": "center",
+    "state": "MN",
+    "bandsintownProfile": "https://www.bandsintown.com/a/1283580-tru-serva",
+    "sourceRegistryVerified": true,
+    "sourceRegistryRosterOrder": 92,
+    "rosterOrder": 91,
+    "websiteRegistryVerified": true
+  },
+  {
     "name": "Alex Jean",
     "aliases": [
       "Alex Jean"
@@ -1771,7 +1964,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 85
+    "rosterOrder": 92
   },
   {
     "name": "gio.",
@@ -1787,7 +1980,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 86
+    "rosterOrder": 93
   },
   {
     "name": "Torey D'Shaun",
@@ -1804,7 +1997,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 87
+    "rosterOrder": 94
   },
   {
     "name": "Redimi2",
@@ -1820,7 +2013,7 @@
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
     "instagramProfile": "https://www.instagram.com/redimi2/",
-    "rosterOrder": 88
+    "rosterOrder": 95
   },
   {
     "name": "GRITS",
@@ -1836,7 +2029,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 89
+    "rosterOrder": 96
   },
   {
     "name": "Funky",
@@ -1852,7 +2045,7 @@
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
     "instagramProfile": "https://www.instagram.com/funkypr/",
-    "rosterOrder": 90
+    "rosterOrder": 97
   },
   {
     "name": "NF",
@@ -1868,7 +2061,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 91
+    "rosterOrder": 98
   },
   {
     "name": "Nic D",
@@ -1886,7 +2079,7 @@
     "textMatchEnabled": true,
     "ticketmasterAttractionId": "4228898",
     "instagramProfile": "https://www.instagram.com/nicd/",
-    "rosterOrder": 92
+    "rosterOrder": 99
   },
   {
     "name": "Manafest",
@@ -1902,7 +2095,7 @@
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
     "instagramProfile": "https://www.instagram.com/manafest/",
-    "rosterOrder": 93
+    "rosterOrder": 100
   },
   {
     "name": "Pastor Mike Jr.",
@@ -1921,7 +2114,7 @@
     "textMatchEnabled": true,
     "ticketmasterAttractionId": "2978933",
     "instagramProfile": "https://www.instagram.com/pastormikejr/",
-    "rosterOrder": 94
+    "rosterOrder": 101
   },
   {
     "name": "Pregador Luo",
@@ -1936,7 +2129,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 95
+    "rosterOrder": 102
   },
   {
     "name": "Nesk Only",
@@ -1952,7 +2145,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 96
+    "rosterOrder": 103
   },
   {
     "name": "Futuristic",
@@ -1967,7 +2160,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 97
+    "rosterOrder": 104
   },
   {
     "name": "Beacon Light",
@@ -1983,7 +2176,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 98
+    "rosterOrder": 105
   },
   {
     "name": "Sondae",
@@ -1998,7 +2191,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 99
+    "rosterOrder": 106
   },
   {
     "name": "Dee-1",
@@ -2014,7 +2207,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 100
+    "rosterOrder": 107
   },
   {
     "name": "Kieran the Light",
@@ -2029,7 +2222,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 101
+    "rosterOrder": 108
   },
   {
     "name": "Childlike CiCi",
@@ -2045,7 +2238,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 102
+    "rosterOrder": 109
   },
   {
     "name": "Yung Kriss",
@@ -2061,7 +2254,7 @@
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
     "instagramProfile": "https://www.instagram.com/yungkriss/",
-    "rosterOrder": 103
+    "rosterOrder": 110
   },
   {
     "name": "Eluzai",
@@ -2076,7 +2269,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 104
+    "rosterOrder": 111
   },
   {
     "name": "tylerhateslife",
@@ -2092,7 +2285,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "legacy",
     "textMatchEnabled": false,
-    "rosterOrder": 105
+    "rosterOrder": 112
   },
   {
     "name": "S.B.G.",
@@ -2108,7 +2301,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 106
+    "rosterOrder": 113
   },
   {
     "name": "Aha Gazelle",
@@ -2123,7 +2316,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 107
+    "rosterOrder": 114
   },
   {
     "name": "EmanuelDaProphet",
@@ -2139,7 +2332,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 108
+    "rosterOrder": 115
   },
   {
     "name": "Reece Lache'",
@@ -2155,7 +2348,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 109
+    "rosterOrder": 116
   },
   {
     "name": "LaNell Grant",
@@ -2171,7 +2364,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 110
+    "rosterOrder": 117
   },
   {
     "name": "Red Tips",
@@ -2186,7 +2379,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 111
+    "rosterOrder": 118
   },
   {
     "name": "Dell Mac",
@@ -2201,7 +2394,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 112
+    "rosterOrder": 119
   },
   {
     "name": "DJ Mykael V",
@@ -2217,7 +2410,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 113
+    "rosterOrder": 120
   },
   {
     "name": "Mogli the Iceburg",
@@ -2233,7 +2426,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 114
+    "rosterOrder": 121
   },
   {
     "name": "Tommy Royale",
@@ -2248,7 +2441,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 115
+    "rosterOrder": 122
   },
   {
     "name": "Ty Brasel",
@@ -2263,7 +2456,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 116
+    "rosterOrder": 123
   },
   {
     "name": "J. Monty",
@@ -2279,7 +2472,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 117
+    "rosterOrder": 124
   },
   {
     "name": "Datin",
@@ -2294,7 +2487,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 118
+    "rosterOrder": 125
   },
   {
     "name": "Jered Sanders",
@@ -2309,7 +2502,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 119
+    "rosterOrder": 126
   },
   {
     "name": "A.I. The Anomaly",
@@ -2325,7 +2518,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 120
+    "rosterOrder": 127
   },
   {
     "name": "Selah the Corner",
@@ -2340,7 +2533,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 121
+    "rosterOrder": 128
   },
   {
     "name": "Bumps INF",
@@ -2356,7 +2549,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 122
+    "rosterOrder": 129
   },
   {
     "name": "Bryann T",
@@ -2374,7 +2567,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 123
+    "rosterOrder": 130
   },
   {
     "name": "Young Bro",
@@ -2391,7 +2584,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 124
+    "rosterOrder": 131
   },
   {
     "name": "KJ-52",
@@ -2409,7 +2602,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 125,
+    "rosterOrder": 132,
     "website": "https://www.kj52.com/",
     "websiteRegistryVerified": true
   },
@@ -2426,7 +2619,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 126
+    "rosterOrder": 133
   },
   {
     "name": "Sho Baraka",
@@ -2441,7 +2634,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 127
+    "rosterOrder": 134
   },
   {
     "name": "Propaganda",
@@ -2456,7 +2649,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 128
+    "rosterOrder": 135
   },
   {
     "name": "Shai Linne",
@@ -2471,7 +2664,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 129
+    "rosterOrder": 136
   },
   {
     "name": "Thi'sl",
@@ -2487,7 +2680,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 130
+    "rosterOrder": 137
   },
   {
     "name": "Swoope",
@@ -2502,7 +2695,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 131
+    "rosterOrder": 138
   },
   {
     "name": "Mission",
@@ -2517,7 +2710,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 132
+    "rosterOrder": 139
   },
   {
     "name": "DaeShawn Forrest",
@@ -2533,7 +2726,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 133
+    "rosterOrder": 140
   },
   {
     "name": "BigBreeze",
@@ -2549,7 +2742,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 134
+    "rosterOrder": 141
   },
   {
     "name": "C4 Crotona",
@@ -2564,7 +2757,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 135
+    "rosterOrder": 142
   },
   {
     "name": "Alexxander",
@@ -2580,7 +2773,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 136
+    "rosterOrder": 143
   },
   {
     "name": "2819 Worship",
@@ -2596,7 +2789,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 137
+    "rosterOrder": 144
   },
   {
     "name": "George.Rose",
@@ -2612,7 +2805,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 138
+    "rosterOrder": 145
   },
   {
     "name": "Jude Barclay",
@@ -2627,7 +2820,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 139
+    "rosterOrder": 146
   },
   {
     "name": "Kaleb Mitchell",
@@ -2642,7 +2835,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 140
+    "rosterOrder": 147
   },
   {
     "name": "Xay Hill",
@@ -2657,7 +2850,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 141
+    "rosterOrder": 148
   },
   {
     "name": "J. Crum",
@@ -2673,7 +2866,7 @@
     "socialSearchEnabled": true,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 142
+    "rosterOrder": 149
   },
   {
     "name": "Nathan Davis Jr.",
@@ -2689,7 +2882,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 143
+    "rosterOrder": 150
   },
   {
     "name": "Angie Rose",
@@ -2704,7 +2897,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 144
+    "rosterOrder": 151
   },
   {
     "name": "Aasha Marie",
@@ -2720,7 +2913,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 145
+    "rosterOrder": 152
   },
   {
     "name": "R-Swift",
@@ -2736,7 +2929,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 146
+    "rosterOrder": 153
   },
   {
     "name": "No Malice",
@@ -2751,7 +2944,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 147
+    "rosterOrder": 154
   },
   {
     "name": "DC3",
@@ -2766,7 +2959,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 148
+    "rosterOrder": 155
   },
   {
     "name": "Not Klyde",
@@ -2781,7 +2974,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 149
+    "rosterOrder": 156
   },
   {
     "name": "404 Chew",
@@ -2796,7 +2989,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 150
+    "rosterOrder": 157
   },
   {
     "name": "Alphein",
@@ -2811,7 +3004,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 151
+    "rosterOrder": 158
   },
   {
     "name": "Bill B.",
@@ -2826,7 +3019,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 152
+    "rosterOrder": 159
   },
   {
     "name": "G3rm 43",
@@ -2842,7 +3035,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 153
+    "rosterOrder": 160
   },
   {
     "name": "GiNŌSKŌ",
@@ -2858,7 +3051,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 154
+    "rosterOrder": 161
   },
   {
     "name": "Glenn Ray",
@@ -2873,7 +3066,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 155
+    "rosterOrder": 162
   },
   {
     "name": "I.A.N.",
@@ -2889,7 +3082,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 156
+    "rosterOrder": 163
   },
   {
     "name": "IDEGO",
@@ -2904,7 +3097,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 157
+    "rosterOrder": 164
   },
   {
     "name": "Isreal Perez",
@@ -2919,23 +3112,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 158
-  },
-  {
-    "name": "J J L",
-    "aliases": [
-      "J J L",
-      "JJL"
-    ],
-    "enabled": true,
-    "ticketmasterEnabled": false,
-    "category": "core",
-    "monitoringPriority": 2,
-    "topStreamingPriority": false,
-    "socialSearchEnabled": false,
-    "activeStatus": "active_or_unknown",
-    "textMatchEnabled": false,
-    "rosterOrder": 159
+    "rosterOrder": 165
   },
   {
     "name": "Jacob Beard",
@@ -2950,7 +3127,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 160
+    "rosterOrder": 166
   },
   {
     "name": "JWoodz",
@@ -2966,7 +3143,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 161
+    "rosterOrder": 167
   },
   {
     "name": "Kaden Jordan",
@@ -2981,7 +3158,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 162
+    "rosterOrder": 168
   },
   {
     "name": "MAYIA",
@@ -2997,7 +3174,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 163
+    "rosterOrder": 169
   },
   {
     "name": "Megan Tossi",
@@ -3012,7 +3189,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 164
+    "rosterOrder": 170
   },
   {
     "name": "mica",
@@ -3028,7 +3205,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 165
+    "rosterOrder": 171
   },
   {
     "name": "Myles Maestro",
@@ -3043,7 +3220,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 166
+    "rosterOrder": 172
   },
   {
     "name": "Nat Lauren",
@@ -3058,7 +3235,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 167
+    "rosterOrder": 173
   },
   {
     "name": "Peair",
@@ -3073,7 +3250,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 168
+    "rosterOrder": 174
   },
   {
     "name": "Razzie",
@@ -3088,7 +3265,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 169
+    "rosterOrder": 175
   },
   {
     "name": "Saint Jones",
@@ -3103,7 +3280,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 170
+    "rosterOrder": 176
   },
   {
     "name": "Tay Stunna",
@@ -3118,7 +3295,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 171
+    "rosterOrder": 177
   },
   {
     "name": "YakiTheKid",
@@ -3134,7 +3311,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 172
+    "rosterOrder": 178
   },
   {
     "name": "yumiya!",
@@ -3150,7 +3327,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 173,
+    "rosterOrder": 179,
     "imageUrl": "assets/artists/yumiya-primary.jpg",
     "imageSource": "Kingdom Circuit primary local artist image (JPEG)"
   },
@@ -3167,7 +3344,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 174
+    "rosterOrder": 180
   },
   {
     "name": "Kevi Morse",
@@ -3182,7 +3359,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 175
+    "rosterOrder": 181
   },
   {
     "name": "Chris Caro",
@@ -3197,7 +3374,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 176
+    "rosterOrder": 182
   },
   {
     "name": "EJ Swavv",
@@ -3212,7 +3389,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 177
+    "rosterOrder": 183
   },
   {
     "name": "J.Solo",
@@ -3228,7 +3405,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 178
+    "rosterOrder": 184
   },
   {
     "name": "Tds Cam",
@@ -3244,7 +3421,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 179
+    "rosterOrder": 185
   },
   {
     "name": "Kham",
@@ -3259,7 +3436,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 180
+    "rosterOrder": 186
   },
   {
     "name": "WHEREISDAVINCI",
@@ -3275,7 +3452,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 181
+    "rosterOrder": 187
   },
   {
     "name": "Tukool Tiff",
@@ -3290,7 +3467,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 182
+    "rosterOrder": 188
   },
   {
     "name": "Tylynn",
@@ -3305,7 +3482,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 183
+    "rosterOrder": 189
   },
   {
     "name": "De'Aris",
@@ -3321,7 +3498,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 184
+    "rosterOrder": 190
   },
   {
     "name": "Will Kellum",
@@ -3336,7 +3513,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 185
+    "rosterOrder": 191
   },
   {
     "name": "Jonah Daniel",
@@ -3351,7 +3528,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 186
+    "rosterOrder": 192
   },
   {
     "name": "outr.cty",
@@ -3367,7 +3544,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 187
+    "rosterOrder": 193
   },
   {
     "name": "B. Cooper",
@@ -3383,7 +3560,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 188
+    "rosterOrder": 194
   },
   {
     "name": "YP aka Young Paul",
@@ -3400,7 +3577,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 189
+    "rosterOrder": 195
   },
   {
     "name": "Untidld",
@@ -3415,7 +3592,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 190
+    "rosterOrder": 196
   },
   {
     "name": "DEON",
@@ -3430,7 +3607,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 191
+    "rosterOrder": 197
   },
   {
     "name": "Jamil",
@@ -3445,7 +3622,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 192
+    "rosterOrder": 198
   },
   {
     "name": "Kvng Flvcko",
@@ -3460,7 +3637,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 193
+    "rosterOrder": 199
   },
   {
     "name": "MotionPlus",
@@ -3475,7 +3652,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 194
+    "rosterOrder": 200
   },
   {
     "name": "Adriel Cruz",
@@ -3490,7 +3667,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 195
+    "rosterOrder": 201
   },
   {
     "name": "Drea LP",
@@ -3505,7 +3682,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 196
+    "rosterOrder": 202
   },
   {
     "name": "Solachi Voz",
@@ -3520,7 +3697,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 197
+    "rosterOrder": 203
   },
   {
     "name": "Jeannie Ortega",
@@ -3535,7 +3712,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 198
+    "rosterOrder": 204
   },
   {
     "name": "A Mose",
@@ -3551,7 +3728,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 199
+    "rosterOrder": 205
   },
   {
     "name": "Arielle Nichole",
@@ -3566,7 +3743,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 200
+    "rosterOrder": 206
   },
   {
     "name": "Jekasole",
@@ -3581,7 +3758,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 201
+    "rosterOrder": 207
   },
   {
     "name": "Heesun Lee",
@@ -3596,7 +3773,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 202
+    "rosterOrder": 208
   },
   {
     "name": "Mahogany Jones",
@@ -3611,7 +3788,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 203
+    "rosterOrder": 209
   },
   {
     "name": "Linga TheBoss",
@@ -3626,7 +3803,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 204
+    "rosterOrder": 210
   },
   {
     "name": "Latoria",
@@ -3641,7 +3818,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 205
+    "rosterOrder": 211
   },
   {
     "name": "Shy Speaks",
@@ -3656,7 +3833,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 206
+    "rosterOrder": 212
   },
   {
     "name": "Serious Voice",
@@ -3671,7 +3848,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 207
+    "rosterOrder": 213
   },
   {
     "name": "Tarcea Renee",
@@ -3686,7 +3863,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 208
+    "rosterOrder": 214
   },
   {
     "name": "4eva",
@@ -3701,7 +3878,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 209
+    "rosterOrder": 215
   },
   {
     "name": "Ada Betsabé",
@@ -3716,7 +3893,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 210
+    "rosterOrder": 216
   },
   {
     "name": "BreeKay & Kasairi",
@@ -3732,7 +3909,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 211
+    "rosterOrder": 217
   },
   {
     "name": "Bri Smilez",
@@ -3747,7 +3924,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 212
+    "rosterOrder": 218
   },
   {
     "name": "Butta P",
@@ -3762,7 +3939,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 213
+    "rosterOrder": 219
   },
   {
     "name": "Carita Cole",
@@ -3777,7 +3954,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 214
+    "rosterOrder": 220
   },
   {
     "name": "Cass",
@@ -3792,7 +3969,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 215
+    "rosterOrder": 221
   },
   {
     "name": "Dice Gamble",
@@ -3807,7 +3984,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 216
+    "rosterOrder": 222
   },
   {
     "name": "Keiana",
@@ -3822,7 +3999,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 217
+    "rosterOrder": 223
   },
   {
     "name": "Licy Be",
@@ -3837,7 +4014,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 218
+    "rosterOrder": 224
   },
   {
     "name": "Pristavia",
@@ -3852,7 +4029,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 219
+    "rosterOrder": 225
   },
   {
     "name": "Kay Sade",
@@ -3867,7 +4044,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 220
+    "rosterOrder": 226
   },
   {
     "name": "Jackie Legere",
@@ -3882,7 +4059,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 221
+    "rosterOrder": 227
   },
   {
     "name": "Foure",
@@ -3897,7 +4074,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 222
+    "rosterOrder": 228
   },
   {
     "name": "Chozenn",
@@ -3912,7 +4089,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 223
+    "rosterOrder": 229
   },
   {
     "name": "V. Rose",
@@ -3928,7 +4105,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 224
+    "rosterOrder": 230
   },
   {
     "name": "Mike REAL",
@@ -3944,7 +4121,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 225
+    "rosterOrder": 231
   },
   {
     "name": "Spec",
@@ -3959,7 +4136,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 226
+    "rosterOrder": 232
   },
   {
     "name": "Christon Gray",
@@ -3974,7 +4151,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 227
+    "rosterOrder": 233
   },
   {
     "name": "Dre Murray",
@@ -3989,7 +4166,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 228
+    "rosterOrder": 234
   },
   {
     "name": "S.O.",
@@ -4005,7 +4182,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 229
+    "rosterOrder": 235
   },
   {
     "name": "Reconcile",
@@ -4020,7 +4197,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 230
+    "rosterOrder": 236
   },
   {
     "name": "Corey Paul",
@@ -4035,7 +4212,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 231
+    "rosterOrder": 237
   },
   {
     "name": "Alex Faith",
@@ -4050,7 +4227,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 232
+    "rosterOrder": 238
   },
   {
     "name": "Tony Tillman",
@@ -4065,7 +4242,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 233
+    "rosterOrder": 239
   },
   {
     "name": "Dillon Chase",
@@ -4080,7 +4257,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 234
+    "rosterOrder": 240
   },
   {
     "name": "Json",
@@ -4095,7 +4272,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 235
+    "rosterOrder": 241
   },
   {
     "name": "J.R.",
@@ -4111,7 +4288,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 236
+    "rosterOrder": 242
   },
   {
     "name": "Stephen the Levite",
@@ -4126,7 +4303,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 237
+    "rosterOrder": 243
   },
   {
     "name": "Timothy Brindle",
@@ -4141,7 +4318,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 238
+    "rosterOrder": 244
   },
   {
     "name": "Hazakim",
@@ -4156,7 +4333,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 239
+    "rosterOrder": 245
   },
   {
     "name": "Evangel",
@@ -4171,7 +4348,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 240
+    "rosterOrder": 246
   },
   {
     "name": "God's Servant",
@@ -4187,7 +4364,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 241
+    "rosterOrder": 247
   },
   {
     "name": "Beautiful Eulogy",
@@ -4202,7 +4379,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 242
+    "rosterOrder": 248
   },
   {
     "name": "116",
@@ -4218,7 +4395,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 243
+    "rosterOrder": 249
   },
   {
     "name": "350",
@@ -4233,7 +4410,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 244
+    "rosterOrder": 250
   },
   {
     "name": "Battz",
@@ -4248,7 +4425,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 245
+    "rosterOrder": 251
   },
   {
     "name": "Byron Juane",
@@ -4263,7 +4440,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 246
+    "rosterOrder": 252
   },
   {
     "name": "Coby James",
@@ -4278,7 +4455,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 247
+    "rosterOrder": 253
   },
   {
     "name": "De La Cruz",
@@ -4293,7 +4470,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 248
+    "rosterOrder": 254
   },
   {
     "name": "Gavin the HotRod",
@@ -4309,7 +4486,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 249
+    "rosterOrder": 255
   },
   {
     "name": "Hollyn",
@@ -4324,7 +4501,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 250
+    "rosterOrder": 256
   },
   {
     "name": "JGivens",
@@ -4340,7 +4517,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 251
+    "rosterOrder": 257
   },
   {
     "name": "Kings Kaleidoscope",
@@ -4355,7 +4532,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 252
+    "rosterOrder": 258
   },
   {
     "name": "Odd Thomas",
@@ -4370,7 +4547,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 253
+    "rosterOrder": 259
   },
   {
     "name": "Q-Flo",
@@ -4386,7 +4563,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 254
+    "rosterOrder": 260
   },
   {
     "name": "Ryan Trey",
@@ -4401,7 +4578,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 255
+    "rosterOrder": 261
   },
   {
     "name": "Swaizy",
@@ -4416,7 +4593,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 256
+    "rosterOrder": 262
   },
   {
     "name": "The Weathrman",
@@ -4432,7 +4609,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 257
+    "rosterOrder": 263
   },
   {
     "name": "Toschii",
@@ -4447,7 +4624,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 258
+    "rosterOrder": 264
   },
   {
     "name": "Trendsetter Sense",
@@ -4462,7 +4639,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 259
+    "rosterOrder": 265
   },
   {
     "name": "J.List",
@@ -4480,7 +4657,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 260
+    "rosterOrder": 266
   },
   {
     "name": "D-Maub",
@@ -4497,7 +4674,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 261
+    "rosterOrder": 267
   },
   {
     "name": "K-Drama",
@@ -4515,7 +4692,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 262,
+    "rosterOrder": 268,
     "website": "https://k-dramatherapper.com/",
     "websiteRegistryVerified": true
   },
@@ -4533,7 +4710,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 263
+    "rosterOrder": 269
   },
   {
     "name": "Taelor Gray",
@@ -4549,7 +4726,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 264,
+    "rosterOrder": 270,
     "website": "https://www.taelorgray.com/",
     "websiteRegistryVerified": true
   },
@@ -4571,7 +4748,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 265
+    "rosterOrder": 271
   },
   {
     "name": "IMRSQD",
@@ -4588,7 +4765,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 266,
+    "rosterOrder": 272,
     "website": "https://alienzalive.com/artist/imrsqd/",
     "websiteRegistryVerified": true
   },
@@ -4608,7 +4785,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 267,
+    "rosterOrder": 273,
     "website": "https://www.tjcarrollmusic.com/",
     "websiteRegistryVerified": true
   },
@@ -4627,7 +4804,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 268
+    "rosterOrder": 274
   },
   {
     "name": "CJ Emulous",
@@ -4645,7 +4822,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 269,
+    "rosterOrder": 275,
     "website": "https://www.cjemulous.com/",
     "websiteRegistryVerified": true
   },
@@ -4665,7 +4842,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 270
+    "rosterOrder": 276
   },
   {
     "name": "Pishko",
@@ -4682,7 +4859,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 271
+    "rosterOrder": 277
   },
   {
     "name": "Paul Russell",
@@ -4698,7 +4875,7 @@
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
     "ticketmasterAttractionId": "3031627",
-    "rosterOrder": 272
+    "rosterOrder": 278
   },
   {
     "name": "MC Jin",
@@ -4714,7 +4891,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 273
+    "rosterOrder": 279
   },
   {
     "name": "Gemstones",
@@ -4729,7 +4906,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 274
+    "rosterOrder": 280
   },
   {
     "name": "Mouthpi3ce",
@@ -4744,7 +4921,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 275
+    "rosterOrder": 281
   },
   {
     "name": "John Givez",
@@ -4759,7 +4936,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 276
+    "rosterOrder": 282
   },
   {
     "name": "Beleaf",
@@ -4774,7 +4951,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 277
+    "rosterOrder": 283
   },
   {
     "name": "J. Han",
@@ -4790,7 +4967,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 278
+    "rosterOrder": 284
   },
   {
     "name": "Sam Ock",
@@ -4805,7 +4982,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 279
+    "rosterOrder": 285
   },
   {
     "name": "Dream Junkies",
@@ -4820,7 +4997,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 280
+    "rosterOrder": 286
   },
   {
     "name": "Jet Trouble",
@@ -4835,7 +5012,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 281
+    "rosterOrder": 287
   },
   {
     "name": "Skrip",
@@ -4850,7 +5027,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 282
+    "rosterOrder": 288
   },
   {
     "name": "Deraj",
@@ -4865,7 +5042,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 283
+    "rosterOrder": 289
   },
   {
     "name": "Surf Gvng",
@@ -4880,7 +5057,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 284
+    "rosterOrder": 290
   },
   {
     "name": "Ki'Shon Furlow",
@@ -4896,7 +5073,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 285
+    "rosterOrder": 291
   },
   {
     "name": "Dru Bex",
@@ -4911,7 +5088,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 286
+    "rosterOrder": 292
   },
   {
     "name": "Brinson",
@@ -4926,7 +5103,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 287
+    "rosterOrder": 293
   },
   {
     "name": "Mr. Del",
@@ -4941,7 +5118,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 288
+    "rosterOrder": 294
   },
   {
     "name": "Pettidee",
@@ -4956,7 +5133,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 289
+    "rosterOrder": 295
   },
   {
     "name": "Fresh IE",
@@ -4972,7 +5149,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 290
+    "rosterOrder": 296
   },
   {
     "name": "Applejaxx",
@@ -4987,7 +5164,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 291
+    "rosterOrder": 297
   },
   {
     "name": "Fedel",
@@ -5002,7 +5179,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 292
+    "rosterOrder": 298
   },
   {
     "name": "Antwoine Hill",
@@ -5017,7 +5194,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 293
+    "rosterOrder": 299
   },
   {
     "name": "Brandon Trejo",
@@ -5032,7 +5209,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 294
+    "rosterOrder": 300
   },
   {
     "name": "Monica Hill Trejo",
@@ -5047,7 +5224,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 295
+    "rosterOrder": 301
   },
   {
     "name": "Moe Grant",
@@ -5062,7 +5239,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 296
+    "rosterOrder": 302
   },
   {
     "name": "Isaiah Robin",
@@ -5077,7 +5254,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 297
+    "rosterOrder": 303
   },
   {
     "name": "Guvna B",
@@ -5092,7 +5269,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 298
+    "rosterOrder": 304
   },
   {
     "name": "Faith Child",
@@ -5107,7 +5284,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 299
+    "rosterOrder": 305
   },
   {
     "name": "Still Shadey",
@@ -5122,7 +5299,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 300
+    "rosterOrder": 306
   },
   {
     "name": "Feed'Em",
@@ -5138,7 +5315,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 301
+    "rosterOrder": 307
   },
   {
     "name": "Reblah",
@@ -5153,7 +5330,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 302
+    "rosterOrder": 308
   },
   {
     "name": "Triple O",
@@ -5168,7 +5345,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 303
+    "rosterOrder": 309
   },
   {
     "name": "A Star",
@@ -5183,7 +5360,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": false,
-    "rosterOrder": 304
+    "rosterOrder": 310
   },
   {
     "name": "J Vessel",
@@ -5199,7 +5376,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 305
+    "rosterOrder": 311
   },
   {
     "name": "Dwayne Tryumf",
@@ -5214,7 +5391,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 306
+    "rosterOrder": 312
   },
   {
     "name": "Manny Montes",
@@ -5229,7 +5406,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 307
+    "rosterOrder": 313
   },
   {
     "name": "Alex Zurdo",
@@ -5244,7 +5421,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 308
+    "rosterOrder": 314
   },
   {
     "name": "Musiko",
@@ -5259,7 +5436,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 309
+    "rosterOrder": 315
   },
   {
     "name": "Indiomar",
@@ -5274,7 +5451,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 310
+    "rosterOrder": 316
   },
   {
     "name": "Gabriel EMC",
@@ -5289,7 +5466,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 311
+    "rosterOrder": 317
   },
   {
     "name": "Jay Kalyl",
@@ -5304,7 +5481,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 312
+    "rosterOrder": 318
   },
   {
     "name": "Niko Eme",
@@ -5319,7 +5496,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 313
+    "rosterOrder": 319
   },
   {
     "name": "Lizzy Parra",
@@ -5334,7 +5511,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 314
+    "rosterOrder": 320
   },
   {
     "name": "Rubinsky RBK",
@@ -5349,7 +5526,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 315
+    "rosterOrder": 321
   },
   {
     "name": "Madiel Lara",
@@ -5364,7 +5541,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 316
+    "rosterOrder": 322
   },
   {
     "name": "Ariel Kelly",
@@ -5379,7 +5556,7 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 317
+    "rosterOrder": 323
   },
   {
     "name": "Oba Reengy",
@@ -5394,6 +5571,6 @@
     "socialSearchEnabled": false,
     "activeStatus": "active_or_unknown",
     "textMatchEnabled": true,
-    "rosterOrder": 318
+    "rosterOrder": 324
   }
 ]

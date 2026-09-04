@@ -98,6 +98,13 @@ const ARTIST_ROSTER_ORDER = [
   "Jay-Way",
   "Stixx aka Conejo",
   "Ruslan",
+  "J J L",
+  "Priest Jones",
+  "Corincris",
+  "F’rael",
+  "Sis N Lil Bro",
+  "Kaboose",
+  "TRU-SERVA",
   "Alex Jean",
   "gio.",
   "Torey D'Shaun",
@@ -172,7 +179,6 @@ const ARTIST_ROSTER_ORDER = [
   "I.A.N.",
   "IDEGO",
   "Isreal Perez",
-  "J J L",
   "Jacob Beard",
   "JWoodz",
   "Kaden Jordan",
@@ -1234,8 +1240,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/6j8t8rQzrAtRx5tYImodgd",
     "youtubeProfile": "https://www.youtube.com/channel/UCAvlfmD2aiqXxxknr-9VSVg",
     "officialImageSource": "https://www.instagram.com/cutthecho/",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 79
+    "sourceRegistryVerified": true
   },
   "dkg kie": {
     "aliases": [
@@ -1246,8 +1251,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/1eeYg6dFkaRT5GA0lsCVHA",
     "youtubeProfile": "https://www.youtube.com/@dkgkie",
     "officialImageSource": "https://www.instagram.com/dkg.kie",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 80
+    "sourceRegistryVerified": true
   },
   "braille": {
     "aliases": [
@@ -1258,8 +1262,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/6RYTz1tFNDF2qP0mwqEwDO",
     "youtubeProfile": "https://www.youtube.com/@bryanbraille",
     "officialImageSource": "https://www.humblebeast.com/music/braille",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 81
+    "sourceRegistryVerified": true
   },
   "canton jones": {
     "aliases": [
@@ -1270,8 +1273,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/3nzEXHMRFWTw4zt3pVRv6V",
     "youtubeProfile": "https://www.youtube.com/@CantonJones1",
     "officialImageSource": "https://www.instagram.com/thecantonjones/?hl=en",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 82
+    "sourceRegistryVerified": true
   },
   "jay-way": {
     "aliases": [
@@ -1283,8 +1285,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/1RDbE3dM2bNNSTh88R4MQ7",
     "youtubeProfile": "https://www.youtube.com/@JayWayTheAlien",
     "officialImageSource": "https://www.jaywaythealien.com/",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 83
+    "sourceRegistryVerified": true
   },
   "stixx aka conejo": {
     "aliases": [
@@ -1296,8 +1297,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/3khYLvZ6GmLlPMPlTfMTBr",
     "youtubeProfile": "https://www.youtube.com/@stixxwym/videos",
     "officialImageSource": "https://linktr.ee/stixxwym",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 84
+    "sourceRegistryVerified": true
   },
   "ruslan": {
     "aliases": [
@@ -1309,23 +1309,112 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/2GEXrCflKZ5S5ZHBM4LNcV",
     "youtubeProfile": "https://www.youtube.com/@RuslanKD/featured",
     "officialImageSource": "https://www.instagram.com/ruslankd/?hl=en",
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 85
+    "sourceRegistryVerified": true
   },
-  "caleb gordon": {
+  "j j l": {
     "aliases": [
-      "Caleb Gordon"
+      "J J L",
+      "JJL"
     ],
-    "website": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
-    "instagramProfile": "https://www.instagram.com/calebfromeden/",
-    "spotifyProfile": "https://open.spotify.com/artist/6s3XaJkcT7464G4oII9V41",
-    "youtubeProfile": "https://www.youtube.com/@CalebGordon",
-    "officialImageSource": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
-    "imageUrl": "https://tprlive.co/cdn/shop/files/ARTIST_HEADSHOT_36.jpg?v=1776887171&width=1797",
+    "website": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "instagramProfile": "https://www.instagram.com/jjl_music/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "youtubeProfile": "https://music.youtube.com/channel/UC0vTVAlJijP9UvlEeezSmjw",
+    "officialImageSource": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb04e00b6b9c43eecf6f19ca78",
     "imagePosition": "center",
-    "preferArtistImage": true,
-    "sourceRegistryVerified": true,
-    "sourceRegistryRosterOrder": 4
+    "state": "MN",
+    "sourceRegistryVerified": true
+  },
+  "priest jones": {
+    "aliases": [
+      "Priest Jones"
+    ],
+    "website": "https://www.instagram.com/priestjonesmn/",
+    "instagramProfile": "https://www.instagram.com/priestjonesmn/",
+    "spotifyProfile": "https://open.spotify.com/artist/6GZw5pNbFDBOr6h8ha48BX",
+    "youtubeProfile": "https://www.youtube.com/channel/UCJ1QKIUrg93G-BJJ2cV-4fw",
+    "officialImageSource": "https://open.spotify.com/artist/6GZw5pNbFDBOr6h8ha48BX",
+    "imageUrl": "https://i.scdn.co/image/ab67616d0000b27365766fabd158615e000e0033",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true
+  },
+  "corincris": {
+    "aliases": [
+      "Corincris"
+    ],
+    "website": "https://www.cockybeliefproduction.com/",
+    "instagramProfile": "https://www.instagram.com/corincris/",
+    "spotifyProfile": "https://open.spotify.com/artist/3HPj0fTgMGByddrYrdNPLn",
+    "youtubeProfile": "https://www.youtube.com/channel/UCF-g5-rykdXV5O5uEoz5ggA",
+    "officialImageSource": "https://www.cockybeliefproduction.com/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb9c8a3893503dc3d2ec584a4c",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true
+  },
+  "f’rael": {
+    "aliases": [
+      "F’rael",
+      "F'rael",
+      "Frael"
+    ],
+    "website": "https://www.instagram.com/fraelmusic/",
+    "instagramProfile": "https://www.instagram.com/fraelmusic/",
+    "spotifyProfile": "https://open.spotify.com/artist/1bjGUP5zjge68RaUaBSPvW",
+    "youtubeProfile": "https://www.youtube.com/channel/UCuvrJ4Mvi90DWdb9pg98rYw",
+    "officialImageSource": "https://www.instagram.com/fraelmusic/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb13e6fe9f6409ac3fd1efb541",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true
+  },
+  "sis n lil bro": {
+    "aliases": [
+      "Sis N Lil Bro",
+      "Sis N' Lil Bro",
+      "Sis N’ Lil Bro"
+    ],
+    "website": "https://www.instagram.com/wesisnlilbro/",
+    "instagramProfile": "https://www.instagram.com/wesisnlilbro/",
+    "spotifyProfile": "https://open.spotify.com/artist/1Ep8bP4kvEagicoKdAVU9P",
+    "youtubeProfile": "https://www.youtube.com/channel/UCw4Y1XT0kIff0f3kmrs8tSw",
+    "officialImageSource": "https://www.instagram.com/wesisnlilbro/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5ebb41480e744d87b5682478744",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true
+  },
+  "kaboose": {
+    "aliases": [
+      "Kaboose"
+    ],
+    "website": "https://syntaxrecords.com/artist/kaboose/",
+    "instagramProfile": "https://www.instagram.com/kaboose.hiphop/",
+    "spotifyProfile": "https://open.spotify.com/artist/2zD5NNTrgXT3o2RVrRBvv1",
+    "youtubeProfile": "https://music.youtube.com/channel/UCIWddYLDHGIGZJHQ_G46noQ",
+    "officialImageSource": "https://open.spotify.com/artist/2zD5NNTrgXT3o2RVrRBvv1",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3c5bdcc093f62a89789c0f53",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true
+  },
+  "tru-serva": {
+    "aliases": [
+      "TRU-SERVA",
+      "Tru-Serva",
+      "Tru Serva"
+    ],
+    "website": "https://www.iamtruserva.com/",
+    "instagramProfile": "https://www.instagram.com/truserva/",
+    "spotifyProfile": "https://open.spotify.com/artist/3LzTEdiDZnEA721VqMYpdV",
+    "youtubeProfile": "https://www.youtube.com/@truserva",
+    "officialImageSource": "https://www.iamtruserva.com/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5ebb5bd510760cb418516ded933",
+    "imagePosition": "center",
+    "state": "MN",
+    "sourceRegistryVerified": true
   }
 };
 const ARTIST_OVERRIDES = {
