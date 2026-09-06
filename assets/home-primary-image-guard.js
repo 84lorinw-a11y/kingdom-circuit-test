@@ -42,18 +42,23 @@
   }
 
   function loadRedesignStyles() {
-    if (document.querySelector('link[data-kc-redesign="v1"]')) return;
+    const existing = document.querySelector('link[data-kc-redesign]');
+    if (existing) {
+      existing.href = "/kingdom-circuit-test/assets/redesign-v1.css?v=2";
+      existing.dataset.kcRedesign = "v2";
+      return;
+    }
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "/kingdom-circuit-test/assets/redesign-v1.css?v=1";
-    link.dataset.kcRedesign = "v1";
+    link.href = "/kingdom-circuit-test/assets/redesign-v1.css?v=2";
+    link.dataset.kcRedesign = "v2";
     document.head.appendChild(link);
   }
 
   function applyNewLogo() {
     const logo = document.querySelector(".brand img");
     if (!logo) return;
-    logo.src = "/kingdom-circuit-test/assets/logo-stage.svg?v=1";
+    logo.src = "/kingdom-circuit-test/assets/logo-stage.svg?v=2";
     logo.alt = "Kingdom Circuit";
   }
 
@@ -104,7 +109,7 @@
     addDesktopNav();
     setHeroImage(grid);
     addBrandStrip();
-    document.body.dataset.kcRedesign = "v1";
+    document.body.dataset.kcRedesign = "v2";
   }
 
   function start() {
