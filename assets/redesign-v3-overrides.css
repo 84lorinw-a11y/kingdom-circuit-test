@@ -1,4 +1,4 @@
-/* Kingdom Circuit redesign v3 polish — test site only */
+/* Kingdom Circuit redesign v4 polish — test site only */
 :root{
   --kc-red:#8a332b;
   --kc-red-soft:#b06a60;
@@ -20,10 +20,21 @@ body[data-page="home"] .home-path-card:first-child:hover{
 body[data-page="home"] .home-path-arrow{
   color:#b06a60 !important;
 }
+.header-inner{
+  min-height:78px !important;
+}
 .brand img{
+  width:270px !important;
+  height:58px !important;
   object-fit:contain !important;
-  object-position:center !important;
+  object-position:left center !important;
+  display:block !important;
+}
+@media(max-width:900px){
+  .header-inner{min-height:76px !important;}
+  .brand img{width:245px !important;height:52px !important;}
 }
 @media(max-width:600px){
-  .brand img{width:164px !important;height:90px !important;}
+  .header-inner{min-height:74px !important;padding-top:8px !important;padding-bottom:8px !important;}
+  .brand img{width:220px !important;height:48px !important;}
 }
