@@ -41,25 +41,40 @@
     grid.querySelectorAll(".event-card").forEach(enforceCard);
   }
 
-  function loadRedesignStyles() {
-    const existing = document.querySelector('link[data-kc-redesign]');
-    if (existing) {
-      existing.href = "/kingdom-circuit-test/assets/redesign-v1.css?v=2";
-      existing.dataset.kcRedesign = "v2";
-      return;
+  function ensureStylesheet(selector, href, version) {
+    let link = document.querySelector(selector);
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
     }
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "/kingdom-circuit-test/assets/redesign-v1.css?v=2";
-    link.dataset.kcRedesign = "v2";
-    document.head.appendChild(link);
+    link.href = href;
+    link.dataset.kcRedesign = version;
+    return link;
+  }
+
+  function loadRedesignStyles() {
+    ensureStylesheet(
+      'link[data-kc-redesign="base"], link[data-kc-redesign="v2"], link[data-kc-redesign="v3"]',
+      "/kingdom-circuit-test/assets/redesign-v1.css?v=3",
+      "base"
+    );
+    ensureStylesheet(
+      'link[data-kc-redesign-overrides]',
+      "/kingdom-circuit-test/assets/redesign-v3-overrides.css?v=3",
+      "overrides"
+    ).dataset.kcRedesignOverrides = "v3";
   }
 
   function applyNewLogo() {
     const logo = document.querySelector(".brand img");
     if (!logo) return;
-    logo.src = "/kingdom-circuit-test/assets/logo-stage.svg?v=2";
     logo.alt = "Kingdom Circuit";
+    logo.onerror = function () {
+      this.onerror = null;
+      this.src = "/kingdom-circuit-test/assets/logo.png";
+    };
+    logo.src = "/kingdom-circuit-test/assets/logo-stage.svg?v=3";
   }
 
   function addDesktopNav() {
@@ -109,7 +124,7 @@
     addDesktopNav();
     setHeroImage(grid);
     addBrandStrip();
-    document.body.dataset.kcRedesign = "v2";
+    document.body.dataset.kcRedesign = "v3";
   }
 
   function start() {
