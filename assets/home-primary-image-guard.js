@@ -61,9 +61,9 @@
     );
     ensureStylesheet(
       'link[data-kc-redesign-overrides]',
-      "/kingdom-circuit-test/assets/redesign-v3-overrides.css?v=3",
+      "/kingdom-circuit-test/assets/redesign-v3-overrides.css?v=4",
       "overrides"
-    ).dataset.kcRedesignOverrides = "v3";
+    ).dataset.kcRedesignOverrides = "v4";
   }
 
   function applyNewLogo() {
@@ -74,7 +74,7 @@
       this.onerror = null;
       this.src = "/kingdom-circuit-test/assets/logo.png";
     };
-    logo.src = "/kingdom-circuit-test/assets/logo-stage.svg?v=3";
+    logo.src = "/kingdom-circuit-test/assets/logo-wordmark.svg?v=1";
   }
 
   function addDesktopNav() {
@@ -124,7 +124,7 @@
     addDesktopNav();
     setHeroImage(grid);
     addBrandStrip();
-    document.body.dataset.kcRedesign = "v3";
+    document.body.dataset.kcRedesign = "v4";
   }
 
   function start() {
