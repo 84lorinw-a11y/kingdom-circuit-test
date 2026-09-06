@@ -41,13 +41,84 @@
     grid.querySelectorAll(".event-card").forEach(enforceCard);
   }
 
+  function loadRedesignStyles() {
+    if (document.querySelector('link[data-kc-redesign="v1"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "/kingdom-circuit-test/assets/redesign-v1.css?v=1";
+    link.dataset.kcRedesign = "v1";
+    document.head.appendChild(link);
+  }
+
+  function applyNewLogo() {
+    const logo = document.querySelector(".brand img");
+    if (!logo) return;
+    logo.src = "/kingdom-circuit-test/assets/logo-stage.svg?v=1";
+    logo.alt = "Kingdom Circuit";
+  }
+
+  function addDesktopNav() {
+    const inner = document.querySelector(".header-inner");
+    if (!inner || inner.querySelector(".kc-desktop-nav")) return;
+    const nav = document.createElement("nav");
+    nav.className = "kc-desktop-nav";
+    nav.setAttribute("aria-label", "Quick navigation");
+    nav.innerHTML = [
+      '<a href="/kingdom-circuit-test/shows/">Shows</a>',
+      '<a href="/kingdom-circuit-test/artists/">Artists</a>',
+      '<a href="/kingdom-circuit-test/festivals/">Festivals</a>',
+      '<a href="/kingdom-circuit-test/shows/">Cities</a>',
+      '<a href="/kingdom-circuit-test/submit/">Submit</a>',
+      '<a class="kc-nav-cta" href="#calendar">Find a show</a>'
+    ].join("");
+    const menu = inner.querySelector(".menu-toggle");
+    inner.insertBefore(nav, menu || null);
+  }
+
+  function setHeroImage(grid) {
+    const cards = [...grid.querySelectorAll(".event-card")];
+    const preferred = cards.find(card => {
+      const artists = normalize(card.querySelector(".artist-line")?.textContent || "");
+      return artists.includes("hulvey") || artists.includes("social club misfits") || artists.includes("kb");
+    }) || cards[0];
+    const img = preferred?.querySelector(".event-media img");
+    const src = img?.currentSrc || img?.src || img?.getAttribute("src");
+    if (!src) return;
+    document.body.style.setProperty("--kc-hero-image", `url("${src.replace(/"/g, "\\\"")}")`);
+  }
+
+  function addBrandStrip() {
+    if (document.querySelector(".kc-redesign-strip")) return;
+    const footer = document.querySelector(".site-footer");
+    if (!footer) return;
+    const strip = document.createElement("section");
+    strip.className = "kc-redesign-strip";
+    strip.setAttribute("aria-label", "Kingdom Circuit brand statement");
+    strip.innerHTML = '<div><strong>Christian Hip Hop. Shows. Community. Impact.</strong><i></i></div><span>Connecting people with CHH music, concerts, festivals, and community.</span>';
+    footer.parentNode.insertBefore(strip, footer);
+  }
+
+  function applyRedesign(grid) {
+    loadRedesignStyles();
+    applyNewLogo();
+    addDesktopNav();
+    setHeroImage(grid);
+    addBrandStrip();
+    document.body.dataset.kcRedesign = "v1";
+  }
+
   function start() {
     if (document.body?.dataset?.page !== "home") return;
     const grid = document.querySelector("[data-event-grid]");
     if (!grid) return;
 
     enforceGrid(grid);
-    const observer = new MutationObserver(() => enforceGrid(grid));
+    applyRedesign(grid);
+
+    const observer = new MutationObserver(() => {
+      enforceGrid(grid);
+      setHeroImage(grid);
+    });
     observer.observe(grid, { childList: true, subtree: true });
   }
 
