@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 820" role="img" aria-labelledby="title desc">
+  <title id="title">Kingdom Circuit</title>
+  <desc id="desc">Kingdom Circuit wordmark framed by a concert stage truss and speakers.</desc>
+  <g fill="none" stroke="#fff" stroke-width="18" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M92 92H908V204H92Z"/>
+    <path d="M92 204V676M908 204V676"/>
+    <path d="M92 92l92 112 100-112 100 112 116-112 116 112 100-112 92 112"/>
+    <path d="M92 204l92 94-92 94 92 94-92 94 92 96M908 204l-92 94 92 94-92 94 92 94-92 96"/>
+    <path d="M42 744H958"/>
+    <rect x="64" y="532" width="176" height="212" rx="4"/>
+    <rect x="760" y="532" width="176" height="212" rx="4"/>
+    <circle cx="152" cy="600" r="48"/><circle cx="152" cy="685" r="48"/>
+    <circle cx="848" cy="600" r="48"/><circle cx="848" cy="685" r="48"/>
+    <circle cx="152" cy="600" r="14" fill="#fff"/><circle cx="152" cy="685" r="14" fill="#fff"/>
+    <circle cx="848" cy="600" r="14" fill="#fff"/><circle cx="848" cy="685" r="14" fill="#fff"/>
+  </g>
+  <g fill="#fff" font-family="Arial Narrow,Arial,Helvetica,sans-serif" font-weight="900" text-anchor="middle">
+    <text x="500" y="410" font-size="168" letter-spacing="-8">KINGDOM</text>
+    <text x="500" y="548" font-size="158" letter-spacing="-7">CIRCUIT</text>
+  </g>
+</svg>
