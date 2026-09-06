@@ -1,15 +1,15 @@
 "use strict";
 
 (() => {
-  const fallback = "/assets/event-fallback.webp";
+  const fallback = "/kingdom-circuit-test/assets/event-fallback.webp";
   const targets = [
     {
       artist: "rare of breed",
-      src: "/assets/artists/rare-of-breed-primary.jpg?v=20260830-home-1"
+      src: "/kingdom-circuit-test/assets/artists/rare-of-breed-primary.jpg?v=20260830-home-1"
     },
     {
       artist: "yumiya!",
-      src: "/assets/artists/yumiya-primary.jpg?v=20260830-home-1"
+      src: "/kingdom-circuit-test/assets/artists/yumiya-primary.jpg?v=20260830-home-1"
     }
   ];
 
@@ -18,11 +18,16 @@
   function enforceCard(card) {
     if (!(card instanceof Element)) return;
     const artistLine = normalize(card.querySelector(".artist-line")?.textContent || "");
-    const target = targets.find(item => artistLine.includes(item.artist));
-    if (!target) return;
-
     const img = card.querySelector(".event-media img");
     if (!img) return;
+
+    const currentSrc = String(img.getAttribute("src") || "");
+    if (img.classList.contains("event-artwork") && currentSrc && !currentSrc.includes("event-fallback.webp")) {
+      return;
+    }
+
+    const target = targets.find(item => artistLine === item.artist);
+    if (!target) return;
 
     img.dataset.kcPrimaryLocked = "1";
     img.classList.remove("event-artwork");
@@ -41,104 +46,13 @@
     grid.querySelectorAll(".event-card").forEach(enforceCard);
   }
 
-  function ensureStylesheet(selector, href, version) {
-    let link = document.querySelector(selector);
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = "stylesheet";
-      document.head.appendChild(link);
-    }
-    link.href = href;
-    link.dataset.kcRedesign = version;
-    return link;
-  }
-
-  function loadRedesignStyles() {
-    ensureStylesheet(
-      'link[data-kc-redesign="base"], link[data-kc-redesign="v2"], link[data-kc-redesign="v3"]',
-      "/kingdom-circuit-test/assets/redesign-v1.css?v=3",
-      "base"
-    );
-    ensureStylesheet(
-      'link[data-kc-redesign-overrides]',
-      "/kingdom-circuit-test/assets/redesign-v3-overrides.css?v=4",
-      "overrides"
-    ).dataset.kcRedesignOverrides = "v4";
-  }
-
-  function applyNewLogo() {
-    const logo = document.querySelector(".brand img");
-    if (!logo) return;
-    logo.alt = "Kingdom Circuit";
-    logo.onerror = function () {
-      this.onerror = null;
-      this.src = "/kingdom-circuit-test/assets/logo.png";
-    };
-    logo.src = "/kingdom-circuit-test/assets/logo-wordmark.svg?v=1";
-  }
-
-  function addDesktopNav() {
-    const inner = document.querySelector(".header-inner");
-    if (!inner || inner.querySelector(".kc-desktop-nav")) return;
-    const nav = document.createElement("nav");
-    nav.className = "kc-desktop-nav";
-    nav.setAttribute("aria-label", "Quick navigation");
-    nav.innerHTML = [
-      '<a href="/kingdom-circuit-test/shows/">Shows</a>',
-      '<a href="/kingdom-circuit-test/artists/">Artists</a>',
-      '<a href="/kingdom-circuit-test/festivals/">Festivals</a>',
-      '<a href="/kingdom-circuit-test/shows/">Cities</a>',
-      '<a href="/kingdom-circuit-test/submit/">Submit</a>',
-      '<a class="kc-nav-cta" href="#calendar">Find a show</a>'
-    ].join("");
-    const menu = inner.querySelector(".menu-toggle");
-    inner.insertBefore(nav, menu || null);
-  }
-
-  function setHeroImage(grid) {
-    const cards = [...grid.querySelectorAll(".event-card")];
-    const preferred = cards.find(card => {
-      const artists = normalize(card.querySelector(".artist-line")?.textContent || "");
-      return artists.includes("hulvey") || artists.includes("social club misfits") || artists.includes("kb");
-    }) || cards[0];
-    const img = preferred?.querySelector(".event-media img");
-    const src = img?.currentSrc || img?.src || img?.getAttribute("src");
-    if (!src) return;
-    document.body.style.setProperty("--kc-hero-image", `url("${src.replace(/"/g, "\\\"")}")`);
-  }
-
-  function addBrandStrip() {
-    if (document.querySelector(".kc-redesign-strip")) return;
-    const footer = document.querySelector(".site-footer");
-    if (!footer) return;
-    const strip = document.createElement("section");
-    strip.className = "kc-redesign-strip";
-    strip.setAttribute("aria-label", "Kingdom Circuit brand statement");
-    strip.innerHTML = '<div><strong>Christian Hip Hop. Shows. Community. Impact.</strong><i></i></div><span>Connecting people with CHH music, concerts, festivals, and community.</span>';
-    footer.parentNode.insertBefore(strip, footer);
-  }
-
-  function applyRedesign(grid) {
-    loadRedesignStyles();
-    applyNewLogo();
-    addDesktopNav();
-    setHeroImage(grid);
-    addBrandStrip();
-    document.body.dataset.kcRedesign = "v4";
-  }
-
   function start() {
     if (document.body?.dataset?.page !== "home") return;
     const grid = document.querySelector("[data-event-grid]");
     if (!grid) return;
 
     enforceGrid(grid);
-    applyRedesign(grid);
-
-    const observer = new MutationObserver(() => {
-      enforceGrid(grid);
-      setHeroImage(grid);
-    });
+    const observer = new MutationObserver(() => enforceGrid(grid));
     observer.observe(grid, { childList: true, subtree: true });
   }
 
