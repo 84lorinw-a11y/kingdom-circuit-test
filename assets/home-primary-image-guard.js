@@ -1,15 +1,15 @@
 "use strict";
 
 (() => {
-  const fallback = "/kingdom-circuit-test/assets/event-fallback.webp";
+  const fallback = "/assets/event-fallback.webp";
   const targets = [
     {
       artist: "rare of breed",
-      src: "/kingdom-circuit-test/assets/artists/rare-of-breed-primary.jpg?v=20260830-home-1"
+      src: "/assets/artists/rare-of-breed-primary.jpg?v=20260830-home-1"
     },
     {
       artist: "yumiya!",
-      src: "/kingdom-circuit-test/assets/artists/yumiya-primary.jpg?v=20260830-home-1"
+      src: "/assets/artists/yumiya-primary.jpg?v=20260830-home-1"
     }
   ];
 
@@ -26,6 +26,8 @@
       return;
     }
 
+    // Only replace artwork for a true solo-artist card. Multi-artist shows
+    // must retain their purpose-built event flyer.
     const target = targets.find(item => artistLine === item.artist);
     if (!target) return;
 

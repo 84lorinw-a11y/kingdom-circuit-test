@@ -1,4 +1,4 @@
-/* Test homepage: mirror live styling, with only the new wordmark and orange-red brand accent. */
+/* Live homepage: approved Kingdom Circuit wordmark and orange-red brand accent. */
 body[data-page="home"]{
   --gold:#c84a32;
   --gold-light:#df725c;
