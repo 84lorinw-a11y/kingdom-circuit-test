@@ -1,29 +1,25 @@
 {
-  "mode": "live-baseline-with-test-registry-overlay",
-  "liveCommit": "5476265635c6c77207b999c7b1c56658fbfa284d",
+  "mode": "exact-live-artifact-mirror",
+  "liveCommit": "bf7f47e29256e4e3ceba72457ecb0838fcff10a2",
+  "liveDeploymentRunId": "34795132841",
   "source": "84lorinw-a11y/kingdom-circuit@main",
   "testBase": "/kingdom-circuit-test/",
-  "liveStylesByteIdentical": true,
-  "liveAssetsByteIdentical": true,
-  "testRegistryOverlayApplied": true,
-  "excludedArtists": [
-    "big holy",
-    "chad jones",
-    "erica mason"
-  ],
-  "verifiedRegistryUpdates": [
-    "Marty",
-    "Caleb Gordon",
-    "Kelo",
-    "DKG Kie",
-    "Braille",
-    "Canton Jones",
-    "Jay-Way",
-    "Stixx aka Conejo",
-    "Ruslan"
+  "contentAndLayoutParity": true,
+  "dataFilesByteIdentical": true,
+  "binaryAssetsByteIdentical": true,
+  "testRegistryOverlayApplied": false,
+  "testOnlyDifferences": [
+    "GitHub Pages project-path URLs",
+    "test-site canonical URLs",
+    "noindex,nofollow and robots Disallow",
+    "production analytics disabled",
+    "production CNAME omitted"
   ],
   "testNoindex": true,
   "liveAnalyticsDisabled": true,
   "cnameRemoved": true,
-  "seoPhase2OverlayApplied": false
+  "sourceFileCount": 980,
+  "htmlPageCount": 855,
+  "environmentAdjustedFileCount": 866,
+  "byteIdenticalBinaryAssetCount": 59
 }

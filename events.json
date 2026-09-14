@@ -1,286 +1,5 @@
 [
   {
-    "id": "official:cdddc120971383318412",
-    "title": "Hulvey - \"Could Be Tonight\" Tour",
-    "startDate": "2026-09-06",
-    "startTime": "19:00",
-    "timezone": "America/New_York",
-    "venue": "The Fillmore Charlotte",
-    "address": "820 Hamilton Street",
-    "city": "Charlotte",
-    "state": "NC",
-    "country": "US",
-    "artists": [
-      "Hulvey",
-      "indie tribe.",
-      "Kijan Boone"
-    ],
-    "headliner": "Hulvey",
-    "eventType": "concert",
-    "status": "onsale",
-    "ticketUrl": "https://www.ticketmaster.com/hulvey-could-be-tonight-tour-charlotte-north-carolina-09-06-2026/event/2D006481E08FDCF0",
-    "officialUrl": "https://www.ticketmaster.com/hulvey-could-be-tonight-tour-charlotte-north-carolina-09-06-2026/event/2D006481E08FDCF0",
-    "image": "https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_SOURCE",
-    "price": "",
-    "sourceName": "Ticketmaster",
-    "sources": [
-      {
-        "name": "Ticketmaster",
-        "url": "https://www.ticketmaster.com/hulvey-could-be-tonight-tour-charlotte-north-carolina-09-06-2026/event/2D006481E08FDCF0",
-        "type": "ticketmaster",
-        "authority": "venue_ticket",
-        "priority": 94
-      },
-      {
-        "name": "Reach Records - Hulvey",
-        "url": "https://www.reachrecords.com/artists/hulvey/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 86
-      },
-      {
-        "name": "Reach Records consolidated calendar",
-        "url": "https://www.reachrecords.com/events/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 84
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "event_artwork",
-    "imagePosition": "center",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
-    "id": "manual:lifelight-sioux-falls-2026",
-    "title": "LifeLight Festival 2026",
-    "startDate": "2026-09-06",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Nelson Park",
-    "address": "",
-    "city": "Sioux Falls",
-    "state": "SD",
-    "country": "US",
-    "artists": [
-      "KB"
-    ],
-    "headliner": "KB",
-    "eventType": "festival",
-    "status": "scheduled",
-    "ticketUrl": "https://lifelight.org/sffestival/",
-    "officialUrl": "https://lifelight.org/sffestival/",
-    "image": "assets/events/lifelight-sioux-falls-2026.webp",
-    "price": "Free",
-    "sourceName": "LifeLight Sioux Falls official lineup",
-    "sources": [
-      {
-        "name": "LifeLight Sioux Falls official lineup",
-        "url": "https://lifelight.org/sffestival/",
-        "type": "manual_verified",
-        "authority": "official_festival",
-        "priority": 112
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "event_artwork",
-    "imagePosition": "center",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
-    "id": "official:3e8f30d2486e734b42c1",
-    "title": "Hulvey w/ Indie Tribe",
-    "startDate": "2026-09-10",
-    "startTime": "19:00",
-    "timezone": "",
-    "venue": "Union Transfer",
-    "address": "1026 Spring Garden Street",
-    "city": "Philadelphia",
-    "state": "PA",
-    "country": "US",
-    "artists": [
-      "Hulvey",
-      "indie tribe.",
-      "Kijan Boone"
-    ],
-    "headliner": "Hulvey",
-    "eventType": "concert",
-    "status": "onsale",
-    "ticketUrl": "https://www.ticketmaster.com/event/Z7r9jZ1A7xa7p",
-    "officialUrl": "https://www.ticketmaster.com/event/Z7r9jZ1A7xa7p",
-    "image": "https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_SOURCE",
-    "price": "",
-    "sourceName": "Ticketmaster",
-    "sources": [
-      {
-        "name": "Ticketmaster",
-        "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xa7p",
-        "type": "ticketmaster",
-        "authority": "venue_ticket",
-        "priority": 94
-      },
-      {
-        "name": "Reach Records - Hulvey",
-        "url": "https://www.reachrecords.com/artists/hulvey/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 86
-      },
-      {
-        "name": "Reach Records consolidated calendar",
-        "url": "https://www.reachrecords.com/events/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 84
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "event_artwork",
-    "imagePosition": "center",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
-    "id": "ticketmaster:k7vGF_FQWC_Sq",
-    "title": "Worship in the Pines - Brandon Lake & More!",
-    "startDate": "2026-09-11",
-    "startTime": "16:00",
-    "timezone": "America/New_York",
-    "venue": "Albany Med Health System at SPAC",
-    "address": "108 Avenue of the Pines",
-    "city": "Saratoga Springs",
-    "state": "NY",
-    "country": "US",
-    "artists": [
-      "Hulvey"
-    ],
-    "headliner": "Hulvey",
-    "eventType": "concert",
-    "status": "onsale",
-    "ticketUrl": "https://www.ticketmaster.com/worship-in-the-pines-brandon-lake-saratoga-springs-new-york-09-11-2026/event/00006486BD399CDD",
-    "officialUrl": "https://www.ticketmaster.com/worship-in-the-pines-brandon-lake-saratoga-springs-new-york-09-11-2026/event/00006486BD399CDD",
-    "image": "https://s1.ticketm.net/dam/e/8af/b4c60c12-46ce-4dfb-a30d-62c62393a8af_TABLET_LANDSCAPE_LARGE_16_9.jpg",
-    "price": "",
-    "sourceName": "Ticketmaster",
-    "sources": [
-      {
-        "name": "Ticketmaster",
-        "url": "https://www.ticketmaster.com/worship-in-the-pines-brandon-lake-saratoga-springs-new-york-09-11-2026/event/00006486BD399CDD",
-        "type": "ticketmaster",
-        "authority": "venue_ticket",
-        "priority": 94
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "event_artwork",
-    "imagePosition": "center",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
-    "id": "official:12ef07b891bbeeefbcb1",
-    "title": "Uprise Festival 2026",
-    "startDate": "2026-09-11",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Shippensburg Community Fairgrounds",
-    "address": "10131 Possum Hollow Rd",
-    "city": "Shippensburg",
-    "state": "PA",
-    "country": "US",
-    "artists": [
-      "KB",
-      "Hulvey",
-      "nobigdyl.",
-      "Miles Minnick",
-      "1K Phew",
-      "Anike",
-      "Kijan Boone"
-    ],
-    "headliner": "KB",
-    "eventType": "festival",
-    "status": "scheduled",
-    "ticketUrl": "https://www.uprisefest.com/uprise-2026",
-    "officialUrl": "https://www.uprisefest.com/uprise-2026",
-    "image": "https://s1.ticketm.net/dam/a/1cb/834c7b9b-5176-4d5c-b69c-d8cda9cd91cb_1753211_TABLET_LANDSCAPE_LARGE_16_9.jpg",
-    "price": "",
-    "sourceName": "Uprise Festival official lineup",
-    "sources": [
-      {
-        "name": "Uprise Festival official lineup",
-        "url": "https://www.uprisefest.com/uprise-2026",
-        "type": "manual_verified",
-        "authority": "official_festival",
-        "priority": 112
-      },
-      {
-        "name": "Reach Records - Anike",
-        "url": "https://www.reachrecords.com/artists/wande/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 86
-      },
-      {
-        "name": "ChristianHits consolidated show feed",
-        "url": "https://www.uprisefest.com/",
-        "type": "christian_hits",
-        "authority": "aggregator",
-        "priority": 46
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "endDate": "2026-09-12",
-    "imageType": "artist",
-    "imagePosition": "50% 30%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
-    "id": "manual:egr-2026-09-12-corpus-christi-tx",
-    "title": "EGR Live — Corpus Christi",
-    "startDate": "2026-09-12",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Juvenile Detention Center",
-    "address": "",
-    "city": "Corpus Christi",
-    "state": "TX",
-    "country": "US",
-    "artists": [
-      "EGR"
-    ],
-    "headliner": "EGR",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
-    "officialUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
-    "image": "assets/artists/egr.webp",
-    "price": "",
-    "sourceName": "EGR official Instagram schedule",
-    "sources": [
-      {
-        "name": "EGR official Instagram schedule",
-        "url": "https://www.instagram.com/p/DboKM3GJM4A/",
-        "type": "manual_verified",
-        "authority": "official_event",
-        "priority": 112
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "artist",
-    "imagePosition": "50% 38%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
     "id": "ticketmaster:k7vGF_dl6_HDp",
     "title": "Miles Minnick - New Mainstream Tour",
     "startDate": "2026-09-13",
@@ -292,7 +11,9 @@
     "state": "NY",
     "country": "US",
     "artists": [
-      "Miles Minnick"
+      "Miles Minnick",
+      "Tommy Zuko",
+      "CJ Emulous"
     ],
     "headliner": "Miles Minnick",
     "eventType": "concert",
@@ -309,14 +30,22 @@
         "type": "ticketmaster",
         "authority": "venue_ticket",
         "priority": 94
+      },
+      {
+        "name": "CJ Emulous official New Mainstream Tour calendar",
+        "url": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-1-21",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "auditVerified": "2026-09-11"
   },
   {
     "id": "official:61ca43b4035483fee6a8",
@@ -351,6 +80,13 @@
         "priority": 94
       },
       {
+        "name": "Reach Records - Hulvey",
+        "url": "https://www.reachrecords.com/artists/hulvey/",
+        "type": "reach_records",
+        "authority": "artist_label",
+        "priority": 86
+      },
+      {
         "name": "Reach Records consolidated calendar",
         "url": "https://www.reachrecords.com/events/",
         "type": "reach_records",
@@ -358,7 +94,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -398,6 +134,13 @@
         "priority": 94
       },
       {
+        "name": "Reach Records - Hulvey",
+        "url": "https://www.reachrecords.com/artists/hulvey/",
+        "type": "reach_records",
+        "authority": "artist_label",
+        "priority": 86
+      },
+      {
         "name": "Reach Records consolidated calendar",
         "url": "https://www.reachrecords.com/events/",
         "type": "reach_records",
@@ -405,12 +148,112 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:egr-2026-09-18-carson-ca",
+    "title": "EGR Live — Carson",
+    "startDate": "2026-09-18",
+    "startTime": "",
+    "timezone": "",
+    "venue": "Victory Outreach",
+    "address": "",
+    "city": "Carson",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "EGR"
+    ],
+    "headliner": "EGR",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
+    "officialUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
+    "image": "assets/artists/egr.webp",
+    "price": "",
+    "sourceName": "EGR official Instagram schedule",
+    "sources": [
+      {
+        "name": "EGR official Instagram schedule",
+        "url": "https://www.instagram.com/p/DboKM3GJM4A/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "50% 38%",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "JIMMY ROCK'S Rave & Worship — The Worship Wawa",
+    "startDate": "2026-09-18",
+    "startTime": "17:00",
+    "timezone": "America/New_York",
+    "venue": "The Worship Wawa — Margaret Pace Park pickup",
+    "address": "1745 N Bayshore Dr",
+    "city": "Miami",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "JIMMY ROCK"
+    ],
+    "headliner": "JIMMY ROCK",
+    "eventType": "party_bus",
+    "status": "scheduled",
+    "ticketUrl": "https://fareharbor.com/embeds/book/theworshipwawa/?full-items=yes",
+    "officialUrl": "https://www.theworshipwawa.com/jimmyrock-rave-worship",
+    "image": "assets/events/jimmy-rock-worship-wawa-miami-2026.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "The Worship Wawa official event",
+    "sources": [
+      {
+        "name": "The Worship Wawa official event",
+        "url": "https://www.theworshipwawa.com/jimmyrock-rave-worship",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Official ticket / RSVP",
+        "url": "https://fareharbor.com/embeds/book/theworshipwawa/?full-items=yes",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 94
+      },
+      {
+        "name": "JIMMY ROCK Bandsintown",
+        "url": "https://www.bandsintown.com/e/108769357",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 74
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "In-person party-bus event. Four one-hour rides depart at 5:00, 6:15, 7:30 and 8:45 PM. Arrive 15 minutes early; Bandsintown's 4:30 PM header aligns with earliest check-in, not an online event.",
+    "rideTimes": [
+      "17:00",
+      "18:15",
+      "19:30",
+      "20:45"
+    ],
+    "id": "manual:jimmy-rock-worship-wawa-miami-2026",
+    "imageSource": "The Worship Wawa official event poster",
+    "imageSourceUrl": "https://www.theworshipwawa.com/jimmyrock-rave-worship"
   },
   {
     "id": "official:cfd29f658249c76cd8e2",
@@ -452,7 +295,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -490,7 +333,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -498,14 +341,60 @@
     "firstSeen": "2026-08-09T00:00:00Z"
   },
   {
-    "id": "manual:egr-2026-09-18-carson-ca",
-    "title": "EGR Live — Carson",
+    "id": "manual:fountain-fest-wv-2026",
+    "title": "Fountain Fest WV 2026",
     "startDate": "2026-09-18",
+    "startTime": "20:00",
+    "timezone": "America/New_York",
+    "venue": "Orr's Farm Market",
+    "address": "",
+    "city": "Martinsburg",
+    "state": "WV",
+    "country": "US",
+    "artists": [
+      "Rare of Breed"
+    ],
+    "headliner": "Rare of Breed",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://my.onecause.com/event/organizations/0908e5f7-6980-4a38-8fc5-456d973dcdce/events/vevt:62b43d8b-59e2-479d-a013-fa697f27e51c/home/story",
+    "officialUrl": "https://fountainfestwv.com/",
+    "image": "https://i0.wp.com/fountainfestwv.com/wp-content/uploads/2026/07/Rare-of-Breed-Promo-.webp?resize=720%2C900&ssl=1",
+    "price": "",
+    "sourceName": "Fountain Fest WV official lineup",
+    "sources": [
+      {
+        "name": "Fountain Fest WV official lineup",
+        "url": "https://fountainfestwv.com/",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "endDate": "2026-09-19",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "official_festival",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-11",
+    "notes": "Rare of Breed performs Friday September 18 at 8 PM; festival continues September 19.",
+    "imageOverride": true,
+    "imageSourceName": "Fountain Fest WV official performer promotion",
+    "imageSourceUrl": "https://fountainfestwv.com/"
+  },
+  {
+    "id": "manual:egr-2026-09-19-manteca-ca",
+    "title": "EGR Live — Manteca",
+    "startDate": "2026-09-19",
     "startTime": "",
     "timezone": "",
-    "venue": "Victory Outreach",
+    "venue": "Show & Shine",
     "address": "",
-    "city": "Carson",
+    "city": "Manteca",
     "state": "CA",
     "country": "US",
     "artists": [
@@ -528,12 +417,90 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:eventbrite:hip-hop-in-the-park-cortland-2026",
+    "title": "Hip Hop in the Park",
+    "startDate": "2026-09-19",
+    "startTime": "13:00",
+    "timezone": "America/New_York",
+    "venue": "Courthouse Park",
+    "address": "33 Church Street",
+    "city": "Cortland",
+    "state": "NY",
+    "country": "US",
+    "artists": [
+      "Datin",
+      "Heesun Lee",
+      "Brother Bo"
+    ],
+    "headliner": "Datin",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/hip-hop-in-the-park-tickets-1999463357727",
+    "officialUrl": "https://www.eventbrite.com/e/hip-hop-in-the-park-tickets-1999463357727",
+    "image": "assets/events/hip-hop-in-the-park-2026.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "Free",
+    "sourceName": "Official Eventbrite listing",
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Official Eventbrite listing",
+        "url": "https://www.eventbrite.com/e/hip-hop-in-the-park-tickets-1999463357727",
+        "type": "eventbrite",
+        "authority": "venue_ticket",
+        "priority": 94
+      }
+    ]
+  },
+  {
+    "id": "manual:eventbrite:gracefest-lecrae-castaic-2026",
+    "title": "GRACEFEST 2026",
+    "startDate": "2026-09-19",
+    "startTime": "13:30",
+    "timezone": "America/Los_Angeles",
+    "venue": "Castaic Lake State Recreation Area",
+    "address": "Castaic Lake Drive",
+    "city": "Castaic",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "Lecrae"
+    ],
+    "headliner": "Lecrae",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/gracefest-2026-lecrae-bethel-music-jeremy-camp-tickets-1991972644803",
+    "officialUrl": "https://www.eventbrite.com/e/gracefest-2026-lecrae-bethel-music-jeremy-camp-tickets-1991972644803",
+    "image": "assets/events/gracefest-2026.png",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "sourceName": "Official Eventbrite listing",
+    "authority": "official_festival",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Official Eventbrite listing",
+        "url": "https://www.eventbrite.com/e/gracefest-2026-lecrae-bethel-music-jeremy-camp-tickets-1991972644803",
+        "type": "eventbrite",
+        "authority": "official_festival",
+        "priority": 104
+      }
+    ]
   },
   {
     "id": "ticketmaster:vv1AkZk3pGkdPlaZC",
@@ -567,7 +534,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -614,7 +581,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -623,26 +590,35 @@
   },
   {
     "id": "official:64bbcd477c3a36104df3",
-    "title": "Anike — Live at Queens Theatre",
+    "title": "Kingdom Choice Awards 2026",
     "startDate": "2026-09-19",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Queens Theatre",
-    "address": "",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "The Claire Shulman Theater at Queens Theatre",
+    "address": "14 United Nations Avenue South",
     "city": "Corona",
     "state": "NY",
     "country": "US",
     "artists": [
-      "Anike"
+      "Anike",
+      "Don Ready",
+      "Dante' Pride",
+      "Childlike CiCi",
+      "Yung Kriss",
+      "Datin",
+      "BigBreeze",
+      "C4 Crotona",
+      "MAYIA",
+      "Brinson"
     ],
     "headliner": "Anike",
     "eventType": "concert",
     "status": "scheduled",
-    "ticketUrl": "https://www.bandsintown.com/t/1039205172?app_id=01df058d58993b0aa9bad03067b3503e&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
-    "officialUrl": "https://www.reachrecords.com/artists/wande/",
-    "image": "https://s1.ticketm.net/dam/a/ab5/019b80d9-ebcf-40a7-9233-a35e76204ab5_SOURCE",
+    "ticketUrl": "https://www.queenstheatre.org/events/kingdom-choice-awards-2026-dqr9",
+    "officialUrl": "https://www.queenstheatre.org/events/kingdom-choice-awards-2026-dqr9",
+    "image": "https://images.zoogletools.com/s:bzglfiles/u/63036/e9f653372df147d18026413fbf37bc4eed9c7e01/original/2026-kca-flyer-final-master.jpg/!!/b:W1sicmVzaXplIiwxMDAwXSxbIm1heCJdLFsid2UiXV0=/meta:eyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ==.jpg",
     "price": "",
-    "sourceName": "Reach Records - Anike",
+    "sourceName": "Queens Theatre event and tickets",
     "sources": [
       {
         "name": "Reach Records - Anike",
@@ -650,142 +626,49 @@
         "type": "reach_records",
         "authority": "artist_label",
         "priority": 86
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "artist",
-    "imagePosition": "50% 30%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-15T20:23:53Z"
-  },
-  {
-    "id": "manual:egr-2026-09-19-manteca-ca",
-    "title": "EGR Live — Manteca",
-    "startDate": "2026-09-19",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Show & Shine",
-    "address": "",
-    "city": "Manteca",
-    "state": "CA",
-    "country": "US",
-    "artists": [
-      "EGR"
-    ],
-    "headliner": "EGR",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
-    "officialUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
-    "image": "assets/artists/egr.webp",
-    "price": "",
-    "sourceName": "EGR official Instagram schedule",
-    "sources": [
-      {
-        "name": "EGR official Instagram schedule",
-        "url": "https://www.instagram.com/p/DboKM3GJM4A/",
-        "type": "manual_verified",
-        "authority": "official_event",
-        "priority": 112
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "artist",
-    "imagePosition": "50% 38%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
-  },
-  {
-    "id": "official:cc1595e90fb45c872c77",
-    "title": "Lecrae — Live at Castaic Lake State Recreation Area",
-    "startDate": "2026-09-19",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Castaic Lake State Recreation Area",
-    "address": "",
-    "city": "Castaic",
-    "state": "CA",
-    "country": "US",
-    "artists": [
-      "Lecrae"
-    ],
-    "headliner": "Lecrae",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "https://www.bandsintown.com/t/1039926582?app_id=01df058d58993b0aa9bad03067b3503e&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
-    "officialUrl": "https://www.reachrecords.com/artists/lecrae/",
-    "image": "https://s1.ticketm.net/dam/a/ebc/e5cbc136-0e98-4e15-a74d-700667f29ebc_SOURCE",
-    "price": "",
-    "sourceName": "Reach Records - Lecrae",
-    "sources": [
-      {
-        "name": "Reach Records - Lecrae",
-        "url": "https://www.reachrecords.com/artists/lecrae/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 86
       },
       {
-        "name": "Reach Records consolidated calendar",
-        "url": "https://www.reachrecords.com/events/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 84
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "artist",
-    "imagePosition": "50% 30%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-19T12:01:10Z"
-  },
-  {
-    "id": "official:cfa71e64850aa1fa9f39",
-    "title": "Caleb Gordon — The Eden Experience",
-    "startDate": "2026-09-20",
-    "startTime": "19:00",
-    "timezone": "",
-    "venue": "Cross Mountain Church",
-    "address": "",
-    "city": "San Antonio",
-    "state": "TX",
-    "country": "US",
-    "artists": [
-      "Caleb Gordon"
-    ],
-    "headliner": "Caleb Gordon",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "https://www.ticketweb.com/event/caleb-gordon-the-eden-experience-cross-mountain-church-tickets/14866193?pl=TPR",
-    "officialUrl": "https://tprlive.co/products/caleb-gordon-the-eden-experience-san-antonio-tx-september-20-2026",
-    "image": "assets/events/caleb-gordon-eden-experience.webp",
-    "price": "",
-    "sourceName": "TPR official Eden Experience tour",
-    "sources": [
-      {
-        "name": "TPR official Eden Experience tour",
-        "url": "https://tprlive.co/products/caleb-gordon-the-eden-experience-san-antonio-tx-september-20-2026",
-        "type": "manual_verified",
-        "authority": "official_event",
-        "priority": 112
+        "name": "Queens Theatre event and tickets",
+        "url": "https://www.queenstheatre.org/events/kingdom-choice-awards-2026-dqr9",
+        "type": "venue_ticket",
+        "authority": "official_venue",
+        "priority": 120
       },
       {
-        "name": "TPR - Caleb Gordon Eden Experience",
-        "url": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
-        "type": "tpr",
-        "authority": "promoter",
-        "priority": 90
+        "name": "Kingdom Choice Awards official 2026 poster",
+        "url": "https://kingdomchoiceawards.org/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 100
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "firstSeen": "2026-08-15T20:23:53Z",
+    "auditVerified": "2026-09-12",
+    "imageOverride": true,
+    "officialBill": [
+      "Anike",
+      "Childlike CiCi",
+      "Yung Kriss",
+      "Don Ready",
+      "Big Breeze",
+      "Datin",
+      "Brinson & Godchaserz",
+      "Dante Pride",
+      "C4 Crotona",
+      "Range The Artist",
+      "Dwayne Fyah",
+      "MAYIA WARREN",
+      "Marcel Patillo",
+      "Craig Watson",
+      "Paito",
+      "MICA"
+    ],
+    "notes": "MICA remains an unlinked bill name pending confirmation that it is the tracked roster artist mica."
   },
   {
     "id": "official:8cf69c5c610dae61d590",
@@ -827,13 +710,136 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-15T11:53:29Z",
     "lineupExplicit": true
+  },
+  {
+    "title": "Shiloh Church with CJ Emulous",
+    "startDate": "2026-09-20",
+    "startTime": "",
+    "timezone": "America/Phoenix",
+    "venue": "Shiloh Christian Ministries",
+    "address": "1519 S Ave Del Sol",
+    "city": "Sierra Vista",
+    "state": "AZ",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "church",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/shiloh-church-w-cj-emulous",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/shiloh-church-w-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "Church appearance. Artist calendar publishes 7:00 PM, but the main time is left blank pending independent local-time confirmation.",
+    "id": "manual:cj-emulous-shiloh-church-sierra-vista-2026"
+  },
+  {
+    "id": "official:cfa71e64850aa1fa9f39",
+    "title": "Caleb Gordon — The Eden Experience",
+    "startDate": "2026-09-20",
+    "startTime": "19:00",
+    "timezone": "",
+    "venue": "Cross Mountain Church",
+    "address": "",
+    "city": "San Antonio",
+    "state": "TX",
+    "country": "US",
+    "artists": [
+      "Caleb Gordon"
+    ],
+    "headliner": "Caleb Gordon",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.ticketweb.com/event/caleb-gordon-the-eden-experience-cross-mountain-church-tickets/14866193?pl=TPR",
+    "officialUrl": "https://tprlive.co/products/caleb-gordon-the-eden-experience-san-antonio-tx-september-20-2026",
+    "image": "assets/events/caleb-gordon-eden-experience.webp",
+    "price": "",
+    "sourceName": "TPR official Eden Experience tour",
+    "sources": [
+      {
+        "name": "TPR official Eden Experience tour",
+        "url": "https://tprlive.co/products/caleb-gordon-the-eden-experience-san-antonio-tx-september-20-2026",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      },
+      {
+        "name": "TPR - Caleb Gordon Eden Experience",
+        "url": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
+        "type": "tpr",
+        "authority": "promoter",
+        "priority": 90
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:808-beezy-bandsintown-108772738",
+    "title": "808 BEEZY — Live at RWG TOUR 2026",
+    "startDate": "2026-09-22",
+    "startTime": "17:00",
+    "timezone": "",
+    "venue": "RWG TOUR 2026",
+    "address": "",
+    "city": "Princeton",
+    "state": "IL",
+    "country": "US",
+    "artists": [
+      "808 BEEZY"
+    ],
+    "headliner": "808 BEEZY",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/e/108772738",
+    "officialUrl": "https://www.bandsintown.com/e/108772738",
+    "image": "https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg",
+    "price": "",
+    "sourceName": "808 BEEZY official tour / Bandsintown",
+    "sources": [
+      {
+        "name": "808 BEEZY official tour / Bandsintown",
+        "url": "https://www.bandsintown.com/e/108772738",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 76
+      }
+    ],
+    "lastVerified": "2026-09-12T14:30:41Z",
+    "confidence": "high",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-09-12T14:30:41Z"
   },
   {
     "id": "manual:caleb-gordon-eden-2026-09-22-leander",
@@ -866,7 +872,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -913,7 +919,7 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -961,13 +967,99 @@
         "priority": 100
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-15T11:53:29Z",
     "lineupExplicit": true
+  },
+  {
+    "id": "manual:kaden-jordan-2026-09-23-orlando",
+    "title": "Kaden Jordan Live",
+    "startDate": "2026-09-23",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Church in the Son",
+    "address": "",
+    "city": "Orlando",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Kaden Jordan"
+    ],
+    "headliner": "Kaden Jordan",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.songkick.com/artists/10314485-kaden-jordan",
+    "officialUrl": "https://kadenjordan.com/pages/tour",
+    "image": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b4/50/48/b4504865-b294-ba19-3854-a83ff79084c4/35e5e9f1-1e53-4326-ae3b-47ec4206ce77_file_cropped.png/1200x630cw.png",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "price": "",
+    "sourceName": "Kaden Jordan official tour page / Songkick",
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Kaden Jordan official TOUR page",
+        "url": "https://kadenjordan.com/pages/tour",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Songkick calendar linked by Kaden Jordan official site",
+        "url": "https://www.songkick.com/artists/10314485-kaden-jordan",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 90
+      }
+    ]
+  },
+  {
+    "id": "manual:cj-emulous-syatp-sierra-vista-2026",
+    "title": "SYATP Concert",
+    "startDate": "2026-09-23",
+    "startTime": "19:00",
+    "timezone": "America/Phoenix",
+    "venue": "Shiloh Christian Ministries",
+    "address": "1519 S Ave Del Sol",
+    "city": "Sierra Vista",
+    "state": "AZ",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.cjemulous.com/event-details/syatp-concert-w-cj-emulous",
+    "officialUrl": "https://www.cjemulous.com/event-details/syatp-concert-w-cj-emulous",
+    "image": "https://static.wixstatic.com/media/9c331a_e63115b208054353a76258a4897ad76c~mv2.jpeg/v1/fill/w_980%2Ch_653%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_auto/9c331a_e63115b208054353a76258a4897ad76c~mv2.jpeg",
+    "price": "",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/syatp-concert-w-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "artist_calendar",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "imageOverride": true
   },
   {
     "id": "manual:caleb-gordon-eden-2026-09-24-richmond",
@@ -1000,12 +1092,114 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "Access Granted Marriage Retreat with Psalm Bird & CJ Emulous",
+    "startDate": "2026-09-25",
+    "startTime": "",
+    "timezone": "America/Los_Angeles",
+    "venue": "Hotel Winters",
+    "address": "12 Abbey St",
+    "city": "Winters",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "retreat",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/access-granted-marriage-retreat-w-psalm-bird-cj-emulous",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/access-granted-marriage-retreat-w-psalm-bird-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "Retreat appearance, not categorized as a public concert. Published artist-calendar time is left blank pending independent local-time confirmation.",
+    "advertisedBilling": [
+      "Psalm Bird",
+      "CJ Emulous"
+    ],
+    "admissionNotes": "Marriage retreat; RSVP/registration applies. The public artist listing does not state broader public-admission eligibility; confirm eligibility with the organizer.",
+    "id": "manual:cj-emulous-access-granted-retreat-winters-2026"
+  },
+  {
+    "title": "JIMMY ROCK — Rave & Worship Denver 2026",
+    "startDate": "2026-09-25",
+    "startTime": "18:00",
+    "timezone": "America/Denver",
+    "venue": "Encounter Church Denver",
+    "address": "6825 S Galena St",
+    "city": "Centennial",
+    "state": "CO",
+    "country": "US",
+    "artists": [
+      "JIMMY ROCK"
+    ],
+    "headliner": "JIMMY ROCK",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/jimmy-rock-rave-worship-denver-2026-tickets-1998020581344",
+    "officialUrl": "https://www.eventbrite.com/e/jimmy-rock-rave-worship-denver-2026-tickets-1998020581344",
+    "image": "assets/events/jimmy-rock-rave-worship-denver-2026.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "sourceName": "Official Eventbrite listing",
+    "sources": [
+      {
+        "name": "Official Eventbrite listing",
+        "url": "https://www.eventbrite.com/e/jimmy-rock-rave-worship-denver-2026-tickets-1998020581344",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 100
+      },
+      {
+        "name": "JIMMY ROCK Bandsintown",
+        "url": "https://www.bandsintown.com/e/108778379",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 74
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "endTime": "22:00",
+    "doorsTime": "17:30",
+    "notes": "Eventbrite lists 6:00–10:00 PM with 5:30 PM doors; Bandsintown's 5:30 PM header corresponds to doors.",
+    "advertisedBilling": [
+      "JIMMY ROCK",
+      "Ralov",
+      "trtle",
+      "Transform DJs"
+    ],
+    "id": "manual:jimmy-rock-rave-worship-centennial-2026",
+    "imageSource": "Official Eventbrite event artwork",
+    "imageSourceUrl": "https://www.eventbrite.com/e/jimmy-rock-rave-worship-denver-2026-tickets-1998020581344"
   },
   {
     "id": "official:4f72402532a6edb7c4ba",
@@ -1047,10 +1241,113 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:tribe-fest-rialto-2026",
+    "title": "Tribe Fest 2026",
+    "startDate": "2026-09-25",
+    "startTime": "19:00",
+    "timezone": "",
+    "venue": "Faith Point Event Center",
+    "address": "625 N Eucalyptus Ave",
+    "city": "Rialto",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "Key'ijah",
+      "Tha inspiration",
+      "NISSI SHALOM",
+      "SteveUnordinary",
+      "Yasmine Jinelle",
+      "JJ Chosen",
+      "Generation Recovery",
+      "IFearGod",
+      "Hy Chu"
+    ],
+    "headliner": "Key'ijah",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/tribe-fest-2026-tickets-1990697171829",
+    "officialUrl": "https://www.eventbrite.com/e/tribe-fest-2026-tickets-1990697171829",
+    "image": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1191997822%2F182733333644%2F1%2Foriginal.20260827-010048?crop=focalpoint&fit=crop&w=1880&auto=format%2Ccompress&q=75&sharp=10&fp-x=0.5&fp-y=0.5&s=0168b816ef6bc377606240ab419ae0a6",
+    "price": "",
+    "sourceName": "Tribe Fest official announcement / Eventbrite",
+    "sources": [
+      {
+        "name": "Tribe Fest official announcement / Eventbrite",
+        "url": "https://www.eventbrite.com/e/tribe-fest-2026-tickets-1990697171829",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-09-07T16:11:58Z",
+    "headliners": [
+      "Key'ijah",
+      "Tha inspiration",
+      "NISSI SHALOM",
+      "SteveUnordinary",
+      "Yasmine Jinelle"
+    ],
+    "officialBill": [
+      "Key'ijah",
+      "Tha inspiration",
+      "NISSI SHALOM",
+      "SteveUnordinary",
+      "Yasmine Jinelle",
+      "JJ Chosen",
+      "Generation Recovery",
+      "IFearGod",
+      "Hy Chu"
+    ],
+    "auditVerified": "2026-09-13"
+  },
+  {
+    "id": "manual:egr-2026-09-26-whittier-ca",
+    "title": "EGR Live — Whittier",
+    "startDate": "2026-09-26",
+    "startTime": "",
+    "timezone": "",
+    "venue": "Revolution Friends Church",
+    "address": "",
+    "city": "Whittier",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "EGR"
+    ],
+    "headliner": "EGR",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
+    "officialUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
+    "image": "assets/artists/egr.webp",
+    "price": "",
+    "sourceName": "EGR official Instagram schedule",
+    "sources": [
+      {
+        "name": "EGR official Instagram schedule",
+        "url": "https://www.instagram.com/p/DboKM3GJM4A/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
   },
@@ -1060,7 +1357,7 @@
     "startDate": "2026-09-26",
     "startTime": "11:00",
     "timezone": "",
-    "venue": "565 Hale St",
+    "venue": "White County Fairgrounds",
     "address": "565 Hale Street",
     "city": "Sparta",
     "state": "TN",
@@ -1071,7 +1368,8 @@
       "ASAP Preach",
       "Nicky Gracious",
       "Steven Perez",
-      "B. Cody Shields"
+      "B. Cody Shields",
+      "Brother Bo"
     ],
     "headliner": "REDEEMED",
     "eventType": "festival",
@@ -1090,13 +1388,105 @@
         "priority": 80
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "endDate": "2026-09-26",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "auditVerified": "2026-09-12"
+  },
+  {
+    "id": "manual:hvo-fest-2026-los-angeles",
+    "title": "HVO Fest 2026",
+    "startDate": "2026-09-26",
+    "startTime": "15:00",
+    "venue": "AVALON Hollywood & Bardot",
+    "address": "",
+    "city": "Los Angeles",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "Yung Kriss",
+      "LIN D",
+      "Alex Jean",
+      "Leslie Perez",
+      "AHJAH",
+      "Josh P",
+      "Ryan Trey",
+      "Taylor Hill",
+      "Stevie Rizo"
+    ],
+    "headliner": "Yung Kriss",
+    "eventType": "festival",
+    "ticketUrl": "https://www.eventbrite.com/e/hvo-fest-tickets-1987360837764",
+    "officialUrl": "https://www.eventbrite.com/e/hvo-fest-tickets-1987360837764",
+    "image": "assets/events/hvo-fest-2026.jpg",
+    "price": "",
+    "status": "scheduled",
+    "lineupExplicit": true,
+    "authority": "official_event",
+    "sourceName": "Yung Kriss official announcement and Eventbrite",
+    "announcementUrl": "https://www.instagram.com/reel/DblfWwWu062/",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "confidence": "high"
+  },
+  {
+    "title": "Grand Opening | The Whosoevers | Boise Invasion",
+    "startDate": "2026-09-26",
+    "startTime": "17:30",
+    "timezone": "America/Boise",
+    "venue": "The Whosoevers HQ",
+    "address": "20 S Auto Dr",
+    "city": "Boise",
+    "state": "ID",
+    "country": "US",
+    "artists": [
+      "Kurtis Hoppie",
+      "JIMMY ROCK"
+    ],
+    "headliner": "Kurtis Hoppie",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.tickettailor.com/events/thewhosoevers/2302169",
+    "officialUrl": "https://www.tickettailor.com/events/thewhosoevers/2302169",
+    "image": "assets/events/boise-invasion-2026.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "Outdoor pre-show/overflow free; indoor event sold out",
+    "lineupExplicit": true,
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "sourceName": "Official Ticket Tailor listing",
+    "sources": [
+      {
+        "name": "Official Ticket Tailor listing",
+        "url": "https://www.tickettailor.com/events/thewhosoevers/2302169",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "doorsTime": "17:30",
+    "notes": "Free outdoor pre-show block party and main-event overflow begins at 5:00 PM. Indoor doors open at 5:30 PM and the indoor ticket listing is sold out. JIMMY ROCK is billed for the after party.",
+    "advertisedBilling": [
+      "P.O.D.",
+      "Lacey Sturm",
+      "Ryan Ries",
+      "Kurtis Hoppie",
+      "JIMMY ROCK"
+    ],
+    "soldOut": true,
+    "ticketAvailability": "sold_out",
+    "preShowTime": "17:00",
+    "id": "manual:boise-invasion-2026",
+    "imageSource": "The Whosoevers official Ticket Tailor listing",
+    "imageSourceUrl": "https://www.tickettailor.com/events/thewhosoevers/2302169"
   },
   {
     "id": "official:cd29c71021ec3f5cda92",
@@ -1138,12 +1528,111 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "Open Skies — Bethel Music with Jenn Johnson + KB",
+    "startDate": "2026-09-26",
+    "startTime": "18:00",
+    "timezone": "America/Chicago",
+    "venue": "Evergy Plaza",
+    "address": "630 S Kansas Ave",
+    "city": "Topeka",
+    "state": "KS",
+    "country": "US",
+    "artists": [
+      "KB"
+    ],
+    "headliner": "KB",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://evergyplaza.com/event/open-skies/",
+    "officialUrl": "https://evergyplaza.com/event/open-skies/",
+    "image": "https://evergyplaza.com/wp-content/uploads/2026/08/open-skies-1.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "Free",
+    "lineupExplicit": true,
+    "authority": "official_event",
+    "confidence": "high",
+    "sourceName": "Evergy Plaza official event",
+    "sources": [
+      {
+        "name": "Evergy Plaza official event",
+        "url": "https://evergyplaza.com/event/open-skies/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "endTime": "21:00",
+    "advertisedBilling": [
+      "Bethel Music",
+      "Jenn Johnson",
+      "KB"
+    ],
+    "id": "manual:open-skies-topeka-2026"
+  },
+  {
+    "id": "official:ea0342f4771e9f9f1dfc",
+    "title": "1K Phew — Live at Fastivalle 2026",
+    "startDate": "2026-09-26",
+    "startTime": "19:00",
+    "timezone": "America/Indiana/Indianapolis",
+    "venue": "Camptown, Inc.",
+    "address": "1010 W 64th St",
+    "city": "Indianapolis",
+    "state": "IN",
+    "country": "US",
+    "artists": [
+      "1K Phew"
+    ],
+    "headliner": "1K Phew",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/t/108395515?app_id=01df058d58993b0aa9bad03067b3503e&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+    "officialUrl": "https://music.apple.com/us/concerts/ce.7570f0f7-b826-4400-a6f0-034778e98568",
+    "image": "assets/artists/1k-phew.webp",
+    "price": "",
+    "sourceName": "Exact Apple Music event page",
+    "sources": [
+      {
+        "name": "Reach Records - 1K Phew",
+        "url": "https://www.reachrecords.com/artists/1k-phew/",
+        "type": "reach_records",
+        "authority": "artist_label",
+        "priority": 86
+      },
+      {
+        "name": "Reach Records consolidated calendar",
+        "url": "https://www.reachrecords.com/events/",
+        "type": "reach_records",
+        "authority": "artist_label",
+        "priority": 84
+      },
+      {
+        "name": "Exact Apple Music event page",
+        "url": "https://music.apple.com/us/concerts/ce.7570f0f7-b826-4400-a6f0-034778e98568",
+        "type": "artist_calendar",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "50% 24%",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-15T11:53:29Z",
+    "notes": "Official listing publishes 7:00 PM but does not identify it as doors or performance time.",
+    "auditVerified": "2026-09-12"
   },
   {
     "id": "official:cd85847561e539a411e8",
@@ -1183,7 +1672,7 @@
         "priority": 90
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1191,87 +1680,49 @@
     "firstSeen": "2026-08-09T00:00:00Z"
   },
   {
-    "id": "official:ea0342f4771e9f9f1dfc",
-    "title": "1K Phew — Live at Fastivalle 2026",
+    "title": "Oasis Ministry — QBELV Tour 2026",
     "startDate": "2026-09-26",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Fastivalle 2026",
-    "address": "",
-    "city": "Indianapolis",
-    "state": "IN",
+    "startTime": "20:00",
+    "timezone": "America/New_York",
+    "venue": "United Palace",
+    "address": "4140 Broadway",
+    "city": "New York",
+    "state": "NY",
     "country": "US",
     "artists": [
-      "1K Phew"
+      "Alex Zurdo"
     ],
-    "headliner": "1K Phew",
+    "headliner": "Alex Zurdo",
     "eventType": "concert",
     "status": "scheduled",
-    "ticketUrl": "https://www.bandsintown.com/t/108395515?app_id=01df058d58993b0aa9bad03067b3503e&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
-    "officialUrl": "https://www.reachrecords.com/artists/1k-phew/",
-    "image": "assets/artists/1k-phew.webp",
+    "ticketUrl": "https://unitedpalace.boletosexpress.com/oasis-ministry-s/88341/",
+    "officialUrl": "https://unitedpalace.boletosexpress.com/oasis-ministry-s/88341/",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb2c81bb40c3b6962eacf9dc9c",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
     "price": "",
-    "sourceName": "Reach Records - 1K Phew",
-    "sources": [
-      {
-        "name": "Reach Records - 1K Phew",
-        "url": "https://www.reachrecords.com/artists/1k-phew/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 86
-      },
-      {
-        "name": "Reach Records consolidated calendar",
-        "url": "https://www.reachrecords.com/events/",
-        "type": "reach_records",
-        "authority": "artist_label",
-        "priority": 84
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lineupExplicit": true,
+    "authority": "venue_ticket",
     "confidence": "high",
-    "imageType": "artist",
-    "imagePosition": "50% 24%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-15T11:53:29Z"
-  },
-  {
-    "id": "manual:egr-2026-09-26-whittier-ca",
-    "title": "EGR Live — Whittier",
-    "startDate": "2026-09-26",
-    "startTime": "",
-    "timezone": "",
-    "venue": "Revolution Friends Church",
-    "address": "",
-    "city": "Whittier",
-    "state": "CA",
-    "country": "US",
-    "artists": [
-      "EGR"
-    ],
-    "headliner": "EGR",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
-    "officialUrl": "https://www.instagram.com/p/DboKM3GJM4A/",
-    "image": "assets/artists/egr.webp",
-    "price": "",
-    "sourceName": "EGR official Instagram schedule",
+    "sourceName": "United Palace / Boletos Express official listing",
     "sources": [
       {
-        "name": "EGR official Instagram schedule",
-        "url": "https://www.instagram.com/p/DboKM3GJM4A/",
+        "name": "United Palace / Boletos Express official listing",
+        "url": "https://unitedpalace.boletosexpress.com/oasis-ministry-s/88341/",
         "type": "manual_verified",
-        "authority": "official_event",
-        "priority": 112
+        "authority": "venue_ticket",
+        "priority": 100
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "imageType": "artist",
-    "imagePosition": "50% 38%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "auditVerified": "2026-09-13",
+    "doorsTime": "18:30",
+    "advertisedBilling": [
+      "Oasis Ministry",
+      "Lisney De Font",
+      "Alex Zurdo"
+    ],
+    "id": "manual:oasis-ministry-qbelv-new-york-2026"
   },
   {
     "id": "official:81e8026b7add1de20674",
@@ -1313,7 +1764,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1353,12 +1804,51 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 30%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "Jay Kalyl — Desde Antes Tour",
+    "startDate": "2026-10-02",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "Iglesia Torre Fuerte",
+    "address": "30 3rd St",
+    "city": "Elizabeth",
+    "state": "NJ",
+    "country": "US",
+    "artists": [
+      "Jay Kalyl"
+    ],
+    "headliner": "Jay Kalyl",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://boletoslive.com/desde-antes-tour-jay-kalyl/",
+    "officialUrl": "https://boletoslive.com/desde-antes-tour-jay-kalyl/",
+    "image": "https://boletoslive.com/wp-content/uploads/2026/08/JAY-K-NJ.png",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "sourceName": "BoletosLive official event",
+    "sources": [
+      {
+        "name": "BoletosLive official event",
+        "url": "https://boletoslive.com/desde-antes-tour-jay-kalyl/",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "id": "manual:jay-kalyl-desde-antes-elizabeth-2026"
   },
   {
     "id": "official:cd8c382d5cc4126a49a4",
@@ -1398,7 +1888,7 @@
         "priority": 84
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 24%",
@@ -1436,12 +1926,161 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:jay-kalyl-desde-antes-rockville-centre-2026",
+    "title": "Jay Kalyl — Desde Antes Tour",
+    "startDate": "2026-10-03",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Word of Life Ministries",
+    "address": "430 DeMott Ave",
+    "city": "Rockville Centre",
+    "state": "NY",
+    "country": "US",
+    "artists": [
+      "Jay Kalyl"
+    ],
+    "headliner": "Jay Kalyl",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://boletoslive.com/jay-kalyl/",
+    "officialUrl": "https://boletoslive.com/jay-kalyl/",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb1269b80aed5d08c40aedfdc3",
+    "price": "",
+    "sourceName": "Boletos Live official event",
+    "sources": [
+      {
+        "name": "Boletos Live official event",
+        "url": "https://boletoslive.com/jay-kalyl/",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "venue_ticket",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-11",
+    "notes": "Official page gives conflicting 4:00 PM and 7:30 PM start times; start time intentionally left unspecified.",
+    "imageOverride": true,
+    "imageSourceName": "Jay Kalyl verified Spotify artist profile",
+    "imageSourceUrl": "https://open.spotify.com/"
+  },
+  {
+    "id": "manual:future-legacy-hip-hop-showcase-nashville-2026",
+    "title": "Future Legacy Hip-Hop Showcase",
+    "startDate": "2026-10-04",
+    "startTime": "18:30",
+    "timezone": "America/Chicago",
+    "venue": "Cannery Hall — Row One Stage",
+    "address": "1 Cannery Row",
+    "city": "Nashville",
+    "state": "TN",
+    "country": "US",
+    "artists": [
+      "1K Phew",
+      "Don Ready",
+      "LaNell Grant",
+      "Nathan Davis Jr.",
+      "Trendsetter Sense"
+    ],
+    "headliner": "1K Phew",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.axs.com/events/1580749/future-legacy-hip-hop-showcase-tickets",
+    "officialUrl": "https://www.axs.com/events/1580749/future-legacy-hip-hop-showcase-tickets",
+    "image": "https://images.discovery-prod.axs.com/2026/08/uploadedimage_6a871ac3abd11.jpg",
+    "price": "",
+    "sourceName": "AXS / GMA official Future Legacy listing",
+    "sources": [
+      {
+        "name": "AXS official event",
+        "url": "https://www.axs.com/events/1580749/future-legacy-hip-hop-showcase-tickets",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 94
+      },
+      {
+        "name": "GMA Dove Week official schedule",
+        "url": "https://gospelmusic.org/news/dove-week-2026-see-the-schedule",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 100
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "venue_ticket",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-11",
+    "imageOverride": true,
+    "officialBill": [
+      "ADIA",
+      "Don Ready",
+      "DJ Trendsetter",
+      "LaNell Grant",
+      "Nathan Davis Jr.",
+      "1K Phew"
+    ],
+    "notes": "DJ Trendsetter is associated with roster artist Trendsetter Sense based on established professional naming as DJ Trendsetter Sense."
+  },
+  {
+    "id": "manual:cj-emulous-live-loud-chico-2026",
+    "title": "Live Loud",
+    "startDate": "2026-10-07",
+    "startTime": "19:00",
+    "timezone": "America/Los_Angeles",
+    "venue": "2801 Notre Dame Blvd",
+    "address": "2801 Notre Dame Blvd",
+    "city": "Chico",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.cjemulous.com/event-details/live-loud-w-cj-emulous",
+    "officialUrl": "https://www.cjemulous.com/event-details/live-loud-w-cj-emulous",
+    "image": "https://static.wixstatic.com/media/9c331a_394502e64a45489e872ee2b71bb1a0de~mv2.jpg/v1/fill/w_980%2Ch_543%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_auto/9c331a_394502e64a45489e872ee2b71bb1a0de~mv2.jpg",
+    "price": "",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/live-loud-w-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "artist_calendar",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "imageOverride": true
   },
   {
     "id": "manual:egr-2026-10-10-visalia-ca",
@@ -1474,7 +2113,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -1482,43 +2121,284 @@
     "firstSeen": "2026-08-09T00:00:00Z"
   },
   {
-    "id": "official:59d21fa71f6962a834a6",
-    "title": "THE WORLD IS WATCHING LIVE",
-    "startDate": "2026-10-12",
-    "startTime": "00:30",
+    "title": "ONE DAY Fall Festival 2026",
+    "startDate": "2026-10-10",
+    "startTime": "09:00",
+    "timezone": "America/Denver",
+    "venue": "Colorado UpLift Community Campus",
+    "address": "1500 S Dayton St",
+    "city": "Aurora",
+    "state": "CO",
+    "country": "US",
+    "artists": [
+      "Petrina DeLacey"
+    ],
+    "headliner": "Petrina DeLacey",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://partiful.com/e/SK3SE7vXIs9rYlPcW0hZ",
+    "officialUrl": "https://onedaydenver.org/",
+    "image": "assets/events/petrina-delacey-one-day-2026.jpg",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "Free",
+    "lineupExplicit": true,
+    "authority": "official_festival",
+    "confidence": "high",
+    "sourceName": "ONE DAY official festival site",
+    "sources": [
+      {
+        "name": "ONE DAY official festival site",
+        "url": "https://onedaydenver.org/",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 112
+      },
+      {
+        "name": "Official ticket / RSVP",
+        "url": "https://partiful.com/e/SK3SE7vXIs9rYlPcW0hZ",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 94
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "endTime": "20:00",
+    "notes": "Festival runs 9:00 AM–8:00 PM. The sanctuary concert featuring Petrina DeLacey runs 4:30–8:00 PM. Free admission; RSVP requested.",
+    "performanceWindow": "16:30-20:00",
+    "id": "manual:one-day-fall-festival-aurora-2026",
+    "imageSource": "ONE DAY official festival site — Petrina DeLacey performance image",
+    "imageSourceUrl": "https://onedaydenver.org/"
+  },
+  {
+    "id": "manual:mayia-boxyard-saturdaze-2026",
+    "title": "Boxyard Saturdaze",
+    "startDate": "2026-10-10",
+    "startTime": "12:30",
+    "timezone": "America/New_York",
+    "venue": "Boxyard RTP — BeatBox Stage",
+    "address": "",
+    "city": "Durham",
+    "state": "NC",
+    "country": "US",
+    "artists": [
+      "MAYIA"
+    ],
+    "headliner": "MAYIA",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://boxyard.rtp.org/events/saturdaze-wattyandmayia-102026-295-435-108/",
+    "officialUrl": "https://boxyard.rtp.org/events/saturdaze-wattyandmayia-102026-295-435-108/",
+    "image": "https://ugc.production.linktr.ee/1c7876eb-77d1-4a43-a2db-def6b24563ac_1000010882.jpeg",
+    "price": "",
+    "sourceName": "Boxyard RTP official event",
+    "sources": [
+      {
+        "name": "Boxyard RTP official event",
+        "url": "https://boxyard.rtp.org/events/saturdaze-wattyandmayia-102026-295-435-108/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      },
+      {
+        "name": "MAYIA official calendar",
+        "url": "https://mayiawarren.org/go/bandsintown/21578/event/108885203",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "official_event",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "officialBill": [
+      "DJ Watty Tha Shepherd",
+      "MAYIA WARREN"
+    ],
+    "imageOverride": true,
+    "imageSourceName": "MAYIA official Linktree",
+    "imageSourceUrl": "https://linktr.ee/mayiawarren"
+  },
+  {
+    "id": "manual:eventbrite:reign-volume-one-aasha-marie-brooklyn-2026",
+    "title": "REIGN volume one",
+    "startDate": "2026-10-10",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "The Vino Theater",
+    "address": "274 Morgan Avenue, Suite 201",
+    "city": "Brooklyn",
+    "state": "NY",
+    "country": "US",
+    "artists": [
+      "Aasha Marie"
+    ],
+    "headliner": "Aasha Marie",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/reign-volume-one-tickets-1996068040241",
+    "officialUrl": "https://www.eventbrite.com/e/reign-volume-one-tickets-1996068040241",
+    "image": "assets/events/reign-volume-one-single-2026.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "sourceName": "Official Eventbrite listing",
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Official Eventbrite listing",
+        "url": "https://www.eventbrite.com/e/reign-volume-one-tickets-1996068040241",
+        "type": "eventbrite",
+        "authority": "venue_ticket",
+        "priority": 94
+      }
+    ],
+    "imageSource": "Official Eventbrite event artwork",
+    "imageSourceUrl": "https://www.eventbrite.com/e/reign-volume-one-tickets-1996068040241",
+    "auditVerified": "2026-09-13"
+  },
+  {
+    "id": "official:7c07397fa047689b0215",
+    "title": "Anike — Live at THE ALL STAR EXPERIENCE LIVE CONCERT",
+    "startDate": "2026-10-11",
+    "startTime": "",
     "timezone": "",
-    "venue": "AM/FM Backyard",
+    "venue": "THE ALL STAR EXPERIENCE LIVE CONCERT",
+    "address": "",
+    "city": "Austin",
+    "state": "TX",
+    "country": "US",
+    "artists": [
+      "Anike"
+    ],
+    "headliner": "Anike",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/t/108773288?app_id=01df058d58993b0aa9bad03067b3503e&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+    "officialUrl": "https://www.reachrecords.com/artists/wande/",
+    "image": "https://s1.ticketm.net/dam/a/ab5/019b80d9-ebcf-40a7-9233-a35e76204ab5_SOURCE",
+    "price": "",
+    "sourceName": "Reach Records - Anike",
+    "sources": [
+      {
+        "name": "Reach Records - Anike",
+        "url": "https://www.reachrecords.com/artists/wande/",
+        "type": "reach_records",
+        "authority": "artist_label",
+        "priority": 86
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "50% 30%",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-09-12T14:12:12Z"
+  },
+  {
+    "id": "manual:parris-chariz-dallas-2026-10-11",
+    "title": "Parris Chariz — THE WORLD IS WATCHING LIVE",
+    "startDate": "2026-10-11",
+    "startTime": "20:30",
+    "timezone": "America/Chicago",
+    "venue": "AM/FM - Lounge",
     "address": "1950 Market Center Blvd",
     "city": "Dallas",
     "state": "TX",
     "country": "US",
     "artists": [
-      "Parris Chariz"
+      "Parris Chariz",
+      "Toschii",
+      "Eli Montanna",
+      "JWoodz"
     ],
     "headliner": "Parris Chariz",
     "eventType": "concert",
     "status": "scheduled",
-    "ticketUrl": "https://music.apple.com/us/concerts/artist/772171124",
-    "officialUrl": "https://music.apple.com/us/concerts/artist/772171124",
-    "image": "assets/event-fallback.webp",
+    "ticketUrl": "https://www.eventim.us/event/parris-chariz/699959",
+    "officialUrl": "https://www.eventim.us/event/parris-chariz/699959",
+    "image": "https://www.invubu.com/images/artists/1200/parris_chariz.jpg",
+    "imageType": "artist",
+    "imagePosition": "center",
     "price": "",
-    "sourceName": "Parris Chariz Apple Music concerts",
+    "sourceName": "Spune / Eventim official listing",
+    "authority": "official_event",
+    "confidence": "high",
+    "lineupExplicit": true,
     "sources": [
       {
-        "name": "Parris Chariz Apple Music concerts",
-        "url": "https://music.apple.com/us/concerts/artist/772171124",
-        "type": "jsonld",
+        "name": "Eventim official ticket listing",
+        "url": "https://www.eventim.us/event/parris-chariz/699959",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 112
+      },
+      {
+        "name": "Spune official show calendar",
+        "url": "https://spune.com/shows/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 100
+      }
+    ]
+  },
+  {
+    "id": "manual:cj-emulous-turlock-back-to-school-2026",
+    "title": "Teen Club Kickoff / Back to School Concert",
+    "startDate": "2026-10-12",
+    "startTime": "18:00",
+    "timezone": "America/Los_Angeles",
+    "venue": "Westside Ministries",
+    "address": "950 Columbia Ave",
+    "city": "Turlock",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous",
+      "Lul DreDay"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.cjemulous.com/event-details/back-to-school-concert-w-cj-emulous-1",
+    "officialUrl": "https://www.cjemulous.com/event-details/back-to-school-concert-w-cj-emulous-1",
+    "image": "https://static.wixstatic.com/media/9c331a_7832125534df4c06b583f033fe19273e~mv2.png",
+    "price": "",
+    "sourceName": "CJ Emulous official calendar and event flyer",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar and event flyer",
+        "url": "https://www.cjemulous.com/event-details/back-to-school-concert-w-cj-emulous-1",
+        "type": "manual_verified",
         "authority": "artist_calendar",
-        "priority": 74
+        "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
-    "endDate": "2026-10-12",
-    "imageType": "fallback",
+    "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-24T14:04:57Z"
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "artist_calendar",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "imageOverride": true,
+    "officialBill": [
+      "CJ Emulous",
+      "Lul DreDay",
+      "MikeySoChristian"
+    ]
   },
   {
     "id": "manual:egr-2026-10-16-fresno-ca",
@@ -1551,12 +2431,386 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "Mike Malagies Florida Takeover (Miami)",
+    "startDate": "2026-10-16",
+    "startTime": "18:30",
+    "doorsTime": "18:00",
+    "timezone": "America/New_York",
+    "venue": "Black Box Media Miami",
+    "address": "12355 NE 13th Ave Unit #403-404",
+    "city": "North Miami",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Mike Malagies"
+    ],
+    "headliner": "Mike Malagies",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.ticketsource.com/the-sound-system/mike-malagies-florida-takeover-miami/e-vgxqxl",
+    "officialUrl": "https://www.ticketsource.com/the-sound-system/mike-malagies-florida-takeover-miami/e-vgxqxl",
+    "image": "https://static.wixstatic.com/media/61a78b_7545031064f049a6843e4c7d0666886f~mv2.jpg/v1/fill/w_327%2Ch_491%2Cal_c%2Cq_80%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/61a78b_7545031064f049a6843e4c7d0666886f~mv2.jpg",
+    "imageType": "artist",
+    "imagePosition": "50% 25%",
+    "imageOverride": true,
+    "lineupExplicit": true,
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "sourceName": "TicketSource exact event listing",
+    "sources": [
+      {
+        "name": "TicketSource exact event listing",
+        "url": "https://www.ticketsource.com/the-sound-system/mike-malagies-florida-takeover-miami/e-vgxqxl",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 112
+      },
+      {
+        "name": "Black Box Media Miami official venue",
+        "url": "https://www.blackboxstudiosmiami.com/event-list",
+        "type": "manual_verified",
+        "authority": "venue",
+        "priority": 112
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "id": "manual:mike-malagies-florida-takeover-miami-2026"
+  },
+  {
+    "id": "manual:eventbrite:rare-of-breed-jacksonville-2026",
+    "title": "Rare of Breed",
+    "startDate": "2026-10-16",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "Murray Hill Theatre",
+    "address": "932 Edgewood Ave S",
+    "city": "Jacksonville",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Rare of Breed",
+      "DJ Winn"
+    ],
+    "headliner": "Rare of Breed",
+    "eventType": "concert",
+    "status": "cancelled",
+    "ticketUrl": "https://www.eventbrite.com/e/cancelled-rare-of-breed-tickets-1986268845586",
+    "officialUrl": "https://www.eventbrite.com/e/cancelled-rare-of-breed-tickets-1986268845586",
+    "image": "assets/events/rare-of-breed-jacksonville-2026.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "sourceName": "Official Eventbrite cancellation notice",
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Official Eventbrite cancellation notice",
+        "url": "https://www.eventbrite.com/e/cancelled-rare-of-breed-tickets-1986268845586",
+        "type": "eventbrite",
+        "authority": "venue_ticket",
+        "priority": 120
+      },
+      {
+        "name": "Official Eventbrite listing",
+        "url": "https://www.eventbrite.com/e/rare-of-breed-tickets-1986268845586",
+        "type": "eventbrite",
+        "authority": "venue_ticket",
+        "priority": 94
+      }
+    ],
+    "cancellationConfirmed": true,
+    "cancellationConfirmedAt": "2026-09-12",
+    "notes": "Cancelled by the organizer. This page is retained as a cancellation notice.",
+    "ticketAvailability": "cancelled",
+    "auditVerified": "2026-09-13"
+  },
+  {
+    "title": "The Sac Town Give Back",
+    "startDate": "2026-10-17",
+    "startTime": "",
+    "timezone": "America/Los_Angeles",
+    "venue": "985 Riverfront St",
+    "address": "985 Riverfront St",
+    "city": "West Sacramento",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "appearance",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/the-sac-town-give-back",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/the-sac-town-give-back",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "Artist appearance at a community give-back event. The official title does not establish a standalone rap concert; time is left blank pending a local source.",
+    "id": "manual:cj-emulous-sac-town-give-back-west-sacramento-2026"
+  },
+  {
+    "id": "manual:mayia-nc-state-fair-2026",
+    "title": "MAYIA at the NC State Fair",
+    "startDate": "2026-10-17",
+    "startTime": "10:00",
+    "timezone": "America/New_York",
+    "venue": "Heritage Circle Stage — NC State Fairgrounds",
+    "address": "",
+    "city": "Raleigh",
+    "state": "NC",
+    "country": "US",
+    "artists": [
+      "MAYIA"
+    ],
+    "headliner": "MAYIA",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.ncagr.gov/divisions/ncstatefair/buy-tickets-now",
+    "officialUrl": "https://www.ncagr.gov/divisions/ncstatefair",
+    "image": "https://ugc.production.linktr.ee/1c7876eb-77d1-4a43-a2db-def6b24563ac_1000010882.jpeg",
+    "price": "",
+    "sourceName": "North Carolina State Fair official site",
+    "sources": [
+      {
+        "name": "North Carolina State Fair official site",
+        "url": "https://www.ncagr.gov/divisions/ncstatefair",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      },
+      {
+        "name": "MAYIA official calendar",
+        "url": "https://mayiawarren.org/go/bandsintown/21578/event/108885151",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "official_event",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "notes": "One event with two confirmed acoustic sets: 10–11 AM and 12–1 PM.",
+    "imageOverride": true,
+    "imageSourceName": "MAYIA official Linktree",
+    "imageSourceUrl": "https://linktr.ee/mayiawarren"
+  },
+  {
+    "id": "manual:mission-friends-sacramento-2026",
+    "title": "Mission and Special Guests",
+    "startDate": "2026-10-17",
+    "startTime": "18:30",
+    "timezone": "America/Los_Angeles",
+    "venue": "Victory Outreach South Sacramento",
+    "address": "6831 Savings Pl",
+    "city": "Sacramento",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "Mission"
+    ],
+    "headliner": "Mission",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/e/108816740-mission-at-victory-outreach-south-sacramento",
+    "officialUrl": "https://www.bandsintown.com/e/108816740-mission-at-victory-outreach-south-sacramento",
+    "image": "assets/artists/mission-primary.jpg",
+    "price": "",
+    "sourceName": "Mission official Bandsintown event",
+    "sources": [
+      {
+        "name": "Mission official Bandsintown event",
+        "url": "https://www.bandsintown.com/e/108816740-mission-at-victory-outreach-south-sacramento",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "artist_calendar",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "imageOverride": true,
+    "imageSource": "Mission official YouTube channel",
+    "imageSourceUrl": "https://www.youtube.com/channel/UCBaU_Xh4fyokc-ckyCeYv3w",
+    "imageSourceName": "Mission official YouTube channel"
+  },
+  {
+    "title": "Alex Zurdo: Zona Zero",
+    "startDate": "2026-10-18",
+    "startTime": "18:00",
+    "timezone": "America/Puerto_Rico",
+    "venue": "Coliseo de Puerto Rico",
+    "address": "500 Arterial B",
+    "city": "San Juan",
+    "state": "PR",
+    "country": "US",
+    "artists": [
+      "Alex Zurdo"
+    ],
+    "headliner": "Alex Zurdo",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://choli.ticketera.com/event/alex-zurdo-zona-cero-6dn2x2",
+    "officialUrl": "https://www.coliseodepuertorico.com/alexzurdozonazero/",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb2c81bb40c3b6962eacf9dc9c",
+    "price": "",
+    "sourceName": "Coliseo de Puerto Rico official event",
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Coliseo de Puerto Rico official event",
+        "url": "https://www.coliseodepuertorico.com/alexzurdozonazero/",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 112
+      }
+    ],
+    "auditVerified": "2026-09-11",
+    "id": "manual:alex-zurdo-zona-zero-san-juan-2026",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "imageSourceName": "Alex Zurdo verified Spotify artist profile",
+    "imageSourceUrl": "https://open.spotify.com/"
+  },
+  {
+    "title": "JIMMY ROCK — Rave & Worship Dallas",
+    "startDate": "2026-10-18",
+    "startTime": "19:00",
+    "timezone": "America/Chicago",
+    "venue": "AM/FM Dallas — Backyard",
+    "address": "1950 Market Center Blvd",
+    "city": "Dallas",
+    "state": "TX",
+    "country": "US",
+    "artists": [
+      "JIMMY ROCK"
+    ],
+    "headliner": "JIMMY ROCK",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventim.com/event/jimmy-rock-am-fm-22038857/",
+    "officialUrl": "https://www.eventim.com/event/jimmy-rock-am-fm-22038857/",
+    "image": "assets/events/jimmy-rock-rave-worship-dallas-2026.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "venue_ticket",
+    "confidence": "high",
+    "sourceName": "Eventim official ticket listing",
+    "sources": [
+      {
+        "name": "Eventim official ticket listing",
+        "url": "https://www.eventim.com/event/jimmy-rock-am-fm-22038857/",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 100
+      },
+      {
+        "name": "JIMMY ROCK Bandsintown",
+        "url": "https://www.bandsintown.com/e/108805378",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 74
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "doorsTime": "18:00",
+    "notes": "Doors 6:00 PM; show 7:00 PM; all ages. J. Horton is billed. Artists mentioned only in performer biographies are not associated.",
+    "advertisedBilling": [
+      "JIMMY ROCK",
+      "J. Horton"
+    ],
+    "ageRestriction": "All ages",
+    "id": "manual:jimmy-rock-rave-worship-dallas-2026",
+    "imageSource": "Official Dallas ticket artwork",
+    "imageSourceUrl": "https://www.eventim.com/event/jimmy-rock-am-fm-22038857/"
+  },
+  {
+    "id": "manual:kaden-jordan-2026-10-23-new-port-richey",
+    "title": "Kaden Jordan Live",
+    "startDate": "2026-10-23",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Trinity College",
+    "address": "",
+    "city": "New Port Richey",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Kaden Jordan"
+    ],
+    "headliner": "Kaden Jordan",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.songkick.com/artists/10314485-kaden-jordan",
+    "officialUrl": "https://kadenjordan.com/pages/tour",
+    "image": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b4/50/48/b4504865-b294-ba19-3854-a83ff79084c4/35e5e9f1-1e53-4326-ae3b-47ec4206ce77_file_cropped.png/1200x630cw.png",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "price": "",
+    "sourceName": "Kaden Jordan official tour page / Songkick",
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Kaden Jordan official TOUR page",
+        "url": "https://kadenjordan.com/pages/tour",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Songkick calendar linked by Kaden Jordan official site",
+        "url": "https://www.songkick.com/artists/10314485-kaden-jordan",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 90
+      }
+    ]
   },
   {
     "id": "official:6ccf87bf0ba17cd0c74d",
@@ -1599,7 +2853,7 @@
         "priority": 104
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1637,7 +2891,7 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
@@ -1648,7 +2902,7 @@
     "id": "ticketmaster:k7vGF_CBswXt6",
     "title": "ZAUNTEE: God Remembers Tour",
     "startDate": "2026-11-01",
-    "startTime": "17:00",
+    "startTime": "18:30",
     "timezone": "America/New_York",
     "venue": "Mercury Lounge",
     "address": "217 East Houston St.",
@@ -1663,10 +2917,10 @@
     "eventType": "concert",
     "status": "onsale",
     "ticketUrl": "https://www.ticketmaster.com/zauntee-god-remembers-tour-new-york-new-york-11-01-2026/event/000064EEB1CBEA47",
-    "officialUrl": "https://www.ticketmaster.com/zauntee-god-remembers-tour-new-york-new-york-11-01-2026/event/000064EEB1CBEA47",
+    "officialUrl": "https://mercuryeastpresents.com/tm-event/zauntee-god-remembers-tour/",
     "image": "https://s1.ticketm.net/dam/a/b43/5480ca83-aa5c-4c4d-a0dd-861df5909b43_TABLET_LANDSCAPE_LARGE_16_9.jpg",
     "price": "",
-    "sourceName": "Ticketmaster",
+    "sourceName": "Official venue event page",
     "sources": [
       {
         "name": "Ticketmaster",
@@ -1674,14 +2928,66 @@
         "type": "ticketmaster",
         "authority": "venue_ticket",
         "priority": 94
+      },
+      {
+        "name": "Official venue event page",
+        "url": "https://mercuryeastpresents.com/tm-event/zauntee-god-remembers-tour/",
+        "type": "venue",
+        "authority": "official_venue",
+        "priority": 120
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "doorsTime": "17:00",
+    "performanceTime": "18:30",
+    "mergedIds": [
+      "supplemental:skema-boy-2026-11-01-new-york-ny"
+    ],
+    "ageRestriction": "18+",
+    "notes": "Official venue listing specifies an 18+ age restriction."
+  },
+  {
+    "id": "manual:808-beezy-bandsintown-108856031",
+    "title": "808 BEEZY — Live at FCA Warrior Night",
+    "startDate": "2026-11-02",
+    "startTime": "20:00",
+    "timezone": "",
+    "venue": "FCA Warrior Night",
+    "address": "1600 E Washington Blvd",
+    "city": "Fort Wayne",
+    "state": "IN",
+    "country": "US",
+    "artists": [
+      "808 BEEZY"
+    ],
+    "headliner": "808 BEEZY",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/e/108856031",
+    "officialUrl": "https://www.bandsintown.com/e/108856031",
+    "image": "https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg",
+    "price": "",
+    "sourceName": "808 BEEZY official tour / Bandsintown",
+    "sources": [
+      {
+        "name": "808 BEEZY official tour / Bandsintown",
+        "url": "https://www.bandsintown.com/e/108856031",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 76
+      }
+    ],
+    "lastVerified": "2026-09-12T14:30:41Z",
+    "confidence": "high",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-09-12T14:30:41Z"
   },
   {
     "id": "ticketmaster:G5eVZ_ClfLPQX",
@@ -1715,12 +3021,164 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:flavor-fest-2026-friday-concerts",
+    "title": "Flavor Fest 2026 — Friday Concerts",
+    "startDate": "2026-11-06",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "Crossover Church",
+    "address": "1235 E Fowler Ave",
+    "city": "Tampa",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Miles Minnick",
+      "Gifted Hands",
+      "Datin",
+      "TRU-SERVA",
+      "VVS Big Rock",
+      "Lyric The Geenyus",
+      "MAYIA"
+    ],
+    "headliner": "Miles Minnick",
+    "eventType": "festival",
+    "ticketUrl": "https://flavorfest.ticketspice.com/full-conference-",
+    "officialUrl": "https://www.flavorfest.org/schedule",
+    "image": "assets/events/flavor-fest-friday-2026.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "",
+    "status": "scheduled",
+    "lineupExplicit": true,
+    "authority": "official_event",
+    "sourceName": "Flavor Fest official 2026 schedule",
+    "sources": [
+      {
+        "name": "Flavor Fest official 2026 schedule",
+        "url": "https://www.flavorfest.org/schedule",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      },
+      {
+        "name": "Flavor Fest official Friday poster",
+        "url": "https://www.flavorfest.org/",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 106
+      }
+    ],
+    "confidence": "high",
+    "auditVerified": "2026-09-11"
+  },
+  {
+    "id": "official:4e2fc5c7c02ab1d34b9e",
+    "title": "Beyond the Walls",
+    "startDate": "2026-11-07",
+    "startTime": "18:00",
+    "timezone": "America/New_York",
+    "venue": "House of Blues Cleveland",
+    "address": "308 Euclid Ave",
+    "city": "Cleveland",
+    "state": "OH",
+    "country": "US",
+    "artists": [
+      "Mike Teezy"
+    ],
+    "headliner": "Mike Teezy",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://music.apple.com/us/concerts/artist/517774271",
+    "officialUrl": "https://music.apple.com/us/concerts/ce.01a1c61a-49a9-4e19-b629-46bac43b4970",
+    "image": "https://www.even.biz/_next/image?q=75&url=https%3A%2F%2Fdt7m7kl3brv3f.cloudfront.net%2Fimages%2Fzlirs9n3bpjitnofexx4m095koo3&w=828",
+    "price": "",
+    "sourceName": "Exact Apple Music event page",
+    "sources": [
+      {
+        "name": "Mike Teezy Apple Music concerts",
+        "url": "https://music.apple.com/us/concerts/artist/517774271",
+        "type": "jsonld",
+        "authority": "artist_calendar",
+        "priority": 74
+      },
+      {
+        "name": "Exact Apple Music event page",
+        "url": "https://music.apple.com/us/concerts/ce.01a1c61a-49a9-4e19-b629-46bac43b4970",
+        "type": "artist_calendar",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "50% 30%",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-21T12:04:12Z",
+    "notes": "Apple Music displays 6:00 PM on November 7. The former 11:00 PM value and November 8 end date resulted from preserving UTC as local time.",
+    "auditVerified": "2026-09-12"
+  },
+  {
+    "id": "manual:flavor-fest-2026-saturday-concerts",
+    "title": "Flavor Fest 2026 — Saturday Concerts",
+    "startDate": "2026-11-07",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "Crossover Church",
+    "address": "1235 Fowler Ave",
+    "city": "Tampa",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Lecrae",
+      "Biancallove",
+      "C4 Crotona",
+      "Monster Tarver"
+    ],
+    "headliner": "Lecrae",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://flavorfest.ticketspice.com/full-conference-",
+    "officialUrl": "https://www.flavorfest.org/",
+    "image": "https://images.squarespace-cdn.com/content/v1/65b435646b1eae535f97c6a3/989d4d2e-f454-4a1b-99df-cc78cf6e6749/FF26-Promo-Saturday-Night.jpg",
+    "price": "",
+    "sourceName": "Flavor Fest official Saturday poster",
+    "sources": [
+      {
+        "name": "Flavor Fest official Saturday poster",
+        "url": "https://www.flavorfest.org/",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "official_festival",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-11",
+    "imageOverride": true,
+    "officialBill": [
+      "Lecrae",
+      "Biancallove",
+      "Gifted Hands",
+      "Monster Tarver",
+      "C4 Crotona"
+    ],
+    "notes": "Yung Kriss and Gifted Hands have conflicting poster/schedule day assignments and are not newly associated here pending resolution."
   },
   {
     "id": "ticketmaster:vv1AAZk3FGkdmpCG1",
@@ -1755,7 +3213,7 @@
         "priority": 94
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
@@ -1763,49 +3221,10 @@
     "firstSeen": "2026-08-09T00:00:00Z"
   },
   {
-    "id": "official:4e2fc5c7c02ab1d34b9e",
-    "title": "Beyond the Walls",
-    "startDate": "2026-11-07",
-    "startTime": "23:00",
-    "timezone": "",
-    "venue": "House of Blues Cleveland",
-    "address": "308 Euclid Ave",
-    "city": "Cleveland",
-    "state": "OH",
-    "country": "US",
-    "artists": [
-      "Mike Teezy"
-    ],
-    "headliner": "Mike Teezy",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "https://music.apple.com/us/concerts/artist/517774271",
-    "officialUrl": "https://music.apple.com/us/concerts/artist/517774271",
-    "image": "https://www.even.biz/_next/image?q=75&url=https%3A%2F%2Fdt7m7kl3brv3f.cloudfront.net%2Fimages%2Fzlirs9n3bpjitnofexx4m095koo3&w=828",
-    "price": "",
-    "sourceName": "Mike Teezy Apple Music concerts",
-    "sources": [
-      {
-        "name": "Mike Teezy Apple Music concerts",
-        "url": "https://music.apple.com/us/concerts/artist/517774271",
-        "type": "jsonld",
-        "authority": "artist_calendar",
-        "priority": 74
-      }
-    ],
-    "lastVerified": "2026-09-06T17:54:42Z",
-    "confidence": "high",
-    "endDate": "2026-11-08",
-    "imageType": "artist",
-    "imagePosition": "50% 30%",
-    "verifiedVersion": 9,
-    "firstSeen": "2026-08-21T12:04:12Z"
-  },
-  {
     "id": "ticketmaster:vvG1zZ_ClQMRrF",
     "title": "ZAUNTEE: God Remembers Tour",
     "startDate": "2026-11-08",
-    "startTime": "19:00",
+    "startTime": "20:00",
     "timezone": "America/New_York",
     "venue": "The Masquerade - Altar",
     "address": "50 Lower Alabama Street",
@@ -1813,16 +3232,17 @@
     "state": "GA",
     "country": "US",
     "artists": [
-      "Zauntee"
+      "Zauntee",
+      "Skema Boy"
     ],
     "headliner": "Zauntee",
     "eventType": "concert",
     "status": "onsale",
     "ticketUrl": "https://www.ticketmaster.com/zauntee-god-remembers-tour-atlanta-georgia-11-08-2026/event/0E0064EADADEF788",
-    "officialUrl": "https://www.ticketmaster.com/zauntee-god-remembers-tour-atlanta-georgia-11-08-2026/event/0E0064EADADEF788",
+    "officialUrl": "https://www.masqueradeatlanta.com/events/zauntee/",
     "image": "https://s1.ticketm.net/dam/a/b43/5480ca83-aa5c-4c4d-a0dd-861df5909b43_TABLET_LANDSCAPE_LARGE_16_9.jpg",
     "price": "",
-    "sourceName": "Ticketmaster",
+    "sourceName": "Official venue event page",
     "sources": [
       {
         "name": "Ticketmaster",
@@ -1830,14 +3250,70 @@
         "type": "ticketmaster",
         "authority": "venue_ticket",
         "priority": 94
+      },
+      {
+        "name": "Official venue event page",
+        "url": "https://www.masqueradeatlanta.com/events/zauntee/",
+        "type": "venue",
+        "authority": "official_venue",
+        "priority": 120
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "doorsTime": "19:00",
+    "performanceTime": "20:00",
+    "mergedIds": [
+      "supplemental:skema-boy-2026-11-08-atlanta-ga"
+    ]
+  },
+  {
+    "id": "manual:kaden-jordan-2026-11-13-orlando",
+    "title": "Kaden Jordan Live",
+    "startDate": "2026-11-13",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "The Gathering Place",
+    "address": "",
+    "city": "Orlando",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Kaden Jordan"
+    ],
+    "headliner": "Kaden Jordan",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.songkick.com/artists/10314485-kaden-jordan",
+    "officialUrl": "https://kadenjordan.com/pages/tour",
+    "image": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b4/50/48/b4504865-b294-ba19-3854-a83ff79084c4/35e5e9f1-1e53-4326-ae3b-47ec4206ce77_file_cropped.png/1200x630cw.png",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "price": "",
+    "sourceName": "Kaden Jordan official tour page / Songkick",
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Kaden Jordan official TOUR page",
+        "url": "https://kadenjordan.com/pages/tour",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Songkick calendar linked by Kaden Jordan official site",
+        "url": "https://www.songkick.com/artists/10314485-kaden-jordan",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 90
+      }
+    ]
   },
   {
     "id": "official:0dd5f599b4db080206cf",
@@ -1870,7 +3346,7 @@
         "priority": 74
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "endDate": "2026-11-15",
     "imageType": "artist",
@@ -1879,10 +3355,94 @@
     "firstSeen": "2026-08-09T00:00:00Z"
   },
   {
+    "id": "manual:cj-emulous-kickback-grand-prairie-2026",
+    "title": "The Kickback",
+    "startDate": "2026-11-14",
+    "startTime": "19:00",
+    "timezone": "America/Chicago",
+    "venue": "2305 SE 14th St",
+    "address": "2305 SE 14th St",
+    "city": "Grand Prairie",
+    "state": "TX",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.cjemulous.com/event-details/the-kickback-w-cj-emulous",
+    "officialUrl": "https://www.cjemulous.com/event-details/the-kickback-w-cj-emulous",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "price": "",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/the-kickback-w-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "artist_calendar",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "imageOverride": true,
+    "imageSourceName": "CJ Emulous official Linktree",
+    "imageSourceUrl": "https://linktr.ee/cjemulous"
+  },
+  {
+    "title": "GLO Concert",
+    "startDate": "2026-11-15",
+    "startTime": "",
+    "timezone": "America/Los_Angeles",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Los Angeles",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/gloconcert",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": false,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/gloconcert",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "CJ Emulous is confirmed by his official calendar. Venue and additional artists remain unconfirmed; time is left blank pending a local source.",
+    "id": "manual:cj-emulous-glo-concert-los-angeles-2026"
+  },
+  {
     "id": "ticketmaster:vvG10Z_CMA3B0H",
     "title": "ZAUNTEE: God Remembers Tour",
     "startDate": "2026-11-19",
-    "startTime": "21:30",
+    "startTime": "22:00",
     "timezone": "America/Los_Angeles",
     "venue": "The Moroccan Lounge",
     "address": "901 E 1st Street",
@@ -1897,10 +3457,10 @@
     "eventType": "concert",
     "status": "onsale",
     "ticketUrl": "https://www.ticketmaster.com/zauntee-god-remembers-tour-los-angeles-california-11-19-2026/event/090064EDC54BA93C",
-    "officialUrl": "https://www.ticketmaster.com/zauntee-god-remembers-tour-los-angeles-california-11-19-2026/event/090064EDC54BA93C",
+    "officialUrl": "https://themoroccan.com/tm-event/zauntee-god-remembers-tour/",
     "image": "https://s1.ticketm.net/dam/e/54d/bad44a34-52c7-4dcd-b30b-d4906678154d_SOURCE",
     "price": "",
-    "sourceName": "Ticketmaster",
+    "sourceName": "Official venue event page",
     "sources": [
       {
         "name": "Ticketmaster",
@@ -1908,14 +3468,26 @@
         "type": "ticketmaster",
         "authority": "venue_ticket",
         "priority": 94
+      },
+      {
+        "name": "Official venue event page",
+        "url": "https://themoroccan.com/tm-event/zauntee-god-remembers-tour/",
+        "type": "venue",
+        "authority": "official_venue",
+        "priority": 120
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "event_artwork",
     "imagePosition": "center",
     "verifiedVersion": 9,
-    "firstSeen": "2026-08-09T00:00:00Z"
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "doorsTime": "21:30",
+    "performanceTime": "22:00",
+    "mergedIds": [
+      "supplemental:skema-boy-2026-11-19-los-angeles-ca"
+    ]
   },
   {
     "id": "manual:egr-2026-11-21-bradley-ca",
@@ -1948,12 +3520,94 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "Christlike Christmas — CJ Emulous & Miles Minnick",
+    "startDate": "2026-12-02",
+    "startTime": "",
+    "timezone": "America/Los_Angeles",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Berkeley",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous",
+      "Miles Minnick"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/christlike-christmas-w-cj-emulous-miles-minnick",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/christlike-christmas-w-cj-emulous-miles-minnick",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "Venue and independently confirmed local time are unpublished.",
+    "id": "manual:cj-emulous-christlike-christmas-berkeley-2026"
+  },
+  {
+    "title": "Christlike Christmas — CJ Emulous & Miles Minnick",
+    "startDate": "2026-12-04",
+    "startTime": "",
+    "timezone": "America/Los_Angeles",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Felton",
+    "state": "CA",
+    "country": "US",
+    "artists": [
+      "CJ Emulous",
+      "Miles Minnick"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/christlike-christmas-w-cj-emulous-miles-minnick-2",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/christlike-christmas-w-cj-emulous-miles-minnick-2",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "Venue and independently confirmed local time are unpublished.",
+    "id": "manual:cj-emulous-christlike-christmas-felton-2026"
   },
   {
     "id": "manual:egr-2026-12-05-big-bear-lake-ca",
@@ -1986,12 +3640,57 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:miles-cj-zion-ultra-lounge-chandler-2026",
+    "title": "Miles Minnick & CJ Emulous at Zion Ultra Lounge",
+    "startDate": "2026-12-05",
+    "startTime": "",
+    "timezone": "America/Phoenix",
+    "venue": "Zion Ultra Lounge",
+    "address": "2301 S Stearman Dr",
+    "city": "Chandler",
+    "state": "AZ",
+    "country": "US",
+    "artists": [
+      "Miles Minnick",
+      "CJ Emulous"
+    ],
+    "headliner": "Miles Minnick",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.cjemulous.com/event-details/zion-ultra-lounge-w-miles-minnick-cj-emulous",
+    "officialUrl": "https://www.cjemulous.com/event-details/zion-ultra-lounge-w-miles-minnick-cj-emulous",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
+    "price": "",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/zion-ultra-lounge-w-miles-minnick-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 112
+      }
+    ],
+    "lastVerified": "2026-09-12T14:12:12Z",
+    "confidence": "high",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-08-09T00:00:00Z",
+    "authority": "artist_calendar",
+    "lineupExplicit": true,
+    "auditVerified": "2026-09-13",
+    "imageOverride": true,
+    "imageSourceName": "Miles Minnick verified Spotify artist profile",
+    "imageSourceUrl": "https://open.spotify.com/"
   },
   {
     "id": "manual:egr-2026-12-11-fargo-nd",
@@ -2024,12 +3723,56 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "id": "manual:kaden-jordan-2026-12-11-ocala",
+    "title": "Kaden Jordan Live",
+    "startDate": "2026-12-11",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "NEXT CHURCH",
+    "address": "",
+    "city": "Ocala",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Kaden Jordan"
+    ],
+    "headliner": "Kaden Jordan",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.songkick.com/artists/10314485-kaden-jordan",
+    "officialUrl": "https://kadenjordan.com/pages/tour",
+    "image": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b4/50/48/b4504865-b294-ba19-3854-a83ff79084c4/35e5e9f1-1e53-4326-ae3b-47ec4206ce77_file_cropped.png/1200x630cw.png",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "price": "",
+    "sourceName": "Kaden Jordan official tour page / Songkick",
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "lineupExplicit": true,
+    "sources": [
+      {
+        "name": "Kaden Jordan official TOUR page",
+        "url": "https://kadenjordan.com/pages/tour",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Songkick calendar linked by Kaden Jordan official site",
+        "url": "https://www.songkick.com/artists/10314485-kaden-jordan",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 90
+      }
+    ]
   },
   {
     "id": "manual:egr-2026-12-12-jamestown-nd",
@@ -2062,11 +3805,417 @@
         "priority": 112
       }
     ],
-    "lastVerified": "2026-09-06T17:54:42Z",
+    "lastVerified": "2026-09-12T14:12:12Z",
     "confidence": "high",
     "imageType": "artist",
     "imagePosition": "50% 38%",
     "verifiedVersion": 9,
     "firstSeen": "2026-08-09T00:00:00Z"
+  },
+  {
+    "title": "Kelo Cho Presents: The Worship After Christmas",
+    "startDate": "2026-12-26",
+    "startTime": "19:00",
+    "timezone": "America/New_York",
+    "venue": "Murray Hill Theatre",
+    "address": "932 Edgewood Ave S",
+    "city": "Jacksonville",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Kelo"
+    ],
+    "headliner": "Kelo",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/kelo-cho-presents-the-worship-after-christmas-tickets-1992972194483",
+    "officialUrl": "https://murrayhilltheatre.com/event/kelo-cho-presents-the-worship-after-christmas/",
+    "image": "https://murrayhilltheatre.com/wp-content/uploads/2026/07/https-cdn.evbuc_.com-images-1188053564-306363782001-1-original.20260702-021736-1130x650.jpeg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "$15",
+    "lineupExplicit": true,
+    "authority": "official_event",
+    "confidence": "high",
+    "sourceName": "Murray Hill Theatre official event",
+    "sources": [
+      {
+        "name": "Murray Hill Theatre official event",
+        "url": "https://murrayhilltheatre.com/event/kelo-cho-presents-the-worship-after-christmas/",
+        "type": "manual_verified",
+        "authority": "official_event",
+        "priority": 112
+      },
+      {
+        "name": "Official ticket / RSVP",
+        "url": "https://www.eventbrite.com/e/kelo-cho-presents-the-worship-after-christmas-tickets-1992972194483",
+        "type": "manual_verified",
+        "authority": "venue_ticket",
+        "priority": 94
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "doorsTime": "18:00",
+    "advertisedBilling": [
+      "Kelo Cho"
+    ],
+    "id": "manual:kelo-worship-after-christmas-jacksonville-2026",
+    "imageSource": "Murray Hill Theatre official event page",
+    "imageSourceUrl": "https://murrayhilltheatre.com/event/kelo-cho-presents-the-worship-after-christmas/"
+  },
+  {
+    "title": "Rock the Universe 2027",
+    "startDate": "2027-01-22",
+    "endDate": "2027-01-23",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Universal Studios Florida",
+    "address": "",
+    "city": "Orlando",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "1K Phew",
+      "gio.",
+      "Torey D'Shaun"
+    ],
+    "headliner": "1K Phew",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "https://www.universalorlando.com/web/en/us/things-to-do/events/rock-the-universe",
+    "officialUrl": "https://www.universalorlando.com/web/en/us/things-to-do/events/rock-the-universe",
+    "image": "assets/events/rock-the-universe-2027.jpg",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "lineupExplicit": true,
+    "authority": "official_festival",
+    "confidence": "high",
+    "sourceName": "Universal Orlando official Rock the Universe page",
+    "performerDays": {
+      "2027-01-22": [
+        "1K Phew"
+      ],
+      "2027-01-23": [
+        "gio.",
+        "Torey D'Shaun"
+      ]
+    },
+    "fullLineup": [
+      "Elevation Worship",
+      "Jamie MacDonald",
+      "Rave Jesus",
+      "Benjamin William Hastings",
+      "Strings & Heart",
+      "1K Phew",
+      "Joseph O'Brien",
+      "Maddi Jane",
+      "John Allan",
+      "Josiah Queen",
+      "Katy Nichole",
+      "Franni Cash",
+      "CAIN",
+      "Megan Woods",
+      "gio.",
+      "Peter Burton",
+      "Sam Wesley",
+      "Torey D'Shaun"
+    ],
+    "sources": [
+      {
+        "name": "Universal Orlando official Rock the Universe page",
+        "url": "https://www.universalorlando.com/web/en/us/things-to-do/events/rock-the-universe",
+        "type": "manual_verified",
+        "authority": "official_festival",
+        "priority": 112
+      },
+      {
+        "name": "FOX 35 lineup report citing Universal Orlando",
+        "url": "https://www.fox35orlando.com/news/universal-orlando-reveals-rock-universe-2027-concert-lineup",
+        "type": "manual_verified",
+        "authority": "supporting_press",
+        "priority": 112
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "id": "manual:rock-the-universe-orlando-2027"
+  },
+  {
+    "id": "manual:808-beezy-bandsintown-108856562",
+    "title": "808 BEEZY — Live at AMPLIFY",
+    "startDate": "2027-02-12",
+    "startTime": "19:30",
+    "timezone": "",
+    "venue": "AMPLIFY",
+    "address": "715 Whittier Ave NW",
+    "city": "North Canton",
+    "state": "OH",
+    "country": "US",
+    "artists": [
+      "808 BEEZY"
+    ],
+    "headliner": "808 BEEZY",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/e/108856562",
+    "officialUrl": "https://www.bandsintown.com/e/108856562",
+    "image": "https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg",
+    "price": "",
+    "sourceName": "808 BEEZY official tour / Bandsintown",
+    "sources": [
+      {
+        "name": "808 BEEZY official tour / Bandsintown",
+        "url": "https://www.bandsintown.com/e/108856562",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 76
+      }
+    ],
+    "lastVerified": "2026-09-12T14:30:41Z",
+    "confidence": "high",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-09-12T14:30:41Z"
+  },
+  {
+    "id": "manual:808-beezy-bandsintown-108856576",
+    "title": "808 BEEZY — Live at AMPLIFY",
+    "startDate": "2027-02-13",
+    "startTime": "19:30",
+    "timezone": "",
+    "venue": "AMPLIFY",
+    "address": "715 Whittier Ave NW",
+    "city": "North Canton",
+    "state": "OH",
+    "country": "US",
+    "artists": [
+      "808 BEEZY"
+    ],
+    "headliner": "808 BEEZY",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/e/108856576",
+    "officialUrl": "https://www.bandsintown.com/e/108856576",
+    "image": "https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg",
+    "price": "",
+    "sourceName": "808 BEEZY official tour / Bandsintown",
+    "sources": [
+      {
+        "name": "808 BEEZY official tour / Bandsintown",
+        "url": "https://www.bandsintown.com/e/108856576",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 76
+      }
+    ],
+    "lastVerified": "2026-09-12T14:30:41Z",
+    "confidence": "high",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "verifiedVersion": 9,
+    "firstSeen": "2026-09-12T14:30:41Z"
+  },
+  {
+    "title": "Rize AZ Music Festival",
+    "startDate": "2027-04-17",
+    "startTime": "",
+    "timezone": "America/Phoenix",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Sierra Vista",
+    "state": "AZ",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "festival",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/rize-az-music-festival",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": false,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/rize-az-music-festival",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "notes": "Venue, additional lineup and independently confirmed local performance time remain unpublished.",
+    "id": "manual:cj-emulous-rize-az-music-festival-2027"
+  },
+  {
+    "title": "State Youth Conference with CJ Emulous",
+    "startDate": "2026-11-27",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Cocoa",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "conference",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/state-youth-conference-w-cj-emulous",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official calendar",
+        "url": "https://www.cjemulous.com/event-details/state-youth-conference-w-cj-emulous",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "CJ Emulous official calendar — Nov 28 session",
+        "url": "https://www.cjemulous.com/event-details/state-youth-conference-w-cj",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "CJ Emulous official calendar — Nov 29 session",
+        "url": "https://www.cjemulous.com/event-details/state-youth-conference-w-cj-emulous-2",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      }
+    ],
+    "auditVerified": "2026-09-13",
+    "endDate": "2026-11-29",
+    "notes": "One conference record covers all three official CJ Emulous appearances. Main time is blank pending independent local-time confirmation.",
+    "sessionDates": [
+      "2026-11-27",
+      "2026-11-28",
+      "2026-11-29"
+    ],
+    "publishedSessionTimes": {
+      "2026-11-27": "19:00",
+      "2026-11-28": "10:00",
+      "2026-11-29": "09:00"
+    },
+    "id": "manual:cj-emulous-state-youth-conference-cocoa-2026"
+  },
+  {
+    "title": "New Mainstream Tour — Miles Minnick, Tommy Zuko & CJ Emulous",
+    "startDate": "2026-11-05",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Miami",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Miles Minnick",
+      "Tommy Zuko",
+      "CJ Emulous"
+    ],
+    "headliner": "Miles Minnick",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-23",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official New Mainstream Tour calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official New Mainstream Tour calendar",
+        "url": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-23",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Miles Minnick official tour page",
+        "url": "https://milesminnick.com/tour",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 94
+      }
+    ],
+    "notes": "Official artist calendar confirms the date and Miami, but no venue or direct ticket page. Time is left blank pending local venue/ticket confirmation.",
+    "auditVerified": "2026-09-13",
+    "id": "manual:cj-emulous-new-mainstream-miami-2026-11-05"
+  },
+  {
+    "title": "New Mainstream Tour — Miles Minnick, Tommy Zuko & CJ Emulous",
+    "startDate": "2026-11-08",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Jacksonville",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Miles Minnick",
+      "Tommy Zuko",
+      "CJ Emulous"
+    ],
+    "headliner": "Miles Minnick",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-26",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "lineupExplicit": true,
+    "authority": "artist_calendar",
+    "confidence": "high",
+    "sourceName": "CJ Emulous official New Mainstream Tour calendar",
+    "sources": [
+      {
+        "name": "CJ Emulous official New Mainstream Tour calendar",
+        "url": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-26",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 100
+      },
+      {
+        "name": "Miles Minnick official tour page",
+        "url": "https://milesminnick.com/tour",
+        "type": "manual_verified",
+        "authority": "artist_calendar",
+        "priority": 94
+      }
+    ],
+    "notes": "Official artist calendar confirms the date and Jacksonville, but no venue or direct ticket page. Time is left blank pending local venue/ticket confirmation.",
+    "auditVerified": "2026-09-13",
+    "id": "manual:cj-emulous-new-mainstream-jacksonville-2026-11-08"
   }
 ]

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-09-14T01:46:08.824616+00:00",
+  "indexablePages": 866,
+  "noindexPages": 3,
+  "sitemapUrls": 866,
+  "brandedPages": 870,
+  "reasons": {
+    "artist": 350,
+    "artist-state": 172,
+    "city": 98,
+    "core": 7,
+    "event": 208,
+    "event-location-tbd": 1,
+    "generic-template": 2,
+    "show-discovery": 31
+  },
+  "noindexExamples": [
+    {
+      "url": "/artists/profile/",
+      "reason": "generic-template"
+    },
+    {
+      "url": "/event/",
+      "reason": "generic-template"
+    },
+    {
+      "url": "/event/rwg-tour-2026-2026-09-09-location-tbd-e33493/",
+      "reason": "event-location-tbd"
+    }
+  ]
+}

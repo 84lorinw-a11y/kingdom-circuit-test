@@ -1,0 +1,9 @@
+UPLOAD EVERYTHING INSIDE THIS FOLDER TO THE ROOT OF THE kingdom-circuit GITHUB REPOSITORY.
+
+Commit message:
+Replace site with Kingdom Circuit Master v7
+
+Do not upload the UPLOAD_TO_REPOSITORY folder itself.
+After the upload, wait for the Update and deploy show calendar action to finish.
+
+IMPORTANT: complete the one-time email form setup described in EMAIL-FORM-SETUP.txt.

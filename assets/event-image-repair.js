@@ -1,7 +1,7 @@
 "use strict";
 
 (() => {
-  const fallback = "/assets/event-fallback.webp";
+  const fallback = "/kingdom-circuit-test/assets/event-fallback.webp";
   const stale = new Set([
     "https://fivetwentycollective.com/wp-content/uploads/2021/03/Rare-of-Breed.jpg",
     "https://rareofbreed.com/cdn/shop/files/202511_RareOfBreed_TheWarehouse-32.jpg?v=1784663742&width=3840",
@@ -11,16 +11,18 @@
   const candidates = {
     "808 beezy": ["https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg", "https://open.voidware.de/artist/3CltJZLndpJKtpUyRVBB1k"],
     "hulvey": ["https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_SOURCE", "https://open.voidware.de/artist/3zSrc5vUlUxyDdS0KrxFJO"],
-    "yumiya!": ["/assets/artists/yumiya-primary.jpg?v=kc-20260829-2050"],
-    "rare of breed": ["/assets/artists/rare-of-breed-primary.jpg?v=kc-20260829-2050"],
+    "caleb gordon": ["/kingdom-circuit-test/assets/artists/caleb-gordon-primary.jpg"],
+    "kaden jordan": ["https://open.voidware.de/artist/0mbpzxELAS9luV27PUDEZH"],
+    "yumiya!": ["/kingdom-circuit-test/assets/artists/yumiya-primary.jpg?v=kc-20260829-2050"],
+    "rare of breed": ["/kingdom-circuit-test/assets/artists/rare-of-breed-primary.jpg?v=kc-20260829-2050"],
     "issac mansfield": ["https://i.scdn.co/image/ab6761610000e5eb6d97dd155baa40ea3c14b616", "https://open.voidware.de/artist/1QgXbOPk6XpELZrJOzz33w"],
-    "zauntee": ["/assets/artists/zauntee.webp", "https://open.voidware.de/artist/7jyr9Co4MKL1iWML1G7vch"],
+    "zauntee": ["/kingdom-circuit-test/assets/artists/zauntee.webp", "https://open.voidware.de/artist/7jyr9Co4MKL1iWML1G7vch"],
     "anike": ["https://resources.tidal.com/images/108dfb26/84ff/447e/b0b7/a3e208c409ed/750x750.jpg", "https://open.voidware.de/artist/0GdzQJqgRL5SHp7kXOKba0"],
     "brenno": ["https://cdn.rapzilla.com/wp-content/uploads/2020/10/23100333/277A3516-e1603484188893.jpg", "https://open.voidware.de/artist/7lBcEp7abNiq3WyHT3RRqV"],
     "parris chariz": ["https://www.invubu.com/images/artists/1200/parris_chariz.jpg", "https://open.voidware.de/artist/2Vt6gyhUH7Vj2cybfQWOqM"],
     "nobigdyl.": ["https://resources.tidal.com/images/66d1df15/192b/4a8f/97c3/30a2b85a36f3/750x750.jpg", "https://open.voidware.de/artist/2d8NsBa8O4C6bgQatFP5V4"],
     "jet trouble": ["https://55promotion.com/kbm24/wp-content/uploads/2025/06/Promo-Headshot-1024x1024.jpg", "https://open.voidware.de/artist/6W2lyFO79SNpk3ZpF0A2s9"],
-    "mike teezy": ["https://real.fm/assets/Uploads/MikeTeezy__FocusFillWyItMC4xMSIsIi0wLjE2IiwxMjAwLDYyN10.jpg", "https://open.voidware.de/artist/6tO2zQcTIRfR2Xdsm9XnL7"]
+    "mike teezy": ["https://real.fm/assets/Uploads/MikeTeezy__FocusFillWyItMC4xMSIsIi0uMTYiLDEyMDAsNjI3XQ.jpg", "https://open.voidware.de/artist/6tO2zQcTIRfR2Xdsm9XnL7"]
   };
 
   const normalize = value => String(value || "").toLowerCase().replace(/’/g, "'").replace(/\s+/g, " ").trim();
@@ -53,13 +55,14 @@
     const key = artistKey(img);
     const src = String(img.getAttribute("src") || "");
     const lockedPrimary = img?.dataset?.kcLockPrimary === "1";
+    const forcePrimary = key === "rare of breed" || key === "yumiya!" || key === "caleb gordon" || key === "kaden jordan";
     const explicitEventArtwork = img?.classList?.contains("event-artwork")
       && src
       && !src.includes("event-fallback.webp")
       && !stale.has(src);
     if (lockedPrimary || explicitEventArtwork) {
-      // Preserve verified primary images and purpose-built event artwork.
-      // Runtime artist repair must never replace a multi-artist event flyer.
+      // Purpose-built event artwork always wins. Artist-primary overrides are
+      // only fallbacks when a show does not already have verified show art.
       img.onerror = () => { img.onerror = null; img.src = fallback; };
       return;
     }
@@ -68,7 +71,6 @@
       return;
     }
     const options = candidates[key];
-    const forcePrimary = key === "rare of breed" || key === "yumiya!";
     let idx = options.indexOf(src);
     img.dataset.kcEventArtist = key;
     img.dataset.kcImageIndex = String(idx);

@@ -123,20 +123,17 @@ const ARTIST_ROSTER_ORDER = [
   "Afeni",
   "Alexus Snow",
   "Neisha Glow",
+  "Deonte Hall",
   "Alex Jean",
   "gio.",
   "Torey D'Shaun",
-  "Redimi2",
   "GRITS",
-  "Funky",
   "NF",
   "Nic D",
   "Manafest",
   "Pastor Mike Jr.",
-  "Pregador Luo",
   "Nesk Only",
   "Futuristic",
-  "Beacon Light",
   "Sondae",
   "Dee-1",
   "Kieran the Light",
@@ -144,20 +141,32 @@ const ARTIST_ROSTER_ORDER = [
   "Yung Kriss",
   "Eluzai",
   "tylerhateslife",
+  "Gavin the HotRod",
   "S.B.G.",
   "Aha Gazelle",
+  "LaNell Grant",
+  "Mogli the Iceburg",
   "EmanuelDaProphet",
   "Reece Lache'",
-  "LaNell Grant",
+  "Datin",
+  "Aasha Marie",
+  "DJ Mykael V",
+  "Heesun Lee",
+  "Ryan Trey",
+  "Jered Sanders",
+  "Toschii",
+  "Eli Montanna",
+  "JWoodz",
+  "Kaden Jordan",
+  "Redimi2",
+  "Funky",
+  "Pregador Luo",
+  "Beacon Light",
   "Red Tips",
   "Dell Mac",
-  "DJ Mykael V",
-  "Mogli the Iceburg",
   "Tommy Royale",
   "Ty Brasel",
   "J. Monty",
-  "Datin",
-  "Jered Sanders",
   "A.I. The Anomaly",
   "Selah the Corner",
   "Bumps INF",
@@ -183,7 +192,6 @@ const ARTIST_ROSTER_ORDER = [
   "J. Crum",
   "Nathan Davis Jr.",
   "Angie Rose",
-  "Aasha Marie",
   "R-Swift",
   "No Malice",
   "DC3",
@@ -198,8 +206,6 @@ const ARTIST_ROSTER_ORDER = [
   "IDEGO",
   "Isreal Perez",
   "Jacob Beard",
-  "JWoodz",
-  "Kaden Jordan",
   "MAYIA",
   "Megan Tossi",
   "mica",
@@ -238,7 +244,6 @@ const ARTIST_ROSTER_ORDER = [
   "A Mose",
   "Arielle Nichole",
   "Jekasole",
-  "Heesun Lee",
   "Mahogany Jones",
   "Latoria",
   "Shy Speaks",
@@ -284,16 +289,13 @@ const ARTIST_ROSTER_ORDER = [
   "Byron Juane",
   "Coby James",
   "De La Cruz",
-  "Gavin the HotRod",
   "Hollyn",
   "JGivens",
   "Kings Kaleidoscope",
   "Odd Thomas",
   "Q-Flo",
-  "Ryan Trey",
   "Swaizy",
   "The Weathrman",
-  "Toschii",
   "Trendsetter Sense",
   "J.List",
   "D-Maub",
@@ -353,7 +355,16 @@ const ARTIST_ROSTER_ORDER = [
   "Rubinsky RBK",
   "Madiel Lara",
   "Ariel Kelly",
-  "Oba Reengy"
+  "Oba Reengy",
+  "Key'ijah",
+  "Tha inspiration",
+  "NISSI SHALOM",
+  "SteveUnordinary",
+  "JJ Chosen",
+  "Generation Recovery",
+  "IFearGod",
+  "Hy Chu",
+  "JIMMY ROCK"
 ];
 const VERIFIED_ARTIST_REGISTRY = {
   "808 beezy": {
@@ -1670,6 +1681,451 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "imagePosition": "center",
     "sourceRegistryVerified": true
   },
+  "deonte hall": {
+    "aliases": [
+      "Deonte Hall"
+    ],
+    "website": "https://deontehall.com/",
+    "instagramProfile": "https://www.instagram.com/deontehall100/",
+    "spotifyProfile": "https://open.spotify.com/artist/1o4z5bdBNIeJZGIHeseIhf",
+    "youtubeProfile": "https://www.youtube.com/@deontehallofficial",
+    "officialImageSource": "https://deontehall.com/index.php/about-deonte/",
+    "imageUrl": "https://deontehall.com/wp-content/uploads/2017/11/IMG_2799-1.jpg",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "alex jean": {
+    "aliases": [
+      "Alex Jean"
+    ],
+    "website": "https://alienzalive.com/artist/alex-jean/",
+    "instagramProfile": "https://www.instagram.com/meaningalex/",
+    "spotifyProfile": "https://open.spotify.com/artist/5qSM9F3Ei58tG08tXrJjSi",
+    "youtubeProfile": "https://www.youtube.com/@Meaningalex",
+    "officialImageSource": "https://alienzalive.com/artist/alex-jean/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "gio.": {
+    "aliases": [
+      "gio.",
+      "gio"
+    ],
+    "website": "https://www.wassupgio.com/",
+    "instagramProfile": "https://www.instagram.com/wassupgio/",
+    "spotifyProfile": "https://open.spotify.com/artist/5GevjOibFX6uwZ1mTYfhbn",
+    "youtubeProfile": "https://www.youtube.com/channel/UCQm0f2MItHBDSLJ0GL4OaqA",
+    "officialImageSource": "https://www.wassupgio.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "torey d'shaun": {
+    "aliases": [
+      "Torey D'Shaun",
+      "Torey D'Shawn"
+    ],
+    "website": "https://toreydshaun.com/",
+    "instagramProfile": "https://www.instagram.com/toreydshaun/",
+    "spotifyProfile": "https://open.spotify.com/artist/78DvQP3rczGqfgEiLfFnCD",
+    "youtubeProfile": "https://www.youtube.com/@toreydshaun",
+    "officialImageSource": "https://toreydshaun.com/",
+    "imagePosition": "center",
+    "label": "Reflection Music Group",
+    "sourceRegistryVerified": true
+  },
+  "grits": {
+    "aliases": [
+      "GRITS",
+      "Grits"
+    ],
+    "website": "https://www.instagram.com/officialgrits/",
+    "instagramProfile": "https://www.instagram.com/officialgrits/",
+    "spotifyProfile": "https://open.spotify.com/artist/6aUgzC0cMh0StjV7LyFEDr",
+    "youtubeProfile": "https://music.youtube.com/@OfficialGRITS7",
+    "officialImageSource": "https://www.instagram.com/officialgrits/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "nf": {
+    "aliases": [
+      "NF",
+      "NF Real Music"
+    ],
+    "website": "https://www.nfrealmusic.com/",
+    "instagramProfile": "https://www.instagram.com/nfrealmusic/",
+    "spotifyProfile": "https://open.spotify.com/artist/6fOMl44jA4Sp5b9PpYCkzz",
+    "youtubeProfile": "https://www.youtube.com/channel/UCoRR6OLuIZ2-5VxtnQIaN2w",
+    "officialImageSource": "https://www.nfrealmusic.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "nic d": {
+    "aliases": [
+      "Nic D",
+      "NicD"
+    ],
+    "website": "https://www.instagram.com/iamnicd/",
+    "instagramProfile": "https://www.instagram.com/iamnicd/",
+    "spotifyProfile": "https://open.spotify.com/artist/1XlLhtgJjC4ROQZilBZAvw",
+    "youtubeProfile": "https://www.youtube.com/@iamnicd",
+    "officialImageSource": "https://www.instagram.com/iamnicd/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "manafest": {
+    "aliases": [
+      "Manafest"
+    ],
+    "website": "https://www.manafest.com/go",
+    "instagramProfile": "https://www.instagram.com/manafest/",
+    "spotifyProfile": "https://open.spotify.com/artist/4uOFEWy9mIcvQbr03IbPcL",
+    "youtubeProfile": "https://www.youtube.com/@Manafest",
+    "officialImageSource": "https://www.manafest.com/go",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "pastor mike jr.": {
+    "aliases": [
+      "Pastor Mike Jr.",
+      "Pastor Mike Jr",
+      "PMJ"
+    ],
+    "website": "https://pastormikejr.com/",
+    "instagramProfile": "https://www.instagram.com/pastormikejr/",
+    "spotifyProfile": "https://open.spotify.com/artist/1aNtFg4D7HdF8jOppyKpUS",
+    "youtubeProfile": "https://www.youtube.com/channel/UCFS_59ybiLbrsZQ4tmghriQ",
+    "officialImageSource": "https://pastormikejr.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "nesk only": {
+    "aliases": [
+      "Nesk Only",
+      "NESK ONLY"
+    ],
+    "website": "https://www.instagram.com/neskonly/",
+    "instagramProfile": "https://www.instagram.com/neskonly/",
+    "spotifyProfile": "https://open.spotify.com/artist/4cR4F4mNehTHO2ut89kN00",
+    "youtubeProfile": "https://www.youtube.com/@neskonly",
+    "officialImageSource": "https://www.instagram.com/neskonly/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "futuristic": {
+    "aliases": [
+      "Futuristic"
+    ],
+    "website": "https://futuristic.set.bio/",
+    "instagramProfile": "https://www.instagram.com/onlyfuturistic/",
+    "spotifyProfile": "https://open.spotify.com/artist/5Z5jUyiNvFaqp0EVyLNf0p",
+    "youtubeProfile": "https://www.youtube.com/channel/UCsHn-BXIByTjQaIf5CnZItw",
+    "officialImageSource": "https://futuristic.set.bio/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "sondae": {
+    "aliases": [
+      "Sondae"
+    ],
+    "website": "https://www.instagram.com/thesondae/",
+    "instagramProfile": "https://www.instagram.com/thesondae/",
+    "spotifyProfile": "https://open.spotify.com/artist/2PCl4hx9Qds8sjcnoWUdqp",
+    "youtubeProfile": "https://www.youtube.com/@Sondae",
+    "officialImageSource": "https://www.instagram.com/thesondae/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "dee-1": {
+    "aliases": [
+      "Dee-1",
+      "Dee 1"
+    ],
+    "website": "https://www.dee1music.com/",
+    "instagramProfile": "https://www.instagram.com/dee1music/",
+    "spotifyProfile": "https://open.spotify.com/artist/5qEZVKHzNjB8k5tAT41Iox",
+    "youtubeProfile": "https://www.youtube.com/user/dee1music",
+    "officialImageSource": "https://www.dee1music.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "kieran the light": {
+    "aliases": [
+      "Kieran the Light"
+    ],
+    "website": "https://www.instagram.com/kieranthelight/",
+    "instagramProfile": "https://www.instagram.com/kieranthelight/",
+    "spotifyProfile": "https://open.spotify.com/artist/7pDD4BBx6S42ZX513NQdp1",
+    "youtubeProfile": "https://www.youtube.com/@KieranTheLightOfficial",
+    "officialImageSource": "https://www.instagram.com/kieranthelight/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "childlike cici": {
+    "aliases": [
+      "Childlike CiCi",
+      "Childlike Cici"
+    ],
+    "website": "https://www.childlikecici.com/",
+    "instagramProfile": "https://www.instagram.com/childlikecici/",
+    "spotifyProfile": "https://open.spotify.com/artist/1cgfDToH1viXSfFzd5WOz1",
+    "youtubeProfile": "https://www.youtube.com/@childlikecici",
+    "officialImageSource": "https://www.childlikecici.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "yung kriss": {
+    "aliases": [
+      "Yung Kriss"
+    ],
+    "website": "https://www.yungkriss.com/",
+    "instagramProfile": "https://www.instagram.com/yungkriss/",
+    "spotifyProfile": "https://open.spotify.com/artist/3JCk8XWIBcpA10QeM5tkbP",
+    "youtubeProfile": "https://www.youtube.com/@YungKriss",
+    "officialImageSource": "https://www.yungkriss.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "eluzai": {
+    "aliases": [
+      "Eluzai"
+    ],
+    "website": "https://www.instagram.com/the_eluzai/",
+    "instagramProfile": "https://www.instagram.com/the_eluzai/",
+    "spotifyProfile": "https://open.spotify.com/artist/2N0c1H0QXGAfZQHASg7ir4",
+    "youtubeProfile": "https://www.youtube.com/@eluzai",
+    "officialImageSource": "https://www.instagram.com/the_eluzai/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "tylerhateslife": {
+    "aliases": [
+      "tylerhateslife",
+      "Tyler Hates Life"
+    ],
+    "website": "https://www.instagram.com/tylerhateslife/",
+    "instagramProfile": "https://www.instagram.com/tylerhateslife/",
+    "spotifyProfile": "https://open.spotify.com/artist/4z85Glof8wylJsLi93ukHm",
+    "youtubeProfile": "https://www.youtube.com/@tylerhateslife1225",
+    "officialImageSource": "https://www.instagram.com/tylerhateslife/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "gavin the hotrod": {
+    "aliases": [
+      "Gavin the HotRod",
+      "Gavin The HotRod"
+    ],
+    "website": "https://www.instagram.com/gavinthehotrod/",
+    "instagramProfile": "https://www.instagram.com/gavinthehotrod/",
+    "spotifyProfile": "https://open.spotify.com/artist/4PRtvcfM2vKDdLFAyGUMP7",
+    "youtubeProfile": "https://www.youtube.com/channel/UC1RVgR716WN7mlx_1nXfZIA",
+    "officialImageSource": "https://www.instagram.com/gavinthehotrod/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "s.b.g.": {
+    "aliases": [
+      "S.B.G.",
+      "SBG"
+    ],
+    "website": "https://www.instagram.com/official_s.b.g/",
+    "instagramProfile": "https://www.instagram.com/official_s.b.g/",
+    "spotifyProfile": "https://open.spotify.com/artist/6pK1mujh4dbxSysAJGVRzU",
+    "youtubeProfile": "https://www.youtube.com/@official_s.b.g",
+    "officialImageSource": "https://www.instagram.com/official_s.b.g/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "aha gazelle": {
+    "aliases": [
+      "Aha Gazelle"
+    ],
+    "website": "https://www.itsahaman.com/",
+    "instagramProfile": "https://www.instagram.com/ahagazelle/",
+    "spotifyProfile": "https://open.spotify.com/artist/7suLW93RkuQKWb4WTI5F14",
+    "youtubeProfile": "https://www.youtube.com/channel/UCyfn6btWx4tB2RZy2nh27hw",
+    "officialImageSource": "https://www.itsahaman.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "lanell grant": {
+    "aliases": [
+      "LaNell Grant",
+      "Lanell Grant"
+    ],
+    "website": "https://www.lanellgrant.com/",
+    "instagramProfile": "https://www.instagram.com/lanellgrant/",
+    "spotifyProfile": "https://open.spotify.com/artist/5HEhEhQL9w4ofcJ9kURFNQ",
+    "youtubeProfile": "https://www.youtube.com/channel/UCo2499xJPW6P5_DTIJOSGzQ",
+    "officialImageSource": "https://www.instagram.com/lanellgrant/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "mogli the iceburg": {
+    "aliases": [
+      "Mogli the Iceburg",
+      "Mogli The Iceburg"
+    ],
+    "website": "https://www.instagram.com/moglitheiceburg/",
+    "instagramProfile": "https://www.instagram.com/moglitheiceburg/",
+    "spotifyProfile": "https://open.spotify.com/artist/1SZikSUx9fZ2cUFjrmM6Sy",
+    "youtubeProfile": "https://www.youtube.com/@moglitheiceburgYT",
+    "officialImageSource": "https://www.instagram.com/moglitheiceburg/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "emanueldaprophet": {
+    "aliases": [
+      "EmanuelDaProphet",
+      "Emanuel Da Prophet"
+    ],
+    "website": "https://www.instagram.com/emanueldaprophet/",
+    "instagramProfile": "https://www.instagram.com/emanueldaprophet/",
+    "spotifyProfile": "https://open.spotify.com/artist/5P0vV6Fw0YTdumAPZSkkuC",
+    "youtubeProfile": "https://www.youtube.com/@Emanueldaprophet",
+    "officialImageSource": "https://www.instagram.com/emanueldaprophet/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "reece lache'": {
+    "aliases": [
+      "Reece Lache'",
+      "Reece Lache"
+    ],
+    "website": "https://reecelache.com/",
+    "instagramProfile": "https://www.instagram.com/reecelache/",
+    "spotifyProfile": "https://open.spotify.com/artist/4JM7nxReyQzeaaafLkhQYe",
+    "youtubeProfile": "https://www.youtube.com/@reecelache",
+    "officialImageSource": "https://reecelache.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "datin": {
+    "aliases": [
+      "Datin"
+    ],
+    "website": "https://www.themenacemovement.com/datin/",
+    "instagramProfile": "https://www.instagram.com/datin_tripled/",
+    "spotifyProfile": "https://open.spotify.com/artist/2ZNeZlHauwGYZ9XADyjSL4",
+    "youtubeProfile": "https://www.youtube.com/@MenaceMovement",
+    "officialImageSource": "https://www.instagram.com/datin_tripled/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "aasha marie": {
+    "aliases": [
+      "Aasha Marie"
+    ],
+    "website": "https://www.aashamarie.com/",
+    "instagramProfile": "https://www.instagram.com/aasha.marie/",
+    "spotifyProfile": "https://open.spotify.com/artist/2vJp4tlU8SMa4L8Rqc7bPv",
+    "youtubeProfile": "https://www.youtube.com/channel/UCVhvyWAwPMLLJO013XmxR0Q",
+    "officialImageSource": "https://www.aashamarie.com/",
+    "imagePosition": "center",
+    "label": "Reflection Music Group",
+    "sourceRegistryVerified": true
+  },
+  "dj mykael v": {
+    "aliases": [
+      "DJ Mykael V",
+      "DJ Mykael V Super Set"
+    ],
+    "website": "https://www.mykaelv.com/",
+    "instagramProfile": "https://www.instagram.com/djmykaelv/",
+    "spotifyProfile": "https://open.spotify.com/artist/2WLOBjz9WOZrJcbS2w93zt",
+    "youtubeProfile": "https://www.youtube.com/channel/UCMyVefu0Bw781NptODKb1hg",
+    "officialImageSource": "https://www.mykaelv.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "heesun lee": {
+    "aliases": [
+      "Heesun Lee"
+    ],
+    "website": "https://www.heesunlee.com/",
+    "instagramProfile": "https://www.instagram.com/msheesunlee/",
+    "spotifyProfile": "https://open.spotify.com/artist/6T86uN02MAjAayagSHKIpA",
+    "youtubeProfile": "https://www.youtube.com/@heesunleemusic",
+    "officialImageSource": "https://www.heesunlee.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "ryan trey": {
+    "aliases": [
+      "Ryan Trey"
+    ],
+    "website": "https://www.ryantrey.com/",
+    "instagramProfile": "https://www.instagram.com/ryantrey/",
+    "spotifyProfile": "https://open.spotify.com/artist/5YHM0i7v5TqqibZhS0YiuX",
+    "youtubeProfile": "https://www.youtube.com/channel/UCRn4v23xA7Z9MVSY1ToU_DA",
+    "officialImageSource": "https://www.instagram.com/ryantrey/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "jered sanders": {
+    "aliases": [
+      "Jered Sanders"
+    ],
+    "website": "https://www.instagram.com/jeredsanders/",
+    "instagramProfile": "https://www.instagram.com/jeredsanders/",
+    "spotifyProfile": "https://open.spotify.com/artist/4kjg5xFLFVfWJFus3mwV5e",
+    "youtubeProfile": "https://www.youtube.com/user/jeredsandersmusic",
+    "officialImageSource": "https://www.instagram.com/jeredsanders/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "toschii": {
+    "aliases": [
+      "Toschii"
+    ],
+    "website": "https://www.instagram.com/toschiiofficial/",
+    "instagramProfile": "https://www.instagram.com/toschiiofficial/",
+    "spotifyProfile": "https://open.spotify.com/artist/6wSzNgiOUV0rPug9vMP3ze",
+    "youtubeProfile": "https://music.youtube.com/@ToschiiMusic",
+    "officialImageSource": "https://www.instagram.com/toschiiofficial/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "eli montanna": {
+    "aliases": [
+      "Eli Montanna",
+      "ELI MONTANNA"
+    ],
+    "website": "https://www.instagram.com/elimontanna/",
+    "instagramProfile": "https://www.instagram.com/elimontanna/",
+    "spotifyProfile": "https://open.spotify.com/artist/6ppWmncyPtRcMeuaX43GVJ",
+    "youtubeProfile": "https://www.youtube.com/channel/UCx056Cz75a8ro65Uun3dhFQ",
+    "officialImageSource": "https://www.instagram.com/elimontanna/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "jwoodz": {
+    "aliases": [
+      "JWoodz",
+      "J Woodz",
+      "JWOODZ",
+      "JWoods"
+    ],
+    "website": "https://www.instagram.com/jwoodzmuzic/",
+    "instagramProfile": "https://www.instagram.com/jwoodzmuzic/",
+    "spotifyProfile": "https://open.spotify.com/artist/1euV2O9oyOrwbwOoakx45f",
+    "youtubeProfile": "https://www.youtube.com/channel/UC05qM50ZPmHvEjr8Sae3t7A",
+    "officialImageSource": "https://www.instagram.com/jwoodzmuzic/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
+  "kaden jordan": {
+    "aliases": [
+      "Kaden Jordan"
+    ],
+    "website": "https://kadenjordan.com/",
+    "instagramProfile": "https://www.instagram.com/kadenjordann/",
+    "spotifyProfile": "https://open.spotify.com/artist/0mbpzxELAS9luV27PUDEZH",
+    "youtubeProfile": "https://www.youtube.com/channel/UCHhuDxHS1hkCnWh2izXYkfg",
+    "officialImageSource": "https://kadenjordan.com/",
+    "imagePosition": "center",
+    "sourceRegistryVerified": true
+  },
   "caleb gordon": {
     "aliases": [
       "Caleb Gordon"
@@ -1679,7 +2135,7 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "spotifyProfile": "https://open.spotify.com/artist/6s3XaJkcT7464G4oII9V41",
     "youtubeProfile": "https://www.youtube.com/@CalebGordon",
     "officialImageSource": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
-    "imageUrl": "https://tprlive.co/cdn/shop/files/ARTIST_HEADSHOT_36.jpg?v=1776887171&width=1797",
+    "imageUrl": "assets/artists/caleb-gordon-primary.jpg",
     "imagePosition": "center",
     "preferArtistImage": true,
     "sourceRegistryVerified": true,
@@ -1954,7 +2410,7 @@ function shouldUseIncomingImage(existing, incoming) {
   if (incoming.imageOverride) return true;
   if (!existing?.image) return true;
   const current = normalize(existing.image);
-  return current === "assets/event-fallback.webp" || current.endsWith("/assets/event-fallback.webp") || existing.imageType === "fallback";
+  return current === "assets/event-fallback.webp" || current.endsWith("/kingdom-circuit-test/assets/event-fallback.webp") || existing.imageType === "fallback";
 }
 function mergeEventRecords(existing, incoming) {
   const preferIncoming = eventRecordScore(incoming) > eventRecordScore(existing);
@@ -2001,7 +2457,7 @@ function mergeEventRecords(existing, incoming) {
 function mergeEventLists(primary, supplemental) {
   const merged = [];
   [...(Array.isArray(primary) ? primary : []), ...(Array.isArray(supplemental) ? supplemental : [])].forEach(raw => {
-    if (!raw || typeof raw !== "object") return;
+    if (!raw || typeof raw !== "object" || ["cancelled", "canceled", "postponed", "merged"].includes(normalize(raw.status))) return;
     const incoming = {
       ...raw,
       artists: Array.isArray(raw.artists) ? [...raw.artists] : [],
@@ -2039,12 +2495,21 @@ function parseLocalDate(value) {
   if (!value) return null;
   const [year, month, day] = value.split("-").map(Number);
   if (!year || !month || !day) return null;
-  return new Date(year, month - 1, day, 12, 0, 0, 0);
+  return new Date(year, month - 1, day, 0, 0, 0, 0);
 }
 function formatDate(event) {
-  const date = parseLocalDate(event.startDate);
-  if (!date) return "Date to be announced";
-  let text = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" }).format(date);
+  const start = parseLocalDate(event.startDate);
+  if (!start) return "Date to be announced";
+  const end = parseLocalDate(event.endDate) || start;
+  const full = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+  let text = full.format(start);
+  if (end.getTime() !== start.getTime()) {
+    if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth()) {
+      text = `${new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short" }).format(start)} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
+    } else {
+      text = `${full.format(start)}–${full.format(end)}`;
+    }
+  }
   if (event.startTime) {
     const [hour, minute] = event.startTime.split(":").map(Number);
     const time = new Date(2000, 0, 1, hour, minute || 0);
@@ -2074,6 +2539,10 @@ function isNew(event) {
   cutoff.setDate(cutoff.getDate() - 14);
   return seen >= cutoff;
 }
+function eventTypeLabel(event) {
+  const v=String(event?.eventType||"concert").toLowerCase();
+  return ({festival:"Festival",retreat:"Retreat",conference:"Conference",church:"Church appearance",party_bus:"Party-bus event",appearance:"Appearance",concert:"Concert"})[v]||"Event";
+}
 function eventCard(event) {
   const search = [event.title, event.venue, event.city, event.state, event.sourceName, ...(event.artists || [])].join(" ").toLocaleLowerCase();
   const artists = (event.artists || []).map(normalize).join("|");
@@ -2083,13 +2552,19 @@ function eventCard(event) {
   const recent = "";
   return `<article class="event-card" data-event-card data-search="${esc(search)}" data-artists="${esc(artists)}" data-state="${esc(event.state || "")}" data-type="${esc(event.eventType || "concert")}" data-date="${esc(event.startDate || "")}" data-end-date="${esc(event.endDate || event.startDate || "")}">
     <a class="event-media" href="${eventDetailUrl(event)}" aria-label="View ${esc(event.title)}"><img class="${imageClass(event)}" src="${esc(img)}" alt="${esc(event.title)} image" loading="lazy" style="object-position:${esc(imagePosition(event))}" onerror="this.onerror=null;this.className='event-artwork';this.src='${FALLBACK_EVENT_IMAGE}';"></a>
-    <div class="event-content"><div class="event-main"><div class="event-badges"><span class="badge badge-gold">${esc(event.eventType === "festival" ? "Festival" : "Concert")}</span>${recent}</div><h3><a href="${eventDetailUrl(event)}">${esc(event.title)}</a></h3><p class="artist-line">${artistLinks(event)}</p><dl class="event-meta"><div><dt>Date</dt><dd>${esc(formatDate(event))}</dd></div><div><dt>Venue</dt><dd>${esc(event.venue || "Venue to be announced")}</dd></div><div><dt>Location</dt><dd>${esc(location)}</dd></div></dl>${price}</div><div class="event-footer"><a class="official-button" href="${esc(event.officialUrl || event.ticketUrl || "#")}" target="_blank" rel="noopener">Official details</a><p class="source-line">Source: ${esc(sourceText(event))}</p></div></div>
+    <div class="event-content"><div class="event-main"><div class="event-badges"><span class="badge badge-gold">${esc(eventTypeLabel(event))}</span>${recent}</div><h3><a href="${eventDetailUrl(event)}">${esc(event.title)}</a></h3><p class="artist-line">${artistLinks(event)}</p><dl class="event-meta"><div><dt>Date</dt><dd>${esc(formatDate(event))}</dd></div><div><dt>Venue</dt><dd>${esc(event.venue || "Venue to be announced")}</dd></div><div><dt>Location</dt><dd>${esc(location)}</dd></div></dl>${price}</div><div class="event-footer"><a class="official-button" href="${esc(event.officialUrl || event.ticketUrl || "#")}" target="_blank" rel="noopener">Official details</a><p class="source-line">Source: ${esc(sourceText(event))}</p></div></div>
   </article>`;
 }
 function filterEvents(mode) {
   const today = new Date();
   if (mode === "festival") return EVENTS.filter(event => event.eventType === "festival");
-  if (mode === "month") return EVENTS.filter(event => { const date = parseLocalDate(event.startDate); return date && date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth(); });
+  if (mode === "month") return EVENTS.filter(event => {
+    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+    const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const start = parseLocalDate(event.startDate);
+    const end = parseLocalDate(event.endDate) || start;
+    return start && end && end >= monthStart && start <= monthEnd;
+  });
   if (mode === "new") return EVENTS.filter(isNew);
   return EVENTS;
 }
@@ -2110,8 +2585,8 @@ function dateMatchesMode(startDate, endDate, mode) {
   const end = parseLocalDate(endDate) || start;
   if (!start || !end) return false;
   if (mode === "next30") { const last = new Date(today); last.setDate(last.getDate() + 30); return end >= today && start <= last; }
-  if (mode === "month") return start.getFullYear() === today.getFullYear() && start.getMonth() === today.getMonth();
-  if (mode === "weekend") { const friday = new Date(today); friday.setDate(friday.getDate() + ((5 - today.getDay() + 7) % 7)); const sunday = new Date(friday); sunday.setDate(sunday.getDate() + 2); return end >= friday && start <= sunday; }
+  if (mode === "month") { const first = new Date(today.getFullYear(), today.getMonth(), 1); const last = new Date(today.getFullYear(), today.getMonth() + 1, 0); return end >= first && start <= last; }
+  if (mode === "weekend") { const day = today.getDay(); const offset = day === 0 ? -2 : day === 6 ? -1 : (5 - day + 7) % 7; const friday = new Date(today); friday.setDate(friday.getDate() + offset); const sunday = new Date(friday); sunday.setDate(sunday.getDate() + 2); return end >= friday && start <= sunday; }
   return true;
 }
 function setupEventFilters(cards) {
@@ -2125,6 +2600,13 @@ function setupEventFilters(cards) {
   const count = document.querySelector("[data-results-count]");
   const empty = document.querySelector("[data-filtered-empty]");
   const chips = [...document.querySelectorAll(".filter-chip[data-date-mode],.filter-chip[data-type-mode]")];
+  const artistMap = new Map();
+  cards.forEach(card => card.querySelectorAll(".artist-line a").forEach(link => {
+    const display = String(link.textContent || "").trim();
+    if (display) artistMap.set(normalize(display), display);
+  }));
+  fillSelect(artist, [...artistMap.keys()].sort((a, b) => artistMap.get(a).localeCompare(artistMap.get(b))), value => artistMap.get(value));
+  fillSelect(state, [...new Set(cards.map(card => card.dataset.state).filter(Boolean))].sort(), value => STATE_NAMES[value] || value);
   let dateMode = "all";
   const params = new URLSearchParams(location.search);
   if (params.get("artist") && artist) artist.value = normalize(params.get("artist"));
@@ -2152,7 +2634,16 @@ function setupEventFilters(cards) {
     chip.classList.add("active");
     apply();
   }));
-  reset?.addEventListener("click", () => { form.reset(); dateMode = "all"; chips.forEach(item => item.classList.toggle("active", item.dataset.dateMode === "all")); apply(); });
+  reset?.addEventListener("click", () => {
+    form.reset();
+    if (search) search.value = "";
+    if (artist) artist.value = "";
+    if (state) state.value = "";
+    if (type) type.value = "";
+    dateMode = "all";
+    chips.forEach(item => item.classList.toggle("active", item.dataset.dateMode === "all"));
+    apply();
+  });
   apply();
 }
 function renderEventList() {
@@ -2446,6 +2937,7 @@ function renderArtistDirectory() {
   const cards = [...grid.querySelectorAll("[data-artist-card]")];
   const search = document.querySelector("[data-artist-search]");
   const show = document.querySelector("[data-has-shows-filter]");
+  if (show) show.checked = true;
   const count = document.querySelector("[data-artist-count]");
   const empty = document.querySelector("[data-artist-empty]");
   const dashboard = document.createElement("section");
@@ -2556,7 +3048,7 @@ function renderEventDetail() {
   }
   const img = eventImage(event);
   const locationText = [event.city, event.state].filter(Boolean).join(", ");
-  root.innerHTML = `<article class="event-detail"><div class="event-detail-media"><img class="${imageClass(event)}" src="${esc(img)}" alt="${esc(event.title)}" style="object-position:${esc(imagePosition(event))}" onerror="this.onerror=null;this.className='event-artwork';this.src='${FALLBACK_EVENT_IMAGE}';"></div><div class="event-detail-copy"><p class="eyebrow">${esc(event.eventType === "festival" ? "Festival" : "Concert")}</p><h1>${esc(event.title)}</h1><p class="artist-line">${artistLinks(event)}</p><dl class="detail-list"><div><dt>Date</dt><dd>${esc(formatDate(event))}</dd></div><div><dt>Venue</dt><dd>${esc(event.venue || "Venue to be announced")}</dd></div><div><dt>Location</dt><dd>${esc(locationText || "Location to be announced")}</dd></div>${event.price ? `<div><dt>Price</dt><dd>${esc(event.price)}</dd></div>` : ""}<div><dt>Source</dt><dd>${esc(sourceText(event))}</dd></div></dl><a class="primary-button" href="${esc(event.officialUrl || event.ticketUrl || "#")}" target="_blank" rel="noopener">Official details</a><p class="disclaimer">Event details, availability, pricing, and lineups may change.
+  root.innerHTML = `<article class="event-detail"><div class="event-detail-media"><img class="${imageClass(event)}" src="${esc(img)}" alt="${esc(event.title)}" style="object-position:${esc(imagePosition(event))}" onerror="this.onerror=null;this.className='event-artwork';this.src='${FALLBACK_EVENT_IMAGE}';"></div><div class="event-detail-copy"><p class="eyebrow">${esc(eventTypeLabel(event))}</p><h1>${esc(event.title)}</h1><p class="artist-line">${artistLinks(event)}</p><dl class="detail-list"><div><dt>Date</dt><dd>${esc(formatDate(event))}</dd></div><div><dt>Venue</dt><dd>${esc(event.venue || "Venue to be announced")}</dd></div><div><dt>Location</dt><dd>${esc(locationText || "Location to be announced")}</dd></div>${event.price ? `<div><dt>Price</dt><dd>${esc(event.price)}</dd></div>` : ""}<div><dt>Source</dt><dd>${esc(sourceText(event))}</dd></div></dl><a class="primary-button" href="${esc(event.officialUrl || event.ticketUrl || "#")}" target="_blank" rel="noopener">Official details</a><p class="disclaimer">Event details, availability, pricing, and lineups may change.
 Confirm final information with the official organizer or ticket provider before purchasing or traveling.</p></div></article>`;
   document.title = `${event.title} | The Kingdom Circuit`;
   ensureCanonical(`${location.origin}${BASE}event/?id=${encodeURIComponent(event.id)}`);
@@ -2653,6 +3145,13 @@ function setupSubmissionForm() {
   });
 }
 async function boot() {
+  const staticCards = [...document.querySelectorAll("[data-event-card]")];
+  if (staticCards.length) {
+    document.querySelectorAll(".loading-panel").forEach(element => element.remove());
+    setupEventFilters(staticCards);
+    setupSubmissionForm();
+    return;
+  }
   try {
     const [liveEvents, liveArtists, supplemental] = await Promise.all([
       loadJson(LIVE_EVENTS_URL, "events.json"),
@@ -2668,7 +3167,8 @@ async function boot() {
   }
   renderEventList();
   ensureArtistEnhancementStyles();
-  renderArtistDirectory();
+  /* KC SEO DIRECTORY GUARD */
+  if (!document.querySelector('[data-seo-enhanced-directory]')) renderArtistDirectory();
   renderArtistProfile();
   enhanceVerifiedArtistImages();
   renderEventDetail();

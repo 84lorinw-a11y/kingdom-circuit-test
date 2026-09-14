@@ -1,15 +1,19 @@
 "use strict";
 
 (() => {
-  const fallback = "/assets/event-fallback.webp";
+  const fallback = "/kingdom-circuit-test/assets/event-fallback.webp";
   const targets = [
     {
       artist: "rare of breed",
-      src: "/assets/artists/rare-of-breed-primary.jpg?v=20260830-home-1"
+      src: "/kingdom-circuit-test/assets/artists/rare-of-breed-primary.jpg?v=20260830-home-1"
     },
     {
       artist: "yumiya!",
-      src: "/assets/artists/yumiya-primary.jpg?v=20260830-home-1"
+      src: "/kingdom-circuit-test/assets/artists/yumiya-primary.jpg?v=20260830-home-1"
+    },
+    {
+      artist: "kaden jordan",
+      src: "https://open.voidware.de/artist/0mbpzxELAS9luV27PUDEZH"
     }
   ];
 

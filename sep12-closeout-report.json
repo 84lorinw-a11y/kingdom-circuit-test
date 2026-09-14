@@ -1,0 +1,56 @@
+{
+  "attendance": {
+    "sourceRecordsPreserved": 15,
+    "publicJsonRowsRemoved": 15,
+    "publicPagesRemoved": 15,
+    "publicCardsRemoved": 135,
+    "sitemapEntriesRemoved": 6,
+    "hiddenIds": [
+      "manual:808-beezy-bandsintown-108772401",
+      "manual:808-beezy-bandsintown-108772413",
+      "manual:808-beezy-bandsintown-108772434",
+      "manual:808-beezy-bandsintown-108772449",
+      "manual:808-beezy-bandsintown-108772465",
+      "manual:808-beezy-bandsintown-108772493",
+      "manual:808-beezy-bandsintown-108772501",
+      "manual:808-beezy-bandsintown-108772620",
+      "manual:808-beezy-bandsintown-108772638",
+      "manual:808-beezy-bandsintown-108772712",
+      "manual:808-beezy-bandsintown-108772751",
+      "manual:808-beezy-bandsintown-108790395",
+      "manual:808-beezy-bandsintown-108790433",
+      "manual:808-beezy-bandsintown-108879547",
+      "manual:808-beezy-bandsintown-108879559"
+    ]
+  },
+  "artwork": {
+    "jsonRecordsReplaced": 16,
+    "htmlImagesReplaced": 69
+  },
+  "images": {
+    "imagesEnhanced": 1484,
+    "detailImagesLinked": 109
+  },
+  "metadata": {
+    "pagesUpdated": 855,
+    "duplicateBreadcrumbsRemoved": 816
+  },
+  "accessibility": {
+    "pagesEnhanced": 855,
+    "correctionLinks": 120,
+    "putUsOnTriggers": 1
+  },
+  "inventory": {
+    "eventsInventoried": 143,
+    "artworkStillNeeded": 0,
+    "incorrectOrBroken": 0
+  },
+  "verify": {
+    "correctionPages": 120,
+    "artworkAuditRows": 143,
+    "fabricatedArtworkRefs": 0,
+    "eventCompletedRefs": 0,
+    "automaticInStockRefs": 0
+  },
+  "brandingBlocker": "Exact approved monochrome stage-and-speakers source asset is not present in the repository or available as a publishable binary; existing logo is preserved unchanged."
+}

@@ -1,7 +1,7 @@
 "use strict";
 
 (() => {
-  const fallback = "/assets/event-fallback.webp";
+  const fallback = "/kingdom-circuit-test/assets/event-fallback.webp";
   const stale = new Set([
     "https://fivetwentycollective.com/wp-content/uploads/2021/03/Rare-of-Breed.jpg",
     "https://rareofbreed.com/cdn/shop/files/202511_RareOfBreed_TheWarehouse-32.jpg?v=1784663742&width=3840",
@@ -11,10 +11,10 @@
   const candidates = {
     "808 beezy": ["https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg", "https://open.voidware.de/artist/3CltJZLndpJKtpUyRVBB1k"],
     "hulvey": ["https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_SOURCE", "https://open.voidware.de/artist/3zSrc5vUlUxyDdS0KrxFJO"],
-    "yumiya!": ["/assets/artists/yumiya-primary.jpg?v=kc-20260829-2050"],
-    "rare of breed": ["/assets/artists/rare-of-breed-primary.jpg?v=kc-20260829-2050"],
+    "yumiya!": ["/kingdom-circuit-test/assets/artists/yumiya-primary.jpg?v=kc-20260829-2050"],
+    "rare of breed": ["/kingdom-circuit-test/assets/artists/rare-of-breed-primary.jpg?v=kc-20260829-2050"],
     "issac mansfield": ["https://i.scdn.co/image/ab6761610000e5eb6d97dd155baa40ea3c14b616", "https://open.voidware.de/artist/1QgXbOPk6XpELZrJOzz33w"],
-    "zauntee": ["/assets/artists/zauntee.webp", "https://open.voidware.de/artist/7jyr9Co4MKL1iWML1G7vch"],
+    "zauntee": ["/kingdom-circuit-test/assets/artists/zauntee.webp", "https://open.voidware.de/artist/7jyr9Co4MKL1iWML1G7vch"],
     "anike": ["https://resources.tidal.com/images/108dfb26/84ff/447e/b0b7/a3e208c409ed/750x750.jpg", "https://open.voidware.de/artist/0GdzQJqgRL5SHp7kXOKba0"],
     "brenno": ["https://cdn.rapzilla.com/wp-content/uploads/2020/10/23100333/277A3516-e1603484188893.jpg", "https://open.voidware.de/artist/7lBcEp7abNiq3WyHT3RRqV"],
     "parris chariz": ["https://www.invubu.com/images/artists/1200/parris_chariz.jpg", "https://open.voidware.de/artist/2Vt6gyhUH7Vj2cybfQWOqM"],
