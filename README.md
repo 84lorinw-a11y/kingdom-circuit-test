@@ -1,23 +1,21 @@
-# The Kingdom Circuit
+# Kingdom Circuit test site
 
-A free, automated U.S. Christian hip-hop concert and festival calendar.
+This repository is the safe proving ground for improvements to Kingdom Circuit. It builds a fresh snapshot from the current production source, adds test-only repairs, validates the complete result, and deploys only to:
 
-## Master v9
+<https://84lorinw-a11y.github.io/kingdom-circuit-test/>
 
-- Removes TobyMac from active CHH monitoring while preserving his name only on Ticketmaster events explicitly shared with KB.
-- Moves source-warning details to a small footer notice.
-- Standardizes all Official details buttons to the compact size.
-- Replaces branded fallback cards with neutral concert artwork.
-- Adds approved event or artist images for Turned Up for Christ, Sevin, EGR, FLAME, LifeLight, and Caleb Gordon.
-- Adds the verified FLAME Plano show, LifeLight Sioux Falls with KB, 21 future EGR schedule dates, and all eight Caleb Gordon Eden Experience dates.
-- Preserves all existing manually verified listings, including Mike Malagies on October 2.
+The production repository and <https://kingdomcircuit.com/> are not changed by this workflow.
 
-## Required repository secret
+## Test-release safeguards
 
-- `TICKETMASTER_API_KEY`
+- The deployed test site is always `noindex,nofollow`, has no custom-domain file, and does not send production analytics.
+- The build is uploaded directly as one GitHub Pages artifact. It does not write generated pages back into this branch.
+- Visible source labels and internal collection/audit files are removed from the public test artifact. “Official details” links remain so visitors can confirm a listing.
+- Sitemap, links, counts, duplicated listings, page metadata, accessibility, forms, and image delivery are checked before deployment.
+- Any failed verification stops deployment and leaves the currently published test site in place.
 
-## Existing integrations preserved
+## Editing rule
 
-- Google Analytics: `G-N2KK9XF4TJ`
-- Formspree submission endpoint
-- Custom domain and GitHub Actions workflow
+Make durable test improvements in `scripts/apply_test_audit_repairs.py`, `scripts/apply_test_ux_repairs.py`, and `scripts/optimize_test_images.py`. Keep their matching verifier scripts passing. Do not hand-edit generated pages because the next mirror will replace them.
+
+See [TEST-IMPROVEMENTS.md](TEST-IMPROVEMENTS.md) for the build order and promotion checklist.

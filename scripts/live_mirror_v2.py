@@ -7,6 +7,7 @@ import pathlib
 import re
 import shutil
 import sys
+import xml.etree.ElementTree as ET
 
 TEST_BASE = "/kingdom-circuit-test/"
 TEST_ORIGIN = "https://84lorinw-a11y.github.io"
@@ -189,6 +190,24 @@ def rewrite_html(text: str) -> str:
         lambda m: m.group("prefix") + TEST_BASE,
         text,
     )
+
+    # ``srcset`` can contain several root-relative candidates.  Treat each
+    # candidate independently so responsive images also work from the GitHub
+    # Pages project subpath instead of silently falling back to ``src``.
+    def rewrite_srcset(match: re.Match[str]) -> str:
+        value = re.sub(
+            r'(^|,\s*)/(?!/)',
+            lambda candidate: candidate.group(1) + TEST_BASE,
+            match.group("value"),
+        )
+        return match.group("prefix") + value + match.group("quote")
+
+    text = re.sub(
+        r'(?P<prefix>\bsrcset=(?P<quote>["\']))(?P<value>.*?)(?P=quote)',
+        rewrite_srcset,
+        text,
+        flags=re.I | re.S,
+    )
     robots = re.compile(r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*["\']\s*/?>', re.I)
     if robots.search(text):
         text = robots.sub('<meta name="robots" content="noindex,nofollow">', text)
@@ -363,11 +382,16 @@ def remove_excluded_static_pages(out_dir: pathlib.Path) -> None:
             shutil.rmtree(page_dir)
     sitemap = out_dir / "sitemap.xml"
     if sitemap.is_file():
-        text = sitemap.read_text(encoding="utf-8")
-        for name in EXCLUDED_ARTISTS:
-            slug = slugify(name)
-            text = re.sub(rf"<url>.*?/artists/{re.escape(slug)}/.*?</url>\s*", "", text, flags=re.S | re.I)
-        sitemap.write_text(text, encoding="utf-8")
+        namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
+        ET.register_namespace("", namespace)
+        tree = ET.parse(sitemap)
+        root = tree.getroot()
+        targets = {f"/artists/{slugify(name)}/" for name in EXCLUDED_ARTISTS}
+        for url_node in list(root.findall(f"{{{namespace}}}url")):
+            loc = url_node.find(f"{{{namespace}}}loc")
+            if loc is not None and any(target in (loc.text or "").casefold() for target in targets):
+                root.remove(url_node)
+        tree.write(sitemap, encoding="utf-8", xml_declaration=True)
 
 
 def verify_overlay(out_dir: pathlib.Path) -> list[str]:
@@ -403,8 +427,10 @@ def verify_overlay(out_dir: pathlib.Path) -> list[str]:
     if "function enhanceVerifiedArtistImages()" not in app:
         failures.append("artist-image-enhancement-missing")
     caleb_page = out_dir / "artists" / "caleb-gordon" / "index.html"
-    if caleb_page.is_file() and "profile-visual" not in caleb_page.read_text(encoding="utf-8"):
-        failures.append("caleb-static-image-missing")
+    if caleb_page.is_file():
+        caleb_text = caleb_page.read_text(encoding="utf-8")
+        if not any(marker in caleb_text for marker in ('class="profile-visual"', 'class="seo-profile-image"')):
+            failures.append("caleb-static-image-missing")
     return failures
 
 
@@ -459,6 +485,8 @@ def main() -> None:
         if not test_asset.is_file() or sha256(live_asset) != sha256(test_asset):
             failures.append(f"asset:{relative}")
     bad_root = re.compile(r'\b(?:href|src|action)=["\']/(?!kingdom-circuit-test(?:/|["\']))')
+    srcset_pattern = re.compile(r'\bsrcset=["\'](?P<value>[^"\']*)["\']', re.I)
+    bad_srcset_candidate = re.compile(r'(^|,\s*)/(?!kingdom-circuit-test/)')
     for html_file in out_dir.rglob("*.html"):
         text = html_file.read_text(encoding="utf-8")
         rel = html_file.relative_to(out_dir)
@@ -466,6 +494,11 @@ def main() -> None:
             failures.append(f"indexable:{rel}")
         if bad_root.search(text):
             failures.append(f"bad-root-path:{rel}")
+        if any(
+            bad_srcset_candidate.search(match.group("value"))
+            for match in srcset_pattern.finditer(text)
+        ):
+            failures.append(f"bad-srcset-path:{rel}")
         if LIVE_GA in text:
             failures.append(f"live-analytics:{rel}")
     app = (out_dir / "app.js").read_text(encoding="utf-8")

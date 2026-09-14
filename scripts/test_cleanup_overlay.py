@@ -5,6 +5,7 @@ import pathlib
 import re
 import shutil
 import sys
+import xml.etree.ElementTree as ET
 
 EXCLUDED_ARTISTS = {"chad jones", "erica mason", "big holy"}
 EXCLUDED_SLUGS = {"chad-jones", "erica-mason", "big-holy"}
@@ -114,17 +115,17 @@ def clean_sitemap(out_dir: pathlib.Path, removed_event_slugs: set[str]) -> None:
     sitemap = out_dir / "sitemap.xml"
     if not sitemap.is_file():
         return
-    text = sitemap.read_text(encoding="utf-8")
     targets = [f"/artists/{slug}/" for slug in EXCLUDED_SLUGS]
     targets.extend(f"/event/{slug}/" for slug in removed_event_slugs)
-    for target in targets:
-        text = re.sub(
-            rf"<url>.*?{re.escape(target)}.*?</url>\s*",
-            "",
-            text,
-            flags=re.I | re.S,
-        )
-    sitemap.write_text(text, encoding="utf-8")
+    namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
+    ET.register_namespace("", namespace)
+    tree = ET.parse(sitemap)
+    root = tree.getroot()
+    for url_node in list(root.findall(f"{{{namespace}}}url")):
+        loc = url_node.find(f"{{{namespace}}}loc")
+        if loc is not None and any(target in (loc.text or "").casefold() for target in targets):
+            root.remove(url_node)
+    tree.write(sitemap, encoding="utf-8", xml_declaration=True)
 
 
 def verify(out_dir: pathlib.Path, removed_event_slugs: set[str]) -> None:
