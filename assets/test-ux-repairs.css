@@ -1,0 +1,122 @@
+/* Kingdom Circuit test-only UX repairs. */
+body [hidden] { display: none !important; }
+
+.kc-skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 12px 16px;
+  border: 2px solid #e3b75d;
+  border-radius: 8px;
+  background: #080808;
+  color: #f5f2ea;
+  font-weight: 900;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+.kc-skip-link:focus { transform: translateY(0); }
+
+.menu-drawer {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding-bottom: calc(26px + env(safe-area-inset-bottom)) !important;
+}
+
+.footer-status,
+.footer-source-warning,
+.profile-image-note,
+.seo-roster-note,
+.profile-count,
+.disclaimer,
+.form-note,
+.form-feedback,
+.source-line,
+.price-line,
+.results-count,
+.event-meta dt,
+.detail-list dt { color: #b8b4ac !important; }
+
+.field input,
+.field select,
+.field textarea,
+.filter-chip,
+.reset-button,
+.menu-toggle,
+.menu-close,
+.secondary-button { border-color: #707070 !important; }
+
+.menu-toggle,
+.menu-close,
+.filter-chip,
+.reset-button,
+.official-button,
+.primary-button,
+.secondary-button,
+.kc-show-all-artists,
+.seo-social-link,
+.artist-platform-link,
+body .artist-card .artist-platform-link,
+body .seo-card-socials .seo-social-link {
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
+.kc-test-directory-toolbar {
+  grid-template-columns: minmax(220px, 2fr) minmax(220px, 1fr) auto auto !important;
+}
+.kc-show-all-artists { align-self: end; }
+
+.kc-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.kc-correction-note { margin: 0 0 18px; color: #b8b4ac; }
+
+@media (max-width: 900px) {
+  .kc-test-directory-toolbar { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (max-width: 640px) {
+  body [data-artist-directory] [data-artist-grid],
+  body [data-artist-directory] .artist-grid,
+  body [data-artist-directory] .seo-artist-grid { grid-template-columns: 1fr !important; }
+  body [data-artist-directory] .artist-card-body { min-height: 0 !important; }
+  .artist-platform-link,
+  .seo-social-link,
+  .seo-social-link-compact,
+  body .artist-card .artist-platform-link,
+  body .seo-card-socials .seo-social-link {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  .artist-card-links,
+  .seo-card-socials { gap: 8px !important; }
+  .seo-card-socials {
+    grid-template-columns: repeat(4, 44px) !important;
+    column-gap: 8px !important;
+  }
+  .kc-test-directory-toolbar { grid-template-columns: 1fr !important; }
+  .kc-show-all-artists { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

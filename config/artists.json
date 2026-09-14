@@ -1,0 +1,3958 @@
+[
+  {
+    "name": "Lecrae",
+    "aliases": [
+      "Lecrae"
+    ],
+    "enabled": true,
+    "category": "core",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://lecrae.com"
+  },
+  {
+    "name": "Hulvey",
+    "aliases": [
+      "Hulvey"
+    ],
+    "enabled": true,
+    "category": "core",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://hulvey.com"
+  },
+  {
+    "name": "KB",
+    "aliases": [
+      "KB"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.whoiskb.com"
+  },
+  {
+    "name": "Caleb Gordon",
+    "aliases": [
+      "Caleb Gordon"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "imageUrl": "https://tprlive.co/cdn/shop/files/ARTIST_HEADSHOT_36.jpg?v=1776887171&width=1797",
+    "imagePosition": "center",
+    "preferArtistImage": true,
+    "website": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
+    "instagramProfile": "https://www.instagram.com/calebfromeden/",
+    "spotifyProfile": "https://open.spotify.com/artist/6s3XaJkcT7464G4oII9V41",
+    "youtubeProfile": "https://www.youtube.com/@CalebGordon"
+  },
+  {
+    "name": "Andy Mineo",
+    "aliases": [
+      "Andy Mineo"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://andymineo.com"
+  },
+  {
+    "name": "nobigdyl.",
+    "aliases": [
+      "nobigdyl.",
+      "nobigdyl"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.dyllie.com/"
+  },
+  {
+    "name": "1K Phew",
+    "aliases": [
+      "1K Phew",
+      "1K PHEW",
+      "1KPhew"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "imageUrl": "assets/optimized/ae5d31c05406aab91adf23ad-w960.webp",
+    "imagePosition": "50% 24%",
+    "preferArtistImage": true,
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.1kphew.com/"
+  },
+  {
+    "name": "Miles Minnick",
+    "aliases": [
+      "Miles Minnick"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://milesminnick.com/"
+  },
+  {
+    "name": "Jon Keith",
+    "aliases": [
+      "Jon Keith"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://alienzalive.com/artist/jon-keith/",
+    "imageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/71/0c/9c/710c9c39-3dc7-0be5-a593-ab0ffc2fa618/Jobd846f8ea-4135-4580-8d0d-ed8f3cbb1f2a-190112036-PreviewImage_Preview_Image_Intermediate_nonvideo_372260380_2119658910-Time1744403657806.png/1200x675mv.webp"
+  },
+  {
+    "name": "Tedashii",
+    "aliases": [
+      "Tedashii"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.reachrecords.com/artists/tedashii/"
+  },
+  {
+    "name": "Trip Lee",
+    "aliases": [
+      "Trip Lee"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://builttobrag.com/"
+  },
+  {
+    "name": "FLAME",
+    "aliases": [
+      "FLAME",
+      "Flame"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Scootie Wop",
+    "aliases": [
+      "Scootie Wop"
+    ],
+    "enabled": true,
+    "category": "core",
+    "instagramProfile": "https://www.instagram.com/scootiewop/",
+    "imageUrl": "https://www.even.biz/_next/image?q=75&url=https%3A%2F%2Fdt7m7kl3brv3f.cloudfront.net%2Fimages%2F4fovkhwb35e2t8zi4p9ajnxa22a5&w=828",
+    "activeStatus": "active_or_unknown",
+    "website": "https://starrbaby.com/"
+  },
+  {
+    "name": "Aaron Cole",
+    "aliases": [
+      "Aaron Cole"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.iamaaroncole.com/"
+  },
+  {
+    "name": "WHATUPRG",
+    "aliases": [
+      "WHATUPRG",
+      "WHATUPRG?"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.reachrecords.com/artists/whatuprg/"
+  },
+  {
+    "name": "Anike",
+    "aliases": [
+      "Anike",
+      "Wande"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://anike.net/"
+  },
+  {
+    "name": "Limoblaze",
+    "aliases": [
+      "Limoblaze"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.limoblaze.com/"
+  },
+  {
+    "name": "Jackie Hill Perry",
+    "aliases": [
+      "Jackie Hill Perry",
+      "Jackie Hill-Perry"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.jackiehillperry.com/"
+  },
+  {
+    "name": "Social Club Misfits",
+    "aliases": [
+      "Social Club Misfits",
+      "Social Club"
+    ],
+    "enabled": true,
+    "category": "group",
+    "activeStatus": "active_or_unknown",
+    "website": "https://socialclubmisfits.com/"
+  },
+  {
+    "name": "Steven Malcolm",
+    "aliases": [
+      "Steven Malcolm"
+    ],
+    "enabled": true,
+    "category": "core",
+    "instagramProfile": "https://www.instagram.com/stevenmalcolmmusic/",
+    "imageUrl": "https://bigchurchfestival.com/wp-content/uploads/steve-malcolmFULL-HEIGHT-TWO-COLUMN-1000x1313.jpg",
+    "activeStatus": "active_or_unknown",
+    "website": "https://stevenmalcolm.com/"
+  },
+  {
+    "name": "GAWVI",
+    "aliases": [
+      "GAWVI",
+      "Gawvi"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.gawvi.co/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.gawvi.co/"
+  },
+  {
+    "name": "EGR",
+    "aliases": [
+      "EGR",
+      "EGR MUZIK",
+      "EGRxOFFICIAL"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/@EGRxOFFICIAL",
+    "youtubeProfile": "https://www.youtube.com/@EGRxOFFICIAL",
+    "instagramProfile": "https://www.instagram.com/egrxofficial/",
+    "activeStatus": "active_or_unknown",
+    "imageUrl": "assets/optimized/de678a4ac70354798f662ca0-w651.webp",
+    "imagePosition": "50% 38%",
+    "preferArtistImage": true
+  },
+  {
+    "name": "Mike Malagies",
+    "aliases": [
+      "Mike Malagies"
+    ],
+    "enabled": true,
+    "category": "core",
+    "instagramProfile": "https://www.instagram.com/mikemalagies/",
+    "imageUrl": "https://static.wixstatic.com/media/61a78b_7545031064f049a6843e4c7d0666886f~mv2.jpg/v1/fill/w_327%2Ch_491%2Cal_c%2Cq_80%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/61a78b_7545031064f049a6843e4c7d0666886f~mv2.jpg",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.mikemalagiesofficial.com/"
+  },
+  {
+    "name": "Fern",
+    "aliases": [
+      "Fern",
+      "Fern of Social Club Misfits"
+    ],
+    "enabled": true,
+    "category": "solo",
+    "activeStatus": "active_or_unknown",
+    "website": "https://fernofficial.com/"
+  },
+  {
+    "name": "Marty",
+    "aliases": [
+      "Marty",
+      "Marty of Social Club Misfits",
+      "Marty Mar"
+    ],
+    "enabled": true,
+    "category": "solo",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/deathbymartymar/?hl=en",
+    "instagramProfile": "https://www.instagram.com/deathbymartymar/",
+    "spotifyProfile": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
+    "youtubeProfile": "https://www.youtube.com/@deathbymartymar",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3d2d9f74de93906d1f5996f3",
+    "imagePosition": "center",
+    "preferArtistImage": true
+  },
+  {
+    "name": "BrvndonP",
+    "aliases": [
+      "BrvndonP",
+      "Brvndon P"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://iambrvndonp.com/"
+  },
+  {
+    "name": "Skema Boy",
+    "aliases": [
+      "Skema Boy"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://rixonentertainment.com/skema-boy"
+  },
+  {
+    "name": "Madison Ryann Ward",
+    "aliases": [
+      "Madison Ryann Ward"
+    ],
+    "enabled": false,
+    "category": "crossover",
+    "activeStatus": "excluded"
+  },
+  {
+    "name": "Zauntee",
+    "aliases": [
+      "Zauntee"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.zauntee.com/"
+  },
+  {
+    "name": "Bizzle",
+    "aliases": [
+      "Bizzle"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://bizzle.vip/"
+  },
+  {
+    "name": "Derek Minor",
+    "aliases": [
+      "Derek Minor"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "label": "Reflection Music Group",
+    "activeStatus": "active_or_unknown",
+    "website": "https://derekminor.com/"
+  },
+  {
+    "name": "Canon",
+    "aliases": [
+      "Canon"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "label": "Reflection Music Group",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.getthecanon.com/"
+  },
+  {
+    "name": "Parris Chariz",
+    "aliases": [
+      "Parris Chariz"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "label": "Reflection Music Group",
+    "activeStatus": "active_or_unknown",
+    "imageUrl": "https://www.invubu.com/images/artists/1200/parris_chariz.jpg"
+  },
+  {
+    "name": "Aklesso",
+    "aliases": [
+      "Aklesso"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.aklesso.com/"
+  },
+  {
+    "name": "Tommy Zuko",
+    "aliases": [
+      "Tommy Zuko"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.tommyzuko.com/"
+  },
+  {
+    "name": "Sevin",
+    "aliases": [
+      "Sevin",
+      "Sevin Duce",
+      "Sevin HOG MOB",
+      "HOG MOB Ministries",
+      "HOG MOB"
+    ],
+    "enabled": true,
+    "category": "core",
+    "collective": "HOG MOB Ministries",
+    "officialProfile": "https://hogmob.com/sevin/",
+    "activeStatus": "active_or_unknown",
+    "imageUrl": "assets/optimized/5bf80dbf05e105e50d545a87-w960.webp",
+    "imagePosition": "50% 30%",
+    "preferArtistImage": true,
+    "website": "https://hogmob.com/sevin/"
+  },
+  {
+    "name": "Da' T.R.U.T.H.",
+    "aliases": [
+      "Da' T.R.U.T.H.",
+      "Da Truth",
+      "Da T.R.U.T.H."
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Wordsplayed",
+    "aliases": [
+      "Wordsplayed",
+      "Wordsplayed.",
+      "Wordsplayed?"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://wordsplayed.neocities.org/"
+  },
+  {
+    "name": "Forrest Frank",
+    "aliases": [
+      "Forrest Frank"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://forrestfrank.com/"
+  },
+  {
+    "name": "indie tribe.",
+    "aliases": [
+      "indie tribe.",
+      "indie tribe",
+      "Indie Tribe"
+    ],
+    "enabled": true,
+    "category": "group",
+    "activeStatus": "active_or_unknown",
+    "website": "https://indietribe.us/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3d6de4e8ecd60713745d2b77",
+    "imagePosition": "center",
+    "preferArtistImage": true
+  },
+  {
+    "name": "Brenno",
+    "aliases": [
+      "Brenno"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.brennomusic.live/",
+    "instagramProfile": "https://www.instagram.com/brenno.music/",
+    "spotifyProfile": "https://open.spotify.com/artist/7lBcEp7abNiq3WyHT3RRqV",
+    "youtubeProfile": "https://www.youtube.com/@brenno.music1/videos"
+  },
+  {
+    "name": "Shepherd",
+    "aliases": [
+      "Shepherd",
+      "Shepherd."
+    ],
+    "enabled": true,
+    "category": "core",
+    "label": "Familia Forever",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.shepherd.live/",
+    "instagramProfile": "https://www.instagram.com/shepherd_music/",
+    "spotifyProfile": "https://open.spotify.com/artist/0YHuTR40zc9yqfoSSArQxU?si=uLy6lYIBTr6JOUAC3VCQRw&dl_branch=1&nd=1&dlsi=9e8b14d62f1848e4",
+    "youtubeProfile": "https://www.youtube.com/channel/UCc6gnoGyHriWXsAEX-OcueQ"
+  },
+  {
+    "name": "Kai Uriah",
+    "aliases": [
+      "Kai Uriah"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://linktr.ee/itskaiuriah",
+    "instagramProfile": "https://www.instagram.com/kaiuriah/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/6IdKInshEI8ywJ99v6gVKM",
+    "youtubeProfile": "https://www.youtube.com/@kaiuriah"
+  },
+  {
+    "name": "Hyper Fenton",
+    "aliases": [
+      "Hyper Fenton",
+      "Seth Fenton"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://hyperfenton.com/",
+    "instagramProfile": "https://www.instagram.com/hyperfenton/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/2q5QIs6iibW6xyHZZRSeh2",
+    "youtubeProfile": "https://music.youtube.com/playlist?list=OLAK5uy_mriMUrHlhyB3ejFMfLTlJohVxDbdscX5s"
+  },
+  {
+    "name": "Brea Miles",
+    "aliases": [
+      "Brea Miles"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.alwaysbrea.com/",
+    "instagramProfile": "https://www.instagram.com/alwaysbrea",
+    "spotifyProfile": "https://open.spotify.com/artist/2S8dO0fwL0qup5Eo7OHs5i",
+    "youtubeProfile": "https://www.youtube.com/breamiles"
+  },
+  {
+    "name": "Issac Mansfield",
+    "aliases": [
+      "Issac Mansfield",
+      "Isaac Mansfield"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.issacmansfield.com/",
+    "instagramProfile": "https://www.instagram.com/issacmansfield/",
+    "spotifyProfile": "https://open.spotify.com/artist/1QgXbOPk6XpELZrJOzz33w",
+    "youtubeProfile": "https://www.youtube.com/@issac.mansfield/featured"
+  },
+  {
+    "name": "Tylan1k",
+    "aliases": [
+      "Tylan1k",
+      "tylan1k"
+    ],
+    "enabled": true,
+    "category": "core",
+    "label": "RMG Amplify",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/tylanthechosen1/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/6PY88og97O47AlwuyFFRhr",
+    "youtubeProfile": "https://www.youtube.com/channel/UCeJ8yMp5bJjTxBp_COGNB6w"
+  },
+  {
+    "name": "Jabari Heavens",
+    "aliases": [
+      "Jabari Heavens"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/jabariheavens/",
+    "spotifyProfile": "https://open.spotify.com/artist/2ORjCgiRF9ZIK4gak1CsYP",
+    "youtubeProfile": "https://www.youtube.com/@JabariHeavens"
+  },
+  {
+    "name": "Rhema Soul",
+    "aliases": [
+      "Rhema Soul"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "label": "Good City Music",
+    "activeStatus": "active_or_unknown",
+    "website": "https://rhemasoul.com/",
+    "instagramProfile": "https://www.instagram.com/rhemasoul/",
+    "spotifyProfile": "https://open.spotify.com/artist/6kqgFtlPJHyqqffmlDTTzd",
+    "youtubeProfile": "https://www.youtube.com/@RhemaSoul/featured"
+  },
+  {
+    "name": "Shonlock",
+    "aliases": [
+      "Shonlock"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.shonlock.com/",
+    "instagramProfile": "https://www.instagram.com/shonlock/",
+    "spotifyProfile": "https://open.spotify.com/artist/0Fs18mA7TFMvYVRNX4dNTt",
+    "youtubeProfile": "https://music.youtube.com/@Shonlock"
+  },
+  {
+    "name": "Viktory",
+    "aliases": [
+      "Viktory"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/viktoryr4/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/7jKYoI3eKh85xfqK7TAlN5",
+    "youtubeProfile": "https://www.youtube.com/@ViktoriousMusic"
+  },
+  {
+    "name": "T-Bone",
+    "aliases": [
+      "T-Bone",
+      "T Bone",
+      "Rene Sotomayor"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://houseoftbone.com/",
+    "instagramProfile": "https://www.instagram.com/tboneoficial/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/6h2GxbU7emrTikSWxbMyxd",
+    "youtubeProfile": "https://www.youtube.com/channel/UCxQgnrqdZe_2qAR9jzyVmmg"
+  },
+  {
+    "name": "Bishop Freeze",
+    "aliases": [
+      "Bishop Freeze"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.sozomissions.com/music/bishop-freeze",
+    "instagramProfile": "https://www.instagram.com/bishopfreeze_/",
+    "spotifyProfile": "https://open.spotify.com/artist/1epkzUW5gL4DHjW8rlPa3P",
+    "youtubeProfile": "https://www.youtube.com/@sozomissions"
+  },
+  {
+    "name": "808 BEEZY",
+    "aliases": [
+      "808 BEEZY",
+      "808 Beezy"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.808beezy.com/",
+    "instagramProfile": "https://www.instagram.com/808beezy/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/3CltJZLndpJKtpUyRVBB1k",
+    "youtubeProfile": "https://www.youtube.com/@808_BEEZY",
+    "imageUrl": "https://pbs.twimg.com/profile_images/1836827722309312512/e5kgorwv.jpg"
+  },
+  {
+    "name": "Mike Teezy",
+    "aliases": [
+      "Mike Teezy"
+    ],
+    "enabled": true,
+    "category": "core",
+    "instagramProfile": "https://www.instagram.com/officialmiketeezy/",
+    "imageUrl": "https://www.even.biz/_next/image?q=75&url=https%3A%2F%2Fdt7m7kl3brv3f.cloudfront.net%2Fimages%2Fzlirs9n3bpjitnofexx4m095koo3&w=828",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.miketeezymusic.com/",
+    "spotifyProfile": "https://open.spotify.com/artist/6tO2zQcTIRfR2Xdsm9XnL7",
+    "youtubeProfile": "https://www.youtube.com/@MikeTeezy"
+  },
+  {
+    "name": "Porsha Love",
+    "aliases": [
+      "Porsha Love"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.google.com/search?q=Porsha+Love+official+website",
+    "instagramProfile": "https://www.instagram.com/porshalove/",
+    "spotifyProfile": "https://open.spotify.com/search/Porsha%20Love",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Porsha+Love+official",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb15b2db654ea5c3a8a4521985"
+  },
+  {
+    "name": "Nicky Gracious",
+    "aliases": [
+      "Nicky Gracious"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://nickygraciousmusic.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://nickygraciousmusic.com/",
+    "instagramProfile": "https://www.instagram.com/nickygracious/",
+    "spotifyProfile": "https://open.spotify.com/search/Nicky%20Gracious",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Nicky+Gracious+official",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3e63fdf301f6d60cda6d879a"
+  },
+  {
+    "name": "ASAP Preach",
+    "aliases": [
+      "ASAP Preach",
+      "A.S.A.P. Preach"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://asappreachmusic.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://asappreachmusic.com/",
+    "instagramProfile": "https://www.instagram.com/asappreach/",
+    "spotifyProfile": "https://open.spotify.com/search/ASAP%20Preach",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=ASAP+Preach+official",
+    "imageUrl": "https://cdn.rapzilla.com/wp-content/uploads/2019/01/23121044/FB_IMG_1547351853226.jpg"
+  },
+  {
+    "name": "Kijan Boone",
+    "aliases": [
+      "Kijan Boone"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.google.com/search?q=Kijan+Boone+official+website",
+    "instagramProfile": "https://www.instagram.com/kijanboone/",
+    "spotifyProfile": "https://open.spotify.com/search/Kijan%20Boone",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Kijan+Boone+official",
+    "imageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/64/0c/9b/640c9b84-4dff-3bb2-0bf2-12342044fb1e/file_cropped.png/1200x630cw.png"
+  },
+  {
+    "name": "Don Ready",
+    "aliases": [
+      "Don Ready"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.donreadymusic.com/",
+    "instagramProfile": "https://www.instagram.com/donreadymusic/",
+    "spotifyProfile": "https://open.spotify.com/artist/5kQnpfa9Qp5lNSOThWVnFl",
+    "youtubeProfile": "https://www.youtube.com/@donreadymusic",
+    "officialProfile": "https://www.donreadymusic.com/",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb7e1b606dced93a898a5a4286",
+    "imagePosition": "center",
+    "preferArtistImage": true
+  },
+  {
+    "name": "Y Shadey",
+    "aliases": [
+      "Y Shadey"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.google.com/search?q=Y+Shadey+official+website",
+    "instagramProfile": "https://www.instagram.com/yshadey/",
+    "spotifyProfile": "https://open.spotify.com/search/Y%20Shadey",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Y+Shadey+official",
+    "imageUrl": "https://res.cloudinary.com/blinkapp/image/upload/v1748281371/38dca001550d8cbad15c33a5072178f19e6434b16c2115424619a5bdbe83a294.jpg"
+  },
+  {
+    "name": "Dante' Pride",
+    "aliases": [
+      "Dante' Pride",
+      "Dante Pride"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.google.com/search?q=Dante%27+Pride+official+website",
+    "instagramProfile": "https://www.instagram.com/dantepride/",
+    "spotifyProfile": "https://open.spotify.com/search/Dante%27%20Pride",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Dante%27+Pride+official",
+    "imageUrl": "https://static.wixstatic.com/media/6ca267_4ad73a811cbe4e0d9e26ca102212d6c0~mv2.jpg/v1/fill/w_980%2Ch_1076%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/6ca267_4ad73a811cbe4e0d9e26ca102212d6c0~mv2.jpg"
+  },
+  {
+    "name": "Rare of Breed",
+    "aliases": [
+      "Rare of Breed",
+      "RareofBreed"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.google.com/search?q=Rare+of+Breed+official+website",
+    "instagramProfile": "https://www.instagram.com/rareofbreed/",
+    "spotifyProfile": "https://open.spotify.com/search/Rare%20of%20Breed",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Rare+of+Breed+official",
+    "imageUrl": "assets/optimized/f108bffbbecae9ce261d2289-w960.webp"
+  },
+  {
+    "name": "Brother Bo",
+    "aliases": [
+      "Brother Bo"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/c/BrotherBoMusic",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.youtube.com/c/BrotherBoMusic",
+    "instagramProfile": "https://www.instagram.com/brotherbo/",
+    "spotifyProfile": "https://open.spotify.com/search/Brother%20Bo",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Brother+Bo+official",
+    "imageUrl": "https://open.voidware.de/artist/3cmp77GMj0JNM3YHYquhMo"
+  },
+  {
+    "name": "Tommy Chapa",
+    "aliases": [
+      "Tommy Chapa"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://music.apple.com/us/artist/tommy-chapa/1508864414",
+    "activeStatus": "active_or_unknown",
+    "website": "https://music.apple.com/us/artist/tommy-chapa/1508864414",
+    "instagramProfile": "https://www.instagram.com/tommychapa/",
+    "spotifyProfile": "https://open.spotify.com/search/Tommy%20Chapa",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Tommy+Chapa+official",
+    "imageUrl": "https://m.media-amazon.com/images/I/51PN0gSGzAL.jpg"
+  },
+  {
+    "name": "B. Cody Shields",
+    "aliases": [
+      "B. Cody Shields",
+      "B Cody Shields"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://thisishismusic.com/pages/about",
+    "activeStatus": "active_or_unknown",
+    "website": "https://thisishismusic.com/pages/about",
+    "instagramProfile": "https://www.instagram.com/bcodyshields/",
+    "spotifyProfile": "https://open.spotify.com/search/B.%20Cody%20Shields",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=B.+Cody+Shields+official",
+    "imageUrl": "https://open.voidware.de/artist/4chyF3tNUYqQdgS0SQtOT6"
+  },
+  {
+    "name": "Santana Rose",
+    "aliases": [
+      "Santana Rose"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/@SantanaRoseMusic",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.youtube.com/@SantanaRoseMusic",
+    "instagramProfile": "https://www.instagram.com/santanarose/",
+    "spotifyProfile": "https://open.spotify.com/search/Santana%20Rose",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=Santana+Rose+official",
+    "imageUrl": "https://static.qobuz.com/images/covers/he/16/qvvyovl4316he_600.jpg"
+  },
+  {
+    "name": "DJ Winn",
+    "aliases": [
+      "DJ Winn",
+      "DJ WINN"
+    ],
+    "enabled": true,
+    "category": "dj",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.google.com/search?q=DJ+Winn+official+website",
+    "instagramProfile": "https://www.instagram.com/djwinn/",
+    "spotifyProfile": "https://open.spotify.com/search/DJ%20Winn",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=DJ+Winn+official",
+    "imageUrl": "https://livemixtapes.com/images/share/54711.webp"
+  },
+  {
+    "name": "REDEEMED",
+    "aliases": [
+      "REDEEMED",
+      "Redeemed Muzic"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/@redeemedmuzic",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.youtube.com/@redeemedmuzic",
+    "instagramProfile": "https://www.instagram.com/redeemed/",
+    "spotifyProfile": "https://open.spotify.com/search/REDEEMED",
+    "youtubeProfile": "https://www.youtube.com/results?search_query=REDEEMED+official",
+    "imageUrl": "https://open.voidware.de/artist/240g9DqmeKizlyyCZtL22Y"
+  },
+  {
+    "name": "Rua Young",
+    "aliases": [
+      "Rua Young",
+      "RUA YOUNG"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.ruayoung.com/",
+    "instagramProfile": "https://www.instagram.com/ruayoung",
+    "spotifyProfile": "https://open.spotify.com/artist/6i1jJEMjPbIki7mpvE0QQ1",
+    "youtubeProfile": "https://www.youtube.com/@RUAYOUNG"
+  },
+  {
+    "name": "Kurtis Hoppie",
+    "aliases": [
+      "Kurtis Hoppie"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.thekurtishoppie.com/",
+    "instagramProfile": "https://www.instagram.com/thekurtishoppie/",
+    "spotifyProfile": "https://open.spotify.com/artist/2eR1Z2cyHOS4gFgA2GbRl8",
+    "youtubeProfile": "https://www.youtube.com/channel/UCIR10g1HVLaYF2vHuBa6u7A",
+    "imageUrl": "assets/optimized/555c3a6bc1c7ad4db8506a13-w960.webp",
+    "imagePosition": "50% 22%",
+    "preferArtistImage": true
+  },
+  {
+    "name": "Nu Tone",
+    "aliases": [
+      "Nu Tone",
+      "NuTone"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/nutonemuzic/?hl=en",
+    "instagramProfile": "https://www.instagram.com/nutonemuzic/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/4FWnJfV0P82pAx3nD0ZarA",
+    "youtubeProfile": "https://www.youtube.com/@nutonevevo2074"
+  },
+  {
+    "name": "Holy Gabbana",
+    "aliases": [
+      "Holy Gabbana"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://holygabbana.com/",
+    "instagramProfile": "https://www.instagram.com/holygabbana/",
+    "spotifyProfile": "https://open.spotify.com/artist/0FTHAY097uQnnn3D2egtZZ",
+    "youtubeProfile": "https://www.youtube.com/channel/UCWC_nNYA2abh8744tp5JX1g"
+  },
+  {
+    "name": "Christopher Syncere",
+    "aliases": [
+      "Christopher Syncere"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/christophersyncere/",
+    "instagramProfile": "https://www.instagram.com/christophersyncere/",
+    "spotifyProfile": "https://open.spotify.com/artist/6oTjD6G08PuR7EjE0AjL5u",
+    "youtubeProfile": "https://www.youtube.com/c/ChristopherSyncere",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb58b2b20624119284dbf7e303"
+  },
+  {
+    "name": "K-SEE",
+    "aliases": [
+      "K-SEE",
+      "K SEE"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/kseemusic1/?hl=en",
+    "instagramProfile": "https://www.instagram.com/kseemusic1/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/3Pa1wXxunsWmALJOnjbfbQ",
+    "youtubeProfile": "https://www.youtube.com/@k-seemusic3177"
+  },
+  {
+    "name": "Gospel Gangstaz",
+    "aliases": [
+      "Gospel Gangstaz"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://en.wikipedia.org/wiki/Gospel_Gangstaz",
+    "instagramProfile": "",
+    "spotifyProfile": "https://open.spotify.com/artist/0XioBTfH5k3aCyS9AsbDbE",
+    "youtubeProfile": "https://www.youtube.com/channel/UCFzDxXG9164E1B13A582j5Q"
+  },
+  {
+    "name": "Wuhsahbee",
+    "aliases": [
+      "Wuhsahbee"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/wuhsahbee/",
+    "instagramProfile": "https://www.instagram.com/wuhsahbee/",
+    "spotifyProfile": "https://open.spotify.com/artist/6Xg1qxN1cKliOVzRLA4lDK",
+    "youtubeProfile": "https://www.youtube.com/channel/UCxYy0QJZrz4JRq6Jn0MevBQ"
+  },
+  {
+    "name": "Kelo",
+    "aliases": [
+      "Kelo"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/cutthecho/",
+    "instagramProfile": "https://www.instagram.com/cutthecho/",
+    "spotifyProfile": "https://open.spotify.com/artist/6j8t8rQzrAtRx5tYImodgd",
+    "youtubeProfile": "https://www.youtube.com/channel/UCAvlfmD2aiqXxxknr-9VSVg"
+  },
+  {
+    "name": "DKG Kie",
+    "aliases": [
+      "DKG Kie"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.dkgkiemerch.com/",
+    "instagramProfile": "https://www.instagram.com/dkg.kie",
+    "spotifyProfile": "https://open.spotify.com/artist/1eeYg6dFkaRT5GA0lsCVHA",
+    "youtubeProfile": "https://www.youtube.com/@dkgkie"
+  },
+  {
+    "name": "Braille",
+    "aliases": [
+      "Braille"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.humblebeast.com/music/braille",
+    "instagramProfile": "https://www.instagram.com/bryanbraille/",
+    "spotifyProfile": "https://open.spotify.com/artist/6RYTz1tFNDF2qP0mwqEwDO",
+    "youtubeProfile": "https://www.youtube.com/@bryanbraille"
+  },
+  {
+    "name": "Canton Jones",
+    "aliases": [
+      "Canton Jones"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/thecantonjones/?hl=en",
+    "instagramProfile": "https://www.instagram.com/thecantonjones/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/3nzEXHMRFWTw4zt3pVRv6V",
+    "youtubeProfile": "https://www.youtube.com/@CantonJones1"
+  },
+  {
+    "name": "Jay-Way",
+    "aliases": [
+      "Jay-Way",
+      "Jay Way"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.jaywaythealien.com/",
+    "instagramProfile": "https://www.instagram.com/JayWayTheAlien",
+    "spotifyProfile": "https://open.spotify.com/artist/1RDbE3dM2bNNSTh88R4MQ7",
+    "youtubeProfile": "https://www.youtube.com/@JayWayTheAlien"
+  },
+  {
+    "name": "Stixx aka Conejo",
+    "aliases": [
+      "Stixx aka Conejo",
+      "Stixx"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://linktr.ee/stixxwym",
+    "instagramProfile": "https://www.instagram.com/stixxwym",
+    "spotifyProfile": "https://open.spotify.com/artist/3khYLvZ6GmLlPMPlTfMTBr",
+    "youtubeProfile": "https://www.youtube.com/@stixxwym/videos"
+  },
+  {
+    "name": "Ruslan",
+    "aliases": [
+      "Ruslan",
+      "Ruslan KD"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/ruslankd/?hl=en",
+    "instagramProfile": "https://www.instagram.com/ruslankd/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/2GEXrCflKZ5S5ZHBM4LNcV",
+    "youtubeProfile": "https://www.youtube.com/@RuslanKD/featured",
+    "imageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/6d/12/23/6d12233a-882e-6603-ee26-01989969fcf9/3a35e7fd-10e4-4710-aa37-75ee0c58c345_file_cropped.png/3442x3442bb.jpg"
+  },
+  {
+    "name": "J J L",
+    "aliases": [
+      "J J L",
+      "JJL"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "instagramProfile": "https://www.instagram.com/jjl_music/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/5saP6cHfo2flMEQuAJITBS",
+    "youtubeProfile": "https://music.youtube.com/channel/UC0vTVAlJijP9UvlEeezSmjw",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb04e00b6b9c43eecf6f19ca78",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "Priest Jones",
+    "aliases": [
+      "Priest Jones"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/priestjonesmn/",
+    "instagramProfile": "https://www.instagram.com/priestjonesmn/",
+    "spotifyProfile": "https://open.spotify.com/artist/6GZw5pNbFDBOr6h8ha48BX",
+    "youtubeProfile": "https://www.youtube.com/channel/UCJ1QKIUrg93G-BJJ2cV-4fw",
+    "imageUrl": "https://i.scdn.co/image/ab67616d0000b27365766fabd158615e000e0033",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "Corincris",
+    "aliases": [
+      "Corincris"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.cockybeliefproduction.com/",
+    "instagramProfile": "https://www.instagram.com/corincris/",
+    "spotifyProfile": "https://open.spotify.com/artist/3HPj0fTgMGByddrYrdNPLn",
+    "youtubeProfile": "https://www.youtube.com/channel/UCF-g5-rykdXV5O5uEoz5ggA",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb9c8a3893503dc3d2ec584a4c",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "F’rael",
+    "aliases": [
+      "F’rael",
+      "F'rael",
+      "Frael"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/fraelmusic/",
+    "instagramProfile": "https://www.instagram.com/fraelmusic/",
+    "spotifyProfile": "https://open.spotify.com/artist/1bjGUP5zjge68RaUaBSPvW",
+    "youtubeProfile": "https://www.youtube.com/channel/UCuvrJ4Mvi90DWdb9pg98rYw",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb13e6fe9f6409ac3fd1efb541",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "Sis N Lil Bro",
+    "aliases": [
+      "Sis N Lil Bro",
+      "Sis N' Lil Bro",
+      "Sis N’ Lil Bro"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/wesisnlilbro/",
+    "instagramProfile": "https://www.instagram.com/wesisnlilbro/",
+    "spotifyProfile": "https://open.spotify.com/artist/1Ep8bP4kvEagicoKdAVU9P",
+    "youtubeProfile": "https://www.youtube.com/channel/UCw4Y1XT0kIff0f3kmrs8tSw",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5ebb41480e744d87b5682478744",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "Kaboose",
+    "aliases": [
+      "Kaboose"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://syntaxrecords.com/artist/kaboose/",
+    "instagramProfile": "https://www.instagram.com/kaboose.hiphop/",
+    "spotifyProfile": "https://open.spotify.com/artist/2zD5NNTrgXT3o2RVrRBvv1",
+    "youtubeProfile": "https://music.youtube.com/channel/UCIWddYLDHGIGZJHQ_G46noQ",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3c5bdcc093f62a89789c0f53",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "TRU-SERVA",
+    "aliases": [
+      "TRU-SERVA",
+      "Tru-Serva",
+      "Tru Serva"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.iamtruserva.com/",
+    "instagramProfile": "https://www.instagram.com/truserva/",
+    "spotifyProfile": "https://open.spotify.com/artist/3LzTEdiDZnEA721VqMYpdV",
+    "youtubeProfile": "https://www.youtube.com/@truserva",
+    "imageUrl": "https://i.scdn.co/image/ab6761610000e5ebb5bd510760cb418516ded933",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "VVS Big Rock",
+    "aliases": [
+      "VVS Big Rock"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/vvs_bigrock/",
+    "instagramProfile": "https://www.instagram.com/vvs_bigrock/",
+    "spotifyProfile": "https://open.spotify.com/artist/6it0bpgV8V5yuk2rnraE9M",
+    "youtubeProfile": "https://www.youtube.com/channel/UCxhWF02oh4FyuAPVBt8GM7g",
+    "imagePosition": "center",
+    "state": "WI"
+  },
+  {
+    "name": "Sway GTTB",
+    "aliases": [
+      "Sway GTTB",
+      "Sway God Took The Burden"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/swaygodtooktheburden.wav/",
+    "instagramProfile": "https://www.instagram.com/swaygodtooktheburden.wav/",
+    "spotifyProfile": "https://open.spotify.com/artist/3b15IaMeDOJZggq75TNNo9",
+    "youtubeProfile": "https://www.youtube.com/@SwayGTTBmusic",
+    "imagePosition": "center",
+    "state": "ND"
+  },
+  {
+    "name": "Kashh Kade",
+    "aliases": [
+      "Kashh Kade"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/kashhkade/",
+    "instagramProfile": "https://www.instagram.com/kashhkade/",
+    "spotifyProfile": "https://open.spotify.com/artist/029BjbYHANOxmuCPJM96dI",
+    "youtubeProfile": "https://music.youtube.com/channel/UCtWViuucqKR9F_orE7COgJg",
+    "imagePosition": "center",
+    "state": "WI"
+  },
+  {
+    "name": "RÆL The Artist",
+    "aliases": [
+      "RÆL The Artist",
+      "RAEL The Artist"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/raeltheartist/",
+    "instagramProfile": "https://www.instagram.com/raeltheartist/",
+    "spotifyProfile": "https://open.spotify.com/artist/72sxxRJ2zqNEvYeol2HnxG",
+    "youtubeProfile": "https://www.youtube.com/channel/UCD1fVGfBT6eL5HrglzXxv_g",
+    "imagePosition": "center",
+    "state": "WI"
+  },
+  {
+    "name": "JustChris",
+    "aliases": [
+      "JustChris",
+      "Just Chris"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://justchristheartist.com/",
+    "instagramProfile": "https://www.instagram.com/theartist_just_chris/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/16LhY0I4oG7q889kRgNQrQ",
+    "youtubeProfile": "https://www.youtube.com/channel/UCyPYU39mHibFDcDloaAVSXQ",
+    "imagePosition": "center",
+    "state": "WI"
+  },
+  {
+    "name": "Stovetop",
+    "aliases": [
+      "Stovetop"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.stovetop-music.com/",
+    "instagramProfile": "https://www.instagram.com/the_stovetop",
+    "spotifyProfile": "https://open.spotify.com/artist/77scLrsYfUOMsmq18ZtoCB",
+    "youtubeProfile": "https://www.youtube.com/channel/UC1DIn6CtH_V3cRE9zC6Ozcg",
+    "imagePosition": "center",
+    "state": "MN"
+  },
+  {
+    "name": "yumiya!",
+    "aliases": [
+      "yumiya!",
+      "yumiya"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "imageUrl": "assets/optimized/dfb250b09067f15ca1aa7b92-w400.webp",
+    "website": "https://www.instagram.com/yayayumiya/?hl=en",
+    "instagramProfile": "https://www.instagram.com/yayayumiya/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/1s4YH0vODE4nW0bREPt4GG",
+    "youtubeProfile": "https://www.youtube.com/@yayayumiya",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Linga TheBoss",
+    "aliases": [
+      "Linga TheBoss",
+      "Linga The Boss"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.lingatheboss.com/",
+    "instagramProfile": "https://www.instagram.com/lingatheboss/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/5jCTpUeZQ61zaoSYgYV2cY",
+    "youtubeProfile": "https://www.youtube.com/channel/UCBXlPLlFhymj2JRsva5fpLg",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Petrina DeLacey",
+    "aliases": [
+      "Petrina DeLacey"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/petrinadelacey/?hl=en",
+    "instagramProfile": "https://www.instagram.com/petrinadelacey/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/00iDXs6D2a9UZCtqnDMGnY",
+    "youtubeProfile": "https://www.youtube.com/channel/UCj6WadEE7fr76voQd3TBqKg",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Queen Lee",
+    "aliases": [
+      "Queen Lee"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/iamceoaaliyah/?hl=en",
+    "instagramProfile": "https://www.instagram.com/iamceoaaliyah/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/0ESxKUSobqG0GkLrxg77XS",
+    "youtubeProfile": "https://www.youtube.com/@IamQueenLee",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Biancallove",
+    "aliases": [
+      "Biancallove",
+      "Bianca Love"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://biancallove.com/",
+    "instagramProfile": "https://www.instagram.com/biancallove/?hl=en",
+    "spotifyProfile": "https://open.spotify.com/artist/590hZkpFHGkCc4iBpDKXrY",
+    "youtubeProfile": "https://www.youtube.com/channel/UCnZnD0K3pRkpwhn-EY24WAg",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Joz",
+    "aliases": [
+      "Joz",
+      "Southside Joz"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/southsidejoz/",
+    "instagramProfile": "https://www.instagram.com/southsidejoz/",
+    "spotifyProfile": "https://open.spotify.com/artist/298PjvlXBVauDcpCjrl257",
+    "youtubeProfile": "https://www.youtube.com/@SouthsideJoz",
+    "imagePosition": "center"
+  },
+  {
+    "name": "G.E.S.",
+    "aliases": [
+      "G.E.S.",
+      "G.E.S",
+      "GES"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/gesmusicc/reels/",
+    "instagramProfile": "https://www.instagram.com/gesmusicc/reels/",
+    "spotifyProfile": "https://open.spotify.com/artist/1r0gAOldNSTyidXhWLDHTF",
+    "youtubeProfile": "https://www.youtube.com/@gesmusiccc",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Yasmine Jinelle",
+    "aliases": [
+      "Yasmine Jinelle"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/yasminejinelle/",
+    "instagramProfile": "https://www.instagram.com/yasminejinelle/",
+    "spotifyProfile": "https://open.spotify.com/artist/3OCiWnwCNh7AzwVfKBai2i",
+    "youtubeProfile": "https://music.youtube.com/channel/UCw3I0TR2c2xpB2TifYZPY2w",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Lyric The Geenyus",
+    "aliases": [
+      "Lyric The Geenyus"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/lyricthegeenyus/",
+    "instagramProfile": "https://www.instagram.com/lyricthegeenyus/",
+    "spotifyProfile": "https://open.spotify.com/artist/6Fo6hgETL8pUsJb4hoQhwv",
+    "youtubeProfile": "https://www.youtube.com/channel/UCVopgdRdnJRERs14HHBwb9w",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Afeni",
+    "aliases": [
+      "Afeni"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/afenifrl/",
+    "instagramProfile": "https://www.instagram.com/afenifrl/",
+    "spotifyProfile": "https://open.spotify.com/artist/3x6BDfLBgSZo72lry8q2CL",
+    "youtubeProfile": "https://www.youtube.com/channel/UC7ijuNEvB9WHgYsDcGtnGhw",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Alexus Snow",
+    "aliases": [
+      "Alexus Snow"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/lifeofalexussnow/",
+    "instagramProfile": "https://www.instagram.com/lifeofalexussnow/",
+    "spotifyProfile": "https://open.spotify.com/artist/2XXLCJp5BnNxYmqxUA8gMV",
+    "youtubeProfile": "https://www.youtube.com/channel/UCXAoqYA_PGKl0qLifTmijeg",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Neisha Glow",
+    "aliases": [
+      "Neisha Glow"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/neishaglow/",
+    "instagramProfile": "https://www.instagram.com/neishaglow/",
+    "spotifyProfile": "https://open.spotify.com/artist/4VwM177wgcyEEDgKuuAhDz",
+    "youtubeProfile": "https://www.youtube.com/@neishaglow/videos",
+    "imagePosition": "center",
+    "imageUrl": "assets/optimized/3dea15f45746986112a826c8-w198.webp"
+  },
+  {
+    "name": "Deonte Hall",
+    "aliases": [
+      "Deonte Hall"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://deontehall.com/",
+    "instagramProfile": "https://www.instagram.com/deontehall100/",
+    "spotifyProfile": "https://open.spotify.com/artist/1o4z5bdBNIeJZGIHeseIhf",
+    "youtubeProfile": "https://www.youtube.com/@deontehallofficial",
+    "imageUrl": "https://deontehall.com/wp-content/uploads/2017/11/IMG_2799-1.jpg",
+    "imagePosition": "center",
+    "preferArtistImage": true
+  },
+  {
+    "name": "Alex Jean",
+    "aliases": [
+      "Alex Jean"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://alienzalive.com/artist/alex-jean/",
+    "instagramProfile": "https://www.instagram.com/meaningalex/",
+    "spotifyProfile": "https://open.spotify.com/artist/5qSM9F3Ei58tG08tXrJjSi",
+    "youtubeProfile": "https://www.youtube.com/@Meaningalex",
+    "imagePosition": "center"
+  },
+  {
+    "name": "gio.",
+    "aliases": [
+      "gio.",
+      "gio"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.wassupgio.com/",
+    "instagramProfile": "https://www.instagram.com/wassupgio/",
+    "spotifyProfile": "https://open.spotify.com/artist/5GevjOibFX6uwZ1mTYfhbn",
+    "youtubeProfile": "https://www.youtube.com/channel/UCQm0f2MItHBDSLJ0GL4OaqA",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Torey D'Shaun",
+    "aliases": [
+      "Torey D'Shaun",
+      "Torey D'Shawn"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "label": "Reflection Music Group",
+    "activeStatus": "active_or_unknown",
+    "website": "https://toreydshaun.com/",
+    "instagramProfile": "https://www.instagram.com/toreydshaun/",
+    "spotifyProfile": "https://open.spotify.com/artist/78DvQP3rczGqfgEiLfFnCD",
+    "youtubeProfile": "https://www.youtube.com/@toreydshaun",
+    "imagePosition": "center"
+  },
+  {
+    "name": "GRITS",
+    "aliases": [
+      "GRITS",
+      "Grits"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/officialgrits/",
+    "instagramProfile": "https://www.instagram.com/officialgrits/",
+    "spotifyProfile": "https://open.spotify.com/artist/6aUgzC0cMh0StjV7LyFEDr",
+    "youtubeProfile": "https://music.youtube.com/@OfficialGRITS7",
+    "imagePosition": "center"
+  },
+  {
+    "name": "NF",
+    "aliases": [
+      "NF",
+      "NF Real Music"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.nfrealmusic.com/",
+    "instagramProfile": "https://www.instagram.com/nfrealmusic/",
+    "spotifyProfile": "https://open.spotify.com/artist/6fOMl44jA4Sp5b9PpYCkzz",
+    "youtubeProfile": "https://www.youtube.com/channel/UCoRR6OLuIZ2-5VxtnQIaN2w",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Nic D",
+    "aliases": [
+      "Nic D",
+      "NicD"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/iamnicd/",
+    "website": "https://www.instagram.com/iamnicd/",
+    "spotifyProfile": "https://open.spotify.com/artist/1XlLhtgJjC4ROQZilBZAvw",
+    "youtubeProfile": "https://www.youtube.com/@iamnicd",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Manafest",
+    "aliases": [
+      "Manafest"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/manafest/",
+    "website": "https://www.manafest.com/go",
+    "spotifyProfile": "https://open.spotify.com/artist/4uOFEWy9mIcvQbr03IbPcL",
+    "youtubeProfile": "https://www.youtube.com/@Manafest",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Pastor Mike Jr.",
+    "aliases": [
+      "Pastor Mike Jr.",
+      "Pastor Mike Jr",
+      "PMJ"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/pastormikejr/",
+    "website": "https://pastormikejr.com/",
+    "spotifyProfile": "https://open.spotify.com/artist/1aNtFg4D7HdF8jOppyKpUS",
+    "youtubeProfile": "https://www.youtube.com/channel/UCFS_59ybiLbrsZQ4tmghriQ",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Nesk Only",
+    "aliases": [
+      "Nesk Only",
+      "NESK ONLY"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/neskonly/",
+    "instagramProfile": "https://www.instagram.com/neskonly/",
+    "spotifyProfile": "https://open.spotify.com/artist/4cR4F4mNehTHO2ut89kN00",
+    "youtubeProfile": "https://www.youtube.com/@neskonly",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Futuristic",
+    "aliases": [
+      "Futuristic"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://futuristic.set.bio/",
+    "instagramProfile": "https://www.instagram.com/onlyfuturistic/",
+    "spotifyProfile": "https://open.spotify.com/artist/5Z5jUyiNvFaqp0EVyLNf0p",
+    "youtubeProfile": "https://www.youtube.com/channel/UCsHn-BXIByTjQaIf5CnZItw",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Sondae",
+    "aliases": [
+      "Sondae"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/thesondae/",
+    "instagramProfile": "https://www.instagram.com/thesondae/",
+    "spotifyProfile": "https://open.spotify.com/artist/2PCl4hx9Qds8sjcnoWUdqp",
+    "youtubeProfile": "https://www.youtube.com/@Sondae",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Dee-1",
+    "aliases": [
+      "Dee-1",
+      "Dee 1"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.dee1music.com/",
+    "instagramProfile": "https://www.instagram.com/dee1music/",
+    "spotifyProfile": "https://open.spotify.com/artist/5qEZVKHzNjB8k5tAT41Iox",
+    "youtubeProfile": "https://www.youtube.com/user/dee1music",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Kieran the Light",
+    "aliases": [
+      "Kieran the Light"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/kieranthelight/",
+    "instagramProfile": "https://www.instagram.com/kieranthelight/",
+    "spotifyProfile": "https://open.spotify.com/artist/7pDD4BBx6S42ZX513NQdp1",
+    "youtubeProfile": "https://www.youtube.com/@KieranTheLightOfficial",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Childlike CiCi",
+    "aliases": [
+      "Childlike CiCi",
+      "Childlike Cici"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.childlikecici.com/",
+    "instagramProfile": "https://www.instagram.com/childlikecici/",
+    "spotifyProfile": "https://open.spotify.com/artist/1cgfDToH1viXSfFzd5WOz1",
+    "youtubeProfile": "https://www.youtube.com/@childlikecici",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Yung Kriss",
+    "aliases": [
+      "Yung Kriss"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/yungkriss/",
+    "website": "https://www.yungkriss.com/",
+    "spotifyProfile": "https://open.spotify.com/artist/3JCk8XWIBcpA10QeM5tkbP",
+    "youtubeProfile": "https://www.youtube.com/@YungKriss",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Eluzai",
+    "aliases": [
+      "Eluzai"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/the_eluzai/",
+    "instagramProfile": "https://www.instagram.com/the_eluzai/",
+    "spotifyProfile": "https://open.spotify.com/artist/2N0c1H0QXGAfZQHASg7ir4",
+    "youtubeProfile": "https://www.youtube.com/@eluzai",
+    "imagePosition": "center"
+  },
+  {
+    "name": "tylerhateslife",
+    "aliases": [
+      "tylerhateslife",
+      "Tyler Hates Life"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "legacy",
+    "website": "https://www.instagram.com/tylerhateslife/",
+    "instagramProfile": "https://www.instagram.com/tylerhateslife/",
+    "spotifyProfile": "https://open.spotify.com/artist/4z85Glof8wylJsLi93ukHm",
+    "youtubeProfile": "https://www.youtube.com/@tylerhateslife1225",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Gavin the HotRod",
+    "aliases": [
+      "Gavin the HotRod",
+      "Gavin The HotRod"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/gavinthehotrod/",
+    "instagramProfile": "https://www.instagram.com/gavinthehotrod/",
+    "spotifyProfile": "https://open.spotify.com/artist/4PRtvcfM2vKDdLFAyGUMP7",
+    "youtubeProfile": "https://www.youtube.com/channel/UC1RVgR716WN7mlx_1nXfZIA",
+    "imagePosition": "center"
+  },
+  {
+    "name": "S.B.G.",
+    "aliases": [
+      "S.B.G.",
+      "SBG"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/official_s.b.g/",
+    "instagramProfile": "https://www.instagram.com/official_s.b.g/",
+    "spotifyProfile": "https://open.spotify.com/artist/6pK1mujh4dbxSysAJGVRzU",
+    "youtubeProfile": "https://www.youtube.com/@official_s.b.g",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Aha Gazelle",
+    "aliases": [
+      "Aha Gazelle"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.itsahaman.com/",
+    "instagramProfile": "https://www.instagram.com/ahagazelle/",
+    "spotifyProfile": "https://open.spotify.com/artist/7suLW93RkuQKWb4WTI5F14",
+    "youtubeProfile": "https://www.youtube.com/channel/UCyfn6btWx4tB2RZy2nh27hw",
+    "imagePosition": "center"
+  },
+  {
+    "name": "LaNell Grant",
+    "aliases": [
+      "LaNell Grant",
+      "Lanell Grant"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.lanellgrant.com/",
+    "instagramProfile": "https://www.instagram.com/lanellgrant/",
+    "spotifyProfile": "https://open.spotify.com/artist/5HEhEhQL9w4ofcJ9kURFNQ",
+    "youtubeProfile": "https://www.youtube.com/channel/UCo2499xJPW6P5_DTIJOSGzQ",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Mogli the Iceburg",
+    "aliases": [
+      "Mogli the Iceburg",
+      "Mogli The Iceburg"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/moglitheiceburg/",
+    "instagramProfile": "https://www.instagram.com/moglitheiceburg/",
+    "spotifyProfile": "https://open.spotify.com/artist/1SZikSUx9fZ2cUFjrmM6Sy",
+    "youtubeProfile": "https://www.youtube.com/@moglitheiceburgYT",
+    "imagePosition": "center"
+  },
+  {
+    "name": "EmanuelDaProphet",
+    "aliases": [
+      "EmanuelDaProphet",
+      "Emanuel Da Prophet"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/emanueldaprophet/",
+    "instagramProfile": "https://www.instagram.com/emanueldaprophet/",
+    "spotifyProfile": "https://open.spotify.com/artist/5P0vV6Fw0YTdumAPZSkkuC",
+    "youtubeProfile": "https://www.youtube.com/@Emanueldaprophet",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Reece Lache'",
+    "aliases": [
+      "Reece Lache'",
+      "Reece Lache"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://reecelache.com/",
+    "instagramProfile": "https://www.instagram.com/reecelache/",
+    "spotifyProfile": "https://open.spotify.com/artist/4JM7nxReyQzeaaafLkhQYe",
+    "youtubeProfile": "https://www.youtube.com/@reecelache",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Datin",
+    "aliases": [
+      "Datin"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.themenacemovement.com/datin/",
+    "instagramProfile": "https://www.instagram.com/datin_tripled/",
+    "spotifyProfile": "https://open.spotify.com/artist/2ZNeZlHauwGYZ9XADyjSL4",
+    "youtubeProfile": "https://www.youtube.com/@MenaceMovement",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Aasha Marie",
+    "aliases": [
+      "Aasha Marie"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "label": "Reflection Music Group",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.aashamarie.com/",
+    "instagramProfile": "https://www.instagram.com/aasha.marie/",
+    "spotifyProfile": "https://open.spotify.com/artist/2vJp4tlU8SMa4L8Rqc7bPv",
+    "youtubeProfile": "https://www.youtube.com/channel/UCVhvyWAwPMLLJO013XmxR0Q",
+    "imagePosition": "center"
+  },
+  {
+    "name": "DJ Mykael V",
+    "aliases": [
+      "DJ Mykael V",
+      "DJ Mykael V Super Set"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.mykaelv.com/",
+    "instagramProfile": "https://www.instagram.com/djmykaelv/",
+    "spotifyProfile": "https://open.spotify.com/artist/2WLOBjz9WOZrJcbS2w93zt",
+    "youtubeProfile": "https://www.youtube.com/channel/UCMyVefu0Bw781NptODKb1hg",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Heesun Lee",
+    "aliases": [
+      "Heesun Lee"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.heesunlee.com/",
+    "instagramProfile": "https://www.instagram.com/msheesunlee/",
+    "spotifyProfile": "https://open.spotify.com/artist/6T86uN02MAjAayagSHKIpA",
+    "youtubeProfile": "https://www.youtube.com/@heesunleemusic",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Ryan Trey",
+    "aliases": [
+      "Ryan Trey"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.ryantrey.com/",
+    "instagramProfile": "https://www.instagram.com/ryantrey/",
+    "spotifyProfile": "https://open.spotify.com/artist/5YHM0i7v5TqqibZhS0YiuX",
+    "youtubeProfile": "https://www.youtube.com/channel/UCRn4v23xA7Z9MVSY1ToU_DA",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Jered Sanders",
+    "aliases": [
+      "Jered Sanders"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/jeredsanders/",
+    "instagramProfile": "https://www.instagram.com/jeredsanders/",
+    "spotifyProfile": "https://open.spotify.com/artist/4kjg5xFLFVfWJFus3mwV5e",
+    "youtubeProfile": "https://www.youtube.com/user/jeredsandersmusic",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Toschii",
+    "aliases": [
+      "Toschii"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/toschiiofficial/",
+    "instagramProfile": "https://www.instagram.com/toschiiofficial/",
+    "spotifyProfile": "https://open.spotify.com/artist/6wSzNgiOUV0rPug9vMP3ze",
+    "youtubeProfile": "https://music.youtube.com/@ToschiiMusic",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Eli Montanna",
+    "aliases": [
+      "Eli Montanna",
+      "ELI MONTANNA"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/elimontanna/",
+    "instagramProfile": "https://www.instagram.com/elimontanna/",
+    "spotifyProfile": "https://open.spotify.com/artist/6ppWmncyPtRcMeuaX43GVJ",
+    "youtubeProfile": "https://www.youtube.com/channel/UCx056Cz75a8ro65Uun3dhFQ",
+    "imagePosition": "center"
+  },
+  {
+    "name": "JWoodz",
+    "aliases": [
+      "JWoodz",
+      "J Woodz",
+      "JWOODZ",
+      "JWoods"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.instagram.com/jwoodzmuzic/",
+    "instagramProfile": "https://www.instagram.com/jwoodzmuzic/",
+    "spotifyProfile": "https://open.spotify.com/artist/1euV2O9oyOrwbwOoakx45f",
+    "youtubeProfile": "https://www.youtube.com/channel/UC05qM50ZPmHvEjr8Sae3t7A",
+    "imagePosition": "center"
+  },
+  {
+    "name": "Kaden Jordan",
+    "aliases": [
+      "Kaden Jordan"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://kadenjordan.com/",
+    "instagramProfile": "https://www.instagram.com/kadenjordann/",
+    "spotifyProfile": "https://open.spotify.com/artist/0mbpzxELAS9luV27PUDEZH",
+    "youtubeProfile": "https://www.youtube.com/channel/UCHhuDxHS1hkCnWh2izXYkfg",
+    "imagePosition": "center",
+    "imageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b4/50/48/b4504865-b294-ba19-3854-a83ff79084c4/35e5e9f1-1e53-4326-ae3b-47ec4206ce77_file_cropped.png/1200x630cw.png"
+  },
+  {
+    "name": "Redimi2",
+    "aliases": [
+      "Redimi2"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/redimi2/"
+  },
+  {
+    "name": "Funky",
+    "aliases": [
+      "Funky"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown",
+    "instagramProfile": "https://www.instagram.com/funkypr/"
+  },
+  {
+    "name": "Pregador Luo",
+    "aliases": [
+      "Pregador Luo"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Beacon Light",
+    "aliases": [
+      "Beacon Light"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Red Tips",
+    "aliases": [
+      "Red Tips"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dell Mac",
+    "aliases": [
+      "Dell Mac"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tommy Royale",
+    "aliases": [
+      "Tommy Royale"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Ty Brasel",
+    "aliases": [
+      "Ty Brasel"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J. Monty",
+    "aliases": [
+      "J. Monty",
+      "J Monty"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "A.I. The Anomaly",
+    "aliases": [
+      "A.I. The Anomaly",
+      "AI The Anomaly"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Selah the Corner",
+    "aliases": [
+      "Selah the Corner"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Bumps INF",
+    "aliases": [
+      "Bumps INF",
+      "Bumps Inf"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Bryann T",
+    "aliases": [
+      "Bryann T",
+      "Bryann Trejo"
+    ],
+    "enabled": true,
+    "category": "core",
+    "collective": "Kingdom Muzic",
+    "officialProfile": "https://www.youtube.com/channel/UCOL7Z7dqD6If3UlmA8Lgggw",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Young Bro",
+    "aliases": [
+      "Young Bro",
+      "Young Bro 356"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/@youngbro356",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "KJ-52",
+    "aliases": [
+      "KJ-52",
+      "KJ52",
+      "KJ 52"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "officialProfile": "https://www.kj52.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.kj52.com/"
+  },
+  {
+    "name": "Eshon Burgundy",
+    "aliases": [
+      "Eshon Burgundy"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Sho Baraka",
+    "aliases": [
+      "Sho Baraka"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Propaganda",
+    "aliases": [
+      "Propaganda"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Shai Linne",
+    "aliases": [
+      "Shai Linne"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Thi'sl",
+    "aliases": [
+      "Thi'sl",
+      "Thizl"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Swoope",
+    "aliases": [
+      "Swoope"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Mission",
+    "aliases": [
+      "Mission"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "DaeShawn Forrest",
+    "aliases": [
+      "DaeShawn Forrest",
+      "Daeshawn Forrest"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "BigBreeze",
+    "aliases": [
+      "BigBreeze",
+      "Big Breeze"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "C4 Crotona",
+    "aliases": [
+      "C4 Crotona"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Alexxander",
+    "aliases": [
+      "Alexxander"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "2819 Worship",
+    "aliases": [
+      "2819 Worship"
+    ],
+    "enabled": true,
+    "category": "reach",
+    "label": "Reach Records",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "George.Rose",
+    "aliases": [
+      "George.Rose",
+      "George Rose"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jude Barclay",
+    "aliases": [
+      "Jude Barclay"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Kaleb Mitchell",
+    "aliases": [
+      "Kaleb Mitchell"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/5344deb7e4b060ad6f2805f2/1627144940534-QQF1VBDP6X021EMENG56/kaleb-mitchell-def-jam-get-it.jpg"
+  },
+  {
+    "name": "Xay Hill",
+    "aliases": [
+      "Xay Hill"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J. Crum",
+    "aliases": [
+      "J. Crum",
+      "J Crum"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Nathan Davis Jr.",
+    "aliases": [
+      "Nathan Davis Jr.",
+      "Nathan Davis Jr"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Angie Rose",
+    "aliases": [
+      "Angie Rose"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "R-Swift",
+    "aliases": [
+      "R-Swift",
+      "R Swift"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "No Malice",
+    "aliases": [
+      "No Malice"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "DC3",
+    "aliases": [
+      "DC3"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Not Klyde",
+    "aliases": [
+      "Not Klyde"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "404 Chew",
+    "aliases": [
+      "404 Chew"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Alphein",
+    "aliases": [
+      "Alphein"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Bill B.",
+    "aliases": [
+      "Bill B."
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "G3rm 43",
+    "aliases": [
+      "G3rm 43",
+      "Germ 43"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "GiNŌSKŌ",
+    "aliases": [
+      "GiNŌSKŌ",
+      "Ginosko"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Glenn Ray",
+    "aliases": [
+      "Glenn Ray"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "I.A.N.",
+    "aliases": [
+      "I.A.N.",
+      "IAN"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "IDEGO",
+    "aliases": [
+      "IDEGO"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Isreal Perez",
+    "aliases": [
+      "Isreal Perez"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jacob Beard",
+    "aliases": [
+      "Jacob Beard"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "MAYIA",
+    "aliases": [
+      "MAYIA",
+      "Mayia"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Megan Tossi",
+    "aliases": [
+      "Megan Tossi"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "mica",
+    "aliases": [
+      "mica",
+      "Mica"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Myles Maestro",
+    "aliases": [
+      "Myles Maestro"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Nat Lauren",
+    "aliases": [
+      "Nat Lauren"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Peair",
+    "aliases": [
+      "Peair"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Razzie",
+    "aliases": [
+      "Razzie"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Saint Jones",
+    "aliases": [
+      "Saint Jones"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tay Stunna",
+    "aliases": [
+      "Tay Stunna"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "YakiTheKid",
+    "aliases": [
+      "YakiTheKid",
+      "Yaki The Kid"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Vic Lucas",
+    "aliases": [
+      "Vic Lucas"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Kevi Morse",
+    "aliases": [
+      "Kevi Morse"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Chris Caro",
+    "aliases": [
+      "Chris Caro"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "EJ Swavv",
+    "aliases": [
+      "EJ Swavv"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J.Solo",
+    "aliases": [
+      "J.Solo",
+      "J Solo"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tds Cam",
+    "aliases": [
+      "Tds Cam",
+      "TDS Cam"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Kham",
+    "aliases": [
+      "Kham"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "WHEREISDAVINCI",
+    "aliases": [
+      "WHEREISDAVINCI",
+      "Where Is Da Vinci"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tukool Tiff",
+    "aliases": [
+      "Tukool Tiff"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tylynn",
+    "aliases": [
+      "Tylynn"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "De'Aris",
+    "aliases": [
+      "De'Aris",
+      "DeAris"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Will Kellum",
+    "aliases": [
+      "Will Kellum"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jonah Daniel",
+    "aliases": [
+      "Jonah Daniel"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "outr.cty",
+    "aliases": [
+      "outr.cty",
+      "outr cty"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "B. Cooper",
+    "aliases": [
+      "B. Cooper",
+      "B Cooper"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "YP aka Young Paul",
+    "aliases": [
+      "YP aka Young Paul",
+      "Young Paul",
+      "YP"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Untidld",
+    "aliases": [
+      "Untidld"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "DEON",
+    "aliases": [
+      "DEON"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jamil",
+    "aliases": [
+      "Jamil"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Kvng Flvcko",
+    "aliases": [
+      "Kvng Flvcko"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "MotionPlus",
+    "aliases": [
+      "MotionPlus"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Adriel Cruz",
+    "aliases": [
+      "Adriel Cruz"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Drea LP",
+    "aliases": [
+      "Drea LP"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Solachi Voz",
+    "aliases": [
+      "Solachi Voz"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jeannie Ortega",
+    "aliases": [
+      "Jeannie Ortega"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "A Mose",
+    "aliases": [
+      "A Mose",
+      "A. Mose"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Arielle Nichole",
+    "aliases": [
+      "Arielle Nichole"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jekasole",
+    "aliases": [
+      "Jekasole"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Mahogany Jones",
+    "aliases": [
+      "Mahogany Jones"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Latoria",
+    "aliases": [
+      "Latoria"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Shy Speaks",
+    "aliases": [
+      "Shy Speaks"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Serious Voice",
+    "aliases": [
+      "Serious Voice"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tarcea Renee",
+    "aliases": [
+      "Tarcea Renee"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "4eva",
+    "aliases": [
+      "4eva"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Ada Betsabé",
+    "aliases": [
+      "Ada Betsabé"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "BreeKay & Kasairi",
+    "aliases": [
+      "BreeKay & Kasairi",
+      "BreeKay and Kasairi"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Bri Smilez",
+    "aliases": [
+      "Bri Smilez"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Butta P",
+    "aliases": [
+      "Butta P"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Carita Cole",
+    "aliases": [
+      "Carita Cole"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Cass",
+    "aliases": [
+      "Cass"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dice Gamble",
+    "aliases": [
+      "Dice Gamble"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Keiana",
+    "aliases": [
+      "Keiana"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Licy Be",
+    "aliases": [
+      "Licy Be"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Pristavia",
+    "aliases": [
+      "Pristavia"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Kay Sade",
+    "aliases": [
+      "Kay Sade"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jackie Legere",
+    "aliases": [
+      "Jackie Legere"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Foure",
+    "aliases": [
+      "Foure"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Chozenn",
+    "aliases": [
+      "Chozenn"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "V. Rose",
+    "aliases": [
+      "V. Rose",
+      "V Rose"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Mike REAL",
+    "aliases": [
+      "Mike REAL",
+      "Mike Real"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Spec",
+    "aliases": [
+      "Spec"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Christon Gray",
+    "aliases": [
+      "Christon Gray"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dre Murray",
+    "aliases": [
+      "Dre Murray"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "S.O.",
+    "aliases": [
+      "S.O.",
+      "SO"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Reconcile",
+    "aliases": [
+      "Reconcile"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Corey Paul",
+    "aliases": [
+      "Corey Paul"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Alex Faith",
+    "aliases": [
+      "Alex Faith"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tony Tillman",
+    "aliases": [
+      "Tony Tillman"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dillon Chase",
+    "aliases": [
+      "Dillon Chase"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Json",
+    "aliases": [
+      "Json"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J.R.",
+    "aliases": [
+      "J.R.",
+      "JR"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Stephen the Levite",
+    "aliases": [
+      "Stephen the Levite"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Timothy Brindle",
+    "aliases": [
+      "Timothy Brindle"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Hazakim",
+    "aliases": [
+      "Hazakim"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Evangel",
+    "aliases": [
+      "Evangel"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "God's Servant",
+    "aliases": [
+      "God's Servant",
+      "Gods Servant"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Beautiful Eulogy",
+    "aliases": [
+      "Beautiful Eulogy"
+    ],
+    "enabled": true,
+    "category": "group",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "116",
+    "aliases": [
+      "116",
+      "116 Clique"
+    ],
+    "enabled": true,
+    "category": "group",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "350",
+    "aliases": [
+      "350"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Battz",
+    "aliases": [
+      "Battz"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Byron Juane",
+    "aliases": [
+      "Byron Juane"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Coby James",
+    "aliases": [
+      "Coby James"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "De La Cruz",
+    "aliases": [
+      "De La Cruz"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Hollyn",
+    "aliases": [
+      "Hollyn"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "JGivens",
+    "aliases": [
+      "JGivens",
+      "J Givens"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Kings Kaleidoscope",
+    "aliases": [
+      "Kings Kaleidoscope"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Odd Thomas",
+    "aliases": [
+      "Odd Thomas"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Q-Flo",
+    "aliases": [
+      "Q-Flo",
+      "Q Flo"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Swaizy",
+    "aliases": [
+      "Swaizy"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "The Weathrman",
+    "aliases": [
+      "The Weathrman",
+      "Weathrman"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Trendsetter Sense",
+    "aliases": [
+      "Trendsetter Sense"
+    ],
+    "enabled": true,
+    "category": "rmg",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J.List",
+    "aliases": [
+      "J.List",
+      "J List",
+      "JLIST"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/@RevivalmusicJlist/videos",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "D-Maub",
+    "aliases": [
+      "D-Maub",
+      "D Maub",
+      "Dmaub"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "K-Drama",
+    "aliases": [
+      "K-Drama",
+      "K Drama",
+      "K-Drama the Rapper"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "officialProfile": "https://k-dramatherapper.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://k-dramatherapper.com/"
+  },
+  {
+    "name": "Monster Tarver",
+    "aliases": [
+      "Monster Tarver",
+      "Tyrone Evans"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Taelor Gray",
+    "aliases": [
+      "Taelor Gray"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.taelorgray.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.taelorgray.com/"
+  },
+  {
+    "name": "ZEE",
+    "aliases": [
+      "ZEE",
+      "408Zee",
+      "408 ZEE"
+    ],
+    "enabled": true,
+    "category": "core",
+    "collective": "Kingdom Muzic",
+    "officialProfile": "https://www.youtube.com/@408zee",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "IMRSQD",
+    "aliases": [
+      "IMRSQD"
+    ],
+    "enabled": true,
+    "category": "core",
+    "label": "Alienz Alive",
+    "officialProfile": "https://alienzalive.com/artist/imrsqd/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://alienzalive.com/artist/imrsqd/"
+  },
+  {
+    "name": "TJ Carroll",
+    "aliases": [
+      "TJ Carroll",
+      "T.J. Carroll"
+    ],
+    "enabled": true,
+    "category": "core",
+    "label": "Alienz Alive",
+    "officialProfile": "https://www.tjcarrollmusic.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.tjcarrollmusic.com/"
+  },
+  {
+    "name": "Coop",
+    "aliases": [
+      "Coop",
+      "COOP"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "CJ Emulous",
+    "aliases": [
+      "CJ Emulous",
+      "C.J. Emulous"
+    ],
+    "enabled": true,
+    "category": "core",
+    "collective": "GLO",
+    "officialProfile": "https://www.cjemulous.com/",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.cjemulous.com/"
+  },
+  {
+    "name": "Lul DreDay",
+    "aliases": [
+      "Lul DreDay",
+      "Lul Dreday"
+    ],
+    "enabled": true,
+    "category": "core",
+    "collective": "GLO",
+    "officialProfile": "https://www.youtube.com/@LulDreDay",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Pishko",
+    "aliases": [
+      "Pishko",
+      "PISHKO"
+    ],
+    "enabled": true,
+    "category": "core",
+    "officialProfile": "https://www.youtube.com/@PISHKO",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Paul Russell",
+    "aliases": [
+      "Paul Russell"
+    ],
+    "enabled": true,
+    "category": "crossover",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "MC Jin",
+    "aliases": [
+      "MC Jin",
+      "Jin"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Gemstones",
+    "aliases": [
+      "Gemstones"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Mouthpi3ce",
+    "aliases": [
+      "Mouthpi3ce"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "John Givez",
+    "aliases": [
+      "John Givez"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Beleaf",
+    "aliases": [
+      "Beleaf"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J. Han",
+    "aliases": [
+      "J. Han",
+      "J Han"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Sam Ock",
+    "aliases": [
+      "Sam Ock"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dream Junkies",
+    "aliases": [
+      "Dream Junkies"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jet Trouble",
+    "aliases": [
+      "Jet Trouble"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Skrip",
+    "aliases": [
+      "Skrip"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Deraj",
+    "aliases": [
+      "Deraj"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Surf Gvng",
+    "aliases": [
+      "Surf Gvng"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Ki'Shon Furlow",
+    "aliases": [
+      "Ki'Shon Furlow",
+      "Kishon Furlow"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dru Bex",
+    "aliases": [
+      "Dru Bex"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Brinson",
+    "aliases": [
+      "Brinson"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Mr. Del",
+    "aliases": [
+      "Mr. Del"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Pettidee",
+    "aliases": [
+      "Pettidee"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Fresh IE",
+    "aliases": [
+      "Fresh IE",
+      "Fresh I.E."
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Applejaxx",
+    "aliases": [
+      "Applejaxx"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Fedel",
+    "aliases": [
+      "Fedel"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Antwoine Hill",
+    "aliases": [
+      "Antwoine Hill"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Brandon Trejo",
+    "aliases": [
+      "Brandon Trejo"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Monica Hill Trejo",
+    "aliases": [
+      "Monica Hill Trejo"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Moe Grant",
+    "aliases": [
+      "Moe Grant"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Isaiah Robin",
+    "aliases": [
+      "Isaiah Robin"
+    ],
+    "enabled": true,
+    "category": "legacy",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Guvna B",
+    "aliases": [
+      "Guvna B"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Faith Child",
+    "aliases": [
+      "Faith Child"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Still Shadey",
+    "aliases": [
+      "Still Shadey"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Feed'Em",
+    "aliases": [
+      "Feed'Em",
+      "Feed Em"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Reblah",
+    "aliases": [
+      "Reblah"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Triple O",
+    "aliases": [
+      "Triple O"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "A Star",
+    "aliases": [
+      "A Star"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "J Vessel",
+    "aliases": [
+      "J Vessel",
+      "J-Vessel"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Dwayne Tryumf",
+    "aliases": [
+      "Dwayne Tryumf"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Manny Montes",
+    "aliases": [
+      "Manny Montes"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Alex Zurdo",
+    "aliases": [
+      "Alex Zurdo"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Musiko",
+    "aliases": [
+      "Musiko"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Indiomar",
+    "aliases": [
+      "Indiomar"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Gabriel EMC",
+    "aliases": [
+      "Gabriel EMC"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Jay Kalyl",
+    "aliases": [
+      "Jay Kalyl"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Niko Eme",
+    "aliases": [
+      "Niko Eme"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Lizzy Parra",
+    "aliases": [
+      "Lizzy Parra"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Rubinsky RBK",
+    "aliases": [
+      "Rubinsky RBK"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Madiel Lara",
+    "aliases": [
+      "Madiel Lara"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Ariel Kelly",
+    "aliases": [
+      "Ariel Kelly"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Oba Reengy",
+    "aliases": [
+      "Oba Reengy"
+    ],
+    "enabled": true,
+    "category": "international",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Key'ijah",
+    "aliases": [
+      "Key'ijah"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Tha inspiration",
+    "aliases": [
+      "Tha inspiration"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "NISSI SHALOM",
+    "aliases": [
+      "NISSI SHALOM"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "SteveUnordinary",
+    "aliases": [
+      "SteveUnordinary"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "JJ Chosen",
+    "aliases": [
+      "JJ Chosen"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Generation Recovery",
+    "aliases": [
+      "Generation Recovery"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "IFearGod",
+    "aliases": [
+      "IFearGod"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "Hy Chu",
+    "aliases": [
+      "Hy Chu"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown"
+  },
+  {
+    "name": "JIMMY ROCK",
+    "aliases": [
+      "JIMMY ROCK",
+      "Jimmy Rock"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "website": "https://www.jimmyrock.com/",
+    "instagramProfile": "https://www.instagram.com/jimmyrock/",
+    "spotifyProfile": "https://open.spotify.com/artist/6YN7TGi4ZlsAy38fZVPvkN",
+    "youtubeProfile": "https://www.youtube.com/@JimmyRock",
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/56b7abd2f699bb04c395a379/03aa3873-98e9-4ccb-8eae-4d4f3826a4a8/Jimmy-in-the-field-refl.png",
+    "imagePosition": "50% 22%",
+    "preferArtistImage": true
+  }
+]

@@ -1,0 +1,1307 @@
+{
+  "base": "/kingdom-circuit-test/",
+  "encoder": "pillow",
+  "failedSourceCount": 163,
+  "failures": [
+    {
+      "code": "offline",
+      "sourceId": "36f654623ce565f0a960"
+    },
+    {
+      "code": "offline",
+      "sourceId": "689d345ce338b6542272"
+    },
+    {
+      "code": "offline",
+      "sourceId": "78b8704999073994ec21"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b6491099f29c5006b16a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "29066634ff0e015b6068"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4d4ccf7acaade13fcf67"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e9a5f6931e0413c3392e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "66d378bcb6a49bd22848"
+    },
+    {
+      "code": "offline",
+      "sourceId": "9c9cb1f358e6bfbc1545"
+    },
+    {
+      "code": "offline",
+      "sourceId": "294dcf7ca5f3699d325f"
+    },
+    {
+      "code": "offline",
+      "sourceId": "dbbe41d55eb1377c1c67"
+    },
+    {
+      "code": "offline",
+      "sourceId": "5944d7db6fd061ec908d"
+    },
+    {
+      "code": "offline",
+      "sourceId": "3ce2955952a6e419e4e4"
+    },
+    {
+      "code": "offline",
+      "sourceId": "3d5efa2a0dc86c2bf601"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c62b071aedb0c1cdaba2"
+    },
+    {
+      "code": "offline",
+      "sourceId": "3825b770f59613746ec6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4666d430572493dc1dd0"
+    },
+    {
+      "code": "offline",
+      "sourceId": "de70a8b80972cf783336"
+    },
+    {
+      "code": "offline",
+      "sourceId": "43605b2e4d476e2badb7"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4006a83a0c1594fddc96"
+    },
+    {
+      "code": "offline",
+      "sourceId": "2ba15650952de44c910e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "f650929fb7bb193da6c8"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ec98fbc2f190b4f2a3a4"
+    },
+    {
+      "code": "offline",
+      "sourceId": "25b0363db4601d42c80f"
+    },
+    {
+      "code": "offline",
+      "sourceId": "0a04dd5d309596e5233e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "baa5efc4cd6581a9acea"
+    },
+    {
+      "code": "offline",
+      "sourceId": "7b3a2a7370e2a84bfc0d"
+    },
+    {
+      "code": "offline",
+      "sourceId": "f32d4b27b34d2de2f402"
+    },
+    {
+      "code": "offline",
+      "sourceId": "8249ebe6a95c4e4c8e0f"
+    },
+    {
+      "code": "offline",
+      "sourceId": "3acd480ed6432309e984"
+    },
+    {
+      "code": "offline",
+      "sourceId": "857b2ea8d972dd56fd8c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "258ebe590e9ec4d91ee7"
+    },
+    {
+      "code": "offline",
+      "sourceId": "79f727644f8429feb5fa"
+    },
+    {
+      "code": "offline",
+      "sourceId": "9a6aec5b9de37295c6a4"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ece76328c2b8f7076533"
+    },
+    {
+      "code": "offline",
+      "sourceId": "1ec6622b3daa5c8afeb6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4781e765a72bedde113b"
+    },
+    {
+      "code": "offline",
+      "sourceId": "fa7704f6fffb69b50f6c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ec8d5a949e4165f23484"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b1704861c19d39bdaeb9"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6f9d9808fd20b0dd7e42"
+    },
+    {
+      "code": "offline",
+      "sourceId": "328e1ba7bf877a9ff5ac"
+    },
+    {
+      "code": "offline",
+      "sourceId": "580bbbb324b1a8815858"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e50378675e182678ba92"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4a100b2664d366822d7d"
+    },
+    {
+      "code": "offline",
+      "sourceId": "2f7e83c191c160227ab7"
+    },
+    {
+      "code": "offline",
+      "sourceId": "2bf29f7fc647146fbdc6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "be5f1761184ada076a96"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6d5abe504f50320ff4c1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c70be75b743d1a81c887"
+    },
+    {
+      "code": "offline",
+      "sourceId": "9ed3a2f8371a17133765"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ae60a299a97b49c84fe9"
+    },
+    {
+      "code": "offline",
+      "sourceId": "49a86179f1ba3db0dcaf"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b9a91626467cdd4f21a6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "9c8c94b2044976e72f24"
+    },
+    {
+      "code": "offline",
+      "sourceId": "785864f692594d88176a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "cc0c3d00b3e71a4c0e9f"
+    },
+    {
+      "code": "offline",
+      "sourceId": "2ce5dcc55da3562752d5"
+    },
+    {
+      "code": "offline",
+      "sourceId": "96703cf2b6af77fef308"
+    },
+    {
+      "code": "offline",
+      "sourceId": "36bcfb47dfc07e480875"
+    },
+    {
+      "code": "offline",
+      "sourceId": "92fd17f7fc61c4e1fbba"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ceaa85fbbeca861c6740"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e5144e7fe2e04c1cf00e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "eed67f0b1868aca62b2b"
+    },
+    {
+      "code": "offline",
+      "sourceId": "58dfdc20e44c4043324c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "680e598a94350ae38a2d"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b2fdc7ef96e6b42136b0"
+    },
+    {
+      "code": "offline",
+      "sourceId": "d16cbc09ed9cb1304a9a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "676c97db6d8714fbfe3a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "3672f1f186d83ee6b2de"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ce07bc760190502aa91c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "0443ce2613b0a9af1590"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ec52a5bfc3319a1873d6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "20075e9ac9616833a6e0"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4bb98779ab2f25849ccd"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6e5fbb6c66143b14f020"
+    },
+    {
+      "code": "offline",
+      "sourceId": "f44016ab136a1bee73c2"
+    },
+    {
+      "code": "offline",
+      "sourceId": "bafd27fbcb3e88fc747b"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b5ffaed90a2867a2e65f"
+    },
+    {
+      "code": "offline",
+      "sourceId": "aa5551b84a86755117ae"
+    },
+    {
+      "code": "offline",
+      "sourceId": "550d2accd1f15903b539"
+    },
+    {
+      "code": "offline",
+      "sourceId": "752a7099c7c210230271"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4820e5cf15748fa572fc"
+    },
+    {
+      "code": "offline",
+      "sourceId": "0aad2f9e7417d35fc9e1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "a176dfb5501eef8dd36e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c52a9e0ce77527bf7af1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "1812606e04d198643c0a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "33733285cf70e42f7fa4"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e008c9558df207954e27"
+    },
+    {
+      "code": "offline",
+      "sourceId": "d2a3bc19b0039178eda6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "2b511941be96845bfcc3"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4156651dfadea83b83d8"
+    },
+    {
+      "code": "offline",
+      "sourceId": "457563168d0ebaa1ad14"
+    },
+    {
+      "code": "offline",
+      "sourceId": "7ead828ee5a82496da13"
+    },
+    {
+      "code": "offline",
+      "sourceId": "68a088faa9f5c86a16b6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "79c419c3c1d34edaf6c6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "a5b6aae590ff5d3aab2a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "59d1033d9b2234c2b20c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "cb2277df437ba735519d"
+    },
+    {
+      "code": "offline",
+      "sourceId": "038a55aef12802974dc1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "8b59a11007138a3fa89b"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b653608dcdc12a6fb8e1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "79f65a53dadb243efe01"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4abf209d2145409d3850"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6c7b71687506dcfb20a6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "39c11025241879da3ef6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4620d5695e09d28ef4b0"
+    },
+    {
+      "code": "offline",
+      "sourceId": "0ee5057b0bd177c82406"
+    },
+    {
+      "code": "offline",
+      "sourceId": "516f608af972756f165a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "33a17c902fa1c45a4825"
+    },
+    {
+      "code": "offline",
+      "sourceId": "00c2519dd2591d1fb7b0"
+    },
+    {
+      "code": "offline",
+      "sourceId": "84bdcd2fefbd39d4aa2c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4f29242aaa173dfebc23"
+    },
+    {
+      "code": "offline",
+      "sourceId": "96db969e911d14db8e5a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "471fbb786bf6b23aba20"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ba38748359e03989a703"
+    },
+    {
+      "code": "offline",
+      "sourceId": "824f332352ebb7b4cb1e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6bfe1b44c85bbe48ea0c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "07c9500c827e5f6d9b62"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e4a2f01d631ecbc61c11"
+    },
+    {
+      "code": "offline",
+      "sourceId": "ab347b4df4433e0167d4"
+    },
+    {
+      "code": "offline",
+      "sourceId": "07bc75e79e068845cec6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c9d9245472503a66d7d3"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4b22ce750815862f0b53"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e7f5a01c85bd5bbf05ba"
+    },
+    {
+      "code": "offline",
+      "sourceId": "0fb35d25533d4ca4f941"
+    },
+    {
+      "code": "offline",
+      "sourceId": "8df25de1421b35a75de9"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6a6ff7638bea880d27fa"
+    },
+    {
+      "code": "offline",
+      "sourceId": "1384e9a2095f1682e455"
+    },
+    {
+      "code": "offline",
+      "sourceId": "609a23f1bfbc275d224b"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b8904ebd99b41d5a81ed"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6e3b917d9ab19dda6000"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c31b896cf957e5034472"
+    },
+    {
+      "code": "offline",
+      "sourceId": "6b79bd4f049d334e9564"
+    },
+    {
+      "code": "offline",
+      "sourceId": "73aa155e766f08f2ca31"
+    },
+    {
+      "code": "offline",
+      "sourceId": "897ebe13607e10e60ed5"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b28b49ed41c2378e3193"
+    },
+    {
+      "code": "offline",
+      "sourceId": "198e0ea9e18add134510"
+    },
+    {
+      "code": "offline",
+      "sourceId": "1ce7203eb77c71a51896"
+    },
+    {
+      "code": "offline",
+      "sourceId": "570506bc12223e4aa095"
+    },
+    {
+      "code": "offline",
+      "sourceId": "7b117073f7785dde6f14"
+    },
+    {
+      "code": "offline",
+      "sourceId": "62089f411353a58ec0bf"
+    },
+    {
+      "code": "offline",
+      "sourceId": "1dc0eba953e8f9d515bb"
+    },
+    {
+      "code": "offline",
+      "sourceId": "5e1ad7036e37e42b4f57"
+    },
+    {
+      "code": "offline",
+      "sourceId": "fc66e8b67f32a41ea54a"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4d90018140760b155f32"
+    },
+    {
+      "code": "offline",
+      "sourceId": "660b748b8ee6a1c8208e"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c695be8f99c557cdc40c"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e7e44f478e5e0e2de6b1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "c54f60e273bad6df8482"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4953d94cd9f16d2eefcc"
+    },
+    {
+      "code": "offline",
+      "sourceId": "f6595926055b81274436"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e0a9606c4fbac8333e60"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4ec912377537a7b06be0"
+    },
+    {
+      "code": "offline",
+      "sourceId": "dd5b75828205d2e9c320"
+    },
+    {
+      "code": "offline",
+      "sourceId": "b48527198b63a9394f59"
+    },
+    {
+      "code": "offline",
+      "sourceId": "e63780582efa1faa84b1"
+    },
+    {
+      "code": "offline",
+      "sourceId": "db28bc2ec2200cd56fdf"
+    },
+    {
+      "code": "offline",
+      "sourceId": "07031d916e50ef5fa434"
+    },
+    {
+      "code": "offline",
+      "sourceId": "5ac2596149d4f115b5ee"
+    },
+    {
+      "code": "offline",
+      "sourceId": "9898205ec26ed2d0e2ae"
+    },
+    {
+      "code": "offline",
+      "sourceId": "302b74d9e19d2be005d6"
+    },
+    {
+      "code": "offline",
+      "sourceId": "4b3a08f43225a61deae8"
+    }
+  ],
+  "images": [
+    {
+      "id": "0a4835325f7ba9ef291cae49",
+      "sourceHeight": 1600,
+      "sourceWidth": 1236,
+      "variants": [
+        {
+          "file": "assets/optimized/0a4835325f7ba9ef291cae49-w320.webp",
+          "height": 414,
+          "url": "/kingdom-circuit-test/assets/optimized/0a4835325f7ba9ef291cae49-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/0a4835325f7ba9ef291cae49-w640.webp",
+          "height": 828,
+          "url": "/kingdom-circuit-test/assets/optimized/0a4835325f7ba9ef291cae49-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/0a4835325f7ba9ef291cae49-w960.webp",
+          "height": 1243,
+          "url": "/kingdom-circuit-test/assets/optimized/0a4835325f7ba9ef291cae49-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "121c9afe8742058087b882a1",
+      "sourceHeight": 876,
+      "sourceWidth": 1797,
+      "variants": [
+        {
+          "file": "assets/optimized/121c9afe8742058087b882a1-w320.webp",
+          "height": 156,
+          "url": "/kingdom-circuit-test/assets/optimized/121c9afe8742058087b882a1-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/121c9afe8742058087b882a1-w640.webp",
+          "height": 312,
+          "url": "/kingdom-circuit-test/assets/optimized/121c9afe8742058087b882a1-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/121c9afe8742058087b882a1-w960.webp",
+          "height": 468,
+          "url": "/kingdom-circuit-test/assets/optimized/121c9afe8742058087b882a1-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "2492a4ba280c633315fa58da",
+      "sourceHeight": 529,
+      "sourceWidth": 940,
+      "variants": [
+        {
+          "file": "assets/optimized/2492a4ba280c633315fa58da-w320.webp",
+          "height": 180,
+          "url": "/kingdom-circuit-test/assets/optimized/2492a4ba280c633315fa58da-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/2492a4ba280c633315fa58da-w640.webp",
+          "height": 360,
+          "url": "/kingdom-circuit-test/assets/optimized/2492a4ba280c633315fa58da-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/2492a4ba280c633315fa58da-w940.webp",
+          "height": 529,
+          "url": "/kingdom-circuit-test/assets/optimized/2492a4ba280c633315fa58da-w940.webp",
+          "width": 940
+        }
+      ]
+    },
+    {
+      "id": "3dea15f45746986112a826c8",
+      "sourceHeight": 255,
+      "sourceWidth": 198,
+      "variants": [
+        {
+          "file": "assets/optimized/3dea15f45746986112a826c8-w99.webp",
+          "height": 128,
+          "url": "/kingdom-circuit-test/assets/optimized/3dea15f45746986112a826c8-w99.webp",
+          "width": 99
+        },
+        {
+          "file": "assets/optimized/3dea15f45746986112a826c8-w198.webp",
+          "height": 255,
+          "url": "/kingdom-circuit-test/assets/optimized/3dea15f45746986112a826c8-w198.webp",
+          "width": 198
+        }
+      ]
+    },
+    {
+      "id": "47a1372883d06b412a094b5d",
+      "sourceHeight": 500,
+      "sourceWidth": 500,
+      "variants": [
+        {
+          "file": "assets/optimized/47a1372883d06b412a094b5d-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/47a1372883d06b412a094b5d-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/47a1372883d06b412a094b5d-w500.webp",
+          "height": 500,
+          "url": "/kingdom-circuit-test/assets/optimized/47a1372883d06b412a094b5d-w500.webp",
+          "width": 500
+        }
+      ]
+    },
+    {
+      "id": "555c3a6bc1c7ad4db8506a13",
+      "sourceHeight": 1600,
+      "sourceWidth": 1200,
+      "variants": [
+        {
+          "file": "assets/optimized/555c3a6bc1c7ad4db8506a13-w320.webp",
+          "height": 427,
+          "url": "/kingdom-circuit-test/assets/optimized/555c3a6bc1c7ad4db8506a13-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/555c3a6bc1c7ad4db8506a13-w640.webp",
+          "height": 853,
+          "url": "/kingdom-circuit-test/assets/optimized/555c3a6bc1c7ad4db8506a13-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/555c3a6bc1c7ad4db8506a13-w960.webp",
+          "height": 1280,
+          "url": "/kingdom-circuit-test/assets/optimized/555c3a6bc1c7ad4db8506a13-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "5bf80dbf05e105e50d545a87",
+      "sourceHeight": 1100,
+      "sourceWidth": 1100,
+      "variants": [
+        {
+          "file": "assets/optimized/5bf80dbf05e105e50d545a87-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/5bf80dbf05e105e50d545a87-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/5bf80dbf05e105e50d545a87-w640.webp",
+          "height": 640,
+          "url": "/kingdom-circuit-test/assets/optimized/5bf80dbf05e105e50d545a87-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/5bf80dbf05e105e50d545a87-w960.webp",
+          "height": 960,
+          "url": "/kingdom-circuit-test/assets/optimized/5bf80dbf05e105e50d545a87-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "66374c825f84aad5f3f4f899",
+      "sourceHeight": 373,
+      "sourceWidth": 1172,
+      "variants": [
+        {
+          "file": "assets/optimized/66374c825f84aad5f3f4f899-w320.webp",
+          "height": 102,
+          "url": "/kingdom-circuit-test/assets/optimized/66374c825f84aad5f3f4f899-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/66374c825f84aad5f3f4f899-w640.webp",
+          "height": 204,
+          "url": "/kingdom-circuit-test/assets/optimized/66374c825f84aad5f3f4f899-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/66374c825f84aad5f3f4f899-w960.webp",
+          "height": 306,
+          "url": "/kingdom-circuit-test/assets/optimized/66374c825f84aad5f3f4f899-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "66580f7bc843f90c93ac7ce8",
+      "sourceHeight": 1414,
+      "sourceWidth": 1200,
+      "variants": [
+        {
+          "file": "assets/optimized/66580f7bc843f90c93ac7ce8-w320.webp",
+          "height": 377,
+          "url": "/kingdom-circuit-test/assets/optimized/66580f7bc843f90c93ac7ce8-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/66580f7bc843f90c93ac7ce8-w640.webp",
+          "height": 754,
+          "url": "/kingdom-circuit-test/assets/optimized/66580f7bc843f90c93ac7ce8-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/66580f7bc843f90c93ac7ce8-w960.webp",
+          "height": 1131,
+          "url": "/kingdom-circuit-test/assets/optimized/66580f7bc843f90c93ac7ce8-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "73182f1bc7079281349475d1",
+      "sourceHeight": 1271,
+      "sourceWidth": 3600,
+      "variants": [
+        {
+          "file": "assets/optimized/73182f1bc7079281349475d1-w320.webp",
+          "height": 113,
+          "url": "/kingdom-circuit-test/assets/optimized/73182f1bc7079281349475d1-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/73182f1bc7079281349475d1-w640.webp",
+          "height": 226,
+          "url": "/kingdom-circuit-test/assets/optimized/73182f1bc7079281349475d1-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/73182f1bc7079281349475d1-w960.webp",
+          "height": 339,
+          "url": "/kingdom-circuit-test/assets/optimized/73182f1bc7079281349475d1-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "7f062445f56a465c26cca8c8",
+      "sourceHeight": 940,
+      "sourceWidth": 1880,
+      "variants": [
+        {
+          "file": "assets/optimized/7f062445f56a465c26cca8c8-w320.webp",
+          "height": 160,
+          "url": "/kingdom-circuit-test/assets/optimized/7f062445f56a465c26cca8c8-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/7f062445f56a465c26cca8c8-w640.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/7f062445f56a465c26cca8c8-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/7f062445f56a465c26cca8c8-w960.webp",
+          "height": 480,
+          "url": "/kingdom-circuit-test/assets/optimized/7f062445f56a465c26cca8c8-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "89481035caf022a98fc9b89a",
+      "sourceHeight": 600,
+      "sourceWidth": 600,
+      "variants": [
+        {
+          "file": "assets/optimized/89481035caf022a98fc9b89a-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/89481035caf022a98fc9b89a-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/89481035caf022a98fc9b89a-w600.webp",
+          "height": 600,
+          "url": "/kingdom-circuit-test/assets/optimized/89481035caf022a98fc9b89a-w600.webp",
+          "width": 600
+        }
+      ]
+    },
+    {
+      "id": "8ab665d11d6f994657f511b3",
+      "sourceHeight": 632,
+      "sourceWidth": 1068,
+      "variants": [
+        {
+          "file": "assets/optimized/8ab665d11d6f994657f511b3-w320.webp",
+          "height": 189,
+          "url": "/kingdom-circuit-test/assets/optimized/8ab665d11d6f994657f511b3-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/8ab665d11d6f994657f511b3-w640.webp",
+          "height": 379,
+          "url": "/kingdom-circuit-test/assets/optimized/8ab665d11d6f994657f511b3-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/8ab665d11d6f994657f511b3-w960.webp",
+          "height": 568,
+          "url": "/kingdom-circuit-test/assets/optimized/8ab665d11d6f994657f511b3-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "92e2c726190cf5cfbcfa47be",
+      "sourceHeight": 1200,
+      "sourceWidth": 1200,
+      "variants": [
+        {
+          "file": "assets/optimized/92e2c726190cf5cfbcfa47be-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/92e2c726190cf5cfbcfa47be-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/92e2c726190cf5cfbcfa47be-w640.webp",
+          "height": 640,
+          "url": "/kingdom-circuit-test/assets/optimized/92e2c726190cf5cfbcfa47be-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/92e2c726190cf5cfbcfa47be-w960.webp",
+          "height": 960,
+          "url": "/kingdom-circuit-test/assets/optimized/92e2c726190cf5cfbcfa47be-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "a7cb7e6de578470b13c244f2",
+      "sourceHeight": 1492,
+      "sourceWidth": 1054,
+      "variants": [
+        {
+          "file": "assets/optimized/a7cb7e6de578470b13c244f2-w320.webp",
+          "height": 453,
+          "url": "/kingdom-circuit-test/assets/optimized/a7cb7e6de578470b13c244f2-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/a7cb7e6de578470b13c244f2-w640.webp",
+          "height": 906,
+          "url": "/kingdom-circuit-test/assets/optimized/a7cb7e6de578470b13c244f2-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/a7cb7e6de578470b13c244f2-w960.webp",
+          "height": 1359,
+          "url": "/kingdom-circuit-test/assets/optimized/a7cb7e6de578470b13c244f2-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "a992af0e944462922ea3cd5a",
+      "sourceHeight": 1278,
+      "sourceWidth": 1278,
+      "variants": [
+        {
+          "file": "assets/optimized/a992af0e944462922ea3cd5a-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/a992af0e944462922ea3cd5a-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/a992af0e944462922ea3cd5a-w640.webp",
+          "height": 640,
+          "url": "/kingdom-circuit-test/assets/optimized/a992af0e944462922ea3cd5a-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/a992af0e944462922ea3cd5a-w960.webp",
+          "height": 960,
+          "url": "/kingdom-circuit-test/assets/optimized/a992af0e944462922ea3cd5a-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "ae5d31c05406aab91adf23ad",
+      "sourceHeight": 1800,
+      "sourceWidth": 1200,
+      "variants": [
+        {
+          "file": "assets/optimized/ae5d31c05406aab91adf23ad-w320.webp",
+          "height": 480,
+          "url": "/kingdom-circuit-test/assets/optimized/ae5d31c05406aab91adf23ad-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/ae5d31c05406aab91adf23ad-w640.webp",
+          "height": 960,
+          "url": "/kingdom-circuit-test/assets/optimized/ae5d31c05406aab91adf23ad-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/ae5d31c05406aab91adf23ad-w960.webp",
+          "height": 1440,
+          "url": "/kingdom-circuit-test/assets/optimized/ae5d31c05406aab91adf23ad-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "be7bb11286e5d8b55ff2e3ab",
+      "sourceHeight": 1920,
+      "sourceWidth": 1920,
+      "variants": [
+        {
+          "file": "assets/optimized/be7bb11286e5d8b55ff2e3ab-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/be7bb11286e5d8b55ff2e3ab-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/be7bb11286e5d8b55ff2e3ab-w640.webp",
+          "height": 640,
+          "url": "/kingdom-circuit-test/assets/optimized/be7bb11286e5d8b55ff2e3ab-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/be7bb11286e5d8b55ff2e3ab-w960.webp",
+          "height": 960,
+          "url": "/kingdom-circuit-test/assets/optimized/be7bb11286e5d8b55ff2e3ab-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "c6d33c90054fa3023d477fe0",
+      "sourceHeight": 1200,
+      "sourceWidth": 1600,
+      "variants": [
+        {
+          "file": "assets/optimized/c6d33c90054fa3023d477fe0-w320.webp",
+          "height": 240,
+          "url": "/kingdom-circuit-test/assets/optimized/c6d33c90054fa3023d477fe0-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/c6d33c90054fa3023d477fe0-w640.webp",
+          "height": 480,
+          "url": "/kingdom-circuit-test/assets/optimized/c6d33c90054fa3023d477fe0-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/c6d33c90054fa3023d477fe0-w960.webp",
+          "height": 720,
+          "url": "/kingdom-circuit-test/assets/optimized/c6d33c90054fa3023d477fe0-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "cfd2fe3034bb242af826d8a8",
+      "sourceHeight": 1000,
+      "sourceWidth": 1600,
+      "variants": [
+        {
+          "file": "assets/optimized/cfd2fe3034bb242af826d8a8-w320.webp",
+          "height": 200,
+          "url": "/kingdom-circuit-test/assets/optimized/cfd2fe3034bb242af826d8a8-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/cfd2fe3034bb242af826d8a8-w640.webp",
+          "height": 400,
+          "url": "/kingdom-circuit-test/assets/optimized/cfd2fe3034bb242af826d8a8-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/cfd2fe3034bb242af826d8a8-w960.webp",
+          "height": 600,
+          "url": "/kingdom-circuit-test/assets/optimized/cfd2fe3034bb242af826d8a8-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "d48de816e4e49c8042defc94",
+      "sourceHeight": 900,
+      "sourceWidth": 1200,
+      "variants": [
+        {
+          "file": "assets/optimized/d48de816e4e49c8042defc94-w320.webp",
+          "height": 240,
+          "url": "/kingdom-circuit-test/assets/optimized/d48de816e4e49c8042defc94-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/d48de816e4e49c8042defc94-w640.webp",
+          "height": 480,
+          "url": "/kingdom-circuit-test/assets/optimized/d48de816e4e49c8042defc94-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/d48de816e4e49c8042defc94-w960.webp",
+          "height": 720,
+          "url": "/kingdom-circuit-test/assets/optimized/d48de816e4e49c8042defc94-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "d4fd3793d8491bd20ec0cd7b",
+      "sourceHeight": 470,
+      "sourceWidth": 940,
+      "variants": [
+        {
+          "file": "assets/optimized/d4fd3793d8491bd20ec0cd7b-w320.webp",
+          "height": 160,
+          "url": "/kingdom-circuit-test/assets/optimized/d4fd3793d8491bd20ec0cd7b-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/d4fd3793d8491bd20ec0cd7b-w640.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/d4fd3793d8491bd20ec0cd7b-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/d4fd3793d8491bd20ec0cd7b-w940.webp",
+          "height": 470,
+          "url": "/kingdom-circuit-test/assets/optimized/d4fd3793d8491bd20ec0cd7b-w940.webp",
+          "width": 940
+        }
+      ]
+    },
+    {
+      "id": "de678a4ac70354798f662ca0",
+      "sourceHeight": 262,
+      "sourceWidth": 651,
+      "variants": [
+        {
+          "file": "assets/optimized/de678a4ac70354798f662ca0-w320.webp",
+          "height": 129,
+          "url": "/kingdom-circuit-test/assets/optimized/de678a4ac70354798f662ca0-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/de678a4ac70354798f662ca0-w640.webp",
+          "height": 258,
+          "url": "/kingdom-circuit-test/assets/optimized/de678a4ac70354798f662ca0-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/de678a4ac70354798f662ca0-w651.webp",
+          "height": 262,
+          "url": "/kingdom-circuit-test/assets/optimized/de678a4ac70354798f662ca0-w651.webp",
+          "width": 651
+        }
+      ]
+    },
+    {
+      "id": "dfb250b09067f15ca1aa7b92",
+      "sourceHeight": 400,
+      "sourceWidth": 400,
+      "variants": [
+        {
+          "file": "assets/optimized/dfb250b09067f15ca1aa7b92-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/dfb250b09067f15ca1aa7b92-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/dfb250b09067f15ca1aa7b92-w400.webp",
+          "height": 400,
+          "url": "/kingdom-circuit-test/assets/optimized/dfb250b09067f15ca1aa7b92-w400.webp",
+          "width": 400
+        }
+      ]
+    },
+    {
+      "id": "f108bffbbecae9ce261d2289",
+      "sourceHeight": 1200,
+      "sourceWidth": 1800,
+      "variants": [
+        {
+          "file": "assets/optimized/f108bffbbecae9ce261d2289-w320.webp",
+          "height": 213,
+          "url": "/kingdom-circuit-test/assets/optimized/f108bffbbecae9ce261d2289-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/f108bffbbecae9ce261d2289-w640.webp",
+          "height": 427,
+          "url": "/kingdom-circuit-test/assets/optimized/f108bffbbecae9ce261d2289-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/f108bffbbecae9ce261d2289-w960.webp",
+          "height": 640,
+          "url": "/kingdom-circuit-test/assets/optimized/f108bffbbecae9ce261d2289-w960.webp",
+          "width": 960
+        }
+      ]
+    },
+    {
+      "id": "f9dc69b8942a3d25f01e5264",
+      "sourceHeight": 800,
+      "sourceWidth": 800,
+      "variants": [
+        {
+          "file": "assets/optimized/f9dc69b8942a3d25f01e5264-w320.webp",
+          "height": 320,
+          "url": "/kingdom-circuit-test/assets/optimized/f9dc69b8942a3d25f01e5264-w320.webp",
+          "width": 320
+        },
+        {
+          "file": "assets/optimized/f9dc69b8942a3d25f01e5264-w640.webp",
+          "height": 640,
+          "url": "/kingdom-circuit-test/assets/optimized/f9dc69b8942a3d25f01e5264-w640.webp",
+          "width": 640
+        },
+        {
+          "file": "assets/optimized/f9dc69b8942a3d25f01e5264-w800.webp",
+          "height": 800,
+          "url": "/kingdom-circuit-test/assets/optimized/f9dc69b8942a3d25f01e5264-w800.webp",
+          "width": 800
+        }
+      ]
+    }
+  ],
+  "localSourceCount": 27,
+  "obsoleteImageRepairScriptCount": 0,
+  "optimizedLocalSourceCount": 27,
+  "optimizedSourceCount": 27,
+  "preservedVectorSourceCount": 0,
+  "priorityImageCount": 262,
+  "quality": 82,
+  "requestedWidths": [
+    320,
+    640,
+    960
+  ],
+  "rewrittenHtmlImageCount": 521,
+  "rewrittenJsonValueCount": 68,
+  "schemaVersion": 1,
+  "scope": "kingdom-circuit-test",
+  "selectedSourceCount": 27,
+  "socialImageMetaRewriteCount": 122,
+  "sourceCount": 190,
+  "uniqueOptimizedImageCount": 26
+}
