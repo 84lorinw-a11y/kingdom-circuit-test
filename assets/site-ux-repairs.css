@@ -1,0 +1,219 @@
+/* Kingdom Circuit production UX repairs. */
+body [hidden] { display: none !important; }
+
+.kc-skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 12px 16px;
+  border: 2px solid #e3b75d;
+  border-radius: 8px;
+  background: #080808;
+  color: #f5f2ea;
+  font-weight: 900;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+.kc-skip-link:focus { transform: translateY(0); }
+
+.menu-drawer {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding-bottom: calc(26px + env(safe-area-inset-bottom)) !important;
+}
+
+.footer-status,
+.footer-source-warning,
+.profile-image-note,
+.seo-roster-note,
+.profile-count,
+.disclaimer,
+.form-note,
+.form-feedback,
+.source-line,
+.price-line,
+.results-count,
+.event-meta dt,
+.detail-list dt { color: #b8b4ac !important; }
+
+.field input,
+.field select,
+.field textarea,
+.filter-chip,
+.reset-button,
+.menu-toggle,
+.menu-close,
+.secondary-button { border-color: #707070 !important; }
+
+.menu-toggle,
+.menu-close,
+.filter-chip,
+.reset-button,
+.official-button,
+.primary-button,
+.secondary-button,
+.kc-show-all-artists,
+.seo-social-link,
+.artist-platform-link,
+body .artist-card .artist-platform-link,
+body .seo-card-socials .seo-social-link {
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
+.kc-public-directory-toolbar {
+  grid-template-columns: minmax(220px, 2fr) minmax(220px, 1fr) auto auto !important;
+}
+.kc-show-all-artists { align-self: end; }
+
+.kc-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.kc-correction-note { margin: 0 0 18px; color: #b8b4ac; }
+
+@media (max-width: 900px) {
+  .kc-public-directory-toolbar { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (max-width: 640px) {
+  body [data-artist-directory] [data-artist-grid],
+  body [data-artist-directory] .artist-grid,
+  body [data-artist-directory] .seo-artist-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 1fr !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  body [data-artist-directory] [data-artist-card] {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+  body [data-artist-directory] .artist-visual {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    flex: 0 0 auto !important;
+    overflow: hidden !important;
+  }
+  body [data-artist-directory] .artist-visual img,
+  body [data-artist-directory] img.artist-photo {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+  }
+  body [data-artist-directory] .artist-card-body {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+  }
+  body [data-artist-directory] .artist-card-footer {
+    margin-top: auto !important;
+  }
+  body [data-artist-directory] [data-artist-card] h2,
+  body [data-artist-directory] [data-artist-card] h2 a,
+  body [data-artist-directory] [data-artist-card] .artist-card-footer a {
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  body [data-artist-directory] .kc-artist-filter-form,
+  body [data-artist-directory] .kc-upcoming-check,
+  body [data-artist-directory] .check-field {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  body [data-artist-directory] .kc-upcoming-check,
+  body [data-artist-directory] .check-field {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+  .artist-platform-link,
+  .seo-social-link-compact,
+  body .artist-card .artist-platform-link,
+  body .seo-card-socials .seo-social-link {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  body .seo-artist-hero .seo-social-links {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  body .seo-artist-hero .seo-social-link {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    padding: 10px 12px !important;
+  }
+  body [data-artist-directory] .artist-card-links,
+  body [data-artist-directory] .seo-card-socials {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    gap: 2px !important;
+    margin: auto 0 4px !important;
+    padding-top: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  body [data-artist-directory] .artist-card-links .artist-platform-link,
+  body [data-artist-directory] .seo-card-socials .seo-social-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 1 36px !important;
+    width: auto !important;
+    max-width: 36px !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    padding: 2px !important;
+    margin: 0 !important;
+  }
+  body [data-artist-directory] .artist-card-links .platform-icon,
+  body [data-artist-directory] .seo-card-socials .seo-brand-icon {
+    width: min(22px, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    flex-basis: auto !important;
+  }
+  body [data-artist-directory] .artist-card-footer {
+    margin-top: 8px !important;
+  }
+  .kc-public-directory-toolbar { grid-template-columns: 1fr !important; }
+  .kc-show-all-artists { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

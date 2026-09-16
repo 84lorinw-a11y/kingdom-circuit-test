@@ -130,6 +130,9 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/anike/new-york/</loc>
   </url>
   <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/anike/north-carolina/</loc>
+  </url>
+  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/anike/texas/</loc>
   </url>
   <url>
@@ -343,6 +346,9 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/dante-pride/new-york/</loc>
   </url>
   <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/dante-pride/north-carolina/</loc>
+  </url>
+  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/dante-pride/texas/</loc>
   </url>
   <url>
@@ -403,10 +409,19 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/don-ready/new-york/</loc>
   </url>
   <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/don-ready/north-carolina/</loc>
+  </url>
+  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/don-ready/tennessee/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/dre-murray/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/dre-skywalker/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/dre-skywalker/florida/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/drea-lp/</loc>
@@ -499,6 +514,12 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/gabriel-emc/</loc>
   </url>
   <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/gabriel-katon/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/gabriel-katon/florida/</loc>
+  </url>
+  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/gavin-the-hotrod/</loc>
   </url>
   <url>
@@ -568,9 +589,6 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/hulvey/indiana/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/hulvey/massachusetts/</loc>
-  </url>
-  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/hulvey/michigan/</loc>
   </url>
   <url>
@@ -619,9 +637,6 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/indie-tribe/indiana/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/indie-tribe/massachusetts/</loc>
-  </url>
-  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/indie-tribe/michigan/</loc>
   </url>
   <url>
@@ -662,6 +677,12 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/j-r/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/j-reborn/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/j-reborn/florida/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/j-solo/</loc>
@@ -737,6 +758,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/jon-keith/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/jon-keith/arizona/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/jon-keith/michigan/</loc>
@@ -844,9 +868,6 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/kijan-boone/indiana/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/kijan-boone/massachusetts/</loc>
-  </url>
-  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/kijan-boone/michigan/</loc>
   </url>
   <url>
@@ -854,6 +875,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/kijan-boone/ohio/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/kijan-boone/wisconsin/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/kings-kaleidoscope/</loc>
@@ -1222,6 +1246,12 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/santana-rose/</loc>
   </url>
   <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/scarlito-jr/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/scarlito-jr/florida/</loc>
+  </url>
+  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/scootie-wop/</loc>
   </url>
   <url>
@@ -1435,9 +1465,6 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/tru-serva/florida/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/tru-serva/new-mexico/</loc>
-  </url>
-  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/tru-serva/wisconsin/</loc>
   </url>
   <url>
@@ -1462,6 +1489,12 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/v-rose/</loc>
   </url>
   <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/vennisay/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/vennisay/florida/</loc>
+  </url>
+  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/vic-lucas/</loc>
   </url>
   <url>
@@ -1472,6 +1505,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/vvs-big-rock/florida/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/vvs-big-rock/wisconsin/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/artists/whatuprg/</loc>
@@ -1673,6 +1709,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/christlike-christmas-cj-emulous-and-miles-minnick-2026-12-04-felton-e0554c/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/echo-nights-26-2026-10-02-brookfield-9c48cb/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/egr-live-bakersfield-2026-08-21-bakersfield-9f05f5/</loc>
@@ -1924,9 +1963,6 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/kaden-jordan-live-2026-09-23-orlando-04eadd/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/kaden-jordan-live-2026-10-23-new-port-richey-8dfe7f/</loc>
-  </url>
-  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/kaden-jordan-live-2026-11-13-orlando-8aaa06/</loc>
   </url>
   <url>
@@ -1946,6 +1982,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/lifelight-festival-2026-2026-09-06-sioux-falls-14fa95/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/light-in-the-darkness-2026-10-31-phoenix-a28982/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/live-loud-2026-10-07-chico-1b6570/</loc>
@@ -1996,7 +2035,7 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/onefest-2026-2026-07-31-cadott-eaa877/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/open-skies-bethel-music-with-jenn-johnson-kb-2026-09-26-topeka-0a9fd5/</loc>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/open-skies-bethel-music-with-kb-2026-09-26-topeka-0a9fd5/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/overflow-conference-2026-10-17-buffalo-2997a5/</loc>
@@ -2009,6 +2048,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/reign-volume-one-2026-10-10-brooklyn-fe93fe/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/revival-night-2026-10-23-trinity-5cb419/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/rize-az-music-festival-2027-04-17-sierra-vista-f47ad6/</loc>
@@ -2024,9 +2066,6 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/rwg-tour-2026-2026-09-08-waldoboro-bc9ea7/</loc>
-  </url>
-  <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/rwg-tour-2026-2026-09-09-location-tbd-e33493/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/rwg-tour-2026-2026-09-09-mechanic-falls-21cd61/</loc>
@@ -2080,7 +2119,7 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/the-sac-town-give-back-2026-10-17-west-sacramento-10e63d/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/the-truth-tour-las-cruces-2026-10-25-las-cruces-09622d/</loc>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/the-sazon-experience-2026-10-17-lakeland-estates-mobile-home-community-e9a5d0/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/event/tribe-fest-2026-2026-09-25-rialto-2303be/</loc>
@@ -2179,13 +2218,13 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/boise-idaho/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/boston-massachusetts/</loc>
-  </url>
-  <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/bowling-green-missouri/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/bradley-california/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/brookfield-wisconsin/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/brooklyn-new-york/</loc>
@@ -2350,7 +2389,7 @@
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/kansas/</loc>
   </url>
   <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/las-cruces-new-mexico/</loc>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/lakeland-estates-mobile-home-community-florida/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/leander-texas/</loc>
@@ -2366,9 +2405,6 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/martinsburg-west-virginia/</loc>
-  </url>
-  <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/massachusetts/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/miami-florida/</loc>
@@ -2396,12 +2432,6 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/new-jersey/</loc>
-  </url>
-  <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/new-mexico/</loc>
-  </url>
-  <url>
-    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/new-port-richey-florida/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/new-york-new-york/</loc>
@@ -2510,6 +2540,9 @@
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/topeka-kansas/</loc>
+  </url>
+  <url>
+    <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/trinity-florida/</loc>
   </url>
   <url>
     <loc>https://84lorinw-a11y.github.io/kingdom-circuit-test/shows/turlock-california/</loc>

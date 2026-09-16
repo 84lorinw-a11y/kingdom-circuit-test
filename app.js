@@ -363,7 +363,12 @@ const ARTIST_ROSTER_ORDER = [
   "Generation Recovery",
   "IFearGod",
   "Hy Chu",
-  "JIMMY ROCK"
+  "JIMMY ROCK",
+  "Vennisay",
+  "Scarlito Jr.",
+  "J Reborn",
+  "Dre Skywalker",
+  "Gabriel Katon"
 ];
 const VERIFIED_ARTIST_REGISTRY = {
   "808 beezy": {
@@ -2125,6 +2130,21 @@ const VERIFIED_ARTIST_REGISTRY_UPDATES = {
     "imagePosition": "center",
 
   },
+  "jimmy rock": {
+    "aliases": [
+      "JIMMY ROCK",
+      "Jimmy Rock"
+    ],
+    "website": "https://www.jimmyrock.com/",
+    "instagramProfile": "https://www.instagram.com/jimmyrock/",
+    "spotifyProfile": "https://open.spotify.com/artist/6YN7TGi4ZlsAy38fZVPvkN",
+    "youtubeProfile": "https://www.youtube.com/@JimmyRock",
+
+    "imageUrl": "assets/artists/jimmy-rock-primary.webp",
+    "imagePosition": "center",
+    "preferArtistImage": true,
+
+  },
   "caleb gordon": {
     "aliases": [
       "Caleb Gordon"
@@ -2408,7 +2428,7 @@ function shouldUseIncomingImage(existing, incoming) {
   if (incoming.imageOverride) return true;
   if (!existing?.image) return true;
   const current = normalize(existing.image);
-  return current === "assets/event-fallback.webp" || current.endsWith("/assets/event-fallback.webp") || existing.imageType === "fallback";
+  return current === "assets/event-fallback.webp" || current.endsWith("/kingdom-circuit-test/assets/event-fallback.webp") || existing.imageType === "fallback";
 }
 function mergeEventRecords(existing, incoming) {
   const preferIncoming = eventRecordScore(incoming) > eventRecordScore(existing);

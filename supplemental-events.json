@@ -218,6 +218,36 @@
     "ticketAvailability": "needs_confirmation"
   },
   {
+    "id": "manual:ticketspice:echo-nights-26-brookfield-2026",
+    "title": "ECHO Nights 26",
+    "startDate": "2026-10-02",
+    "startTime": "19:00",
+    "timezone": "America/Chicago",
+    "venue": "Elmbrook Church",
+    "address": "777 S Barker Rd",
+    "city": "Brookfield",
+    "state": "WI",
+    "country": "US",
+    "artists": [
+      "Kijan Boone",
+      "Austin Joyce",
+      "VVS Big Rock",
+      "Kaymilinn",
+      "DJ Bryce G"
+    ],
+    "headliner": "Kijan Boone",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://atkministry.ticketspice.com/echo-nights-26",
+    "officialUrl": "https://atkministry.ticketspice.com/echo-nights-26",
+    "image": "assets/optimized/f5c33b0bc686decdd307d8f7-w960.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center top",
+    "price": "",
+    "lineupExplicit": true,
+    "imageOverride": true
+  },
+  {
     "title": "Jay Kalyl — Desde Antes Tour",
     "startDate": "2026-10-03",
     "startTime": "",
@@ -592,6 +622,28 @@
     "imageOverride": true
   },
   {
+    "id": "bandsintown:108902772",
+    "title": "The Sazon Experience",
+    "startDate": "2026-10-17",
+    "startTime": "18:30",
+    "timezone": "",
+    "venue": "The Sazon Experience",
+    "address": "1329 E Main St",
+    "city": "Lakeland Estates Mobile Home Community",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Issac Mansfield"
+    ],
+    "headliner": "Issac Mansfield",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.bandsintown.com/t/108902772?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
+    "officialUrl": "https://www.bandsintown.com/e/108902772?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb6d97dd155baa40ea3c14b616",
+    "price": ""
+  },
+  {
     "title": "Alex Zurdo: Zona Zero",
     "startDate": "2026-10-18",
     "startTime": "18:00",
@@ -621,22 +673,40 @@
     "id": "mike-teezy-hrvstland-festival-2026",
     "title": "HRVSTLAND Festival 2026",
     "startDate": "2026-10-24",
-    "startTime": "",
-    "venue": "Steele Creek Church",
-    "address": "",
+    "startTime": "14:00",
+    "endTime": "20:00",
+    "doorsTime": "15:30",
+    "timezone": "America/New_York",
+    "venue": "Unity Charlotte International",
+    "address": "5323 E Independence Blvd",
     "city": "Charlotte",
     "state": "NC",
+    "country": "US",
     "artists": [
-      "Mike Teezy"
+      "Mike Teezy",
+      "Anike",
+      "Dante' Pride",
+      "Don Ready",
+      "ADIA"
     ],
     "headliner": "Mike Teezy",
     "eventType": "festival",
-    "ticketUrl": "https://www.bandsintown.com/f/231374",
-    "officialUrl": "https://www.bandsintown.com/f/231374",
-    "image": "https://real.fm/assets/Uploads/MikeTeezy__FocusFillWyItMC4xMSIsIi0wLjE2IiwxMjAwLDYyN10.jpg",
+    "ticketUrl": "https://www.miketeezymusic.com/event-details/hlfest",
+    "officialUrl": "https://www.miketeezymusic.com/event-details/hlfest",
+    "image": "assets/optimized/b515d883e21e90ef274072e2-w675.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
     "price": "",
     "status": "scheduled",
-    "lineupExplicit": true
+    "lineupExplicit": true,
+    "officialBill": [
+      "Mike Teezy",
+      "Anike",
+      "Dante' Pride",
+      "Don Ready",
+      "ADIA"
+    ]
   },
   {
     "id": "bandsintown:108144023",
@@ -682,31 +752,6 @@
     "price": "Donate what you can; VIP $110",
     "lineupExplicit": true,
     "ticketAvailability": "needs_confirmation"
-  },
-  {
-    "id": "supplemental:tru-serva-truth-tour-las-cruces-2026",
-    "title": "The Truth Tour — Las Cruces",
-    "startDate": "2026-10-25",
-    "startTime": "",
-    "timezone": "America/Denver",
-    "venue": "Real Life Church",
-    "address": "",
-    "city": "Las Cruces",
-    "state": "NM",
-    "country": "US",
-    "artists": [
-      "TRU-SERVA"
-    ],
-    "headliner": "TRU-SERVA",
-    "eventType": "concert",
-    "status": "onsale",
-    "ticketUrl": "https://www.facebook.com/meganwoodsmusic/posts/las-cruces-tickets-are-on-sale-now-to-see-megan-woods-live-on-sunday-october-25-/1632997938411616/",
-    "officialUrl": "https://www.facebook.com/meganwoodsmusic/posts/las-cruces-tickets-are-on-sale-now-to-see-megan-woods-live-on-sunday-october-25-/1632997938411616/",
-    "image": "https://i.scdn.co/image/ab6761610000e5ebb5bd510760cb418516ded933",
-    "imageType": "artist_photo",
-    "imagePosition": "center",
-    "price": "$10",
-    "lineupExplicit": true
   },
   {
     "id": "bandsintown:108144061",
@@ -929,7 +974,7 @@
     "status": "scheduled",
     "ticketUrl": "https://www.bandsintown.com/t/108881783?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
     "officialUrl": "https://www.bandsintown.com/e/108881783?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event",
-    "image": "assets/optimized/cfd2fe3034bb242af826d8a8-w960.webp",
+    "image": "https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_SOURCE",
     "price": ""
   },
   {
@@ -1319,7 +1364,7 @@
     "status": "scheduled",
     "ticketUrl": "https://www.bandsintown.com/t/1037809090?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket",
     "officialUrl": "https://www.bandsintown.com/e/1037809090?app_id=js_kingdomcircuit.com&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=event",
-    "image": "assets/optimized/cfd2fe3034bb242af826d8a8-w960.webp",
+    "image": "https://resources.tidal.com/images/66d1df15/192b/4a8f/97c3/30a2b85a36f3/750x750.jpg",
     "price": ""
   }
 ]

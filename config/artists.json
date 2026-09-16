@@ -39,7 +39,7 @@
     "enabled": true,
     "category": "core",
     "activeStatus": "active_or_unknown",
-    "imageUrl": "https://tprlive.co/cdn/shop/files/ARTIST_HEADSHOT_36.jpg?v=1776887171&width=1797",
+    "imageUrl": "assets/optimized/121c9afe8742058087b882a1-w960.webp",
     "imagePosition": "center",
     "preferArtistImage": true,
     "website": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
@@ -327,7 +327,7 @@
     ],
     "enabled": false,
     "category": "crossover",
-    "activeStatus": "excluded"
+    "activeStatus": "excluded_non_chh"
   },
   {
     "name": "Zauntee",
@@ -3951,8 +3951,59 @@
     "instagramProfile": "https://www.instagram.com/jimmyrock/",
     "spotifyProfile": "https://open.spotify.com/artist/6YN7TGi4ZlsAy38fZVPvkN",
     "youtubeProfile": "https://www.youtube.com/@JimmyRock",
-    "imageUrl": "https://images.squarespace-cdn.com/content/v1/56b7abd2f699bb04c395a379/03aa3873-98e9-4ccb-8eae-4d4f3826a4a8/Jimmy-in-the-field-refl.png",
-    "imagePosition": "50% 22%",
+    "imageUrl": "assets/optimized/708086184f1aedeeaed45ab2-w900.webp",
+    "imagePosition": "center",
     "preferArtistImage": true
+  },
+  {
+    "name": "Vennisay",
+    "aliases": [
+      "Vennisay"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "spotifyProfile": "https://open.spotify.com/artist/47fuPz0K0cyruPcpXiBo2W"
+  },
+  {
+    "name": "Scarlito Jr.",
+    "aliases": [
+      "Scarlito Jr.",
+      "Scarlito Jr"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "spotifyProfile": "https://open.spotify.com/artist/46UmMAKrHKTvwKAV5mrNsi"
+  },
+  {
+    "name": "J Reborn",
+    "aliases": [
+      "J Reborn"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "spotifyProfile": "https://open.spotify.com/artist/6qDQ0Rnp9bj86ZcsI4UkEX"
+  },
+  {
+    "name": "Dre Skywalker",
+    "aliases": [
+      "Dre Skywalker"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "spotifyProfile": "https://open.spotify.com/artist/6qE9NgK1b0kDnGUnGVh4zS"
+  },
+  {
+    "name": "Gabriel Katon",
+    "aliases": [
+      "Gabriel Katon"
+    ],
+    "enabled": true,
+    "category": "core",
+    "activeStatus": "active_or_unknown",
+    "spotifyProfile": "https://open.spotify.com/artist/5G1xrscxyvpYHX72E108iW"
   }
 ]

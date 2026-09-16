@@ -1,31 +1,5 @@
 [
   {
-    "id": "official:4e511bbf8fb6d5ae77fd",
-    "title": "Hulvey - \"Could Be Tonight\" Tour",
-    "startDate": "2026-09-15",
-    "startTime": "18:00",
-    "timezone": "America/New_York",
-    "venue": "Big Night Live",
-    "address": "110 Causeway Street",
-    "city": "Boston",
-    "state": "MA",
-    "country": "US",
-    "artists": [
-      "Hulvey",
-      "indie tribe.",
-      "Kijan Boone"
-    ],
-    "headliner": "Hulvey",
-    "eventType": "concert",
-    "status": "onsale",
-    "ticketUrl": "https://www.ticketmaster.com/hulvey-could-be-tonight-tour-boston-massachusetts-09-15-2026/event/0100647FB8A14239",
-    "officialUrl": "https://www.ticketmaster.com/hulvey-could-be-tonight-tour-boston-massachusetts-09-15-2026/event/0100647FB8A14239",
-    "image": "https://s1.ticketm.net/dam/a/d4e/a49ecab3-089d-46ff-baa5-7942c994ed4e_SOURCE",
-    "price": "",
-    "imageType": "event_artwork",
-    "imagePosition": "center"
-  },
-  {
     "id": "manual:egr-2026-09-18-carson-ca",
     "title": "EGR Live — Carson",
     "startDate": "2026-09-18",
@@ -888,7 +862,7 @@
     "imagePosition": "center"
   },
   {
-    "title": "Open Skies — Bethel Music with Jenn Johnson + KB",
+    "title": "Open Skies — Bethel Music with KB",
     "startDate": "2026-09-26",
     "startTime": "18:00",
     "timezone": "America/Chicago",
@@ -914,7 +888,6 @@
     "endTime": "21:00",
     "advertisedBilling": [
       "Bethel Music",
-      "Jenn Johnson",
       "KB"
     ],
     "id": "manual:open-skies-topeka-2026"
@@ -1050,6 +1023,36 @@
     "price": "",
     "imageType": "artist",
     "imagePosition": "50% 30%"
+  },
+  {
+    "id": "manual:ticketspice:echo-nights-26-brookfield-2026",
+    "title": "ECHO Nights 26",
+    "startDate": "2026-10-02",
+    "startTime": "19:00",
+    "timezone": "America/Chicago",
+    "venue": "Elmbrook Church",
+    "address": "777 S Barker Rd",
+    "city": "Brookfield",
+    "state": "WI",
+    "country": "US",
+    "artists": [
+      "Kijan Boone",
+      "Austin Joyce",
+      "VVS Big Rock",
+      "Kaymilinn",
+      "DJ Bryce G"
+    ],
+    "headliner": "Kijan Boone",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://atkministry.ticketspice.com/echo-nights-26",
+    "officialUrl": "https://atkministry.ticketspice.com/echo-nights-26",
+    "image": "assets/optimized/f5c33b0bc686decdd307d8f7-w960.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center top",
+    "price": "",
+    "lineupExplicit": true,
+    "imageOverride": true
   },
   {
     "title": "Jay Kalyl — Desde Antes Tour",
@@ -1624,29 +1627,62 @@
     "id": "manual:jimmy-rock-rave-worship-dallas-2026"
   },
   {
-    "id": "manual:kaden-jordan-2026-10-23-new-port-richey",
-    "title": "Kaden Jordan Live",
+    "id": "manual:revival-night-trinity-2026",
+    "title": "Revival Night",
     "startDate": "2026-10-23",
-    "startTime": "",
+    "startTime": "19:00",
+    "endTime": "23:15",
+    "doorsTime": "18:30",
+    "performanceTime": "19:15",
     "timezone": "America/New_York",
-    "venue": "Trinity College",
-    "address": "",
-    "city": "New Port Richey",
+    "venue": "Trinity College of Florida",
+    "address": "2430 Welbilt Boulevard",
+    "postalCode": "34655",
+    "city": "Trinity",
     "state": "FL",
     "country": "US",
     "artists": [
+      "Issac Mansfield",
+      "Vennisay",
+      "Kaden Jordan",
+      "Scarlito Jr.",
+      "J Reborn",
+      "Dre Skywalker",
+      "Gabriel Katon"
+    ],
+    "headliner": "Issac Mansfield",
+    "headliners": [
+      "Issac Mansfield",
+      "Vennisay",
       "Kaden Jordan"
     ],
-    "headliner": "Kaden Jordan",
+    "supportActs": [
+      "Scarlito Jr.",
+      "J Reborn",
+      "Dre Skywalker",
+      "Gabriel Katon"
+    ],
     "eventType": "concert",
     "status": "scheduled",
-    "ticketUrl": "https://www.songkick.com/artists/10314485-kaden-jordan",
-    "officialUrl": "https://kadenjordan.com/pages/tour",
-    "image": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b4/50/48/b4504865-b294-ba19-3854-a83ff79084c4/35e5e9f1-1e53-4326-ae3b-47ec4206ce77_file_cropped.png/1200x630cw.png",
-    "imageType": "artist",
+    "ticketUrl": "https://www.eventbrite.com/e/revival-night-tickets-1990009565179",
+    "officialUrl": "https://www.eventbrite.com/e/revival-night-tickets-1990009565179",
+    "image": "assets/optimized/f68c961dc8b83f17a3eff35d-w960.webp",
+    "imageType": "event_artwork",
     "imagePosition": "center",
-    "price": "",
-    "lineupExplicit": true
+    "imageOverride": true,
+    "price": "Donation / pay what you want",
+    "admissionNotes": "General admission with no reserved seating; no refunds.",
+    "lineupExplicit": true,
+    "advertisedBilling": [
+      "Issac Mansfield",
+      "Vennisay",
+      "Kaden Jordan",
+      "Scarlito Jr.",
+      "J Reborn",
+      "Dre Skywalker",
+      "Gabriel Katon"
+    ],
+    "organizer": "Trinity College of Florida"
   },
   {
     "id": "official:6ccf87bf0ba17cd0c74d",
@@ -1777,33 +1813,6 @@
     "imagePosition": "center"
   },
   {
-    "title": "New Mainstream Tour — Miles Minnick, Tommy Zuko & CJ Emulous",
-    "startDate": "2026-11-05",
-    "startTime": "",
-    "timezone": "America/New_York",
-    "venue": "Venue not provided",
-    "address": "",
-    "city": "Miami",
-    "state": "FL",
-    "country": "US",
-    "artists": [
-      "Miles Minnick",
-      "Tommy Zuko",
-      "CJ Emulous"
-    ],
-    "headliner": "Miles Minnick",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "",
-    "officialUrl": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-23",
-    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
-    "imageType": "artist",
-    "imagePosition": "center",
-    "imageOverride": false,
-    "lineupExplicit": true,
-    "id": "manual:cj-emulous-new-mainstream-miami-2026-11-05"
-  },
-  {
     "id": "manual:flavor-fest-2026-friday-concerts",
     "title": "Flavor Fest 2026 — Friday Concerts",
     "startDate": "2026-11-06",
@@ -1920,33 +1929,6 @@
     "price": "",
     "imageType": "event_artwork",
     "imagePosition": "center"
-  },
-  {
-    "title": "New Mainstream Tour — Miles Minnick, Tommy Zuko & CJ Emulous",
-    "startDate": "2026-11-08",
-    "startTime": "",
-    "timezone": "America/New_York",
-    "venue": "Venue not provided",
-    "address": "",
-    "city": "Jacksonville",
-    "state": "FL",
-    "country": "US",
-    "artists": [
-      "Miles Minnick",
-      "Tommy Zuko",
-      "CJ Emulous"
-    ],
-    "headliner": "Miles Minnick",
-    "eventType": "concert",
-    "status": "scheduled",
-    "ticketUrl": "",
-    "officialUrl": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-26",
-    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
-    "imageType": "artist",
-    "imagePosition": "center",
-    "imageOverride": false,
-    "lineupExplicit": true,
-    "id": "manual:cj-emulous-new-mainstream-jacksonville-2026-11-08"
   },
   {
     "id": "ticketmaster:vvG1zZ_ClQMRrF",
@@ -2127,43 +2109,6 @@
     "price": "",
     "imageType": "artist",
     "imagePosition": "50% 38%"
-  },
-  {
-    "title": "State Youth Conference with CJ Emulous",
-    "startDate": "2026-11-27",
-    "startTime": "",
-    "timezone": "America/New_York",
-    "venue": "Venue not provided",
-    "address": "",
-    "city": "Cocoa",
-    "state": "FL",
-    "country": "US",
-    "artists": [
-      "CJ Emulous"
-    ],
-    "headliner": "CJ Emulous",
-    "eventType": "conference",
-    "status": "scheduled",
-    "ticketUrl": "",
-    "officialUrl": "https://www.cjemulous.com/event-details/state-youth-conference-w-cj-emulous",
-    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
-    "imageType": "fallback",
-    "imagePosition": "center",
-    "imageOverride": false,
-    "price": "",
-    "lineupExplicit": true,
-    "endDate": "2026-11-29",
-    "sessionDates": [
-      "2026-11-27",
-      "2026-11-28",
-      "2026-11-29"
-    ],
-    "publishedSessionTimes": {
-      "2026-11-27": "19:00",
-      "2026-11-28": "10:00",
-      "2026-11-29": "09:00"
-    },
-    "id": "manual:cj-emulous-state-youth-conference-cocoa-2026"
   },
   {
     "title": "Christlike Christmas — CJ Emulous & Miles Minnick",
@@ -2503,5 +2448,134 @@
     "price": "",
     "lineupExplicit": false,
     "id": "manual:cj-emulous-rize-az-music-festival-2027"
+  },
+  {
+    "title": "State Youth Conference with CJ Emulous",
+    "startDate": "2026-11-27",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Cocoa",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "CJ Emulous"
+    ],
+    "headliner": "CJ Emulous",
+    "eventType": "conference",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/state-youth-conference-w-cj-emulous",
+    "image": "https://ugc.production.linktr.ee/e2e0b25c-780f-4b6f-9a4d-48461885e719_DSC01908.jpeg",
+    "imageType": "fallback",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "price": "",
+    "lineupExplicit": true,
+    "endDate": "2026-11-29",
+    "sessionDates": [
+      "2026-11-27",
+      "2026-11-28",
+      "2026-11-29"
+    ],
+    "publishedSessionTimes": {
+      "2026-11-27": "19:00",
+      "2026-11-28": "10:00",
+      "2026-11-29": "09:00"
+    },
+    "id": "manual:cj-emulous-state-youth-conference-cocoa-2026"
+  },
+  {
+    "title": "New Mainstream Tour — Miles Minnick, Tommy Zuko & CJ Emulous",
+    "startDate": "2026-11-05",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Miami",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Miles Minnick",
+      "Tommy Zuko",
+      "CJ Emulous"
+    ],
+    "headliner": "Miles Minnick",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-23",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "lineupExplicit": true,
+    "id": "manual:cj-emulous-new-mainstream-miami-2026-11-05"
+  },
+  {
+    "title": "New Mainstream Tour — Miles Minnick, Tommy Zuko & CJ Emulous",
+    "startDate": "2026-11-08",
+    "startTime": "",
+    "timezone": "America/New_York",
+    "venue": "Venue not provided",
+    "address": "",
+    "city": "Jacksonville",
+    "state": "FL",
+    "country": "US",
+    "artists": [
+      "Miles Minnick",
+      "Tommy Zuko",
+      "CJ Emulous"
+    ],
+    "headliner": "Miles Minnick",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "",
+    "officialUrl": "https://www.cjemulous.com/event-details/new-mainstream-tour-w-miles-minnick-tommy-zuko-26",
+    "image": "https://i.scdn.co/image/ab6761610000e5eb88d578e199bd2ce1021def5b",
+    "imageType": "artist",
+    "imagePosition": "center",
+    "imageOverride": false,
+    "lineupExplicit": true,
+    "id": "manual:cj-emulous-new-mainstream-jacksonville-2026-11-08"
+  },
+  {
+    "title": "Light in the Darkness",
+    "startDate": "2026-10-31",
+    "startTime": "16:00",
+    "endTime": "21:30",
+    "doorsTime": "15:00",
+    "timezone": "America/Phoenix",
+    "venue": "South Mountain Activity Complex",
+    "address": "10401 S Central Ave",
+    "city": "Phoenix",
+    "state": "AZ",
+    "country": "US",
+    "artists": [
+      "Jon Keith"
+    ],
+    "headliner": "Jon Keith",
+    "eventType": "concert",
+    "status": "scheduled",
+    "ticketUrl": "https://www.eventbrite.com/e/light-in-the-darkness-tickets-1997479295343",
+    "officialUrl": "https://www.eventbrite.com/e/light-in-the-darkness-tickets-1997479295343",
+    "image": "assets/optimized/14f81158b5269ecd02970b76-w940.webp",
+    "imageType": "event_artwork",
+    "imagePosition": "center",
+    "imageOverride": true,
+    "price": "Free",
+    "lineupExplicit": true,
+    "advertisedBilling": [
+      "Jon Keith",
+      "Grace Graber",
+      "trtle",
+      "HLYVRS31",
+      "CHVNCELLOR",
+      "CHVRCHS62",
+      "Adam Verdi"
+    ],
+    "ageRestriction": "Under 18 with parent or legal guardian",
+    "id": "manual:light-in-the-darkness-phoenix-2026"
   }
 ]
