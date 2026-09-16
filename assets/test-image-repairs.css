@@ -1,0 +1,32 @@
+/* Kingdom Circuit test-only image presentation repairs. */
+.event-card .event-media {
+  position: relative !important;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-self: start;
+  overflow: hidden;
+  background: #090909;
+}
+
+.event-card .event-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  background: #090909;
+}
+
+.event-card .event-media img.artist-photo {
+  object-fit: cover !important;
+  padding: 0 !important;
+}
+
+.event-card .event-media img.event-artwork {
+  object-fit: contain !important;
+  padding: 10px !important;
+}

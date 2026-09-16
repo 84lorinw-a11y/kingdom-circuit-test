@@ -1,5 +1,5 @@
 {
-  "base": "/",
+  "base": "/kingdom-circuit-test/",
   "encoder": "pillow",
   "failedSourceCount": 166,
   "failures": [
@@ -72,7 +72,7 @@
       "sourceId": "4666d430572493dc1dd0"
     },
     {
-      "code": "download-timeout",
+      "code": "wall-time-limit",
       "sourceId": "de70a8b80972cf783336"
     },
     {
@@ -691,6 +691,12 @@
           "height": 1243,
           "url": "/assets/optimized/0a4835325f7ba9ef291cae49-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/0a4835325f7ba9ef291cae49-w1236.webp",
+          "height": 1600,
+          "url": "/assets/optimized/0a4835325f7ba9ef291cae49-w1236.webp",
+          "width": 1236
         }
       ]
     },
@@ -716,6 +722,12 @@
           "height": 468,
           "url": "/assets/optimized/121c9afe8742058087b882a1-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/121c9afe8742058087b882a1-w1280.webp",
+          "height": 624,
+          "url": "/assets/optimized/121c9afe8742058087b882a1-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -829,6 +841,12 @@
           "height": 1280,
           "url": "/assets/optimized/555c3a6bc1c7ad4db8506a13-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/555c3a6bc1c7ad4db8506a13-w1200.webp",
+          "height": 1600,
+          "url": "/assets/optimized/555c3a6bc1c7ad4db8506a13-w1200.webp",
+          "width": 1200
         }
       ]
     },
@@ -854,6 +872,12 @@
           "height": 960,
           "url": "/assets/optimized/5bf80dbf05e105e50d545a87-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/5bf80dbf05e105e50d545a87-w1100.webp",
+          "height": 1100,
+          "url": "/assets/optimized/5bf80dbf05e105e50d545a87-w1100.webp",
+          "width": 1100
         }
       ]
     },
@@ -879,6 +903,12 @@
           "height": 306,
           "url": "/assets/optimized/66374c825f84aad5f3f4f899-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/66374c825f84aad5f3f4f899-w1172.webp",
+          "height": 373,
+          "url": "/assets/optimized/66374c825f84aad5f3f4f899-w1172.webp",
+          "width": 1172
         }
       ]
     },
@@ -904,6 +934,12 @@
           "height": 1131,
           "url": "/assets/optimized/66580f7bc843f90c93ac7ce8-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/66580f7bc843f90c93ac7ce8-w1200.webp",
+          "height": 1414,
+          "url": "/assets/optimized/66580f7bc843f90c93ac7ce8-w1200.webp",
+          "width": 1200
         }
       ]
     },
@@ -954,6 +990,12 @@
           "height": 339,
           "url": "/assets/optimized/73182f1bc7079281349475d1-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/73182f1bc7079281349475d1-w1280.webp",
+          "height": 452,
+          "url": "/assets/optimized/73182f1bc7079281349475d1-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -979,6 +1021,12 @@
           "height": 480,
           "url": "/assets/optimized/7f062445f56a465c26cca8c8-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/7f062445f56a465c26cca8c8-w1280.webp",
+          "height": 640,
+          "url": "/assets/optimized/7f062445f56a465c26cca8c8-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -1023,6 +1071,12 @@
           "height": 568,
           "url": "/assets/optimized/8ab665d11d6f994657f511b3-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/8ab665d11d6f994657f511b3-w1068.webp",
+          "height": 632,
+          "url": "/assets/optimized/8ab665d11d6f994657f511b3-w1068.webp",
+          "width": 1068
         }
       ]
     },
@@ -1048,6 +1102,12 @@
           "height": 960,
           "url": "/assets/optimized/92e2c726190cf5cfbcfa47be-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/92e2c726190cf5cfbcfa47be-w1200.webp",
+          "height": 1200,
+          "url": "/assets/optimized/92e2c726190cf5cfbcfa47be-w1200.webp",
+          "width": 1200
         }
       ]
     },
@@ -1073,6 +1133,12 @@
           "height": 1359,
           "url": "/assets/optimized/a7cb7e6de578470b13c244f2-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/a7cb7e6de578470b13c244f2-w1054.webp",
+          "height": 1492,
+          "url": "/assets/optimized/a7cb7e6de578470b13c244f2-w1054.webp",
+          "width": 1054
         }
       ]
     },
@@ -1098,6 +1164,12 @@
           "height": 960,
           "url": "/assets/optimized/a992af0e944462922ea3cd5a-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/a992af0e944462922ea3cd5a-w1278.webp",
+          "height": 1278,
+          "url": "/assets/optimized/a992af0e944462922ea3cd5a-w1278.webp",
+          "width": 1278
         }
       ]
     },
@@ -1123,6 +1195,12 @@
           "height": 1440,
           "url": "/assets/optimized/ae5d31c05406aab91adf23ad-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/ae5d31c05406aab91adf23ad-w1200.webp",
+          "height": 1800,
+          "url": "/assets/optimized/ae5d31c05406aab91adf23ad-w1200.webp",
+          "width": 1200
         }
       ]
     },
@@ -1173,6 +1251,12 @@
           "height": 960,
           "url": "/assets/optimized/be7bb11286e5d8b55ff2e3ab-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/be7bb11286e5d8b55ff2e3ab-w1280.webp",
+          "height": 1280,
+          "url": "/assets/optimized/be7bb11286e5d8b55ff2e3ab-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -1198,6 +1282,12 @@
           "height": 720,
           "url": "/assets/optimized/c6d33c90054fa3023d477fe0-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/c6d33c90054fa3023d477fe0-w1280.webp",
+          "height": 960,
+          "url": "/assets/optimized/c6d33c90054fa3023d477fe0-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -1223,6 +1313,12 @@
           "height": 720,
           "url": "/assets/optimized/d48de816e4e49c8042defc94-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/d48de816e4e49c8042defc94-w1200.webp",
+          "height": 900,
+          "url": "/assets/optimized/d48de816e4e49c8042defc94-w1200.webp",
+          "width": 1200
         }
       ]
     },
@@ -1317,6 +1413,12 @@
           "height": 640,
           "url": "/assets/optimized/f108bffbbecae9ce261d2289-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/f108bffbbecae9ce261d2289-w1280.webp",
+          "height": 853,
+          "url": "/assets/optimized/f108bffbbecae9ce261d2289-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -1342,6 +1444,12 @@
           "height": 1359,
           "url": "/assets/optimized/f5c33b0bc686decdd307d8f7-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/f5c33b0bc686decdd307d8f7-w1054.webp",
+          "height": 1492,
+          "url": "/assets/optimized/f5c33b0bc686decdd307d8f7-w1054.webp",
+          "width": 1054
         }
       ]
     },
@@ -1367,6 +1475,12 @@
           "height": 480,
           "url": "/assets/optimized/f68c961dc8b83f17a3eff35d-w960.webp",
           "width": 960
+        },
+        {
+          "file": "assets/optimized/f68c961dc8b83f17a3eff35d-w1280.webp",
+          "height": 640,
+          "url": "/assets/optimized/f68c961dc8b83f17a3eff35d-w1280.webp",
+          "width": 1280
         }
       ]
     },
@@ -1406,12 +1520,13 @@
   "requestedWidths": [
     320,
     640,
-    960
+    960,
+    1280
   ],
   "rewrittenHtmlImageCount": 562,
   "rewrittenJsonValueCount": 73,
   "schemaVersion": 1,
-  "scope": "kingdom-circuit-production",
+  "scope": "kingdom-circuit-test",
   "selectedSourceCount": 197,
   "socialImageMetaRewriteCount": 128,
   "sourceCount": 197,

@@ -39,7 +39,7 @@
     "enabled": true,
     "category": "core",
     "activeStatus": "active_or_unknown",
-    "imageUrl": "assets/optimized/121c9afe8742058087b882a1-w960.webp",
+    "imageUrl": "assets/optimized/121c9afe8742058087b882a1-w1280.webp",
     "imagePosition": "center",
     "preferArtistImage": true,
     "website": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
@@ -78,7 +78,7 @@
     "enabled": true,
     "category": "reach",
     "label": "Reach Records",
-    "imageUrl": "assets/optimized/ae5d31c05406aab91adf23ad-w960.webp",
+    "imageUrl": "assets/optimized/ae5d31c05406aab91adf23ad-w1200.webp",
     "imagePosition": "50% 24%",
     "preferArtistImage": true,
     "activeStatus": "active_or_unknown",
@@ -416,7 +416,7 @@
     "collective": "HOG MOB Ministries",
     "officialProfile": "https://hogmob.com/sevin/",
     "activeStatus": "active_or_unknown",
-    "imageUrl": "assets/optimized/5bf80dbf05e105e50d545a87-w960.webp",
+    "imageUrl": "assets/optimized/5bf80dbf05e105e50d545a87-w1100.webp",
     "imagePosition": "50% 30%",
     "preferArtistImage": true,
     "website": "https://hogmob.com/sevin/"
@@ -791,7 +791,7 @@
     "instagramProfile": "https://www.instagram.com/rareofbreed/",
     "spotifyProfile": "https://open.spotify.com/search/Rare%20of%20Breed",
     "youtubeProfile": "https://www.youtube.com/results?search_query=Rare+of+Breed+official",
-    "imageUrl": "assets/optimized/f108bffbbecae9ce261d2289-w960.webp"
+    "imageUrl": "assets/optimized/f108bffbbecae9ce261d2289-w1280.webp"
   },
   {
     "name": "Brother Bo",
@@ -911,7 +911,7 @@
     "instagramProfile": "https://www.instagram.com/thekurtishoppie/",
     "spotifyProfile": "https://open.spotify.com/artist/2eR1Z2cyHOS4gFgA2GbRl8",
     "youtubeProfile": "https://www.youtube.com/channel/UCIR10g1HVLaYF2vHuBa6u7A",
-    "imageUrl": "assets/optimized/555c3a6bc1c7ad4db8506a13-w960.webp",
+    "imageUrl": "assets/optimized/555c3a6bc1c7ad4db8506a13-w1200.webp",
     "imagePosition": "50% 22%",
     "preferArtistImage": true
   },

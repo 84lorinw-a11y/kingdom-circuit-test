@@ -6,29 +6,25 @@
     "event/zauntee-god-remembers-tour-with-skema-boy-2026-11-08-atlanta-272334/index.html",
     "event/zauntee-god-remembers-tour-with-skema-boy-2026-11-19-los-angeles-4993f6/index.html"
   ],
-  "mode": "production-post-build-repair",
+  "mode": "test-only-post-build-repair",
   "repairs": {
-    "brokenLinksReplaced": 15,
     "brokenSrcsetCandidatesRemoved": 0,
-    "countsUpdated": 1309,
+    "countsUpdated": 1066,
     "eventSocialImagesUpdated": 119,
     "eventTitlesUpdated": 193,
     "mergedRedirectPagesRepaired": 3,
-    "obsoleteRuntimeAssetsRemoved": 7,
-    "obsoleteRuntimeCommentsRemoved": 2,
-    "obsoleteRuntimeTagsRemoved": 1653,
-    "operationalFilesRemoved": 44,
-    "publicJsonFilesSanitized": 3,
+    "obsoleteRuntimeCommentsRemoved": 0,
+    "obsoleteRuntimeTagsRemoved": 0,
+    "operationalFilesRemoved": 2,
     "runtimeOperationalStatusFetchesRemoved": 1,
-    "runtimePrivateRegistryFieldsRemoved": 299,
-    "runtimeSourceFragmentsRemoved": 2,
-    "runtimeSourceHelpersRemoved": 1,
-    "sourceLabelsReplaced": 1130,
-    "sourceNodesRemoved": 1242,
-    "staticPageDataLoadsRemoved": 1
+    "runtimePrivateRegistryFieldsRemoved": 0,
+    "runtimeSourceHelpersRemoved": 0,
+    "sourceLabelsReplaced": 0,
+    "sourceNodesRemoved": 0,
+    "testAnalyticsTagsRemoved": 1732
   },
   "schemaVersion": 1,
-  "siteBase": "/",
-  "sitemapPolicy": "complete self-canonical production site",
-  "sitemapUrlCount": 860
+  "sitemapPolicy": "complete self-canonical test mirror; global noindex is intentional",
+  "sitemapUrlCount": 861,
+  "testBase": "/kingdom-circuit-test/"
 }
