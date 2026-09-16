@@ -241,7 +241,7 @@ def style_with_position(value: Optional[str], position: str) -> str:
     return ";".join(declarations)
 
 
-def patch_html(text: str) -> tuple[str, int, int]:
+def patch_html(text: str, *, focal_only: bool = False) -> tuple[str, int, int]:
     parser = SiteImageParser(text)
     parser.feed(text)
     replacements: list[tuple[int, int, str]] = []
@@ -250,7 +250,7 @@ def patch_html(text: str) -> tuple[str, int, int]:
     for occurrence in parser.images:
         attrs = occurrence.attr_map
         updates: dict[str, Optional[str]] = {}
-        if "event-media" in occurrence.context_classes:
+        if not focal_only and "event-media" in occurrence.context_classes:
             updates["sizes"] = CARD_SIZES
             card_images += 1
         rule = focal_rule_for_source(str(attrs.get("src") or ""))
@@ -269,7 +269,11 @@ def patch_html(text: str) -> tuple[str, int, int]:
             )
     for start, end, replacement in sorted(replacements, reverse=True):
         text = text[:start] + replacement + text[end:]
-    if "data-kc-test-image-overlay" not in text and re.search(r"</head>", text, re.I):
+    if (
+        not focal_only
+        and "data-kc-test-image-overlay" not in text
+        and re.search(r"</head>", text, re.I)
+    ):
         text = re.sub(
             r"</head>",
             f'<link rel="stylesheet" href="{CSS_HREF}" data-kc-test-image-overlay>\n</head>',
@@ -312,11 +316,12 @@ def validate_target(site: Path) -> None:
     raise SystemExit("Refusing to modify the directory containing this overlay script.")
 
 
-def apply(site: Path) -> dict[str, object]:
+def apply(site: Path, *, focal_only: bool = False) -> dict[str, object]:
     validate_target(site)
-    assets = site / "assets"
-    assets.mkdir(parents=True, exist_ok=True)
-    (assets / CSS_NAME).write_text(OVERLAY_CSS, encoding="utf-8")
+    if not focal_only:
+        assets = site / "assets"
+        assets.mkdir(parents=True, exist_ok=True)
+        (assets / CSS_NAME).write_text(OVERLAY_CSS, encoding="utf-8")
 
     html_pages = 0
     changed_pages = 0
@@ -324,7 +329,7 @@ def apply(site: Path) -> dict[str, object]:
     focal_images = 0
     for path in sorted(site.rglob("*.html")):
         original = path.read_text(encoding="utf-8")
-        updated, page_cards, page_focals = patch_html(original)
+        updated, page_cards, page_focals = patch_html(original, focal_only=focal_only)
         html_pages += 1
         card_images += page_cards
         focal_images += page_focals
@@ -347,7 +352,7 @@ def apply(site: Path) -> dict[str, object]:
         json_files += 1
 
     return {
-        "scope": "test-image-only",
+        "scope": "focal-preparation" if focal_only else "test-image-only",
         "htmlPages": html_pages,
         "htmlPagesChanged": changed_pages,
         "eventCardImagesSized": card_images,
@@ -360,8 +365,13 @@ def apply(site: Path) -> dict[str, object]:
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("site", type=Path, help="completed mirrored test artifact")
+    parser.add_argument(
+        "--focal-only",
+        action="store_true",
+        help="prepare focal metadata before optimization without adding test CSS or card sizing",
+    )
     args = parser.parse_args(argv)
-    report = apply(args.site.expanduser().resolve())
+    report = apply(args.site.expanduser().resolve(), focal_only=args.focal_only)
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 

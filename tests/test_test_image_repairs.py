@@ -101,6 +101,20 @@ class TestImageRepairs(unittest.TestCase):
             self.assertIn("1280w", rewritten)
             self.assertIn(f'sizes="{repairs.CARD_SIZES}"', rewritten)
 
+    def test_focal_only_preparation_avoids_test_presentation_overlay(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            site = self.build_site(Path(raw))
+            report = repairs.apply(site, focal_only=True)
+            updated = (site / "index.html").read_text(encoding="utf-8")
+
+            self.assertEqual(report["scope"], "focal-preparation")
+            self.assertEqual(report["eventCardImagesSized"], 0)
+            self.assertIn('data-kc-image-focal="cj-emulous"', updated)
+            self.assertIn('data-kc-image-focal="hulvey"', updated)
+            self.assertNotIn("data-kc-test-image-overlay", updated)
+            self.assertNotIn(repairs.CARD_SIZES, updated)
+            self.assertFalse((site / "assets" / repairs.CSS_NAME).exists())
+
     def test_target_guard_rejects_git_worktree(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             site = self.build_site(Path(raw))
