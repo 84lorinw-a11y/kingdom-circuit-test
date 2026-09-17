@@ -10,9 +10,9 @@ import xml.etree.ElementTree as ET
 
 EXCLUDED_ARTISTS = {"chad jones", "erica mason", "big holy"}
 EXCLUDED_SLUGS = {"chad-jones", "erica-mason", "big-holy"}
-SOCIAL_PREVIEW_REL = pathlib.Path("assets/social-preview.png")
+SOCIAL_PREVIEW_REL = pathlib.Path("assets/social-preview-wordmark-20260917.png")
 SOCIAL_PREVIEW_URL = (
-    "https://84lorinw-a11y.github.io/kingdom-circuit-test/assets/social-preview.png"
+    "https://84lorinw-a11y.github.io/kingdom-circuit-test/assets/social-preview-wordmark-20260917.png"
 )
 SOCIAL_PREVIEW_ALT = "The Kingdom Circuit — Find Christian Hip-Hop Shows & Festivals"
 SOCIAL_PREVIEW_SIZE = (1200, 630)
@@ -145,16 +145,20 @@ def set_meta(text: str, key: str, value: str) -> str:
     return text.replace("</head>", tag + "</head>", 1)
 
 
-def uses_generic_logo_social_image(text: str) -> bool:
+def uses_replaceable_default_social_image(text: str) -> bool:
     values = (meta_content(text, "og:image"), meta_content(text, "twitter:image"))
     return any(
-        re.search(r"/assets/(?:logo|logo-wordmark)\.(?:png|svg)(?:[?#]|$)", value, flags=re.I)
+        re.search(
+            r"/assets/(?:(?:logo|logo-wordmark)\.(?:png|svg)|social-preview\.png)(?:[?#]|$)",
+            value,
+            flags=re.I,
+        )
         for value in values
     )
 
 
 def apply_social_preview(text: str, rel: pathlib.Path) -> tuple[str, bool]:
-    if rel != pathlib.Path("index.html") and not uses_generic_logo_social_image(text):
+    if rel != pathlib.Path("index.html") and not uses_replaceable_default_social_image(text):
         return text, False
 
     original = text
@@ -271,6 +275,8 @@ def verify(out_dir: pathlib.Path, removed_event_slugs: set[str]) -> None:
             value = meta_content(text, key)
             if "logo-wordmark.svg" in value.casefold():
                 failures.append(f"social-preview:legacy-wordmark:{rel}:{key}")
+            if re.search(r"/assets/social-preview\.png(?:[?#]|$)", value, flags=re.I):
+                failures.append(f"social-preview:legacy-old-logo-card:{rel}:{key}")
 
         if meta_content(text, "og:image") == SOCIAL_PREVIEW_URL:
             expected = {
