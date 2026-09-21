@@ -27,7 +27,10 @@ class ExactLiveMirrorTests(unittest.TestCase):
             '<script src="/app.js"></script>'
             '<script>gtag("config","G-N2KK9XF4TJ")</script></head>'
             '<body><a href="/artists/petrina-delacey/">Petrina DeLacey</a>'
-            '<img src="/assets/petrina.jpg"></body></html>'
+            '<img src="/assets/petrina.jpg" '
+            'srcset="/assets/petrina-small.jpg 320w, /assets/petrina.jpg 640w" '
+            'onerror="this.src=&#x27;/assets/event-fallback.webp&#x27;">'
+            '</body></html>'
         )
         (live / "index.html").write_text(html, encoding="utf-8")
         (live / "artists" / "petrina-delacey" / "index.html").write_text(
@@ -102,6 +105,15 @@ class ExactLiveMirrorTests(unittest.TestCase):
             home = (test / "index.html").read_text(encoding="utf-8")
             self.assertIn('content="noindex,nofollow"', home)
             self.assertIn("/kingdom-circuit-test/assets/petrina.jpg", home)
+            self.assertIn(
+                "/kingdom-circuit-test/assets/petrina-small.jpg 320w, "
+                "/kingdom-circuit-test/assets/petrina.jpg 640w",
+                home,
+            )
+            self.assertIn(
+                "&#x27;/kingdom-circuit-test/assets/event-fallback.webp&#x27;",
+                home,
+            )
             self.assertIn(
                 "https://84lorinw-a11y.github.io/kingdom-circuit-test/",
                 home,

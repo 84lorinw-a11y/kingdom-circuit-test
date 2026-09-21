@@ -51,6 +51,16 @@ OMITTED_REPORT_FILES = frozenset(
         "seo-overlay-manifest.json",
     }
 )
+ROOT_SITE_TARGET = (
+    r"(?:(?:assets|artists|config|event|festivals|new-shows|shows|submit)/)"
+    r"|(?:app\.js|events\.json|robots\.txt|run-status\.json|"
+    r"seo-enhancements\.js|seo-static\.js|sitemap\.xml|styles\.css|"
+    r"supplemental-events\.json)"
+)
+ROOT_SITE_REFERENCE = re.compile(
+    rf"(?P<prefix>[\"'`(=,\s]|&#x27;|&quot;)/(?P<path>{ROOT_SITE_TARGET})",
+    re.I,
+)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -61,17 +71,14 @@ def rewrite_site_urls(text: str) -> str:
     return text.replace(LIVE_SITE + "/", TEST_SITE + "/").replace(LIVE_SITE, TEST_SITE)
 
 
-def rewrite_quoted_root_paths(text: str) -> str:
-    # JavaScript helper files contain absolute production paths both as values
-    # and inside selectors. Prefix only known site paths so third-party URLs and
-    # regular expressions retain their production behavior.
-    for prefix in INTERNAL_PATH_PREFIXES:
-        for quote in ('"', "'", "`"):
-            text = text.replace(f"{quote}/{prefix}", f"{quote}{TEST_BASE}{prefix}")
-    for filename in INTERNAL_ROOT_FILES:
-        for quote in ('"', "'", "`"):
-            text = text.replace(f"{quote}/{filename}", f"{quote}{TEST_BASE}{filename}")
-    return text
+def rewrite_root_paths(text: str) -> str:
+    # Prefix root-relative site references in attributes, JavaScript strings,
+    # HTML-encoded event handlers, CSS url() values, and every srcset candidate.
+    # The prefix requirement avoids touching /assets/ inside third-party URLs.
+    return ROOT_SITE_REFERENCE.sub(
+        lambda match: match.group("prefix") + TEST_BASE + match.group("path"),
+        text,
+    )
 
 
 def rewrite_html(text: str) -> str:
@@ -81,7 +88,7 @@ def rewrite_html(text: str) -> str:
         lambda match: match.group("prefix") + TEST_BASE,
         text,
     )
-    text = rewrite_quoted_root_paths(text)
+    text = rewrite_root_paths(text)
     robots = re.compile(
         r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*["\']\s*/?>',
         re.I,
@@ -112,7 +119,7 @@ def rewrite_js(text: str) -> str:
         text,
         count=1,
     )
-    return rewrite_quoted_root_paths(text)
+    return rewrite_root_paths(text)
 
 
 def rewrite_css(text: str) -> str:
@@ -123,7 +130,7 @@ def rewrite_css(text: str) -> str:
         text,
         flags=re.I,
     )
-    return text
+    return rewrite_root_paths(text)
 
 
 def rewrite_xml(text: str) -> str:
@@ -227,6 +234,8 @@ def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path) -> dict[s
             failures.append(f"indexable:{relative}")
         if bad_root.search(text):
             failures.append(f"bad-root-path:{relative}")
+        if ROOT_SITE_REFERENCE.search(text):
+            failures.append(f"unprefixed-site-path:{relative}")
         if LIVE_GA in text:
             failures.append(f"live-analytics:{relative}")
 
@@ -276,7 +285,8 @@ def main() -> None:
         "mode": "exact-live-artifact-mirror",
         "liveCommit": live_sha,
         "liveDeploymentRunId": live_run_id,
-        "source": "84lorinw-a11y/kingdom-circuit@main",
+        "source": "https://kingdomcircuit.com (deployed site snapshot)",
+        "captureAuthority": "published-live-site",
         "testBase": TEST_BASE,
         "contentAndLayoutParity": True,
         "dataFilesByteIdentical": True,
