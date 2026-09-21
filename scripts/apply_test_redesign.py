@@ -27,6 +27,7 @@ VERSION = "mobile-first-test-redesign-v1"
 SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
 NEW_WINDOW_DAYS = 7
 PAST_GRACE_DAYS = 1
+PAST_ARCHIVE_LIMIT = 12
 INACTIVE_STATUSES = {"cancelled", "canceled", "postponed", "merged"}
 EVENT_CARD_PATTERN = re.compile(
     r'<article\b(?=[^>]*\bdata-event-card\b)[^>]*>.*?</article>',
@@ -34,6 +35,10 @@ EVENT_CARD_PATTERN = re.compile(
 )
 ARTIST_CARD_PATTERN = re.compile(
     r'<article\b(?=[^>]*\bdata-artist-card\b)[^>]*>.*?</article>',
+    re.I | re.S,
+)
+PAST_SHOW_ROW_PATTERN = re.compile(
+    r'<article\b(?=[^>]*\bpast-show-row\b)[^>]*>.*?</article>',
     re.I | re.S,
 )
 
@@ -142,6 +147,21 @@ def prune_expired_event_cards(document: str, cutoff: dt.date) -> str:
         return "" if last_date is not None and last_date < cutoff else card
 
     return EVENT_CARD_PATTERN.sub(keep_or_remove, document)
+
+
+def card_last_date(card: str) -> dt.date | None:
+    opening = card[: card.find(">") + 1]
+    return parse_iso_date(
+        attribute(opening, "data-end-date") or attribute(opening, "data-date")
+    )
+
+
+def expired_event_cards(document: str, cutoff: dt.date) -> list[str]:
+    return [
+        card
+        for card in event_cards(document)
+        if (last_date := card_last_date(card)) is not None and last_date < cutoff
+    ]
 
 
 def update_results_count(document: str) -> str:
@@ -545,9 +565,19 @@ def transform_directory(
 def event_metadata(card: str) -> dict[str, str]:
     opening = card[: card.find(">") + 1]
     date_iso = attribute(opening, "data-date")
-    href_match = re.search(r'<h3>\s*<a\b[^>]*href="([^"]+)"', card, re.S)
+    title_match = re.search(
+        r'<h3>\s*<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>\s*</h3>',
+        card,
+        re.I | re.S,
+    )
+    href_match = title_match
     if not href_match:
         href_match = re.search(r'<a\b[^>]*href="([^"]+)"', card, re.S)
+    artist_match = re.search(
+        r'<p\b[^>]*class="[^"]*\bartist-line\b[^"]*"[^>]*>(.*?)</p>',
+        card,
+        re.I | re.S,
+    )
     values: dict[str, str] = {}
     for label, value in re.findall(r'<div>\s*<dt>(.*?)</dt>\s*<dd>(.*?)</dd>\s*</div>', card, re.S):
         values[clean_text(label).lower()] = clean_text(value)
@@ -564,7 +594,9 @@ def event_metadata(card: str) -> dict[str, str]:
         month, day = "", ""
     return {
         "href": html.unescape(href_match.group(1)) if href_match else TEST_BASE,
+        "title": clean_text(title_match.group(2)) if title_match else "Past show",
         "date": date_text,
+        "start_date": date_iso[:10],
         "month": month,
         "day": day,
         "venue": values.get("venue", "Venue to be announced"),
@@ -572,7 +604,109 @@ def event_metadata(card: str) -> dict[str, str]:
         "time": time,
         "state": attribute(opening, "data-state").strip().upper(),
         "end_date": attribute(opening, "data-end-date") or date_iso,
+        "artist_markup": artist_match.group(1).strip() if artist_match else "",
     }
+
+
+def past_date_label(value: str) -> str:
+    parsed = parse_iso_date(value)
+    if parsed is None:
+        return value or "Past date"
+    return f"{parsed.strftime('%b')} {parsed.day}, {parsed.year}"
+
+
+def past_show_row(card: str) -> str:
+    event = event_metadata(card)
+    href = html.escape(event["href"], quote=True)
+    title = html.escape(event["title"])
+    artist_markup = re.sub(
+        r"</a>\s*(?:-|&middot;|&#183;|·)\s*<a",
+        "</a> · <a",
+        event["artist_markup"],
+        flags=re.I,
+    )
+    details = [
+        artist_markup,
+        html.escape(event["venue"]),
+        html.escape(event["location"]),
+    ]
+    details_html = " · ".join(part for part in details if part)
+    return (
+        '<article class="past-show-row">'
+        f'<div class="past-show-date">{html.escape(past_date_label(event["start_date"]))}</div>'
+        '<div class="past-show-copy">'
+        f'<h3><a href="{href}">{title}</a></h3>'
+        f"<p>{details_html}</p>"
+        "</div></article>"
+    )
+
+
+def past_row_href(row: str) -> str:
+    match = re.search(
+        r'<h3>\s*<a\b[^>]*href="([^"]+)"',
+        row,
+        re.I | re.S,
+    )
+    return html.unescape(match.group(1)).strip() if match else ""
+
+
+def past_archive_section(rows: list[str]) -> str:
+    count = len(rows)
+    noun = "show" if count == 1 else "shows"
+    return (
+        '<section class="past-shows-archive" data-past-shows-archive>'
+        '<details><summary><span>Past shows</span>'
+        f'<span class="past-count">{count} archived {noun}</span></summary>'
+        f'<div class="past-show-list">{"".join(rows)}</div>'
+        '<p class="past-archive-note">Past listings are preserved for concert history. '
+        "Upcoming shows remain at the top of this page.</p></details></section>"
+    )
+
+
+def archive_expired_profile_cards(
+    document: str,
+    cutoff: dt.date,
+) -> tuple[str, int]:
+    """Move newly expired profile cards into the existing Past Shows archive."""
+    expired = sorted(
+        expired_event_cards(document, cutoff),
+        key=lambda card: event_metadata(card)["start_date"],
+        reverse=True,
+    )
+    if not expired:
+        return document, 0
+
+    section_match = re.search(
+        r'<section class="past-shows-archive"[^>]*>.*?</section>',
+        document,
+        re.I | re.S,
+    )
+    existing_rows = (
+        PAST_SHOW_ROW_PATTERN.findall(section_match.group(0)) if section_match else []
+    )
+    existing_hrefs = {past_row_href(row) for row in existing_rows if past_row_href(row)}
+    added_rows: list[str] = []
+    for card in expired:
+        row = past_show_row(card)
+        href = past_row_href(row)
+        if href and href in existing_hrefs:
+            continue
+        if href:
+            existing_hrefs.add(href)
+        added_rows.append(row)
+
+    if not added_rows:
+        return document, 0
+
+    rows = (added_rows + existing_rows)[:PAST_ARCHIVE_LIMIT]
+    section = past_archive_section(rows)
+    if section_match:
+        document = document[: section_match.start()] + section + document[section_match.end() :]
+    elif "</main>" in document:
+        document = document.replace("</main>", section + "\n</main>", 1)
+    else:
+        raise ValueError("artist profile main element was not found for Past Shows archive")
+    return document, len(added_rows)
 
 
 def show_row(event: dict[str, str]) -> str:
@@ -872,9 +1006,13 @@ def main(argv: list[str] | None = None) -> None:
 
     documents: dict[pathlib.PurePath, str] = {}
     expired_card_count = 0
+    expired_profile_cards_archived = 0
     for page in iter_html(site):
         relative = page.relative_to(site)
         document = page.read_text(encoding="utf-8")
+        if is_profile_page(relative, document):
+            document, archived = archive_expired_profile_cards(document, cutoff)
+            expired_profile_cards_archived += archived
         before = len(event_cards(document))
         document = prune_expired_event_cards(document, cutoff)
         expired_card_count += before - len(event_cards(document))
@@ -902,6 +1040,7 @@ def main(argv: list[str] | None = None) -> None:
 
     profile_pages = 0
     profile_show_rows = 0
+    profile_past_show_rows = 0
     profile_pages_with_past = 0
     header_pages = 0
     for relative, document in documents.items():
@@ -915,6 +1054,7 @@ def main(argv: list[str] | None = None) -> None:
             document, event_rows, has_past = transform_artist_profile(document)
             profile_pages += 1
             profile_show_rows += event_rows
+            profile_past_show_rows += len(PAST_SHOW_ROW_PATTERN.findall(document))
             profile_pages_with_past += int(has_past)
         document = replace_legacy_header(document, profile_header() if profile else full_header(relative))
         document = inject_assets(document)
@@ -939,6 +1079,7 @@ def main(argv: list[str] | None = None) -> None:
         "artistCount": artist_count,
         "profilePageCount": profile_pages,
         "profileShowRowCount": profile_show_rows,
+        "profilePastShowRowCount": profile_past_show_rows,
         "profilePagesWithPastShows": profile_pages_with_past,
         "headerPageCount": header_pages,
         "artistSubmissionPath": f"{TEST_BASE}submit/artist/",
@@ -950,6 +1091,7 @@ def main(argv: list[str] | None = None) -> None:
         "monthStateCount": month_state_count,
         "monthArtistCount": month_artist_count,
         "expiredEventCardsRemoved": expired_card_count,
+        "expiredProfileCardsArchived": expired_profile_cards_archived,
         "sourceMetadataUsed": bool(args.source_events),
         "productionChanged": False,
     }

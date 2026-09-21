@@ -208,6 +208,24 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     expect(".kc-rd-header" in css, "redesign-css:missing-header-rule")
     expect(".kc-rd-directory-intro" in css, "redesign-css:missing-directory-intro-rule")
     expect(".kc-rd-profile-page" in css, "redesign-css:missing-profile-rule")
+    desktop_image_rule = re.search(
+        r"\[data-artist-directory\]\s+\.artist-visual\s+img\s*\{([^}]*)\}",
+        css,
+        re.S,
+    )
+    expect(desktop_image_rule is not None, "redesign-css:missing-directory-image-rule")
+    if desktop_image_rule is not None:
+        image_css = desktop_image_rule.group(1)
+        for declaration in (
+            "position: absolute",
+            "width: 100%",
+            "height: 100%",
+            "object-fit: cover",
+        ):
+            expect(
+                declaration in image_css,
+                f"redesign-css:directory-image-rule:{declaration}",
+            )
 
     pages: list[ParsedPage] = []
     for path in sorted(root.rglob("*.html")):
@@ -317,6 +335,19 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         expect(len(checkboxes) == 1, f"directory:upcoming-checkbox-count:{len(checkboxes)}")
         directory_artist_count = count_marker_articles(directory.source, "data-artist-card")
         expect(directory_artist_count > 0, "directory:no-artist-cards")
+        for index, card in enumerate(directory.by_attr("data-artist-card")):
+            descendants = list(card.descendants())
+            visuals = [
+                node
+                for node in descendants
+                if {"artist-visual", "artist-visual-empty"} & node.classes
+            ]
+            bodies = [node for node in descendants if "artist-card-body" in node.classes]
+            expect(len(visuals) == 1, f"directory:visual-count:{index}:{len(visuals)}")
+            expect(len(bodies) == 1, f"directory:body-count:{index}:{len(bodies)}")
+            if len(bodies) == 1:
+                headings = [node for node in bodies[0].descendants() if node.tag == "h2"]
+                expect(len(headings) == 1, f"directory:title-count:{index}:{len(headings)}")
         count_nodes = directory.by_class("kc-rd-directory-count")
         expect(len(count_nodes) == 1, f"directory:count-blocks:{len(count_nodes)}")
         expect(
@@ -406,6 +437,7 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
 
     profile_pages = [page for page in pages if is_first_level_artist_profile(page)]
     profile_show_rows = 0
+    profile_past_show_rows = 0
     profile_pages_with_past = 0
     for page in profile_pages:
         new_profiles = page.by_class("kc-rd-artist-profile")
@@ -446,6 +478,44 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
                     any(node.tag == "summary" for node in details[0].descendants()),
                     f"profile:past-summary-missing:{page.relative}",
                 )
+            archived_rows = [
+                node for node in past.descendants() if "past-show-row" in node.classes
+            ]
+            profile_past_show_rows += len(archived_rows)
+            count_nodes = [
+                node for node in past.descendants() if "past-count" in node.classes
+            ]
+            expect(
+                len(count_nodes) == 1,
+                f"profile:past-count-nodes:{page.relative}:{len(count_nodes)}",
+            )
+            expect(
+                integer_from(count_nodes[0] if len(count_nodes) == 1 else None)
+                == len(archived_rows),
+                f"profile:past-count-mismatch:{page.relative}",
+            )
+            expect(
+                len(archived_rows) <= 12,
+                f"profile:past-limit:{page.relative}:{len(archived_rows)}",
+            )
+            hrefs: list[str] = []
+            for index, archived in enumerate(archived_rows):
+                href = first_anchor_href(archived)
+                hrefs.append(href)
+                dates = [
+                    node
+                    for node in archived.descendants()
+                    if "past-show-date" in node.classes
+                ]
+                expect(bool(href), f"profile:past-row-unlinked:{page.relative}:{index}")
+                expect(
+                    len(dates) == 1 and bool(normalized_text(dates[0].text_content())),
+                    f"profile:past-row-date:{page.relative}:{index}",
+                )
+            expect(
+                len([href for href in hrefs if href]) == len(set(href for href in hrefs if href)),
+                f"profile:past-duplicate-links:{page.relative}",
+            )
 
     manifest_path = root / MANIFEST
     manifest: dict[str, object] = {}
@@ -465,6 +535,7 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         "artistCount": directory_artist_count,
         "profilePageCount": len(profile_pages),
         "profileShowRowCount": profile_show_rows,
+        "profilePastShowRowCount": profile_past_show_rows,
         "profilePagesWithPastShows": profile_pages_with_past,
         "headerPageCount": len(pages),
         "artistSubmissionPath": TEST_BASE + "submit/artist/",

@@ -31,7 +31,8 @@ class TestRedesignVerifier(unittest.TestCase):
     def build_site(self, root: pathlib.Path) -> None:
         (root / "assets").mkdir(parents=True)
         (root / "assets" / "kc-redesign-v1.css").write_text(
-            ".kc-rd-header{display:flex}.kc-rd-directory-intro{font-size:2rem}.kc-rd-profile-page{display:block}",
+            ".kc-rd-header{display:flex}.kc-rd-directory-intro{font-size:2rem}.kc-rd-profile-page{display:block}"
+            "[data-artist-directory] .artist-visual img{position: absolute;width: 100%;height: 100%;object-fit: cover}",
             encoding="utf-8",
         )
         (root / "assets" / "kc-redesign-v1.js").write_text("document.documentElement.classList.add('kc-rd-ready');", encoding="utf-8")
@@ -49,8 +50,10 @@ class TestRedesignVerifier(unittest.TestCase):
 <main>
   <section class="kc-rd-directory-intro"><h1>Meet the artists we track.</h1><p class="kc-rd-directory-count"><strong>2</strong> CHH Artists</p><a href="/kingdom-circuit-test/submit/">Submit a Show</a><a href="/kingdom-circuit-test/submit/artist/">Submit a CHH Artist to Be Listed</a></section>
   <label><input type="checkbox" data-has-shows-filter> Artists with shows</label>
-  <article data-artist-card><a href="/kingdom-circuit-test/artists/alpha/">Alpha</a><p class="seo-card-next">Next: Sep 22, 2026 · Detroit, MI</p></article>
-  <article data-artist-card><a href="/kingdom-circuit-test/artists/beta/">Beta</a></article>
+  <section data-artist-directory>
+    <article data-artist-card><a class="artist-visual" href="/kingdom-circuit-test/artists/alpha/"><img src="/kingdom-circuit-test/assets/alpha.webp" alt="Alpha"></a><div class="artist-card-body"><h2><a href="/kingdom-circuit-test/artists/alpha/">Alpha</a></h2><p class="seo-card-next">Next: Sep 22, 2026 · Detroit, MI</p></div></article>
+    <article data-artist-card><a class="artist-visual-empty" href="/kingdom-circuit-test/artists/beta/">B</a><div class="artist-card-body"><h2><a href="/kingdom-circuit-test/artists/beta/">Beta</a></h2></div></article>
+  </section>
 </main>''')
         (root / "artists").mkdir()
         (root / "artists" / "index.html").write_text(artists, encoding="utf-8")
@@ -63,7 +66,7 @@ class TestRedesignVerifier(unittest.TestCase):
     <article class="kc-rd-show-row"><a href="/kingdom-circuit-test/event/one/">Sep 22 — Detroit — Saint Andrew's Hall</a></article>
     <article class="kc-rd-show-row"><a href="/kingdom-circuit-test/event/two/">Sep 23 — Chicago — House of Blues</a></article>
   </div>
-  <section class="kc-rd-past-shows"><details><summary>Past shows</summary><p>Archived show</p></details></section>
+  <section class="kc-rd-past-shows"><details><summary><span>Past shows</span><span class="past-count">1 archived show</span></summary><div class="past-show-list"><article class="past-show-row"><div class="past-show-date">Sep 19, 2026</div><div class="past-show-copy"><h3><a href="/kingdom-circuit-test/event/past-one/">Past show</a></h3><p>Past Venue · Chicago, IL</p></div></article></div></details></section>
 </main>''')
         (root / "artists" / "alpha").mkdir()
         (root / "artists" / "alpha" / "index.html").write_text(profile, encoding="utf-8")
@@ -88,6 +91,7 @@ class TestRedesignVerifier(unittest.TestCase):
             "artistCount": 2,
             "profilePageCount": 1,
             "profileShowRowCount": 2,
+            "profilePastShowRowCount": 1,
             "profilePagesWithPastShows": 1,
             "headerPageCount": 5,
             "artistSubmissionPath": "/kingdom-circuit-test/submit/artist/",

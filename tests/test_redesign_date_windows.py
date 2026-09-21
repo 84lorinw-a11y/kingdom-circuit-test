@@ -77,6 +77,91 @@ class TestActiveEventWindow(unittest.TestCase):
         self.assertEqual(pruned.count("data-event-card"), 1)
 
 
+class TestPastShowsMigration(unittest.TestCase):
+    def test_expired_hulvey_show_moves_into_past_shows_once(self) -> None:
+        cutoff = dt.date(2026, 9, 20)
+        archived_rows = "".join(
+            f'''<article class="past-show-row"><div class="past-show-date">Sep {15 - index}, 2026</div>
+<div class="past-show-copy"><h3><a href="/kingdom-circuit-test/event/old-{index}/">Old {index}</a></h3><p>Old Venue · Old City</p></div></article>'''
+            for index in range(12)
+        )
+        archive = f'''<section class="past-shows-archive" data-past-shows-archive><details>
+<summary><span>Past shows</span><span class="past-count">12 archived shows</span></summary>
+<div class="past-show-list">{archived_rows}</div>
+<p class="past-archive-note">Past listings are preserved for concert history.</p>
+</details></section>'''
+        chicago = event_card(
+            title="Hulvey - Could Be Tonight Tour",
+            slug="hulvey-could-be-tonight-tour-2026-09-19-chicago-96a450",
+            start="2026-09-19",
+            end="2026-09-19",
+            city="Chicago",
+            state="IL",
+            artists="Hulvey|indie tribe.|Kijan Boone",
+        )
+        detroit = event_card(
+            title="Hulvey - Could Be Tonight Tour",
+            slug="hulvey-could-be-tonight-tour-2026-09-18-detroit-0bd71c",
+            start="2026-09-18",
+            end="2026-09-18",
+            city="Detroit",
+            state="MI",
+            artists="Hulvey|indie tribe.|Kijan Boone",
+        )
+        minneapolis = event_card(
+            title="Hulvey Live at First Ave",
+            slug="hulvey-live-at-first-ave-2026-09-20-minneapolis-31908f",
+            start="2026-09-20",
+            end="2026-09-20",
+            city="Minneapolis",
+            state="MN",
+            artists="Hulvey|indie tribe.|Kijan Boone",
+        )
+        document = f"<main>{chicago}{detroit}{minneapolis}{archive}</main>"
+
+        migrated, added = redesign.archive_expired_profile_cards(document, cutoff)
+        self.assertEqual(added, 2)
+        self.assertEqual(migrated.count('class="past-show-row"'), 12)
+        self.assertIn("12 archived shows", migrated)
+        chicago_href = "/kingdom-circuit-test/event/hulvey-could-be-tonight-tour-2026-09-19-chicago-96a450/"
+        detroit_href = "/kingdom-circuit-test/event/hulvey-could-be-tonight-tour-2026-09-18-detroit-0bd71c/"
+        self.assertEqual(migrated.count(chicago_href), 2)
+        self.assertEqual(migrated.count(detroit_href), 2)
+        archive_start = migrated.index("past-show-list")
+        self.assertLess(
+            migrated.index(chicago_href, archive_start),
+            migrated.index(detroit_href, archive_start),
+        )
+
+        pruned = redesign.prune_expired_event_cards(migrated, cutoff)
+        self.assertEqual(pruned.count(chicago_href), 1)
+        self.assertEqual(pruned.count(detroit_href), 1)
+        self.assertEqual(pruned.count("data-event-card"), 1)
+        self.assertIn("Minneapolis", pruned)
+
+        migrated_again, added_again = redesign.archive_expired_profile_cards(migrated, cutoff)
+        self.assertEqual(added_again, 0)
+        self.assertEqual(migrated_again, migrated)
+
+    def test_expired_card_creates_archive_when_profile_has_none(self) -> None:
+        cutoff = dt.date(2026, 9, 20)
+        chicago = event_card(
+            title="Hulvey - Could Be Tonight Tour",
+            slug="hulvey-could-be-tonight-tour-2026-09-19-chicago-96a450",
+            start="2026-09-19",
+            end="2026-09-19",
+            city="Chicago",
+            state="IL",
+            artists="Hulvey",
+        )
+        migrated, added = redesign.archive_expired_profile_cards(f"<main>{chicago}</main>", cutoff)
+        self.assertEqual(added, 1)
+        self.assertIn('class="past-shows-archive"', migrated)
+        self.assertIn("1 archived show", migrated)
+        self.assertIn("Chicago, IL", migrated)
+        self.assertIn("Test Venue", migrated)
+
+
 class TestNewShowsWindow(unittest.TestCase):
     def test_recent_window_includes_ages_zero_through_six_only(self) -> None:
         today = dt.date(2026, 9, 21)

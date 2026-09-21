@@ -1370,21 +1370,57 @@ body .kc-rd-form-page textarea:focus-visible {
 
 @media (min-width: 901px) {
   /* Keep every desktop directory card on the same square image grid, including placeholders. */
+  body [data-artist-directory] .artist-grid {
+    grid-auto-rows: 1fr;
+    align-items: stretch;
+  }
+
   body [data-artist-directory] .artist-card {
     height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   body [data-artist-directory] .artist-visual,
   body [data-artist-directory] .artist-visual-empty {
+    position: relative;
+    display: block;
     width: 100%;
+    height: auto;
     min-height: 0;
     aspect-ratio: 1 / 1;
     flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  body [data-artist-directory] .artist-visual-empty {
+    display: grid;
+  }
+
+  body [data-artist-directory] .artist-visual img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    object-fit: cover !important;
   }
 
   body [data-artist-directory] .artist-card-body {
+    position: relative;
+    z-index: 1;
     min-width: 0;
     flex: 1 1 auto;
+    background: var(--kc-rd-panel);
+  }
+
+  body [data-artist-directory] .artist-card-body > h2 {
+    min-height: 2.2em;
+    margin: 0;
+    overflow-wrap: anywhere;
+    line-height: 1.1;
   }
 
   /* Give each source shape enough room so faces are not lost to a panoramic crop. */
