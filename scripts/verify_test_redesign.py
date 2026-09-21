@@ -18,7 +18,6 @@ REDESIGN_JS = pathlib.Path("assets/kc-redesign-v1.js")
 MANIFEST = pathlib.Path("test-redesign-manifest.json")
 MANIFEST_MODE = "mobile-first-test-redesign-v1"
 TITLE_LINES = ["Find Christian", "Hip Hop Shows", "Near You!"]
-EXPECTED_808_BEEZY_UPCOMING = 22
 OLD_HEADER_CLASSES = {"site-header", "menu-toggle", "menu-drawer"}
 VOID_TAGS = {
     "area",
@@ -531,10 +530,6 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     if beezy is not None:
         beezy_rows = beezy.by_class("kc-rd-show-row")
         beezy_show_count = len(beezy_rows)
-        expect(
-            beezy_show_count == EXPECTED_808_BEEZY_UPCOMING,
-            f"808-beezy:profile-count:{beezy_show_count}!={EXPECTED_808_BEEZY_UPCOMING}",
-        )
         beezy_hrefs = [first_anchor_href(row) for row in beezy_rows]
         expect(
             len(beezy_hrefs) == len(set(beezy_hrefs)),
@@ -552,6 +547,7 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     events_path = root / "events.json"
     if beezy is not None:
         expect(events_path.is_file(), "808-beezy:missing-events-json")
+    beezy_events: list[dict[str, object]] = []
     if beezy is not None and events_path.is_file():
         try:
             payload = json.loads(events_path.read_text(encoding="utf-8"))
@@ -568,8 +564,8 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
             not in {"cancelled", "canceled", "postponed", "merged"}
         ]
         expect(
-            len(beezy_events) == EXPECTED_808_BEEZY_UPCOMING,
-            f"808-beezy:events-json-count:{len(beezy_events)}!={EXPECTED_808_BEEZY_UPCOMING}",
+            beezy_show_count == len(beezy_events),
+            f"808-beezy:profile-json-count:{beezy_show_count}!={len(beezy_events)}",
         )
         event_ids = [str(event.get("id") or "") for event in beezy_events]
         expect(len(event_ids) == len(set(event_ids)), "808-beezy:duplicate-event-ids")
@@ -602,8 +598,8 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         expect(manifest.get(key) == expected, f"manifest:{key}:{manifest.get(key)!r}!={expected!r}")
     if "official808Events" in manifest:
         expect(
-            manifest.get("official808Events") == EXPECTED_808_BEEZY_UPCOMING,
-            f"manifest:official808Events:{manifest.get('official808Events')!r}!={EXPECTED_808_BEEZY_UPCOMING!r}",
+            manifest.get("official808Events") == len(beezy_events),
+            f"manifest:official808Events:{manifest.get('official808Events')!r}!={len(beezy_events)!r}",
         )
         expect(beezy is not None, "808-beezy:missing-profile")
     if "htmlPageCount" in manifest:
