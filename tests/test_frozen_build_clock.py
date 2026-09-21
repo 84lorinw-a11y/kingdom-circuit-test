@@ -17,6 +17,8 @@ class FrozenBuildClockTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn('KC_FINALIZE_PUBLIC_EXPERIENCE: "1"', workflow)
+        self.assertIn('"Pillow==12.3.0"', workflow)
+        self.assertIn('features.check("webp")', workflow)
 
     def test_mirror_date_freezes_date_sensitive_builders(self) -> None:
         env = os.environ.copy()

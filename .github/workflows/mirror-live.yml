@@ -85,6 +85,19 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install production image encoder
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input "Pillow==12.3.0"
+          python - <<'PY'
+          from PIL import features
+
+          if not features.check("webp"):
+              raise SystemExit("Pillow was installed without WebP support")
+          print("Pillow WebP encoder verified")
+          PY
+
       - name: Verify mirror harness
         shell: bash
         run: |
