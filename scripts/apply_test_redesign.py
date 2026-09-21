@@ -25,6 +25,11 @@ TEST_BASE = "/kingdom-circuit-test/"
 INSTAGRAM_URL = "https://www.instagram.com/thekingdomcircuit/"
 FORM_ENDPOINT = "https://formspree.io/f/mljreawj"
 VERSION = "mobile-first-test-redesign-v1"
+DEPLOYMENT_ENVIRONMENT = "test"
+GENERATED_PAGE_TITLE_SUFFIX = "Kingdom Circuit Test"
+UPCOMING_PAGE_ROBOTS = "noindex,nofollow"
+PAST_PAGE_ROBOTS = "noindex,nofollow"
+MANIFEST_FILENAME = "test-redesign-manifest.json"
 SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
 NEW_WINDOW_DAYS = 7
 PAST_GRACE_DAYS = 1
@@ -67,6 +72,32 @@ PAST_SHOW_ROW_PATTERN = re.compile(
     r'<article\b(?=[^>]*\bpast-show-row\b)[^>]*>.*?</article>',
     re.I | re.S,
 )
+
+
+def configure_environment(production: bool) -> None:
+    global TEST_BASE
+    global VERSION
+    global DEPLOYMENT_ENVIRONMENT
+    global GENERATED_PAGE_TITLE_SUFFIX
+    global UPCOMING_PAGE_ROBOTS
+    global PAST_PAGE_ROBOTS
+    global MANIFEST_FILENAME
+    if production:
+        TEST_BASE = "/"
+        VERSION = "mobile-first-live-redesign-v1"
+        DEPLOYMENT_ENVIRONMENT = "production"
+        GENERATED_PAGE_TITLE_SUFFIX = "Kingdom Circuit"
+        UPCOMING_PAGE_ROBOTS = "index,follow"
+        PAST_PAGE_ROBOTS = "noindex,follow"
+        MANIFEST_FILENAME = "assets/live-redesign-manifest.json"
+    else:
+        TEST_BASE = "/kingdom-circuit-test/"
+        VERSION = "mobile-first-test-redesign-v1"
+        DEPLOYMENT_ENVIRONMENT = "test"
+        GENERATED_PAGE_TITLE_SUFFIX = "Kingdom Circuit Test"
+        UPCOMING_PAGE_ROBOTS = "noindex,nofollow"
+        PAST_PAGE_ROBOTS = "noindex,nofollow"
+        MANIFEST_FILENAME = "test-redesign-manifest.json"
 
 
 def clean_text(value: str) -> str:
@@ -912,7 +943,7 @@ def artist_submit_main() -> str:
     <form class="kc-rd-artist-submit kc-rd-form-grid" data-kc-artist-submit-form action="{FORM_ENDPOINT}" method="post">
       <input type="hidden" name="submission_type" value="CHH artist submission">
       <input type="hidden" name="_subject" value="Kingdom Circuit CHH artist submission">
-      <input type="hidden" name="environment" value="test">
+      <input type="hidden" name="environment" value="{DEPLOYMENT_ENVIRONMENT}">
       <input type="hidden" name="page_url" value="">
       <input class="kc-rd-honeypot" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="kc-rd-field"><span>Artist or group name <b aria-hidden="true">*</b></span><input name="artistName" type="text" autocomplete="organization" required></label>
@@ -1124,11 +1155,19 @@ def create_official_event_page(
     location = ", ".join(part for part in (city, state) if part)
     official = str(event.get("officialUrl") or event.get("ticketUrl") or "#")
     image = event_card_image(template, title).replace('loading="lazy"', 'loading="eager"', 1)
+    canonical = f"https://kingdomcircuit.com{event_internal_href(event)}" if DEPLOYMENT_ENVIRONMENT == "production" else ""
+    production_head = (
+        f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">'
+        '<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2KK9XF4TJ"></script>'
+        '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}'
+        "gtag('js',new Date());gtag('config','G-N2KK9XF4TJ');</script>"
+        if canonical else ""
+    )
     target.write_text(
         f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow"><title>{html.escape(title)} | Kingdom Circuit Test</title>
-<link rel="stylesheet" href="{TEST_BASE}styles.css"></head><body>
+<meta name="robots" content="{UPCOMING_PAGE_ROBOTS}"><title>{html.escape(title)} | {GENERATED_PAGE_TITLE_SUFFIX}</title>
+{production_head}<link rel="stylesheet" href="{TEST_BASE}styles.css"></head><body>
 <header class="site-header"><div class="header-inner"><a class="brand" href="{TEST_BASE}">Kingdom Circuit</a></div></header>
 <main id="kc-main-content"><section class="event-detail-section">
 <p class="eyebrow"><a class="text-link" href="{TEST_BASE}shows/">Shows</a> / {html.escape(title)}</p>
@@ -1583,11 +1622,19 @@ def create_history_event_page(site: pathlib.Path, event: dict[str, object]) -> b
     state = html.escape(str(event.get("state") or ""))
     artists = " · ".join(html.escape(name) for name in history_event_artists(event))
     date = html.escape(past_date_label(str(event.get("startDate") or "")))
+    canonical = f"https://kingdomcircuit.com{history_event_href(event)}" if DEPLOYMENT_ENVIRONMENT == "production" else ""
+    production_head = (
+        f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">'
+        '<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2KK9XF4TJ"></script>'
+        '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}'
+        "gtag('js',new Date());gtag('config','G-N2KK9XF4TJ');</script>"
+        if canonical else ""
+    )
     target.write_text(
         f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow"><title>{title} - Past Show | Kingdom Circuit Test</title>
-<link rel="stylesheet" href="{TEST_BASE}styles.css"></head><body>
+<meta name="robots" content="{PAST_PAGE_ROBOTS}"><title>{title} - Past Show | {GENERATED_PAGE_TITLE_SUFFIX}</title>
+{production_head}<link rel="stylesheet" href="{TEST_BASE}styles.css"></head><body>
 <header class="site-header"><div class="header-inner"><a class="brand" href="{TEST_BASE}">Kingdom Circuit</a></div></header>
 <main id="kc-main-content"><section class="event-detail-section">
 <p class="eyebrow"><a class="text-link" href="{TEST_BASE}shows/">Shows</a> / Past show</p>
@@ -1652,12 +1699,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=[],
         help="Test-only verified event records restored after the live artifact is captured.",
     )
+    parser.add_argument(
+        "--production",
+        action="store_true",
+        help="Apply the approved redesign with production paths, form identity, and indexing rules.",
+    )
     parser.add_argument("--today", type=dt.date.fromisoformat, help=argparse.SUPPRESS)
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+    configure_environment(args.production)
     site = args.site_root.resolve()
     repo = pathlib.Path(__file__).resolve().parent.parent
     home_path = site / "index.html"
@@ -1752,20 +1805,27 @@ def main(argv: list[str] | None = None) -> None:
         page.write_text(document, encoding="utf-8")
         header_pages += 1
 
+    production = DEPLOYMENT_ENVIRONMENT == "production"
     mirror_path = site / "test-live-mirror-manifest.json"
-    mirror = json.loads(mirror_path.read_text(encoding="utf-8"))
-    mirror["mode"] = "live-baseline-with-test-redesign"
-    mirror["contentAndLayoutParity"] = False
-    mirror["testRedesignApplied"] = True
-    mirror.setdefault("testOnlyDifferences", []).append(
-        "mobile-first navigation, homepage, artist directory, submission, and artist profile redesign"
-    )
-    mirror_path.write_text(json.dumps(mirror, indent=2) + "\n", encoding="utf-8")
+    if not production:
+        mirror = json.loads(mirror_path.read_text(encoding="utf-8"))
+        mirror["mode"] = "live-baseline-with-test-redesign"
+        mirror["contentAndLayoutParity"] = False
+        mirror["testRedesignApplied"] = True
+        mirror.setdefault("testOnlyDifferences", []).append(
+            "mobile-first navigation, homepage, artist directory, submission, and artist profile redesign"
+        )
+        mirror_path.write_text(json.dumps(mirror, indent=2) + "\n", encoding="utf-8")
 
     manifest = {
         "mode": VERSION,
-        "source": "published live-site capture after exact baseline verification",
-        "testBase": TEST_BASE,
+        "source": (
+            "verified production deployment artifact"
+            if production
+            else "published live-site capture after exact baseline verification"
+        ),
+        "siteBase": TEST_BASE,
+        "testBase": TEST_BASE if not production else None,
         "showCount": show_count,
         "artistCount": artist_count,
         "profilePageCount": profile_pages,
@@ -1789,9 +1849,12 @@ def main(argv: list[str] | None = None) -> None:
         "historicalProfileRowCount": history_profile_rows_loaded,
         "generatedHistoricalEventPages": generated_history_pages,
         **official_event_stats,
-        "productionChanged": False,
+        "deploymentEnvironment": DEPLOYMENT_ENVIRONMENT,
+        "productionChanged": production,
     }
-    (site / "test-redesign-manifest.json").write_text(
+    manifest_path = site / MANIFEST_FILENAME
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(
         json.dumps(manifest, indent=2) + "\n",
         encoding="utf-8",
     )
