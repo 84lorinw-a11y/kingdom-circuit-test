@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import hashlib
-import html
 import json
 import pathlib
 import re
 import shutil
 import sys
-import xml.etree.ElementTree as ET
+
 
 TEST_BASE = "/kingdom-circuit-test/"
 TEST_ORIGIN = "https://84lorinw-a11y.github.io"
@@ -16,516 +15,292 @@ LIVE_SITE = "https://kingdomcircuit.com"
 LIVE_GA = "G-N2KK9XF4TJ"
 TEST_GA = "G-TEST-DISABLED"
 
-EXCLUDED_ARTISTS = {"chad jones", "erica mason", "big holy"}
-
-REGISTRY_UPDATES = {
-    "marty": {
-        "name": "Marty",
-        "aliases": ["Marty", "Marty of Social Club Misfits", "Marty Mar"],
-        "category": "solo",
-        "monitoringPriority": 2,
-        "ticketmasterEnabled": False,
-        "textMatchEnabled": False,
-        "website": "https://www.instagram.com/deathbymartymar/?hl=en",
-        "instagramProfile": "https://www.instagram.com/deathbymartymar/",
-        "spotifyProfile": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
-        "youtubeProfile": "https://www.youtube.com/@deathbymartymar",
-        "officialImageSource": "https://open.spotify.com/artist/5BfKKSmpGmj2moMNlaWeJK",
-        "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb3d2d9f74de93906d1f5996f3",
-        "imagePosition": "center",
-        "preferArtistImage": True,
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 25,
-    },
-    "caleb gordon": {
-        "name": "Caleb Gordon",
-        "aliases": ["Caleb Gordon"],
-        "category": "core",
-        "monitoringPriority": 1,
-        "ticketmasterEnabled": True,
-        "textMatchEnabled": True,
-        "website": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
-        "instagramProfile": "https://www.instagram.com/calebfromeden/",
-        "spotifyProfile": "https://open.spotify.com/artist/6s3XaJkcT7464G4oII9V41",
-        "youtubeProfile": "https://www.youtube.com/@CalebGordon",
-        "officialImageSource": "https://tprlive.co/collections/caleb-gordon-the-eden-experience",
-        "imageUrl": "https://tprlive.co/cdn/shop/files/ARTIST_HEADSHOT_36.jpg?v=1776887171&width=1797",
-        "imagePosition": "center",
-        "preferArtistImage": True,
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 4,
-    },
-    "kelo": {
-        "name": "Kelo",
-        "aliases": ["Kelo"],
-        "category": "core",
-        "monitoringPriority": 2,
-        "ticketmasterEnabled": False,
-        "textMatchEnabled": False,
-        "website": "https://www.instagram.com/cutthecho/",
-        "instagramProfile": "https://www.instagram.com/cutthecho/",
-        "spotifyProfile": "https://open.spotify.com/artist/6j8t8rQzrAtRx5tYImodgd",
-        "youtubeProfile": "https://www.youtube.com/channel/UCAvlfmD2aiqXxxknr-9VSVg",
-        "officialImageSource": "https://www.instagram.com/cutthecho/",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 79,
-    },
-    "dkg kie": {
-        "name": "DKG Kie",
-        "aliases": ["DKG Kie"],
-        "category": "core",
-        "monitoringPriority": 1,
-        "ticketmasterEnabled": False,
-        "textMatchEnabled": True,
-        "website": "https://www.dkgkiemerch.com/",
-        "instagramProfile": "https://www.instagram.com/dkg.kie",
-        "spotifyProfile": "https://open.spotify.com/artist/1eeYg6dFkaRT5GA0lsCVHA",
-        "youtubeProfile": "https://www.youtube.com/@dkgkie",
-        "officialImageSource": "https://www.instagram.com/dkg.kie",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 80,
-    },
-    "braille": {
-        "name": "Braille",
-        "aliases": ["Braille"],
-        "category": "legacy",
-        "monitoringPriority": 3,
-        "ticketmasterEnabled": False,
-        "textMatchEnabled": True,
-        "website": "https://www.humblebeast.com/music/braille",
-        "instagramProfile": "https://www.instagram.com/bryanbraille/",
-        "spotifyProfile": "https://open.spotify.com/artist/6RYTz1tFNDF2qP0mwqEwDO",
-        "youtubeProfile": "https://www.youtube.com/@bryanbraille",
-        "officialImageSource": "https://www.humblebeast.com/music/braille",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 81,
-    },
-    "canton jones": {
-        "name": "Canton Jones",
-        "aliases": ["Canton Jones"],
-        "category": "legacy",
-        "monitoringPriority": 3,
-        "ticketmasterEnabled": True,
-        "textMatchEnabled": True,
-        "website": "https://www.instagram.com/thecantonjones/?hl=en",
-        "instagramProfile": "https://www.instagram.com/thecantonjones/?hl=en",
-        "spotifyProfile": "https://open.spotify.com/artist/3nzEXHMRFWTw4zt3pVRv6V",
-        "youtubeProfile": "https://www.youtube.com/@CantonJones1",
-        "officialImageSource": "https://www.instagram.com/thecantonjones/?hl=en",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 82,
-    },
-    "jay-way": {
-        "name": "Jay-Way",
-        "aliases": ["Jay-Way", "Jay Way"],
-        "category": "core",
-        "monitoringPriority": 1,
-        "ticketmasterEnabled": False,
-        "textMatchEnabled": True,
-        "website": "https://www.jaywaythealien.com/",
-        "instagramProfile": "https://www.instagram.com/JayWayTheAlien",
-        "spotifyProfile": "https://open.spotify.com/artist/1RDbE3dM2bNNSTh88R4MQ7",
-        "youtubeProfile": "https://www.youtube.com/@JayWayTheAlien",
-        "officialImageSource": "https://www.jaywaythealien.com/",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 83,
-    },
-    "stixx aka conejo": {
-        "name": "Stixx aka Conejo",
-        "aliases": ["Stixx aka Conejo", "Stixx"],
-        "category": "core",
-        "monitoringPriority": 2,
-        "ticketmasterEnabled": True,
-        "textMatchEnabled": True,
-        "website": "https://linktr.ee/stixxwym",
-        "instagramProfile": "https://www.instagram.com/stixxwym",
-        "spotifyProfile": "https://open.spotify.com/artist/3khYLvZ6GmLlPMPlTfMTBr",
-        "youtubeProfile": "https://www.youtube.com/@stixxwym/videos",
-        "officialImageSource": "https://linktr.ee/stixxwym",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 84,
-    },
-    "ruslan": {
-        "name": "Ruslan",
-        "aliases": ["Ruslan", "Ruslan KD"],
-        "category": "core",
-        "monitoringPriority": 1,
-        "ticketmasterEnabled": False,
-        "textMatchEnabled": False,
-        "website": "https://www.instagram.com/ruslankd/?hl=en",
-        "instagramProfile": "https://www.instagram.com/ruslankd/?hl=en",
-        "spotifyProfile": "https://open.spotify.com/artist/2GEXrCflKZ5S5ZHBM4LNcV",
-        "youtubeProfile": "https://www.youtube.com/@RuslanKD/featured",
-        "officialImageSource": "https://www.instagram.com/ruslankd/?hl=en",
-        "sourceRegistryVerified": True,
-        "sourceRegistryRosterOrder": 85,
-    },
-}
+INTERNAL_PATH_PREFIXES = (
+    "assets/",
+    "artists/",
+    "config/",
+    "event/",
+    "festivals/",
+    "new-shows/",
+    "shows/",
+    "submit/",
+)
+INTERNAL_ROOT_FILES = (
+    "app.js",
+    "events.json",
+    "robots.txt",
+    "run-status.json",
+    "seo-enhancements.js",
+    "seo-static.js",
+    "sitemap.xml",
+    "styles.css",
+    "supplemental-events.json",
+)
+PARITY_DATA_FILES = (
+    "events.json",
+    "supplemental-events.json",
+    "run-status.json",
+    "config/artists.json",
+)
+OMITTED_REPORT_FILES = frozenset(
+    {
+        "artwork-audit.json",
+        "sep12-closeout-report.json",
+        "seo-build-manifest.json",
+        "seo-indexing-policy.json",
+        "seo-overlay-manifest.json",
+    }
+)
 
 
-def normalize(value: object) -> str:
-    return str(value or "").strip().casefold()
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
 
 
-def slugify(value: str) -> str:
-    value = value.lower().replace("&", " and ")
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return value.strip("-")
+def rewrite_site_urls(text: str) -> str:
+    return text.replace(LIVE_SITE + "/", TEST_SITE + "/").replace(LIVE_SITE, TEST_SITE)
 
 
-def sha256(path: pathlib.Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
+def rewrite_quoted_root_paths(text: str) -> str:
+    # JavaScript helper files contain absolute production paths both as values
+    # and inside selectors. Prefix only known site paths so third-party URLs and
+    # regular expressions retain their production behavior.
+    for prefix in INTERNAL_PATH_PREFIXES:
+        for quote in ('"', "'", "`"):
+            text = text.replace(f"{quote}/{prefix}", f"{quote}{TEST_BASE}{prefix}")
+    for filename in INTERNAL_ROOT_FILES:
+        for quote in ('"', "'", "`"):
+            text = text.replace(f"{quote}/{filename}", f"{quote}{TEST_BASE}{filename}")
+    return text
 
 
 def rewrite_html(text: str) -> str:
-    text = text.replace(LIVE_SITE + "/", TEST_SITE + "/")
-    text = text.replace(LIVE_SITE, TEST_SITE)
-    text = text.replace(LIVE_GA, TEST_GA)
+    text = rewrite_site_urls(text).replace(LIVE_GA, TEST_GA)
     text = re.sub(
         r'(?P<prefix>\b(?:href|src|action)=["\'])/(?!/)',
-        lambda m: m.group("prefix") + TEST_BASE,
+        lambda match: match.group("prefix") + TEST_BASE,
         text,
     )
-
-    # ``srcset`` can contain several root-relative candidates.  Treat each
-    # candidate independently so responsive images also work from the GitHub
-    # Pages project subpath instead of silently falling back to ``src``.
-    def rewrite_srcset(match: re.Match[str]) -> str:
-        value = re.sub(
-            r'(^|,\s*)/(?!/)',
-            lambda candidate: candidate.group(1) + TEST_BASE,
-            match.group("value"),
-        )
-        return match.group("prefix") + value + match.group("quote")
-
-    text = re.sub(
-        r'(?P<prefix>\bsrcset=(?P<quote>["\']))(?P<value>.*?)(?P=quote)',
-        rewrite_srcset,
-        text,
-        flags=re.I | re.S,
+    text = rewrite_quoted_root_paths(text)
+    robots = re.compile(
+        r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*["\']\s*/?>',
+        re.I,
     )
-    robots = re.compile(r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*["\']\s*/?>', re.I)
     if robots.search(text):
         text = robots.sub('<meta name="robots" content="noindex,nofollow">', text)
     elif "<head>" in text:
-        text = text.replace("<head>", '<head>\n  <meta name="robots" content="noindex,nofollow">', 1)
+        text = text.replace(
+            "<head>",
+            '<head>\n  <meta name="robots" content="noindex,nofollow">',
+            1,
+        )
     return text
 
 
 def rewrite_js(text: str) -> str:
-    text = text.replace(LIVE_SITE + "/", TEST_SITE + "/")
-    text = text.replace(LIVE_SITE, TEST_SITE)
-    text = text.replace(LIVE_GA, TEST_GA)
+    text = rewrite_site_urls(text).replace(LIVE_GA, TEST_GA)
     text = text.replace('const BASE = "/";', f'const BASE = "{TEST_BASE}";')
-    text = re.sub(r'const LIVE_EVENTS_URL\s*=\s*[^;]+;', 'const LIVE_EVENTS_URL = `${BASE}events.json`;', text, count=1)
-    text = re.sub(r'const LIVE_ARTISTS_URL\s*=\s*[^;]+;', 'const LIVE_ARTISTS_URL = `${BASE}config/artists.json`;', text, count=1)
-
-    if "function enhanceVerifiedArtistImages()" not in text:
-        marker = "function renderEventDetail()"
-        enhancement = r'''
-function enhanceVerifiedArtistImages() {
-  document.querySelectorAll("[data-artist-card]").forEach(card => {
-    const name = card.querySelector("h2 a")?.textContent || "";
-    const artist = artistConfig(name);
-    const visual = card.querySelector(".artist-visual");
-    if (!visual || !artist?.imageUrl) return;
-    visual.classList.remove("artist-visual-empty");
-    visual.innerHTML = `<img src="${esc(localAssetUrl(artist.imageUrl))}" alt="${esc(artist.name)}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_EVENT_IMAGE}';">`;
-  });
-
-  const root = document.querySelector("[data-artist-profile]");
-  if (!root) return;
-  const name = new URLSearchParams(location.search).get("name") || "";
-  const artist = artistConfig(name);
-  const hero = root.querySelector(".profile-hero");
-  if (!hero || !artist?.imageUrl || hero.querySelector(".profile-visual")) return;
-  hero.classList.remove("profile-hero-no-image");
-  hero.insertAdjacentHTML("afterbegin", `<div class="profile-visual"><img src="${esc(localAssetUrl(artist.imageUrl))}" alt="${esc(artist.name)}" onerror="this.onerror=null;this.src='${FALLBACK_EVENT_IMAGE}';"></div>`);
-  hero.querySelector(".profile-image-note")?.remove();
-}
-'''
-        if marker in text:
-            text = text.replace(marker, enhancement + "\n" + marker, 1)
-        call_marker = "  renderArtistProfile();"
-        if call_marker in text:
-            text = text.replace(call_marker, call_marker + "\n  enhanceVerifiedArtistImages();", 1)
-    return text
+    text = re.sub(
+        r"const LIVE_EVENTS_URL\s*=\s*[^;]+;",
+        'const LIVE_EVENTS_URL = `${BASE}events.json`;',
+        text,
+        count=1,
+    )
+    text = re.sub(
+        r"const LIVE_ARTISTS_URL\s*=\s*[^;]+;",
+        'const LIVE_ARTISTS_URL = `${BASE}config/artists.json`;',
+        text,
+        count=1,
+    )
+    return rewrite_quoted_root_paths(text)
 
 
 def rewrite_css(text: str) -> str:
-    text = text.replace(LIVE_SITE + "/", TEST_SITE + "/")
-    text = text.replace(LIVE_SITE, TEST_SITE)
+    text = rewrite_site_urls(text)
+    text = re.sub(
+        r"url\((?P<quote>['\"]?)/(?P<path>assets/)",
+        lambda match: f"url({match.group('quote')}{TEST_BASE}{match.group('path')}",
+        text,
+        flags=re.I,
+    )
     return text
 
 
-def patch_artists(path: pathlib.Path) -> list[dict]:
-    artists = json.loads(path.read_text(encoding="utf-8"))
-    artists = [artist for artist in artists if normalize(artist.get("name")) not in EXCLUDED_ARTISTS]
-    by_name = {normalize(artist.get("name")): artist for artist in artists}
-    next_order = max((int(a.get("rosterOrder") or 0) for a in artists), default=0) + 1
-
-    for key, update in REGISTRY_UPDATES.items():
-        artist = by_name.get(key)
-        if artist is None:
-            artist = {
-                "name": update["name"],
-                "aliases": update["aliases"],
-                "enabled": True,
-                "ticketmasterEnabled": update["ticketmasterEnabled"],
-                "category": update["category"],
-                "monitoringPriority": update["monitoringPriority"],
-                "topStreamingPriority": False,
-                "socialSearchEnabled": update["monitoringPriority"] <= 2,
-                "activeStatus": "active_or_unknown",
-                "textMatchEnabled": update["textMatchEnabled"],
-                "rosterOrder": next_order,
-            }
-            next_order += 1
-            artists.append(artist)
-            by_name[key] = artist
-        artist.update(update)
-        artist["enabled"] = True
-
-    path.write_text(json.dumps(artists, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    return artists
+def rewrite_xml(text: str) -> str:
+    return rewrite_site_urls(text)
 
 
-def patch_events(path: pathlib.Path) -> None:
-    if not path.is_file():
-        return
-    events = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(events, list):
-        return
-    cleaned = []
-    for event in events:
-        if event.get("id") == "supplemental:marty-project-nation-kuna-2026":
-            event["image"] = REGISTRY_UPDATES["marty"]["imageUrl"]
-            event["imageType"] = "artist"
-            event["imagePosition"] = REGISTRY_UPDATES["marty"]["imagePosition"]
-        original_artists = list(event.get("artists") or [])
-        remaining = [name for name in original_artists if normalize(name) not in EXCLUDED_ARTISTS]
-        removed = len(remaining) != len(original_artists)
-        title = normalize(event.get("title"))
-        title_names_excluded = any(name in title for name in EXCLUDED_ARTISTS)
-        if removed and not remaining:
+def transformed_bytes(relative: pathlib.Path, source: bytes) -> bytes:
+    if relative.as_posix() == "robots.txt":
+        return b"User-agent: *\nDisallow: /\n"
+
+    suffix = relative.suffix.casefold()
+    if suffix not in {".html", ".js", ".css", ".xml"}:
+        return source
+
+    text = source.decode("utf-8")
+    if suffix == ".html":
+        text = rewrite_html(text)
+    elif suffix == ".js":
+        text = rewrite_js(text)
+    elif suffix == ".css":
+        text = rewrite_css(text)
+    else:
+        text = rewrite_xml(text)
+    return text.encode("utf-8")
+
+
+def write_test_copy(live_dir: pathlib.Path, out_dir: pathlib.Path) -> int:
+    changed_for_environment = 0
+    for live_path in sorted(live_dir.rglob("*")):
+        if not live_path.is_file():
             continue
-        if title_names_excluded:
+        relative = live_path.relative_to(live_dir)
+        if relative.as_posix() == "CNAME" or relative.as_posix() in OMITTED_REPORT_FILES:
             continue
-        if removed:
-            event["artists"] = remaining
-            if normalize(event.get("headliner")) in EXCLUDED_ARTISTS:
-                if remaining:
-                    event["headliner"] = remaining[0]
-                else:
-                    event.pop("headliner", None)
-        cleaned.append(event)
-    path.write_text(json.dumps(cleaned, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        source = live_path.read_bytes()
+        output = transformed_bytes(relative, source)
+        if output != source:
+            changed_for_environment += 1
+        target = out_dir / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(output)
+    return changed_for_environment
 
 
-def patch_marty_event_pages(out_dir: pathlib.Path) -> None:
-    old_image = "https://img1.wsimg.com/isteam/ip/6ed0aa91-488e-49ff-a53b-8d885654844e/DSC07306%20Edited.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:600,cg:true"
+def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path) -> dict[str, object]:
+    failures: list[str] = []
+    source_files = {
+        path.relative_to(live_dir)
+        for path in live_dir.rglob("*")
+        if path.is_file()
+        and path.relative_to(live_dir).as_posix() != "CNAME"
+        and path.relative_to(live_dir).as_posix() not in OMITTED_REPORT_FILES
+    }
+    output_files = {
+        path.relative_to(out_dir)
+        for path in out_dir.rglob("*")
+        if path.is_file()
+    }
+    if source_files != output_files:
+        for relative in sorted(source_files - output_files):
+            failures.append(f"missing:{relative}")
+        for relative in sorted(output_files - source_files):
+            failures.append(f"unexpected:{relative}")
+
+    adjusted_files = 0
+    binary_assets = 0
+    for relative in sorted(source_files):
+        live_path = live_dir / relative
+        test_path = out_dir / relative
+        if not test_path.is_file():
+            continue
+        source = live_path.read_bytes()
+        expected = transformed_bytes(relative, source)
+        actual = test_path.read_bytes()
+        if actual != expected:
+            failures.append(f"content-mismatch:{relative}")
+        if expected != source:
+            adjusted_files += 1
+        if relative.parts and relative.parts[0] == "assets" and relative.suffix.casefold() not in {".html", ".js", ".css", ".xml"}:
+            binary_assets += 1
+            if sha256_bytes(actual) != sha256_bytes(source):
+                failures.append(f"binary-asset-mismatch:{relative}")
+
+    for relative in PARITY_DATA_FILES:
+        live_path = live_dir / relative
+        test_path = out_dir / relative
+        if not live_path.is_file() or not test_path.is_file():
+            failures.append(f"parity-data-missing:{relative}")
+        elif sha256_bytes(live_path.read_bytes()) != sha256_bytes(test_path.read_bytes()):
+            failures.append(f"parity-data-mismatch:{relative}")
+
+    bad_root = re.compile(
+        r'\b(?:href|src|action)=["\']/(?!kingdom-circuit-test(?:/|["\']))'
+    )
+    html_files = 0
     for page in out_dir.rglob("*.html"):
+        html_files += 1
         text = page.read_text(encoding="utf-8")
-        if old_image not in text:
-            continue
-        page.write_text(text.replace(old_image, REGISTRY_UPDATES["marty"]["imageUrl"]), encoding="utf-8")
-
-
-def artist_link_html(artist: dict) -> str:
-    links = []
-    fields = [
-        ("Instagram", artist.get("instagramProfile")),
-        ("Spotify", artist.get("spotifyProfile")),
-        ("YouTube", artist.get("youtubeProfile")),
-        ("Website", artist.get("website") or artist.get("officialWebsite") or artist.get("officialProfile")),
-    ]
-    seen = set()
-    for label, url in fields:
-        if not url or url in seen:
-            continue
-        seen.add(url)
-        links.append(f'<a class="secondary-button" href="{html.escape(str(url), quote=True)}" target="_blank" rel="noopener">{html.escape(label)}</a>')
-    return "".join(links)
-
-
-def patch_static_artist_pages(out_dir: pathlib.Path, artists: list[dict]) -> None:
-    by_name = {normalize(a.get("name")): a for a in artists}
-    for key in REGISTRY_UPDATES:
-        artist = by_name.get(key)
-        if not artist:
-            continue
-        page = out_dir / "artists" / slugify(artist["name"]) / "index.html"
-        if not page.is_file():
-            continue
-        text = page.read_text(encoding="utf-8")
-        links = artist_link_html(artist)
-        text = re.sub(r'<div class="profile-links">.*?</div>', f'<div class="profile-links">{links}</div>', text, count=1, flags=re.S)
-        image_url = artist.get("imageUrl")
-        if image_url and "profile-hero-no-image" in text:
-            src = str(image_url)
-            if not re.match(r"^https?://", src, re.I):
-                src = TEST_BASE + src.lstrip("/")
-            image_html = f'<div class="profile-visual"><img src="{html.escape(src, quote=True)}" alt="{html.escape(artist["name"], quote=True)}"></div>'
-            text = text.replace('<section class="profile-hero profile-hero-no-image"><div>', f'<section class="profile-hero">{image_html}<div>', 1)
-        page.write_text(text, encoding="utf-8")
-
-
-def remove_excluded_static_pages(out_dir: pathlib.Path) -> None:
-    artists_dir = out_dir / "artists"
-    for name in EXCLUDED_ARTISTS:
-        page_dir = artists_dir / slugify(name)
-        if page_dir.exists():
-            shutil.rmtree(page_dir)
-    sitemap = out_dir / "sitemap.xml"
-    if sitemap.is_file():
-        namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
-        ET.register_namespace("", namespace)
-        tree = ET.parse(sitemap)
-        root = tree.getroot()
-        targets = {f"/artists/{slugify(name)}/" for name in EXCLUDED_ARTISTS}
-        for url_node in list(root.findall(f"{{{namespace}}}url")):
-            loc = url_node.find(f"{{{namespace}}}loc")
-            if loc is not None and any(target in (loc.text or "").casefold() for target in targets):
-                root.remove(url_node)
-        tree.write(sitemap, encoding="utf-8", xml_declaration=True)
-
-
-def verify_overlay(out_dir: pathlib.Path) -> list[str]:
-    failures: list[str] = []
-    artists = json.loads((out_dir / "config" / "artists.json").read_text(encoding="utf-8"))
-    names = {normalize(a.get("name")) for a in artists}
-    for name in EXCLUDED_ARTISTS:
-        if name in names:
-            failures.append(f"excluded-artist-present:{name}")
-    for key, expected in REGISTRY_UPDATES.items():
-        artist = next((a for a in artists if normalize(a.get("name")) == key), None)
-        if not artist:
-            failures.append(f"registry-artist-missing:{key}")
-            continue
-        for field in ("website", "instagramProfile", "spotifyProfile", "youtubeProfile", "officialImageSource"):
-            if expected.get(field) and artist.get(field) != expected[field]:
-                failures.append(f"registry-field-mismatch:{key}:{field}")
-        if not artist.get("sourceRegistryVerified"):
-            failures.append(f"registry-not-verified:{key}")
-    for relative in ("events.json", "supplemental-events.json"):
-        path = out_dir / relative
-        if not path.is_file():
-            continue
-        text = normalize(path.read_text(encoding="utf-8"))
-        for name in EXCLUDED_ARTISTS:
-            if name in text:
-                failures.append(f"excluded-artist-in-{relative}:{name}")
-    app = (out_dir / "app.js").read_text(encoding="utf-8")
-    if 'const LIVE_ARTISTS_URL = `${BASE}config/artists.json`;' not in app:
-        failures.append("test-artists-not-local")
-    if 'const LIVE_EVENTS_URL = `${BASE}events.json`;' not in app:
-        failures.append("test-events-not-local")
-    if "function enhanceVerifiedArtistImages()" not in app:
-        failures.append("artist-image-enhancement-missing")
-    caleb_page = out_dir / "artists" / "caleb-gordon" / "index.html"
-    if caleb_page.is_file():
-        caleb_text = caleb_page.read_text(encoding="utf-8")
-        if not any(marker in caleb_text for marker in ('class="profile-visual"', 'class="seo-profile-image"')):
-            failures.append("caleb-static-image-missing")
-    return failures
-
-
-def main() -> None:
-    if len(sys.argv) != 4:
-        raise SystemExit("usage: live_mirror_v2.py LIVE_ARTIFACT TEST_OUTPUT LIVE_SHA")
-    live_dir = pathlib.Path(sys.argv[1]).resolve()
-    out_dir = pathlib.Path(sys.argv[2]).resolve()
-    live_sha = sys.argv[3]
-    if not (live_dir / "index.html").is_file():
-        raise SystemExit(f"Missing live artifact: {live_dir}")
-    if out_dir.exists():
-        shutil.rmtree(out_dir)
-    shutil.copytree(live_dir, out_dir)
-    cname = out_dir / "CNAME"
-    if cname.exists():
-        cname.unlink()
-
-    for path in out_dir.rglob("*"):
-        if not path.is_file():
-            continue
-        suffix = path.suffix.lower()
-        if suffix == ".html":
-            path.write_text(rewrite_html(path.read_text(encoding="utf-8")), encoding="utf-8")
-        elif suffix == ".js":
-            path.write_text(rewrite_js(path.read_text(encoding="utf-8")), encoding="utf-8")
-        elif suffix == ".css":
-            path.write_text(rewrite_css(path.read_text(encoding="utf-8")), encoding="utf-8")
-        elif suffix == ".xml":
-            text = path.read_text(encoding="utf-8")
-            text = text.replace(LIVE_SITE + "/", TEST_SITE + "/").replace(LIVE_SITE, TEST_SITE)
-            path.write_text(text, encoding="utf-8")
-
-    artists = patch_artists(out_dir / "config" / "artists.json")
-    patch_events(out_dir / "events.json")
-    patch_events(out_dir / "supplemental-events.json")
-    patch_static_artist_pages(out_dir, artists)
-    patch_marty_event_pages(out_dir)
-    remove_excluded_static_pages(out_dir)
-    (out_dir / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
-
-    failures: list[str] = []
-    live_css = live_dir / "styles.css"
-    test_css = out_dir / "styles.css"
-    if not test_css.is_file() or sha256(live_css) != sha256(test_css):
-        failures.append("changed:styles.css")
-    for live_asset in (live_dir / "assets").rglob("*"):
-        if not live_asset.is_file():
-            continue
-        relative = live_asset.relative_to(live_dir)
-        test_asset = out_dir / relative
-        if not test_asset.is_file() or sha256(live_asset) != sha256(test_asset):
-            failures.append(f"asset:{relative}")
-    bad_root = re.compile(r'\b(?:href|src|action)=["\']/(?!kingdom-circuit-test(?:/|["\']))')
-    srcset_pattern = re.compile(r'\bsrcset=["\'](?P<value>[^"\']*)["\']', re.I)
-    bad_srcset_candidate = re.compile(r'(^|,\s*)/(?!kingdom-circuit-test/)')
-    for html_file in out_dir.rglob("*.html"):
-        text = html_file.read_text(encoding="utf-8")
-        rel = html_file.relative_to(out_dir)
+        relative = page.relative_to(out_dir)
         if '<meta name="robots" content="noindex,nofollow">' not in text:
-            failures.append(f"indexable:{rel}")
+            failures.append(f"indexable:{relative}")
         if bad_root.search(text):
-            failures.append(f"bad-root-path:{rel}")
-        if any(
-            bad_srcset_candidate.search(match.group("value"))
-            for match in srcset_pattern.finditer(text)
-        ):
-            failures.append(f"bad-srcset-path:{rel}")
+            failures.append(f"bad-root-path:{relative}")
         if LIVE_GA in text:
-            failures.append(f"live-analytics:{rel}")
+            failures.append(f"live-analytics:{relative}")
+
     app = (out_dir / "app.js").read_text(encoding="utf-8")
     if f'const BASE = "{TEST_BASE}";' not in app:
         failures.append("app-base-not-rewritten")
     if (out_dir / "CNAME").exists():
         failures.append("cname-present")
-    failures.extend(verify_overlay(out_dir))
+    for relative in sorted(OMITTED_REPORT_FILES):
+        if (out_dir / relative).exists():
+            failures.append(f"operational-report-present:{relative}")
+    robots = (out_dir / "robots.txt").read_text(encoding="utf-8")
+    if robots != "User-agent: *\nDisallow: /\n":
+        failures.append("robots-policy")
+
     if failures:
         raise SystemExit(json.dumps({"failures": failures[:100]}, indent=2))
+    return {
+        "sourceFileCount": len(source_files),
+        "htmlPageCount": html_files,
+        "environmentAdjustedFileCount": adjusted_files,
+        "byteIdenticalBinaryAssetCount": binary_assets,
+    }
+
+
+def main() -> None:
+    if len(sys.argv) not in {4, 5}:
+        raise SystemExit(
+            "usage: live_mirror_v2.py LIVE_ARTIFACT TEST_OUTPUT LIVE_SHA [LIVE_RUN_ID]"
+        )
+    live_dir = pathlib.Path(sys.argv[1]).resolve()
+    out_dir = pathlib.Path(sys.argv[2]).resolve()
+    live_sha = sys.argv[3]
+    live_run_id = sys.argv[4] if len(sys.argv) == 5 else ""
+    if not (live_dir / "index.html").is_file():
+        raise SystemExit(f"Missing live artifact: {live_dir}")
+
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+    out_dir.mkdir(parents=True)
+    changed_for_environment = write_test_copy(live_dir, out_dir)
+    parity = verify_exact_mirror(live_dir, out_dir)
+    if parity["environmentAdjustedFileCount"] != changed_for_environment:
+        raise SystemExit("Environment-adjusted file count changed during verification")
 
     manifest = {
-        "mode": "live-baseline-with-test-registry-overlay",
+        "mode": "exact-live-artifact-mirror",
         "liveCommit": live_sha,
+        "liveDeploymentRunId": live_run_id,
         "source": "84lorinw-a11y/kingdom-circuit@main",
         "testBase": TEST_BASE,
-        "liveStylesByteIdentical": True,
-        "liveAssetsByteIdentical": True,
-        "testRegistryOverlayApplied": True,
-        "excludedArtists": sorted(EXCLUDED_ARTISTS),
-        "verifiedRegistryUpdates": [REGISTRY_UPDATES[k]["name"] for k in REGISTRY_UPDATES],
+        "contentAndLayoutParity": True,
+        "dataFilesByteIdentical": True,
+        "binaryAssetsByteIdentical": True,
+        "testRegistryOverlayApplied": False,
+        "testOnlyDifferences": [
+            "GitHub Pages project-path URLs",
+            "test-site canonical URLs",
+            "noindex,nofollow and robots Disallow",
+            "production analytics disabled",
+            "production CNAME omitted",
+            "operational build reports omitted",
+        ],
+        "omittedOperationalReports": sorted(OMITTED_REPORT_FILES),
         "testNoindex": True,
         "liveAnalyticsDisabled": True,
         "cnameRemoved": True,
-        "seoPhase2OverlayApplied": False,
+        **parity,
     }
-    (out_dir / "test-live-mirror-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    (out_dir / ".nojekyll").touch()
+    (out_dir / "test-live-mirror-manifest.json").write_text(
+        json.dumps(manifest, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(json.dumps(manifest, indent=2))
 
 

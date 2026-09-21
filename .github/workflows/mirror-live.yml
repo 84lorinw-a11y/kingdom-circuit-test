@@ -1,13 +1,21 @@
 name: Mirror Live Site to Test
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/mirror-live.yml"
+      - "scripts/live_mirror_v2.py"
+      - "scripts/sitecustomize.py"
+      - "tests/**"
   schedule:
-    - cron: "0 2 * * 1"
+    - cron: "0 8 * * *"
       timezone: "America/Chicago"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  actions: read
+  contents: read
   pages: write
   id-token: write
 
@@ -17,6 +25,8 @@ concurrency:
 
 env:
   LIVE_REPO: 84lorinw-a11y/kingdom-circuit
+  APPROVED_SEO_REPO: 84lorinw-a11y/kingdom-circuit-test
+  APPROVED_SEO_REF: af197d30b8ad4e3cb33e37cfc7a2de086335140d
 
 jobs:
   build:
@@ -25,12 +35,49 @@ jobs:
       - name: Checkout test harness
         uses: actions/checkout@v6
 
+      - name: Resolve the currently deployed live revision
+        id: live_deployment
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          API_PATH="repos/${LIVE_REPO}/actions/workflows/update-and-deploy.yml/runs?branch=main&per_page=20"
+          if ! RESPONSE=$(gh api "$API_PATH"); then
+            RESPONSE=$(curl -fsSL "https://api.github.com/$API_PATH")
+          fi
+          LIVE_SHA=$(jq -r \
+            '.workflow_runs | map(select(.status == "completed" and .conclusion == "success"))[0].head_sha // empty' \
+            <<<"$RESPONSE")
+          LIVE_RUN_ID=$(jq -r \
+            '.workflow_runs | map(select(.status == "completed" and .conclusion == "success"))[0].id // empty' \
+            <<<"$RESPONSE")
+          LIVE_CREATED_AT=$(jq -r \
+            '.workflow_runs | map(select(.status == "completed" and .conclusion == "success"))[0].created_at // empty' \
+            <<<"$RESPONSE")
+          test -n "$LIVE_SHA"
+          test -n "$LIVE_RUN_ID"
+          test -n "$LIVE_CREATED_AT"
+          LIVE_CUTOFF=$(TZ=America/Los_Angeles date -d "$LIVE_CREATED_AT" +%F)
+          echo "sha=$LIVE_SHA" >> "$GITHUB_OUTPUT"
+          echo "run_id=$LIVE_RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "cutoff=$LIVE_CUTOFF" >> "$GITHUB_OUTPUT"
+          echo "Mirroring successful live deployment $LIVE_RUN_ID at $LIVE_SHA with release date $LIVE_CUTOFF"
+
       - name: Checkout live repository read-only
         uses: actions/checkout@v6
         with:
           repository: ${{ env.LIVE_REPO }}
-          ref: main
+          ref: ${{ steps.live_deployment.outputs.sha }}
           path: _live
+          fetch-depth: 1
+
+      - name: Checkout the production SEO source
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ env.APPROVED_SEO_REPO }}
+          ref: ${{ env.APPROVED_SEO_REF }}
+          path: _seo_source
           fetch-depth: 1
 
       - name: Set up Python
@@ -38,62 +85,82 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Build current live snapshot
+      - name: Verify mirror harness
         shell: bash
         run: |
           set -euo pipefail
-          cd _live
+          python -m py_compile scripts/live_mirror_v2.py
           python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Build the exact production artifact
+        shell: bash
+        env:
+          KC_MIRROR_DATE: ${{ steps.live_deployment.outputs.cutoff }}
+          PYTHONPATH: ${{ github.workspace }}/scripts
+        run: |
+          set -euo pipefail
+          cd _live
+
+          python scripts/sync_verified_artist_registry.py
+          python -m unittest discover -s tests -p 'test_*.py' -v
+          python scripts/apply_curated_catalog_policy.py
+          python scripts/apply_sep12_live_audit_repairs.py
+          python scripts/prune_past_events.py --source . --cutoff "$KC_MIRROR_DATE"
+          python scripts/apply_sevin_official_schedule.py
+          python scripts/apply_live_artist_overrides.py --source .
+          python scripts/apply_deonte_hall_submission.py
+          python scripts/apply_sep13_content_repairs.py
+
           rm -rf _site
           mkdir -p _site/config
           cp index.html styles.css app.js events.json run-status.json \
              supplemental-events.json 404.html robots.txt sitemap.xml _site/
           cp config/artists.json _site/config/artists.json
           cp -R shows festivals new-shows artists event submit assets _site/
-          python scripts/build_seo_site.py
-          python scripts/verify_multipage_site.py _site || echo "Live-source verifier warning ignored in isolated test mirror"
+          cp CNAME _site/CNAME
 
-      - name: Convert snapshot for test URL
+          python scripts/build_seo_site.py
+          KC_SEO_SOURCE="$GITHUB_WORKSPACE/_seo_source/scripts" \
+            python scripts/apply_approved_seo.py _site
+          node --check _site/app.js
+          node --check _site/seo-enhancements.js
+          python scripts/apply_live_artist_overrides.py --site _site
+          python scripts/prune_past_events.py --site _site --cutoff "$KC_MIRROR_DATE"
+          python scripts/verify_multipage_site.py _site
+          python scripts/finalize_live_event_images.py --site _site
+          python scripts/finalize_seo_indexing.py --site _site
+
+      - name: Convert only the deployment identity for test
         shell: bash
         run: |
           set -euo pipefail
           LIVE_SHA=$(git -C _live rev-parse HEAD)
-          # This helper asset must use the GitHub Pages subpath in test. Rewrite the
-          # temporary live artifact first so the mirror's asset-parity check still
-          # compares like-for-like without changing the production repository.
-          sed -i 's|const BASE = "/";|const BASE = "/kingdom-circuit-test/";|' _live/_site/assets/artist-filter-fix.js
-          python scripts/live_mirror_v2.py _live/_site _site "$LIVE_SHA"
-          python scripts/test_cleanup_overlay.py _site
-          # Removed artists must not remain even in client-side ordering constants.
-          sed -i '/^[[:space:]]*"BIG HOLY",[[:space:]]*$/d; /^[[:space:]]*"Erica Mason",[[:space:]]*$/d; /^[[:space:]]*"Chad Jones",[[:space:]]*$/d' _site/app.js
-          touch _site/.nojekyll
+          test "$LIVE_SHA" = "${{ steps.live_deployment.outputs.sha }}"
+          LIVE_RUN_ID="${{ steps.live_deployment.outputs.run_id }}"
+          python scripts/live_mirror_v2.py \
+            _live/_site _site "$LIVE_SHA" "$LIVE_RUN_ID"
+
           test -s _site/index.html
           test -s _site/styles.css
           test -s _site/app.js
           test -s _site/config/artists.json
+          test -s _site/seo-static.js
+          test -s _site/seo-enhancements.js
+          test -s _site/test-live-mirror-manifest.json
+          test -f _site/.nojekyll
+          test ! -e _site/CNAME
+          test ! -e _site/artwork-audit.json
+          test ! -e _site/sep12-closeout-report.json
+          test ! -e _site/seo-build-manifest.json
+          test ! -e _site/seo-indexing-policy.json
+          test ! -e _site/seo-overlay-manifest.json
           grep -q 'Disallow: /' _site/robots.txt
           grep -q 'name="robots" content="noindex,nofollow"' _site/index.html
           grep -q '/kingdom-circuit-test/styles.css' _site/index.html
           grep -q '/kingdom-circuit-test/app.js' _site/index.html
-          ! grep -q '"BIG HOLY"' _site/app.js
-          ! grep -q '"Erica Mason"' _site/app.js
-          ! grep -q '"Chad Jones"' _site/app.js
-
-      - name: Publish snapshot into test main
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf 404.html index.html styles.css app.js events.json run-status.json \
-            supplemental-events.json robots.txt sitemap.xml shows festivals new-shows \
-            artists event submit assets config test-live-mirror-manifest.json .nojekyll
-          cp -a _site/. .
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- 404.html index.html styles.css app.js events.json run-status.json \
-            supplemental-events.json robots.txt sitemap.xml shows festivals new-shows \
-            artists event submit assets config test-live-mirror-manifest.json .nojekyll
-          git commit -m "Publish mirrored live snapshot [skip ci]" || true
-          git push origin HEAD:main
+          grep -q '"mode": "exact-live-artifact-mirror"' _site/test-live-mirror-manifest.json
+          grep -q "\"liveCommit\": \"$LIVE_SHA\"" _site/test-live-mirror-manifest.json
+          grep -q "\"liveDeploymentRunId\": \"$LIVE_RUN_ID\"" _site/test-live-mirror-manifest.json
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

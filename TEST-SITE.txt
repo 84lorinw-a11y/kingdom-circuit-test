@@ -1,1 +1,1 @@
-Kingdom Circuit isolated test site. It mirrors current production data, applies test-only audited improvements, and never deploys to the live domain.
+Kingdom Circuit test site: exact live content, layout, images, and behavior with test-hosting safeguards only.
