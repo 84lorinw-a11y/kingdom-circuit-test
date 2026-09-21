@@ -129,6 +129,7 @@ class ExactLiveMirrorTests(unittest.TestCase):
                 (live / "config" / "artists.json").read_bytes(),
             )
             self.assertTrue(mirror.OMITTED_REPORT_FILES)
+            self.assertFalse((test / "run-status.json").exists())
             self.assertTrue(
                 all(not (test / relative).exists() for relative in mirror.OMITTED_REPORT_FILES)
             )

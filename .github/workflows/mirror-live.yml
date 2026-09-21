@@ -164,6 +164,7 @@ jobs:
           test -f _site/.nojekyll
           test ! -e _site/CNAME
           test ! -e _site/artwork-audit.json
+          test ! -e _site/run-status.json
           test ! -e _site/sep12-closeout-report.json
           test ! -e _site/seo-build-manifest.json
           test ! -e _site/seo-indexing-policy.json

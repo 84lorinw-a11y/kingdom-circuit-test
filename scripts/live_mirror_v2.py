@@ -39,12 +39,12 @@ INTERNAL_ROOT_FILES = (
 PARITY_DATA_FILES = (
     "events.json",
     "supplemental-events.json",
-    "run-status.json",
     "config/artists.json",
 )
 OMITTED_REPORT_FILES = frozenset(
     {
         "artwork-audit.json",
+        "run-status.json",
         "sep12-closeout-report.json",
         "seo-build-manifest.json",
         "seo-indexing-policy.json",
