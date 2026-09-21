@@ -8,6 +8,7 @@ live artifact has passed its exact-mirror checks.
 
 from __future__ import annotations
 
+import argparse
 import datetime as dt
 import html
 import json
@@ -16,12 +17,25 @@ import re
 import shutil
 import sys
 from typing import Iterable
+from zoneinfo import ZoneInfo
 
 
 TEST_BASE = "/kingdom-circuit-test/"
 INSTAGRAM_URL = "https://www.instagram.com/thekingdomcircuit/"
 FORM_ENDPOINT = "https://formspree.io/f/mljreawj"
 VERSION = "mobile-first-test-redesign-v1"
+SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
+NEW_WINDOW_DAYS = 7
+PAST_GRACE_DAYS = 1
+INACTIVE_STATUSES = {"cancelled", "canceled", "postponed", "merged"}
+EVENT_CARD_PATTERN = re.compile(
+    r'<article\b(?=[^>]*\bdata-event-card\b)[^>]*>.*?</article>',
+    re.I | re.S,
+)
+ARTIST_CARD_PATTERN = re.compile(
+    r'<article\b(?=[^>]*\bdata-artist-card\b)[^>]*>.*?</article>',
+    re.I | re.S,
+)
 
 
 def clean_text(value: str) -> str:
@@ -29,11 +43,219 @@ def clean_text(value: str) -> str:
     return " ".join(html.unescape(value).split())
 
 
+def normalized_key(value: object) -> str:
+    return " ".join(str(value or "").casefold().split())
+
+
+def parse_iso_date(value: object) -> dt.date | None:
+    try:
+        return dt.date.fromisoformat(str(value or "")[:10])
+    except ValueError:
+        return None
+
+
+def site_today() -> dt.date:
+    return dt.datetime.now(SITE_TIMEZONE).date()
+
+
+def visibility_cutoff(today: dt.date) -> dt.date:
+    """Keep yesterday, today, and future shows in active site listings."""
+    return today - dt.timedelta(days=PAST_GRACE_DAYS)
+
+
+def is_active_event(event: dict[str, object], cutoff: dt.date) -> bool:
+    status = normalized_key(event.get("status"))
+    if status in INACTIVE_STATUSES:
+        return False
+    last_date = parse_iso_date(event.get("endDate") or event.get("startDate"))
+    return last_date is None or last_date >= cutoff
+
+
+def event_source_key(event: dict[str, object]) -> tuple[str, str, str]:
+    return (
+        normalized_key(event.get("title")),
+        str(event.get("startDate") or "")[:10],
+        normalized_key(event.get("city")),
+    )
+
+
+def recent_event_keys(
+    source_events: Iterable[dict[str, object]],
+    today: dt.date,
+    days: int = NEW_WINDOW_DAYS,
+) -> set[tuple[str, str, str]]:
+    keys: set[tuple[str, str, str]] = set()
+    for event in source_events:
+        if normalized_key(event.get("status")) in INACTIVE_STATUSES:
+            continue
+        raw_seen = str(event.get("firstSeen") or "").strip()
+        if not raw_seen:
+            continue
+        try:
+            seen = dt.datetime.fromisoformat(raw_seen.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if seen.tzinfo is None:
+            seen = seen.replace(tzinfo=dt.timezone.utc)
+        age = (today - seen.astimezone(SITE_TIMEZONE).date()).days
+        if 0 <= age < days:
+            keys.add(event_source_key(event))
+    return keys
+
+
 def attribute(fragment: str, name: str) -> str:
     match = re.search(rf"\b{re.escape(name)}=(?:\"([^\"]*)\"|'([^']*)')", fragment)
     if not match:
         return ""
     return html.unescape(match.group(1) if match.group(1) is not None else match.group(2))
+
+
+def event_cards(document: str) -> list[str]:
+    return EVENT_CARD_PATTERN.findall(document)
+
+
+def card_source_key(card: str) -> tuple[str, str, str]:
+    opening = card[: card.find(">") + 1]
+    title_match = re.search(r'<h3>\s*<a\b[^>]*>(.*?)</a>', card, re.I | re.S)
+    title = clean_text(title_match.group(1)) if title_match else ""
+    location_match = re.search(
+        r'<dt>\s*Location\s*</dt>\s*<dd>(.*?)</dd>',
+        card,
+        re.I | re.S,
+    )
+    location = clean_text(location_match.group(1)) if location_match else ""
+    city = location.rsplit(",", 1)[0].strip() if "," in location else location
+    return (
+        normalized_key(title),
+        attribute(opening, "data-date")[:10],
+        normalized_key(city),
+    )
+
+
+def prune_expired_event_cards(document: str, cutoff: dt.date) -> str:
+    def keep_or_remove(match: re.Match[str]) -> str:
+        card = match.group(0)
+        opening = card[: card.find(">") + 1]
+        last_date = parse_iso_date(
+            attribute(opening, "data-end-date") or attribute(opening, "data-date")
+        )
+        return "" if last_date is not None and last_date < cutoff else card
+
+    return EVENT_CARD_PATTERN.sub(keep_or_remove, document)
+
+
+def update_results_count(document: str) -> str:
+    count = len(event_cards(document))
+    return re.sub(
+        r'(<[^>]+\bdata-results-count\b[^>]*>).*?(</[^>]+>)',
+        rf"\g<1>{count} show{'s' if count != 1 else ''}\g<2>",
+        document,
+        flags=re.I | re.S,
+    )
+
+
+def transform_new_shows(
+    document: str,
+    recent_keys: set[tuple[str, str, str]],
+) -> str:
+    document = EVENT_CARD_PATTERN.sub(
+        lambda match: match.group(0) if card_source_key(match.group(0)) in recent_keys else "",
+        document,
+    )
+    document = re.sub(r"\b14 days\b", "7 days", document, flags=re.I)
+    return update_results_count(document)
+
+
+def transform_this_month(document: str) -> str:
+    cards = event_cards(document)
+    states: set[str] = set()
+    artists: set[str] = set()
+    for card in cards:
+        opening = card[: card.find(">") + 1]
+        state = attribute(opening, "data-state").strip().upper()
+        if state:
+            states.add(state)
+        for artist in attribute(opening, "data-artists").split("|"):
+            artist_key = normalized_key(artist)
+            if artist_key:
+                artists.add(artist_key)
+
+    def replace_stat(name: str, value: int, source: str) -> str:
+        return re.sub(
+            rf'(<strong\b[^>]*\bdata-month-{name}-count\b[^>]*>).*?(</strong>)',
+            rf"\g<1>{value}\g<2>",
+            source,
+            count=1,
+            flags=re.I | re.S,
+        )
+
+    document = replace_stat("show", len(cards), document)
+    document = replace_stat("state", len(states), document)
+    document = re.sub(
+        r'<div>\s*<strong\b[^>]*\bdata-month-festival-count\b[^>]*>.*?</strong>\s*<span>\s*Festivals\s*</span>\s*</div>',
+        f'<div><strong data-month-artist-count>{len(artists)}</strong><span>Artists</span></div>',
+        document,
+        count=1,
+        flags=re.I | re.S,
+    )
+    document = re.sub(
+        r'\s*<p class="section-intro">\s*Browse (?:the|the complete) month chronologically, or filter by artist, state, or event type\.\s*</p>',
+        "",
+        document,
+        count=1,
+        flags=re.I | re.S,
+    )
+    return update_results_count(document)
+
+
+def filter_public_event_data(site: pathlib.Path, cutoff: dt.date) -> int:
+    removed = 0
+    for filename in ("events.json", "supplemental-events.json"):
+        path = site / filename
+        if not path.is_file():
+            continue
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, list):
+            continue
+        kept = [event for event in payload if not isinstance(event, dict) or is_active_event(event, cutoff)]
+        removed += len(payload) - len(kept)
+        path.write_text(json.dumps(kept, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return removed
+
+
+def patch_runtime(site: pathlib.Path) -> None:
+    path = site / "app.js"
+    if not path.is_file():
+        return
+    source = path.read_text(encoding="utf-8")
+    source = source.replace(
+        "cutoff.setDate(cutoff.getDate() - 14);",
+        f"cutoff.setDate(cutoff.getDate() - {NEW_WINDOW_DAYS});",
+    )
+    source = source.replace(
+        'document.querySelector("[data-month-festival-count]")?.replaceChildren(String(list.filter(event => event.eventType === "festival").length));',
+        'document.querySelector("[data-month-artist-count]")?.replaceChildren(String(new Set(list.flatMap(event => event.artists || []).map(normalize).filter(Boolean)).size));',
+    )
+    source = source.replace(
+        'async function boot() {\n  const staticCards = [...document.querySelectorAll("[data-event-card]")];',
+        '''function kcStaticVisibilityCutoff() {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date()).filter(part => part.type !== "literal").map(part => [part.type, Number(part.value)]));
+  const cutoff = new Date(Date.UTC(parts.year, parts.month - 1, parts.day));
+  cutoff.setUTCDate(cutoff.getUTCDate() - 1);
+  return cutoff;
+}
+function kcStaticCardIsActive(card) {
+  const value = card?.dataset?.endDate || card?.dataset?.date || "";
+  const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(value);
+  if (!match) return true;
+  return new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]))) >= kcStaticVisibilityCutoff();
+}
+async function boot() {
+  const allStaticCards = [...document.querySelectorAll("[data-event-card]")];
+  const staticCards = allStaticCards.filter(kcStaticCardIsActive);
+  allStaticCards.filter(card => !kcStaticCardIsActive(card)).forEach(card => card.remove());''',
+    )
+    path.write_text(source, encoding="utf-8")
 
 
 def instagram_icon(icon_class: str = "kc-rd-instagram-icon", token: str = "icon") -> str:
@@ -153,8 +375,8 @@ def replace_legacy_header(document: str, header: str) -> str:
 
 
 def inject_assets(document: str) -> str:
-    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=3'
-    js = f'{TEST_BASE}assets/kc-redesign-v1.js?v=1'
+    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=4'
+    js = f'{TEST_BASE}assets/kc-redesign-v1.js?v=2'
     if css not in document:
         document = document.replace(
             "</head>",
@@ -216,7 +438,11 @@ def transform_home(document: str, show_count: int, artist_count: int) -> str:
     return document
 
 
-def transform_directory(document: str, artist_count: int) -> str:
+def transform_directory(
+    document: str,
+    artist_count: int,
+    profile_events: dict[str, list[dict[str, str]]],
+) -> str:
     document, removed = re.subn(
         r'\s*<section class="page-hero hero-compact seo-directory-hero">.*?</section>',
         "",
@@ -256,6 +482,63 @@ def transform_directory(document: str, artist_count: int) -> str:
         document,
         flags=re.S,
     )
+
+    def refresh_artist_card(match: re.Match[str]) -> str:
+        card = match.group(0)
+        href_match = re.search(r'href="[^"]*/artists/([^/]+)/"', card, re.I)
+        if not href_match:
+            return card
+        events = profile_events.get(href_match.group(1), [])
+        opening_end = card.find(">") + 1
+        opening = card[:opening_end]
+        opening = re.sub(
+            r'\bdata-has-shows="[^"]*"',
+            f'data-has-shows="{str(bool(events)).lower()}"',
+            opening,
+            count=1,
+        )
+        card = opening + card[opening_end:]
+        card = re.sub(
+            r'<p>\s*\d+\s+upcoming\s+shows?\s*</p>',
+            f'<p>{len(events)} upcoming show{"s" if len(events) != 1 else ""}</p>',
+            card,
+            count=1,
+            flags=re.I | re.S,
+        )
+        card = re.sub(
+            r'\s*<p\b[^>]*class="[^"]*\bseo-card-next\b[^"]*"[^>]*>.*?</p>',
+            "",
+            card,
+            count=1,
+            flags=re.I | re.S,
+        )
+        card = re.sub(
+            r'\s*<p\b[^>]*class="[^"]*\bseo-card-states\b[^"]*"[^>]*>.*?</p>',
+            "",
+            card,
+            count=1,
+            flags=re.I | re.S,
+        )
+        if not events:
+            return card
+        first = events[0]
+        date_only = first["date"].split(" - ", 1)[0]
+        states = list(dict.fromkeys(event["state"] for event in events if event["state"]))
+        details = (
+            f'<p class="seo-card-next"><strong>Next:</strong> {html.escape(date_only)} · '
+            f'{html.escape(first["location"])}</p>'
+        )
+        if states:
+            details += (
+                f'<p class="seo-card-states"><strong>Upcoming:</strong> '
+                f'{html.escape(", ".join(states))}</p>'
+            )
+        marker = re.search(r'(<div\b[^>]*class="[^"]*\bseo-card-socials\b)', card, re.I)
+        if marker:
+            card = card[: marker.start()] + details + card[marker.start() :]
+        return card
+
+    document = ARTIST_CARD_PATTERN.sub(refresh_artist_card, document)
     return document
 
 
@@ -287,6 +570,8 @@ def event_metadata(card: str) -> dict[str, str]:
         "venue": values.get("venue", "Venue to be announced"),
         "location": values.get("location", "Location to be announced"),
         "time": time,
+        "state": attribute(opening, "data-state").strip().upper(),
+        "end_date": attribute(opening, "data-end-date") or date_iso,
     }
 
 
@@ -320,6 +605,25 @@ def extract_socials(profile: str) -> tuple[str, str]:
     return "".join(social_anchors), website
 
 
+def profile_visual_shape(image_html: str) -> str:
+    if "<img" not in image_html:
+        return "placeholder"
+    opening = image_html[: image_html.find(">") + 1]
+    try:
+        width = float(attribute(opening, "width"))
+        height = float(attribute(opening, "height"))
+        ratio = width / height
+    except (TypeError, ValueError, ZeroDivisionError):
+        return "portrait"
+    if ratio < 0.95:
+        return "portrait"
+    if ratio < 1.25:
+        return "square"
+    if ratio < 1.65:
+        return "landscape"
+    return "wide"
+
+
 def transform_artist_profile(document: str) -> tuple[str, int, bool]:
     main_match = re.search(r'<main\b[^>]*>.*?</main>', document, re.S)
     if not main_match:
@@ -332,6 +636,7 @@ def transform_artist_profile(document: str) -> tuple[str, int, bool]:
 
     image_match = re.search(r'<div class="seo-profile-image">\s*(.*?)\s*</div>', old_main, re.S)
     image_html = image_match.group(1) if image_match else ""
+    visual_shape = profile_visual_shape(image_html)
     if "<img" in image_html:
         image_html = re.sub(
             r'class="([^"]*)"',
@@ -399,7 +704,7 @@ def transform_artist_profile(document: str) -> tuple[str, int, bool]:
     main = f'''<main id="kc-main-content" class="kc-rd-profile-page kc-rd-artist-profile">
   <article class="kc-rd-profile-shell" data-kc-rd-artist-profile>
     <section class="kc-rd-profile-hero" aria-labelledby="kc-rd-artist-name">
-      <div class="kc-rd-profile-visual">{image_html}</div>
+      <div class="kc-rd-profile-visual kc-rd-profile-visual--{visual_shape}">{image_html}</div>
       <h1 class="kc-rd-profile-name" id="kc-rd-artist-name">{artist_escaped}</h1>
     </section>
     {actions_html}
@@ -496,38 +801,116 @@ def iter_html(site: pathlib.Path) -> Iterable[pathlib.Path]:
     return sorted(path for path in site.rglob("*.html") if path.is_file())
 
 
-def main() -> None:
-    if len(sys.argv) != 2:
-        raise SystemExit("usage: apply_test_redesign.py SITE_ROOT")
-    site = pathlib.Path(sys.argv[1]).resolve()
+def load_source_events(paths: Iterable[pathlib.Path]) -> list[dict[str, object]]:
+    events: list[dict[str, object]] = []
+    for path in paths:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, list):
+            raise ValueError(f"source events must be a JSON array: {path}")
+        events.extend(event for event in payload if isinstance(event, dict))
+    return events
+
+
+def profile_event_index(
+    documents: dict[pathlib.PurePath, str],
+) -> dict[str, list[dict[str, str]]]:
+    profiles: dict[str, list[dict[str, str]]] = {}
+    for relative, document in documents.items():
+        if is_profile_page(relative, document):
+            profiles[relative.parts[1]] = [event_metadata(card) for card in event_cards(document)]
+    return profiles
+
+
+def month_counts(document: str) -> tuple[int, int, int]:
+    cards = event_cards(document)
+    states: set[str] = set()
+    artists: set[str] = set()
+    for card in cards:
+        opening = card[: card.find(">") + 1]
+        state = attribute(opening, "data-state").strip().upper()
+        if state:
+            states.add(state)
+        artists.update(
+            normalized_key(name)
+            for name in attribute(opening, "data-artists").split("|")
+            if normalized_key(name)
+        )
+    return len(cards), len(states), len(artists)
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("site_root", type=pathlib.Path)
+    parser.add_argument(
+        "--source-events",
+        type=pathlib.Path,
+        action="append",
+        default=[],
+        help="Unsanitized event JSON used only at build time for the seven-day New Shows window.",
+    )
+    parser.add_argument("--today", type=dt.date.fromisoformat, help=argparse.SUPPRESS)
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = parse_args(argv)
+    site = args.site_root.resolve()
     repo = pathlib.Path(__file__).resolve().parent.parent
     home_path = site / "index.html"
     directory_path = site / "artists" / "index.html"
     if not home_path.is_file() or not directory_path.is_file():
         raise SystemExit("captured home page or artists directory is missing")
 
-    home_source = home_path.read_text(encoding="utf-8")
-    directory_source = directory_path.read_text(encoding="utf-8")
-    show_count = len(re.findall(r'\bdata-event-card(?:\s|>)', home_source))
-    artist_count = len(re.findall(r'\bdata-artist-card(?:\s|>)', directory_source))
-    if show_count < 1 or artist_count < 1:
-        raise SystemExit(f"invalid published counts: shows={show_count}, artists={artist_count}")
-
     copy_assets(site, repo)
     create_artist_submit_page(site)
+    today = args.today or site_today()
+    cutoff = visibility_cutoff(today)
+    source_events = load_source_events(args.source_events)
+    recent_keys = recent_event_keys(source_events, today)
+    filter_public_event_data(site, cutoff)
+    patch_runtime(site)
+
+    documents: dict[pathlib.PurePath, str] = {}
+    expired_card_count = 0
+    for page in iter_html(site):
+        relative = page.relative_to(site)
+        document = page.read_text(encoding="utf-8")
+        before = len(event_cards(document))
+        document = prune_expired_event_cards(document, cutoff)
+        expired_card_count += before - len(event_cards(document))
+        if relative.as_posix() == "new-shows/index.html":
+            if not args.source_events:
+                recent_keys = {card_source_key(card) for card in event_cards(document)}
+            document = transform_new_shows(document, recent_keys)
+        elif relative.as_posix() == "shows/this-month/index.html":
+            document = transform_this_month(document)
+        else:
+            document = update_results_count(document)
+        documents[relative] = document
+
+    home_source = documents[pathlib.PurePath("index.html")]
+    directory_source = documents[pathlib.PurePath("artists/index.html")]
+    show_count = len(event_cards(home_source))
+    artist_count = len(ARTIST_CARD_PATTERN.findall(directory_source))
+    if show_count < 1 or artist_count < 1:
+        raise SystemExit(f"invalid published counts: shows={show_count}, artists={artist_count}")
+    profile_events = profile_event_index(documents)
+    new_show_count = len(event_cards(documents.get(pathlib.PurePath("new-shows/index.html"), "")))
+    month_show_count, month_state_count, month_artist_count = month_counts(
+        documents.get(pathlib.PurePath("shows/this-month/index.html"), "")
+    )
 
     profile_pages = 0
     profile_show_rows = 0
     profile_pages_with_past = 0
     header_pages = 0
-    for page in iter_html(site):
-        relative = page.relative_to(site)
-        document = page.read_text(encoding="utf-8")
+    for relative, document in documents.items():
+        page = site / relative
         profile = is_profile_page(relative, document)
         if relative.as_posix() == "index.html":
             document = transform_home(document, show_count, artist_count)
         elif relative.as_posix() == "artists/index.html":
-            document = transform_directory(document, artist_count)
+            document = transform_directory(document, artist_count, profile_events)
         if profile:
             document, event_rows, has_past = transform_artist_profile(document)
             profile_pages += 1
@@ -559,6 +942,15 @@ def main() -> None:
         "profilePagesWithPastShows": profile_pages_with_past,
         "headerPageCount": header_pages,
         "artistSubmissionPath": f"{TEST_BASE}submit/artist/",
+        "visibilityCutoff": cutoff.isoformat(),
+        "pastGraceDays": PAST_GRACE_DAYS,
+        "newWindowDays": NEW_WINDOW_DAYS,
+        "newShowCount": new_show_count,
+        "monthShowCount": month_show_count,
+        "monthStateCount": month_state_count,
+        "monthArtistCount": month_artist_count,
+        "expiredEventCardsRemoved": expired_card_count,
+        "sourceMetadataUsed": bool(args.source_events),
         "productionChanged": False,
     }
     (site / "test-redesign-manifest.json").write_text(

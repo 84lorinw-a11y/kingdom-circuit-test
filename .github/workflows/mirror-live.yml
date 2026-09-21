@@ -117,11 +117,31 @@ jobs:
           grep -q "\"liveCommit\": \"$LIVE_SHA\"" _site/test-live-mirror-manifest.json
           grep -q "\"liveDeploymentRunId\": \"$LIVE_RUN_ID\"" _site/test-live-mirror-manifest.json
 
+      - name: Fetch live build metadata for date windows
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          LIVE_SHA="${{ steps.live_deployment.outputs.sha }}"
+          gh api \
+            -H "Accept: application/vnd.github.raw+json" \
+            "repos/${LIVE_REPO}/contents/events.json?ref=${LIVE_SHA}" \
+            > _live_source_events.json
+          gh api \
+            -H "Accept: application/vnd.github.raw+json" \
+            "repos/${LIVE_REPO}/contents/supplemental-events.json?ref=${LIVE_SHA}" \
+            > _live_source_supplemental_events.json
+          jq -e 'type == "array"' _live_source_events.json >/dev/null
+          jq -e 'type == "array"' _live_source_supplemental_events.json >/dev/null
+
       - name: Apply and verify the mobile-first test redesign
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/apply_test_redesign.py _site
+          python scripts/apply_test_redesign.py _site \
+            --source-events _live_source_events.json \
+            --source-events _live_source_supplemental_events.json
           python scripts/verify_test_redesign.py _site
 
           test -s _site/assets/kc-redesign-v1.css

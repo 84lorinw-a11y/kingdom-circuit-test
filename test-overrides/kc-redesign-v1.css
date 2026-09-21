@@ -232,7 +232,7 @@ body .kc-rd-nav a {
   border-right: 1px solid #302c2a;
   border-bottom: 1px solid #302c2a;
   color: var(--kc-rd-cream);
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 900;
   line-height: 1.15;
   text-align: center;
@@ -294,18 +294,18 @@ body .kc-rd-home-hero .eyebrow {
 }
 
 body .kc-rd-home-title {
-  max-width: 10.5ch;
+  max-width: none;
   margin: 0;
   color: var(--kc-rd-cream);
-  font-family: Impact, "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
-  font-size: clamp(3rem, 12.6vw, 5.2rem);
-  font-stretch: condensed;
-  font-weight: 900;
-  letter-spacing: -0.025em;
-  line-height: 0.89;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(2.3rem, 11.2vw, 3.55rem);
+  font-stretch: normal;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
   text-wrap: balance;
   text-transform: uppercase;
-  word-spacing: 0.06em;
+  word-spacing: normal;
 }
 
 body .kc-rd-home-title span {
@@ -330,7 +330,7 @@ body .kc-rd-home-stats {
   gap: 10px;
   width: 100%;
   max-width: 44rem;
-  margin: 24px 0 0;
+  margin: 16px 0 0;
 }
 
 body #calendar {
@@ -1007,7 +1007,7 @@ body .kc-rd-form-page textarea:focus-visible {
   }
 
   body .kc-rd-home-title {
-    font-size: clamp(4.5rem, 13vw, 6.5rem);
+    font-size: clamp(3.55rem, 10vw, 4.7rem);
   }
 
   body .kc-rd-directory-actions {
@@ -1185,7 +1185,7 @@ body .kc-rd-form-page textarea:focus-visible {
   body .kc-rd-home-stats {
     max-width: 580px;
     gap: 14px;
-    margin-top: 30px;
+    margin-top: 18px;
   }
 
   body .kc-rd-stat {
@@ -1233,7 +1233,7 @@ body .kc-rd-form-page textarea:focus-visible {
   }
 
   body .kc-rd-home-title {
-    font-size: 2.78rem;
+    font-size: clamp(2.3rem, 11.2vw, 2.62rem);
   }
 
   body .kc-rd-profile-socials {
@@ -1304,7 +1304,7 @@ body .kc-rd-form-page textarea:focus-visible {
     border: 0;
     background: transparent;
     box-shadow: none;
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     white-space: nowrap;
   }
 
@@ -1330,19 +1330,10 @@ body .kc-rd-form-page textarea:focus-visible {
 
   body .kc-rd-home-title {
     max-width: var(--kc-rd-max);
-    font-size: clamp(5.2rem, 6.9vw, 6.8rem);
-    letter-spacing: -0.02em;
-    line-height: 0.9;
-    word-spacing: 0.04em;
-  }
-
-  body .kc-rd-home-title span:nth-child(2),
-  body .kc-rd-home-title span:nth-child(3) {
-    display: inline;
-  }
-
-  body .kc-rd-home-title span:nth-child(3) {
-    margin-left: 0.18em;
+    font-size: clamp(4.8rem, 6vw, 5.55rem);
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+    word-spacing: normal;
   }
 
   body .kc-rd-home-hero .mission-statement {
@@ -1352,7 +1343,7 @@ body .kc-rd-form-page textarea:focus-visible {
   }
 
   body .kc-rd-home-stats {
-    margin-top: 24px;
+    margin-top: 18px;
   }
 
   body .kc-rd-profile-shell {
@@ -1374,5 +1365,71 @@ body .kc-rd-form-page textarea:focus-visible {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+@media (min-width: 901px) {
+  /* Keep every desktop directory card on the same square image grid, including placeholders. */
+  body [data-artist-directory] .artist-card {
+    height: 100%;
+  }
+
+  body [data-artist-directory] .artist-visual,
+  body [data-artist-directory] .artist-visual-empty {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+  }
+
+  body [data-artist-directory] .artist-card-body {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  /* Give each source shape enough room so faces are not lost to a panoramic crop. */
+  body .kc-rd-profile-visual--wide {
+    aspect-ratio: 16 / 8.25;
+  }
+
+  body .kc-rd-profile-visual--landscape {
+    aspect-ratio: 3 / 2;
+  }
+
+  body .kc-rd-profile-visual--square,
+  body .kc-rd-profile-visual--portrait,
+  body .kc-rd-profile-visual--placeholder {
+    aspect-ratio: 4 / 3;
+  }
+
+  body .kc-rd-profile-visual--portrait img {
+    object-fit: contain !important;
+  }
+
+  /* Keep the artist name fully inside the painted hero instead of clipping its baseline. */
+  body .kc-rd-profile-hero {
+    overflow: visible;
+    border-radius: 0;
+  }
+
+  body .kc-rd-profile-visual,
+  body .kc-rd-profile-placeholder {
+    border-radius: 20px 20px 0 0;
+  }
+
+  body .kc-rd-profile-name {
+    right: 24px;
+    bottom: 0.04em;
+    left: 24px;
+    max-width: calc(100% - 48px);
+    padding-bottom: 0.02em;
+    font-size: clamp(4.5rem, 6vw, 6.2rem);
+    line-height: 0.9;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  body .kc-rd-next--empty {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

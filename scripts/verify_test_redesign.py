@@ -246,6 +246,8 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     home = page_by_relative.get("index.html")
     directory = page_by_relative.get("artists/index.html")
     artist_submit = page_by_relative.get("submit/artist/index.html")
+    new_shows = page_by_relative.get("new-shows/index.html")
+    this_month = page_by_relative.get("shows/this-month/index.html")
     expect(home is not None, "missing:index.html")
     expect(directory is not None, "missing:artists/index.html")
     expect(artist_submit is not None, "missing:submit/artist/index.html")
@@ -354,6 +356,54 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
                 "artist-submit:test-environment-hidden",
             )
 
+    new_show_count = 0
+    if new_shows is not None:
+        new_show_count = count_marker_articles(new_shows.source, "data-event-card")
+        expect("14 days" not in normalized_text(new_shows.source).casefold(), "new-shows:old-window-copy")
+        expect("7 days" in normalized_text(new_shows.source).casefold(), "new-shows:missing-seven-day-copy")
+        result_nodes = new_shows.by_attr("data-results-count")
+        expect(len(result_nodes) == 1, f"new-shows:result-count-nodes:{len(result_nodes)}")
+        expect(
+            integer_from(result_nodes[0] if len(result_nodes) == 1 else None) == new_show_count,
+            "new-shows:result-count-mismatch",
+        )
+
+    month_show_count = 0
+    month_state_count = 0
+    month_artist_count = 0
+    if this_month is not None:
+        expect(
+            "Browse the month chronologically, or filter by artist, state, or event type.".casefold()
+            not in normalized_text(this_month.source).casefold(),
+            "this-month:old-intro-present",
+        )
+        expect(not this_month.by_attr("data-month-festival-count"), "this-month:festival-counter-present")
+        show_nodes = this_month.by_attr("data-month-show-count")
+        state_nodes = this_month.by_attr("data-month-state-count")
+        artist_nodes = this_month.by_attr("data-month-artist-count")
+        expect(len(show_nodes) == 1, f"this-month:show-counter:{len(show_nodes)}")
+        expect(len(state_nodes) == 1, f"this-month:state-counter:{len(state_nodes)}")
+        expect(len(artist_nodes) == 1, f"this-month:artist-counter:{len(artist_nodes)}")
+        month_show_count = count_marker_articles(this_month.source, "data-event-card")
+        month_state_count = len(
+            {
+                node.attrs.get("data-state", "").strip().upper()
+                for node in this_month.by_attr("data-event-card")
+                if node.attrs.get("data-state", "").strip()
+            }
+        )
+        month_artist_count = len(
+            {
+                normalized_text(name).casefold()
+                for node in this_month.by_attr("data-event-card")
+                for name in node.attrs.get("data-artists", "").split("|")
+                if normalized_text(name)
+            }
+        )
+        expect(integer_from(show_nodes[0] if len(show_nodes) == 1 else None) == month_show_count, "this-month:show-count-mismatch")
+        expect(integer_from(state_nodes[0] if len(state_nodes) == 1 else None) == month_state_count, "this-month:state-count-mismatch")
+        expect(integer_from(artist_nodes[0] if len(artist_nodes) == 1 else None) == month_artist_count, "this-month:artist-count-mismatch")
+
     profile_pages = [page for page in pages if is_first_level_artist_profile(page)]
     profile_show_rows = 0
     profile_pages_with_past = 0
@@ -424,6 +474,24 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         expect(manifest.get(key) == expected, f"manifest:{key}:{manifest.get(key)!r}!={expected!r}")
     if "htmlPageCount" in manifest:
         expect(manifest.get("htmlPageCount") == len(pages), f"manifest:htmlPageCount:{manifest.get('htmlPageCount')}!={len(pages)}")
+    if "visibilityCutoff" in manifest:
+        cutoff = str(manifest.get("visibilityCutoff") or "")
+        expect(bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", cutoff)), f"manifest:invalid-visibility-cutoff:{cutoff!r}")
+        for page in pages:
+            for index, card in enumerate(page.by_attr("data-event-card")):
+                last_date = card.attrs.get("data-end-date") or card.attrs.get("data-date") or ""
+                if re.fullmatch(r"\d{4}-\d{2}-\d{2}", last_date):
+                    expect(last_date >= cutoff, f"expired-card:{page.relative}:{index}:{last_date}<{cutoff}")
+        expect(manifest.get("pastGraceDays") == 1, f"manifest:pastGraceDays:{manifest.get('pastGraceDays')!r}")
+        expect(manifest.get("newWindowDays") == 7, f"manifest:newWindowDays:{manifest.get('newWindowDays')!r}")
+        expect(manifest.get("newShowCount") == new_show_count, f"manifest:newShowCount:{manifest.get('newShowCount')!r}!={new_show_count}")
+        expect(manifest.get("monthShowCount") == month_show_count, f"manifest:monthShowCount:{manifest.get('monthShowCount')!r}!={month_show_count}")
+        expect(manifest.get("monthStateCount") == month_state_count, f"manifest:monthStateCount:{manifest.get('monthStateCount')!r}!={month_state_count}")
+        expect(manifest.get("monthArtistCount") == month_artist_count, f"manifest:monthArtistCount:{manifest.get('monthArtistCount')!r}!={month_artist_count}")
+        runtime = (root / "app.js").read_text(encoding="utf-8", errors="ignore") if (root / "app.js").is_file() else ""
+        expect("kcStaticCardIsActive" in runtime, "runtime:missing-active-card-guard")
+        expect("getDate() - 7" in runtime, "runtime:missing-seven-day-window")
+        expect("[data-month-artist-count]" in runtime, "runtime:missing-month-artist-counter")
 
     return {
         "mode": MANIFEST_MODE,
