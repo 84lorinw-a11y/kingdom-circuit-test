@@ -395,7 +395,7 @@ def replace_legacy_header(document: str, header: str) -> str:
 
 
 def inject_assets(document: str) -> str:
-    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=4'
+    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=5'
     js = f'{TEST_BASE}assets/kc-redesign-v1.js?v=2'
     if css not in document:
         document = document.replace(
