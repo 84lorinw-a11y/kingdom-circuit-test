@@ -7,6 +7,9 @@ on:
       - ".github/workflows/mirror-live.yml"
       - "scripts/capture_live_site.py"
       - "scripts/live_mirror_v2.py"
+      - "scripts/apply_test_redesign.py"
+      - "scripts/verify_test_redesign.py"
+      - "test-overrides/**"
       - "tests/**"
   schedule:
     - cron: "0 8 * * *"
@@ -68,6 +71,8 @@ jobs:
           set -euo pipefail
           python -m py_compile scripts/capture_live_site.py
           python -m py_compile scripts/live_mirror_v2.py
+          python -m py_compile scripts/apply_test_redesign.py
+          python -m py_compile scripts/verify_test_redesign.py
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site
@@ -111,6 +116,23 @@ jobs:
           grep -q '"mode": "exact-live-artifact-mirror"' _site/test-live-mirror-manifest.json
           grep -q "\"liveCommit\": \"$LIVE_SHA\"" _site/test-live-mirror-manifest.json
           grep -q "\"liveDeploymentRunId\": \"$LIVE_RUN_ID\"" _site/test-live-mirror-manifest.json
+
+      - name: Apply and verify the mobile-first test redesign
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/apply_test_redesign.py _site
+          python scripts/verify_test_redesign.py _site
+
+          test -s _site/assets/kc-redesign-v1.css
+          test -s _site/assets/kc-redesign-v1.js
+          test -s _site/test-redesign-manifest.json
+          test -s _site/submit/artist/index.html
+          grep -q '"mode": "live-baseline-with-test-redesign"' _site/test-live-mirror-manifest.json
+          grep -q '"mode": "mobile-first-test-redesign-v1"' _site/test-redesign-manifest.json
+          grep -q 'class="kc-rd-home-title"' _site/index.html
+          grep -q 'class="kc-rd-directory-intro"' _site/artists/index.html
+          grep -q 'data-kc-artist-submit-form' _site/submit/artist/index.html
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
