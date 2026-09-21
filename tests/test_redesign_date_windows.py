@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import datetime as dt
 import importlib.util
+import json
 import pathlib
 import sys
+import tempfile
 import unittest
 
 
@@ -121,8 +123,9 @@ class TestPastShowsMigration(unittest.TestCase):
 
         migrated, added = redesign.archive_expired_profile_cards(document, cutoff)
         self.assertEqual(added, 2)
-        self.assertEqual(migrated.count('class="past-show-row"'), 12)
-        self.assertIn("12 archived shows", migrated)
+        self.assertEqual(migrated.count('class="past-show-row"'), 14)
+        self.assertIn("14 archived shows", migrated)
+        self.assertIn("/kingdom-circuit-test/event/old-11/", migrated)
         chicago_href = "/kingdom-circuit-test/event/hulvey-could-be-tonight-tour-2026-09-19-chicago-96a450/"
         detroit_href = "/kingdom-circuit-test/event/hulvey-could-be-tonight-tour-2026-09-18-detroit-0bd71c/"
         self.assertEqual(migrated.count(chicago_href), 2)
@@ -160,6 +163,81 @@ class TestPastShowsMigration(unittest.TestCase):
         self.assertIn("1 archived show", migrated)
         self.assertIn("Chicago, IL", migrated)
         self.assertIn("Test Venue", migrated)
+
+
+class TestFullPastHistory(unittest.TestCase):
+    def test_history_has_no_display_cap_and_deduplicates_sources(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            site = pathlib.Path(temp)
+            (site / "config").mkdir()
+            (site / "config" / "artists.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "name": "Hulvey",
+                            "aliases": ["Hulvey Music"],
+                            "enabled": True,
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            records = []
+            for day in range(1, 15):
+                records.append(
+                    {
+                        "observedOnOrAfterEventDate": True,
+                        "event": {
+                            "id": f"official:{day}",
+                            "title": f"Past Show {day}",
+                            "startDate": f"2026-08-{day:02d}",
+                            "venue": f"Venue {day}",
+                            "city": "Atlanta",
+                            "state": "GA",
+                            "country": "US",
+                            "artists": ["Hulvey Music"],
+                            "confidence": "high",
+                            "officialUrl": f"https://tickets.example.test/{day}",
+                        },
+                    }
+                )
+            records.append(
+                {
+                    "observedOnOrAfterEventDate": True,
+                    "event": {
+                        **records[0]["event"],
+                        "id": "ticketmaster:duplicate",
+                    },
+                }
+            )
+            records.append(
+                {
+                    "observedOnOrAfterEventDate": True,
+                    "event": {
+                        **records[0]["event"],
+                        "id": "official:second-venue",
+                        "venue": "A Different Venue",
+                        "officialUrl": "https://tickets.example.test/second-venue",
+                    },
+                }
+            )
+            history = site / "history.json"
+            history.write_text(json.dumps({"events": records}), encoding="utf-8")
+
+            events, profiles, aliases = redesign.load_source_history(
+                [history],
+                site,
+                dt.date(2026, 9, 20),
+            )
+
+            self.assertEqual(len(events), 15)
+            self.assertEqual(len(profiles["hulvey"]), 15)
+            self.assertEqual(aliases["hulvey music"], "hulvey")
+            rows = [redesign.history_archive_row(event, aliases) for event in profiles["hulvey"]]
+            archive = redesign.replace_profile_archive("<main></main>", rows)
+            self.assertEqual(archive.count('class="past-show-row"'), 15)
+            self.assertIn("15 archived shows", archive)
 
 
 class TestNewShowsWindow(unittest.TestCase):

@@ -208,6 +208,18 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     expect(".kc-rd-header" in css, "redesign-css:missing-header-rule")
     expect(".kc-rd-directory-intro" in css, "redesign-css:missing-directory-intro-rule")
     expect(".kc-rd-profile-page" in css, "redesign-css:missing-profile-rule")
+    event_spacing_rule = re.search(
+        r"body\s+\.event-detail-section\s*\{[^}]*padding-top\s*:",
+        css,
+        re.S,
+    )
+    event_title_rule = re.search(
+        r"body\s+\.event-detail-copy\s+h1\s*\{[^}]*font-size\s*:\s*clamp\(",
+        css,
+        re.S,
+    )
+    expect(event_spacing_rule is not None, "redesign-css:event-detail-spacing")
+    expect(event_title_rule is not None, "redesign-css:event-title-size")
     desktop_image_rule = re.search(
         r"\[data-artist-directory\]\s+\.artist-visual\s+img\s*\{([^}]*)\}",
         css,
@@ -493,10 +505,6 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
                 integer_from(count_nodes[0] if len(count_nodes) == 1 else None)
                 == len(archived_rows),
                 f"profile:past-count-mismatch:{page.relative}",
-            )
-            expect(
-                len(archived_rows) <= 12,
-                f"profile:past-limit:{page.relative}:{len(archived_rows)}",
             )
             hrefs: list[str] = []
             for index, archived in enumerate(archived_rows):

@@ -17,6 +17,7 @@ import re
 import shutil
 import sys
 from typing import Iterable
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 
 
@@ -27,8 +28,26 @@ VERSION = "mobile-first-test-redesign-v1"
 SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
 NEW_WINDOW_DAYS = 7
 PAST_GRACE_DAYS = 1
-PAST_ARCHIVE_LIMIT = 12
 INACTIVE_STATUSES = {"cancelled", "canceled", "postponed", "merged"}
+TRUSTED_AUTHORITIES = {
+    "artist_calendar",
+    "artist_label",
+    "festival",
+    "official",
+    "official_site",
+    "primary",
+    "promoter",
+    "ticketing",
+    "venue",
+    "venue_ticket",
+}
+PLACEHOLDER_VENUES = {
+    "",
+    "tba",
+    "venue tba",
+    "venue not provided",
+    "venue to be announced",
+}
 EVENT_CARD_PATTERN = re.compile(
     r'<article\b(?=[^>]*\bdata-event-card\b)[^>]*>.*?</article>',
     re.I | re.S,
@@ -50,6 +69,23 @@ def clean_text(value: str) -> str:
 
 def normalized_key(value: object) -> str:
     return " ".join(str(value or "").casefold().split())
+
+
+def semantic_key(value: object) -> str:
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", str(value or "").casefold()).split())
+
+
+def slug(value: object) -> str:
+    text = str(value or "").strip().casefold().replace("&", " and ")
+    return re.sub(r"[^a-z0-9]+", "-", text).strip("-") or "item"
+
+
+def fnv(value: object) -> str:
+    result = 0x811C9DC5
+    for byte in str(value or "").encode():
+        result ^= byte
+        result = (result * 0x01000193) & 0xFFFFFFFF
+    return f"{result:08x}"[:6]
 
 
 def parse_iso_date(value: object) -> dt.date | None:
@@ -395,7 +431,7 @@ def replace_legacy_header(document: str, header: str) -> str:
 
 
 def inject_assets(document: str) -> str:
-    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=5'
+    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=6'
     js = f'{TEST_BASE}assets/kc-redesign-v1.js?v=2'
     if css not in document:
         document = document.replace(
@@ -698,7 +734,7 @@ def archive_expired_profile_cards(
     if not added_rows:
         return document, 0
 
-    rows = (added_rows + existing_rows)[:PAST_ARCHIVE_LIMIT]
+    rows = added_rows + existing_rows
     section = past_archive_section(rows)
     if section_match:
         document = document[: section_match.start()] + section + document[section_match.end() :]
@@ -945,6 +981,351 @@ def load_source_events(paths: Iterable[pathlib.Path]) -> list[dict[str, object]]
     return events
 
 
+def artist_alias_index(site: pathlib.Path) -> tuple[dict[str, str], dict[str, str]]:
+    """Return normalized artist/alias -> profile slug and profile slug -> display name."""
+    path = site / "config" / "artists.json"
+    if not path.is_file():
+        return {}, {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError("config/artists.json must be a JSON array")
+    aliases: dict[str, str] = {}
+    display_names: dict[str, str] = {}
+    for item in payload:
+        if not isinstance(item, dict) or item.get("enabled") is False:
+            continue
+        name = str(item.get("name") or "").strip()
+        if not name:
+            continue
+        profile_slug = slug(name)
+        display_names[profile_slug] = name
+        aliases[normalized_key(name)] = profile_slug
+        for alias in item.get("aliases", []) if isinstance(item.get("aliases"), list) else []:
+            alias_key = normalized_key(alias)
+            if alias_key:
+                aliases[alias_key] = profile_slug
+    return aliases, display_names
+
+
+def history_event_slug(event: dict[str, object]) -> str:
+    signature = event.get("id") or json.dumps(event, sort_keys=True)
+    return (
+        f"{slug(event.get('title') or 'event')}-"
+        f"{str(event.get('startDate') or '')[:10]}-"
+        f"{slug(event.get('city'))}-{fnv(signature)}"
+    )
+
+
+def history_event_href(event: dict[str, object]) -> str:
+    return f"{TEST_BASE}event/{history_event_slug(event)}/"
+
+
+def history_event_page(site: pathlib.Path, event: dict[str, object]) -> pathlib.Path:
+    return site / "event" / history_event_slug(event) / "index.html"
+
+
+def event_is_test_data(event: dict[str, object]) -> bool:
+    artists = event.get("artists", [])
+    names = artists if isinstance(artists, list) else []
+    text = " ".join(
+        [
+            str(event.get("title") or ""),
+            str(event.get("venue") or ""),
+            str(event.get("city") or ""),
+            str(event.get("headliner") or ""),
+            " ".join(str(name) for name in names if name),
+        ]
+    ).casefold()
+    urls = " ".join(
+        str(event.get(key) or "") for key in ("ticketUrl", "officialUrl")
+    ).casefold()
+    return any(domain in urls for domain in ("example.com", "example.org", "example.net")) or bool(
+        re.search(r"\btest\s+(artist|city|venue|event|show|concert)\b", text)
+    )
+
+
+def history_event_is_trusted(event: dict[str, object]) -> bool:
+    if event.get("verifiedVersion") or normalized_key(event.get("confidence")) in {
+        "high",
+        "verified",
+    }:
+        return True
+    sources = event.get("sources", [])
+    for source in sources if isinstance(sources, list) else []:
+        if isinstance(source, dict) and normalized_key(source.get("authority")) in TRUSTED_AUTHORITIES:
+            return True
+    url = str(event.get("officialUrl") or event.get("ticketUrl") or "").casefold()
+    return bool(url and "bandsintown.com" not in url)
+
+
+def normalized_history_url(value: object) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    try:
+        parts = urlsplit(raw)
+    except ValueError:
+        return raw.casefold()
+    kept_query = [
+        (key, value)
+        for key, value in parse_qsl(parts.query, keep_blank_values=True)
+        if not key.casefold().startswith("utm_")
+        and key.casefold() not in {"fbclid", "gclid", "mc_cid", "mc_eid"}
+    ]
+    return urlunsplit(
+        (
+            parts.scheme.casefold(),
+            parts.netloc.casefold(),
+            parts.path.rstrip("/"),
+            urlencode(kept_query),
+            "",
+        )
+    )
+
+
+def history_event_artists(event: dict[str, object]) -> list[str]:
+    raw = event.get("artists", [])
+    names = [str(name).strip() for name in raw if str(name).strip()] if isinstance(raw, list) else []
+    headliner = str(event.get("headliner") or "").strip()
+    if not names and headliner:
+        names = [headliner]
+    return list(dict.fromkeys(names))
+
+
+def history_event_duplicate(left: dict[str, object], right: dict[str, object]) -> bool:
+    left_date = str(left.get("startDate") or "")[:10]
+    right_date = str(right.get("startDate") or "")[:10]
+    left_city = semantic_key(str(left.get("city") or "").split("(", 1)[0])
+    right_city = semantic_key(str(right.get("city") or "").split("(", 1)[0])
+    if (
+        left_date != right_date
+        or left_city != right_city
+        or semantic_key(left.get("state")) != semantic_key(right.get("state"))
+    ):
+        return False
+
+    left_urls = {
+        normalized_history_url(left.get(key))
+        for key in ("officialUrl", "ticketUrl")
+        if normalized_history_url(left.get(key))
+    }
+    right_urls = {
+        normalized_history_url(right.get(key))
+        for key in ("officialUrl", "ticketUrl")
+        if normalized_history_url(right.get(key))
+    }
+    if left_urls & right_urls:
+        return True
+    if semantic_key(left.get("title")) != semantic_key(right.get("title")):
+        return False
+    left_venue = semantic_key(left.get("venue"))
+    right_venue = semantic_key(right.get("venue"))
+    return (
+        left_venue == right_venue
+        or left_venue in PLACEHOLDER_VENUES
+        or right_venue in PLACEHOLDER_VENUES
+    )
+
+
+def history_event_score(site: pathlib.Path, event: dict[str, object]) -> tuple[int, ...]:
+    sources = event.get("sources", [])
+    source_authorities = {
+        normalized_key(source.get("authority"))
+        for source in sources if isinstance(sources, list) and isinstance(source, dict)
+    }
+    venue = semantic_key(event.get("venue"))
+    completeness = sum(
+        bool(str(event.get(key) or "").strip())
+        for key in ("startTime", "venue", "address", "officialUrl", "ticketUrl", "image")
+    )
+    return (
+        int(history_event_page(site, event).is_file()),
+        int(bool(event.get("verifiedVersion"))),
+        int(bool(source_authorities & TRUSTED_AUTHORITIES)),
+        len(history_event_artists(event)),
+        int(venue not in PLACEHOLDER_VENUES),
+        completeness,
+        int(normalized_key(event.get("confidence")) in {"high", "verified"}),
+    )
+
+
+def dedupe_history_events(
+    site: pathlib.Path,
+    events: Iterable[dict[str, object]],
+) -> list[dict[str, object]]:
+    selected: list[dict[str, object]] = []
+    for event in sorted(events, key=lambda item: history_event_score(site, item), reverse=True):
+        duplicate = next(
+            (existing for existing in selected if history_event_duplicate(event, existing)),
+            None,
+        )
+        if duplicate is not None:
+            duplicate["_profileSlugs"] = sorted(
+                {
+                    str(profile_slug)
+                    for profile_slug in (
+                        list(duplicate.get("_profileSlugs", []))
+                        + list(event.get("_profileSlugs", []))
+                    )
+                }
+            )
+            duplicate["artists"] = list(
+                dict.fromkeys(history_event_artists(duplicate) + history_event_artists(event))
+            )
+            continue
+        selected.append(event)
+    return sorted(
+        selected,
+        key=lambda event: (
+            str(event.get("startDate") or ""),
+            str(event.get("startTime") or ""),
+            str(event.get("title") or ""),
+        ),
+        reverse=True,
+    )
+
+
+def load_source_history(
+    paths: Iterable[pathlib.Path],
+    site: pathlib.Path,
+    cutoff: dt.date,
+) -> tuple[list[dict[str, object]], dict[str, list[dict[str, object]]], dict[str, str]]:
+    aliases, _display_names = artist_alias_index(site)
+    candidates: list[dict[str, object]] = []
+    for path in paths:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict) or not isinstance(payload.get("events"), list):
+            raise ValueError(f"source history must contain an events array: {path}")
+        for record in payload["events"]:
+            if not isinstance(record, dict):
+                continue
+            event = record.get("event")
+            if not isinstance(event, dict):
+                continue
+            occurrence_confirmed = bool(record.get("observedOnOrAfterEventDate")) or normalized_key(
+                record.get("calendarPresence")
+            ) == "present"
+            last_date = parse_iso_date(event.get("endDate") or event.get("startDate"))
+            status = normalized_key(event.get("status"))
+            country = str(event.get("country") or "US").strip().upper()
+            required = all(str(event.get(key) or "").strip() for key in ("title", "city", "state", "startDate"))
+            known_profiles = {
+                aliases[normalized_key(name)]
+                for name in history_event_artists(event)
+                if normalized_key(name) in aliases
+            }
+            if not (
+                occurrence_confirmed
+                and last_date is not None
+                and last_date < cutoff
+                and status not in INACTIVE_STATUSES
+                and country in {"", "US", "USA"}
+                and required
+                and known_profiles
+                and not event_is_test_data(event)
+                and history_event_is_trusted(event)
+            ):
+                continue
+            normalized_event = dict(event)
+            normalized_event["_profileSlugs"] = sorted(known_profiles)
+            candidates.append(normalized_event)
+
+    events = dedupe_history_events(site, candidates)
+    by_profile: dict[str, list[dict[str, object]]] = {}
+    for event in events:
+        for profile_slug in event.get("_profileSlugs", []):
+            by_profile.setdefault(str(profile_slug), []).append(event)
+    return events, by_profile, aliases
+
+
+def history_archive_row(
+    event: dict[str, object],
+    aliases: dict[str, str],
+) -> str:
+    artist_parts: list[str] = []
+    names = history_event_artists(event)
+    for name in names[:5]:
+        profile_slug = aliases.get(normalized_key(name))
+        if profile_slug:
+            artist_parts.append(
+                f'<a href="{TEST_BASE}artists/{profile_slug}/">{html.escape(name)}</a>'
+            )
+        else:
+            artist_parts.append(html.escape(name))
+    if len(names) > 5:
+        artist_parts.append(f"+{len(names) - 5} more")
+    location = ", ".join(
+        value
+        for value in (
+            str(event.get("city") or "").strip(),
+            str(event.get("state") or "").strip(),
+        )
+        if value
+    )
+    details = " · ".join(
+        part
+        for part in (
+            " · ".join(artist_parts),
+            html.escape(str(event.get("venue") or "Venue to be announced")),
+            html.escape(location),
+        )
+        if part
+    )
+    return (
+        '<article class="past-show-row">'
+        f'<div class="past-show-date">{html.escape(past_date_label(str(event.get("startDate") or "")))}</div>'
+        '<div class="past-show-copy">'
+        f'<h3><a href="{html.escape(history_event_href(event), quote=True)}">'
+        f'{html.escape(str(event.get("title") or "Past show"))}</a></h3>'
+        f"<p>{details}</p></div></article>"
+    )
+
+
+def replace_profile_archive(document: str, rows: list[str]) -> str:
+    if not rows:
+        return document
+    section_match = re.search(
+        r'<section class="past-shows-archive"[^>]*>.*?</section>',
+        document,
+        re.I | re.S,
+    )
+    section = past_archive_section(rows)
+    if section_match:
+        return document[: section_match.start()] + section + document[section_match.end() :]
+    if "</main>" not in document:
+        raise ValueError("artist profile main element was not found for Past Shows archive")
+    return document.replace("</main>", section + "\n</main>", 1)
+
+
+def create_history_event_page(site: pathlib.Path, event: dict[str, object]) -> bool:
+    target = history_event_page(site, event)
+    if target.is_file():
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    title = html.escape(str(event.get("title") or "Past Christian hip-hop show"))
+    venue = html.escape(str(event.get("venue") or "Venue to be announced"))
+    city = html.escape(str(event.get("city") or ""))
+    state = html.escape(str(event.get("state") or ""))
+    artists = " · ".join(html.escape(name) for name in history_event_artists(event))
+    date = html.escape(past_date_label(str(event.get("startDate") or "")))
+    target.write_text(
+        f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow"><title>{title} - Past Show | Kingdom Circuit Test</title>
+<link rel="stylesheet" href="{TEST_BASE}styles.css"></head><body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="{TEST_BASE}">Kingdom Circuit</a></div></header>
+<main id="kc-main-content"><section class="event-detail-section">
+<p class="eyebrow"><a class="text-link" href="{TEST_BASE}shows/">Shows</a> / Past show</p>
+<article class="event-detail"><div class="event-detail-copy"><p class="eyebrow">Past show</p><h1>{title}</h1>
+<p class="artist-line">{artists}</p><div class="past-event-notice"><strong>This event has passed.</strong></div>
+<dl class="detail-list"><div><dt>Date</dt><dd>{date}</dd></div><div><dt>Venue</dt><dd>{venue}</dd></div>
+<div><dt>Location</dt><dd>{city}, {state}</dd></div></dl></div></article></section></main>
+<footer class="site-footer"><strong>Kingdom Circuit</strong></footer></body></html>''',
+        encoding="utf-8",
+    )
+    return True
+
+
 def profile_event_index(
     documents: dict[pathlib.PurePath, str],
 ) -> dict[str, list[dict[str, str]]]:
@@ -982,6 +1363,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=[],
         help="Unsanitized event JSON used only at build time for the seven-day New Shows window.",
     )
+    parser.add_argument(
+        "--source-history",
+        type=pathlib.Path,
+        action="append",
+        default=[],
+        help="Full live event history used only at build time to restore complete artist archives.",
+    )
     parser.add_argument("--today", type=dt.date.fromisoformat, help=argparse.SUPPRESS)
     return parser.parse_args(argv)
 
@@ -1001,16 +1389,33 @@ def main(argv: list[str] | None = None) -> None:
     cutoff = visibility_cutoff(today)
     source_events = load_source_events(args.source_events)
     recent_keys = recent_event_keys(source_events, today)
+    history_events, history_by_profile, history_aliases = load_source_history(
+        args.source_history,
+        site,
+        cutoff,
+    )
+    generated_history_pages = sum(
+        int(create_history_event_page(site, event)) for event in history_events
+    )
     filter_public_event_data(site, cutoff)
     patch_runtime(site)
 
     documents: dict[pathlib.PurePath, str] = {}
     expired_card_count = 0
     expired_profile_cards_archived = 0
+    history_profile_rows_loaded = 0
     for page in iter_html(site):
         relative = page.relative_to(site)
         document = page.read_text(encoding="utf-8")
         if is_profile_page(relative, document):
+            profile_history = history_by_profile.get(relative.parts[1], [])
+            if profile_history:
+                rows = [
+                    history_archive_row(event, history_aliases)
+                    for event in profile_history
+                ]
+                document = replace_profile_archive(document, rows)
+                history_profile_rows_loaded += len(rows)
             document, archived = archive_expired_profile_cards(document, cutoff)
             expired_profile_cards_archived += archived
         before = len(event_cards(document))
@@ -1093,6 +1498,10 @@ def main(argv: list[str] | None = None) -> None:
         "expiredEventCardsRemoved": expired_card_count,
         "expiredProfileCardsArchived": expired_profile_cards_archived,
         "sourceMetadataUsed": bool(args.source_events),
+        "sourceHistoryUsed": bool(args.source_history),
+        "historicalEventCount": len(history_events),
+        "historicalProfileRowCount": history_profile_rows_loaded,
+        "generatedHistoricalEventPages": generated_history_pages,
         "productionChanged": False,
     }
     (site / "test-redesign-manifest.json").write_text(

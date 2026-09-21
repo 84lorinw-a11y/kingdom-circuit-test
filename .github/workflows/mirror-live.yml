@@ -132,8 +132,13 @@ jobs:
             -H "Accept: application/vnd.github.raw+json" \
             "repos/${LIVE_REPO}/contents/supplemental-events.json?ref=${LIVE_SHA}" \
             > _live_source_supplemental_events.json
+          gh api \
+            -H "Accept: application/vnd.github.raw+json" \
+            "repos/${LIVE_REPO}/contents/event-history.json?ref=${LIVE_SHA}" \
+            > _live_source_event_history.json
           jq -e 'type == "array"' _live_source_events.json >/dev/null
           jq -e 'type == "array"' _live_source_supplemental_events.json >/dev/null
+          jq -e 'type == "object" and (.events | type == "array")' _live_source_event_history.json >/dev/null
 
       - name: Apply and verify the mobile-first test redesign
         shell: bash
@@ -141,7 +146,8 @@ jobs:
           set -euo pipefail
           python scripts/apply_test_redesign.py _site \
             --source-events _live_source_events.json \
-            --source-events _live_source_supplemental_events.json
+            --source-events _live_source_supplemental_events.json \
+            --source-history _live_source_event_history.json
           python scripts/verify_test_redesign.py _site
 
           test -s _site/assets/kc-redesign-v1.css

@@ -32,7 +32,8 @@ class TestRedesignVerifier(unittest.TestCase):
         (root / "assets").mkdir(parents=True)
         (root / "assets" / "kc-redesign-v1.css").write_text(
             ".kc-rd-header{display:flex}.kc-rd-directory-intro{font-size:2rem}.kc-rd-profile-page{display:block}"
-            "[data-artist-directory] .artist-visual img{position: absolute;width: 100%;height: 100%;object-fit: cover}",
+            "[data-artist-directory] .artist-visual img{position: absolute;width: 100%;height: 100%;object-fit: cover}"
+            "body .event-detail-section{padding-top:24px}body .event-detail-copy h1{font-size:clamp(2rem,4vw,4rem)}",
             encoding="utf-8",
         )
         (root / "assets" / "kc-redesign-v1.js").write_text("document.documentElement.classList.add('kc-rd-ready');", encoding="utf-8")

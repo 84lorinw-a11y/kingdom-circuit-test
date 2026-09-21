@@ -30,6 +30,15 @@ class PublishedSiteWorkflowTests(unittest.TestCase):
         self.assertIn("noindex,nofollow", workflow)
         self.assertIn("Disallow: /", workflow)
 
+    def test_workflow_supplies_full_live_history_to_test_redesign(self) -> None:
+        workflow = (ROOT / ".github" / "workflows" / "mirror-live.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("event-history.json?ref=${LIVE_SHA}", workflow)
+        self.assertIn("_live_source_event_history.json", workflow)
+        self.assertIn("--source-history _live_source_event_history.json", workflow)
+        self.assertIn('.events | type == "array"', workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

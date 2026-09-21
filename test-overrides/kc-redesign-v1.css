@@ -1469,3 +1469,40 @@ body .kc-rd-form-page textarea:focus-visible {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Event pages: separate the breadcrumb from the header and keep long concert names readable. */
+body .event-detail-section {
+  padding-top: clamp(22px, 2.2vw, 32px);
+}
+
+body .event-detail-section > .eyebrow {
+  margin-top: 0;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+body .event-detail-copy h1 {
+  max-width: 18ch;
+  font-size: clamp(2.75rem, 4.5vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+@media (max-width: 600px) {
+  body .event-detail-section {
+    padding-top: 20px;
+  }
+
+  body .event-detail-section > .event-detail {
+    padding-top: 32px;
+  }
+
+  body .event-detail-copy h1 {
+    max-width: none;
+    font-size: clamp(2.1rem, 8.5vw, 2.85rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+}
