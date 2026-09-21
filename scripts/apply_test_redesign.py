@@ -1417,6 +1417,10 @@ def history_event_duplicate(left: dict[str, object], right: dict[str, object]) -
         or semantic_key(left.get("state")) != semantic_key(right.get("state"))
     ):
         return False
+    left_time = str(left.get("startTime") or "").strip()
+    right_time = str(right.get("startTime") or "").strip()
+    if left_time and right_time and left_time != right_time:
+        return False
 
     left_urls = {
         normalized_history_url(left.get(key))

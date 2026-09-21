@@ -166,6 +166,18 @@ class TestPastShowsMigration(unittest.TestCase):
 
 
 class TestFullPastHistory(unittest.TestCase):
+    def test_distinct_same_day_performance_times_are_not_deduplicated(self) -> None:
+        morning = {
+            "title": "808 BEEZY — Live at RWG TOUR 2026",
+            "startDate": "2026-09-18",
+            "startTime": "08:45",
+            "venue": "RWG TOUR 2026",
+            "city": "Dola",
+            "state": "OH",
+        }
+        later = {**morning, "startTime": "09:45"}
+        self.assertFalse(redesign.history_event_duplicate(morning, later))
+
     def test_history_has_no_display_cap_and_deduplicates_sources(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             site = pathlib.Path(temp)
