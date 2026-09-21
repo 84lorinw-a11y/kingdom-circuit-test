@@ -48,6 +48,13 @@ PLACEHOLDER_VENUES = {
     "venue not provided",
     "venue to be announced",
 }
+STATE_NAMES = {
+    "CA": "California",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "MO": "Missouri",
+    "OH": "Ohio",
+}
 EVENT_CARD_PATTERN = re.compile(
     r'<article\b(?=[^>]*\bdata-event-card\b)[^>]*>.*?</article>',
     re.I | re.S,
@@ -981,6 +988,274 @@ def load_source_events(paths: Iterable[pathlib.Path]) -> list[dict[str, object]]
     return events
 
 
+def merge_events_by_id(
+    primary: Iterable[dict[str, object]],
+    overrides: Iterable[dict[str, object]],
+) -> list[dict[str, object]]:
+    merged: dict[str, dict[str, object]] = {}
+    order: list[str] = []
+    for event in [*primary, *overrides]:
+        event_id = str(event.get("id") or "").strip()
+        if not event_id:
+            raise ValueError("event override is missing an id")
+        if event_id not in merged:
+            order.append(event_id)
+            merged[event_id] = dict(event)
+        else:
+            merged[event_id].update(event)
+    return [merged[event_id] for event_id in order]
+
+
+def event_internal_href(event: dict[str, object]) -> str:
+    event_slug = "-".join(
+        (
+            slug(event.get("title") or "event"),
+            str(event.get("startDate") or "")[:10],
+            slug(event.get("city") or "location"),
+            fnv(event.get("id") or json.dumps(event, sort_keys=True)),
+        )
+    )
+    return f"{TEST_BASE}event/{event_slug}/"
+
+
+def event_date_label(event: dict[str, object]) -> str:
+    parsed = parse_iso_date(event.get("startDate"))
+    if parsed is None:
+        label = str(event.get("startDate") or "Date to be announced")
+    else:
+        label = f"{parsed.strftime('%a, %b')} {parsed.day}, {parsed.year}"
+    raw_time = str(event.get("startTime") or "").strip()
+    match = re.fullmatch(r"(\d{1,2}):(\d{2})", raw_time)
+    if match:
+        hour, minute = map(int, match.groups())
+        label += f" - {hour % 12 or 12}:{minute:02d} {'AM' if hour < 12 else 'PM'}"
+    return label
+
+
+def event_card_sort_key(card: str) -> tuple[str, str, str]:
+    opening = card[: card.find(">") + 1]
+    date = attribute(opening, "data-date")
+    start_time = attribute(opening, "data-start-time")
+    if not start_time:
+        date_match = re.search(
+            r"<dt>\s*Date\s*</dt>\s*<dd>.*?-\s*(\d{1,2}):(\d{2})\s*(AM|PM)</dd>",
+            card,
+            re.I | re.S,
+        )
+        if date_match:
+            hour = int(date_match.group(1)) % 12
+            if date_match.group(3).upper() == "PM":
+                hour += 12
+            start_time = f"{hour:02d}:{int(date_match.group(2)):02d}"
+    title = clean_text(
+        (re.search(r"<h3>\s*<a\b[^>]*>(.*?)</a>", card, re.I | re.S) or ["", ""])[1]
+    )
+    return date, start_time, title.casefold()
+
+
+def replace_event_card_sequence(document: str, cards: Iterable[str]) -> str:
+    replacement = "".join(sorted(cards, key=event_card_sort_key))
+    matches = list(EVENT_CARD_PATTERN.finditer(document))
+    if matches:
+        return document[: matches[0].start()] + replacement + document[matches[-1].end() :]
+    grid = re.search(r'<div\b[^>]*class="[^"]*\bevent-grid\b[^"]*"[^>]*>', document, re.I)
+    if not grid:
+        raise ValueError("event grid was not found")
+    return document[: grid.end()] + replacement + document[grid.end() :]
+
+
+def is_808_beezy_card(card: str) -> bool:
+    return bool(
+        re.search(r'/artists/808-beezy/', card, re.I)
+        or re.search(r'class="[^"]*artist-line[^"]*"[^>]*>[^<]*808\s+BEEZY', card, re.I)
+    )
+
+
+def event_card_image(template: str, title: str) -> str:
+    match = re.search(r"<img\b[^>]*>", template, re.I | re.S)
+    if match:
+        image = match.group(0)
+        escaped_title = html.escape(title, quote=True)
+        if re.search(r"\balt=(?:\"[^\"]*\"|'[^']*')", image, re.I):
+            image = re.sub(
+                r"\balt=(?:\"[^\"]*\"|'[^']*')",
+                f'alt="{escaped_title}"',
+                image,
+                count=1,
+                flags=re.I,
+            )
+        else:
+            image = image[:-1] + f' alt="{escaped_title}">'
+        return image
+    return (
+        f'<img class="artist-photo" src="{TEST_BASE}assets/event-fallback.webp" '
+        f'alt="{html.escape(title, quote=True)}" loading="lazy" decoding="async" '
+        'width="1200" height="675">'
+    )
+
+
+def render_official_event_card(event: dict[str, object], template: str) -> str:
+    title = str(event.get("title") or "808 BEEZY live")
+    venue = str(event.get("venue") or "Venue to be announced")
+    city = str(event.get("city") or "")
+    state = str(event.get("state") or "")
+    location = ", ".join(part for part in (city, state) if part)
+    href = event_internal_href(event)
+    official = str(event.get("officialUrl") or event.get("ticketUrl") or "#")
+    search = normalized_key(" ".join((title, venue, city, state, "808 BEEZY")))
+    image = event_card_image(template, title)
+    return f'''<article class="event-card" data-event-card data-search="{html.escape(search, quote=True)}" data-artists="808 beezy" data-state="{html.escape(state, quote=True)}" data-type="concert" data-date="{html.escape(str(event.get('startDate') or ''), quote=True)}" data-end-date="{html.escape(str(event.get('endDate') or event.get('startDate') or ''), quote=True)}" data-start-time="{html.escape(str(event.get('startTime') or ''), quote=True)}"><a class="event-media" href="{html.escape(href, quote=True)}" tabindex="-1" aria-hidden="true" data-kc-duplicate-link="true">{image}</a><div class="event-content"><div class="event-main"><div class="event-badges"><span class="badge badge-gold">Concert</span></div><h3><a href="{html.escape(href, quote=True)}">{html.escape(title)}</a></h3><p class="artist-line"><a href="{TEST_BASE}artists/808-beezy/">808 BEEZY</a></p><dl class="event-meta"><div><dt>Date</dt><dd>{html.escape(event_date_label(event))}</dd></div><div><dt>Venue</dt><dd>{html.escape(venue)}</dd></div><div><dt>Location</dt><dd>{html.escape(location)}</dd></div></dl></div><div class="event-footer"><a class="official-button" href="{html.escape(official, quote=True)}" target="_blank" rel="noopener" aria-label="Official details for {html.escape(title, quote=True)} (opens in new tab)">Official details</a></div></div></article>'''
+
+
+def create_official_event_page(
+    site: pathlib.Path,
+    event: dict[str, object],
+    template: str,
+) -> bool:
+    relative = event_internal_href(event).removeprefix(TEST_BASE).strip("/")
+    target = site / relative / "index.html"
+    if target.is_file():
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    title = str(event.get("title") or "808 BEEZY live")
+    venue = str(event.get("venue") or "Venue to be announced")
+    city = str(event.get("city") or "")
+    state = str(event.get("state") or "")
+    location = ", ".join(part for part in (city, state) if part)
+    official = str(event.get("officialUrl") or event.get("ticketUrl") or "#")
+    image = event_card_image(template, title).replace('loading="lazy"', 'loading="eager"', 1)
+    target.write_text(
+        f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow"><title>{html.escape(title)} | Kingdom Circuit Test</title>
+<link rel="stylesheet" href="{TEST_BASE}styles.css"></head><body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="{TEST_BASE}">Kingdom Circuit</a></div></header>
+<main id="kc-main-content"><section class="event-detail-section">
+<p class="eyebrow"><a class="text-link" href="{TEST_BASE}shows/">Shows</a> / {html.escape(title)}</p>
+<article class="event-detail"><div class="event-detail-media">{image}</div><div class="event-detail-copy">
+<p class="eyebrow">Concert</p><h1>{html.escape(title)}</h1>
+<p class="artist-line"><a href="{TEST_BASE}artists/808-beezy/">808 BEEZY</a></p>
+<dl class="detail-list"><div><dt>Date</dt><dd>{html.escape(event_date_label(event))}</dd></div>
+<div><dt>Venue</dt><dd>{html.escape(venue)}</dd></div><div><dt>Location</dt><dd>{html.escape(location)}</dd></div></dl>
+<a class="primary-button" href="{html.escape(official, quote=True)}" target="_blank" rel="noopener">Official details</a>
+<p class="disclaimer">Event details may change. Confirm final information with the official organizer before traveling.</p>
+</div></article></section></main><footer class="site-footer"><strong>Kingdom Circuit</strong></footer></body></html>''',
+        encoding="utf-8",
+    )
+    return True
+
+
+def restore_official_808_beezy_schedule(
+    site: pathlib.Path,
+    overrides: Iterable[dict[str, object]],
+    today: dt.date,
+) -> dict[str, int]:
+    cutoff = visibility_cutoff(today)
+    official = sorted(
+        (dict(event) for event in overrides if is_active_event(event, cutoff)),
+        key=lambda event: (
+            str(event.get("startDate") or ""),
+            str(event.get("startTime") or ""),
+            str(event.get("id") or ""),
+        ),
+    )
+    if not official:
+        return {"official808Events": 0, "official808PagesCreated": 0, "official808ListingsUpdated": 0}
+
+    profile_path = site / "artists" / "808-beezy" / "index.html"
+    if not profile_path.is_file():
+        raise ValueError("808 BEEZY profile is missing from the captured site")
+    profile = profile_path.read_text(encoding="utf-8")
+    current_cards = event_cards(profile)
+    if not current_cards:
+        raise ValueError("808 BEEZY profile has no event-card template")
+    template = current_cards[0]
+    rendered = {str(event.get("id")): render_official_event_card(event, template) for event in official}
+
+    profile_path.write_text(
+        replace_event_card_sequence(profile, rendered.values()),
+        encoding="utf-8",
+    )
+
+    page_specs: dict[pathlib.Path, list[dict[str, object]]] = {
+        site / "index.html": official,
+        site / "shows" / "index.html": official,
+        site / "new-shows" / "index.html": official,
+        site / "shows" / "this-month" / "index.html": [
+            event
+            for event in official
+            if parse_iso_date(event.get("startDate"))
+            and parse_iso_date(event.get("startDate")).year == today.year
+            and parse_iso_date(event.get("startDate")).month == today.month
+        ],
+    }
+    for state in sorted({str(event.get("state") or "") for event in official}):
+        state_name = STATE_NAMES.get(state)
+        if not state_name:
+            continue
+        selected = [event for event in official if event.get("state") == state]
+        page_specs[site / "shows" / slug(state_name) / "index.html"] = selected
+        page_specs[site / "artists" / "808-beezy" / slug(state_name) / "index.html"] = selected
+    for year, month in sorted(
+        {
+            (parsed.year, parsed.month)
+            for event in official
+            if (parsed := parse_iso_date(event.get("startDate"))) is not None
+        }
+    ):
+        label = dt.date(year, month, 1).strftime("%B").casefold()
+        page_specs[site / "shows" / f"{label}-{year}" / "index.html"] = [
+            event
+            for event in official
+            if (parsed := parse_iso_date(event.get("startDate"))) is not None
+            and parsed.year == year
+            and parsed.month == month
+        ]
+
+    listings_updated = 1
+    for path, selected in page_specs.items():
+        if not path.is_file():
+            continue
+        document = path.read_text(encoding="utf-8")
+        existing = [card for card in event_cards(document) if not is_808_beezy_card(card)]
+        cards = [*existing, *(rendered[str(event.get("id"))] for event in selected)]
+        path.write_text(replace_event_card_sequence(document, cards), encoding="utf-8")
+        listings_updated += 1
+
+    events_path = site / "events.json"
+    deployed = json.loads(events_path.read_text(encoding="utf-8"))
+    if not isinstance(deployed, list):
+        raise ValueError("captured events.json must be an array")
+    image_match = re.search(r'<img\b[^>]*\bsrc="([^"]+)"', template, re.I)
+    image = image_match.group(1) if image_match else ""
+    if image.startswith(TEST_BASE):
+        image = image.removeprefix(TEST_BASE)
+    enriched: list[dict[str, object]] = []
+    for event in official:
+        current = dict(event)
+        if image:
+            current.setdefault("image", image)
+            current.setdefault("imageType", "artist")
+            current.setdefault("imagePosition", "center")
+        enriched.append(current)
+    deployed = merge_events_by_id(deployed, enriched)
+    deployed.sort(
+        key=lambda event: (
+            str(event.get("startDate") or ""),
+            str(event.get("startTime") or ""),
+            str(event.get("title") or ""),
+        )
+    )
+    events_path.write_text(json.dumps(deployed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    pages_created = sum(create_official_event_page(site, event, template) for event in official)
+    return {
+        "official808Events": len(official),
+        "official808PagesCreated": pages_created,
+        "official808ListingsUpdated": listings_updated,
+    }
+
+
 def artist_alias_index(site: pathlib.Path) -> tuple[dict[str, str], dict[str, str]]:
     """Return normalized artist/alias -> profile slug and profile slug -> display name."""
     path = site / "config" / "artists.json"
@@ -1370,6 +1645,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=[],
         help="Full live event history used only at build time to restore complete artist archives.",
     )
+    parser.add_argument(
+        "--event-overrides",
+        type=pathlib.Path,
+        action="append",
+        default=[],
+        help="Test-only verified event records restored after the live artifact is captured.",
+    )
     parser.add_argument("--today", type=dt.date.fromisoformat, help=argparse.SUPPRESS)
     return parser.parse_args(argv)
 
@@ -1388,6 +1670,10 @@ def main(argv: list[str] | None = None) -> None:
     today = args.today or site_today()
     cutoff = visibility_cutoff(today)
     source_events = load_source_events(args.source_events)
+    event_overrides = load_source_events(args.event_overrides)
+    official_event_stats = restore_official_808_beezy_schedule(site, event_overrides, today)
+    if event_overrides:
+        source_events = merge_events_by_id(source_events, event_overrides)
     recent_keys = recent_event_keys(source_events, today)
     history_events, history_by_profile, history_aliases = load_source_history(
         args.source_history,
@@ -1502,6 +1788,7 @@ def main(argv: list[str] | None = None) -> None:
         "historicalEventCount": len(history_events),
         "historicalProfileRowCount": history_profile_rows_loaded,
         "generatedHistoricalEventPages": generated_history_pages,
+        **official_event_stats,
         "productionChanged": False,
     }
     (site / "test-redesign-manifest.json").write_text(

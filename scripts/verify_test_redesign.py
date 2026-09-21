@@ -18,6 +18,7 @@ REDESIGN_JS = pathlib.Path("assets/kc-redesign-v1.js")
 MANIFEST = pathlib.Path("test-redesign-manifest.json")
 MANIFEST_MODE = "mobile-first-test-redesign-v1"
 TITLE_LINES = ["Find Christian", "Hip Hop Shows", "Near You!"]
+EXPECTED_808_BEEZY_UPCOMING = 22
 OLD_HEADER_CLASSES = {"site-header", "menu-toggle", "menu-drawer"}
 VOID_TAGS = {
     "area",
@@ -525,6 +526,54 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
                 f"profile:past-duplicate-links:{page.relative}",
             )
 
+    beezy = page_by_relative.get("artists/808-beezy/index.html")
+    beezy_show_count = 0
+    if beezy is not None:
+        beezy_rows = beezy.by_class("kc-rd-show-row")
+        beezy_show_count = len(beezy_rows)
+        expect(
+            beezy_show_count == EXPECTED_808_BEEZY_UPCOMING,
+            f"808-beezy:profile-count:{beezy_show_count}!={EXPECTED_808_BEEZY_UPCOMING}",
+        )
+        beezy_hrefs = [first_anchor_href(row) for row in beezy_rows]
+        expect(
+            len(beezy_hrefs) == len(set(beezy_hrefs)),
+            "808-beezy:duplicate-profile-links",
+        )
+        for index, href in enumerate(beezy_hrefs):
+            expect(href.startswith(TEST_BASE + "event/"), f"808-beezy:bad-event-link:{index}:{href}")
+            if href.startswith(TEST_BASE):
+                relative = href.removeprefix(TEST_BASE).strip("/")
+                expect(
+                    (root / relative / "index.html").is_file(),
+                    f"808-beezy:missing-event-page:{index}:{relative}",
+                )
+
+    events_path = root / "events.json"
+    if beezy is not None:
+        expect(events_path.is_file(), "808-beezy:missing-events-json")
+    if beezy is not None and events_path.is_file():
+        try:
+            payload = json.loads(events_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            failures.append(f"808-beezy:invalid-events-json:{exc}")
+            payload = []
+        beezy_events = [
+            event
+            for event in payload
+            if isinstance(event, dict)
+            and "808 beezy"
+            in {normalized_text(str(name)).casefold() for name in event.get("artists", [])}
+            and normalized_text(str(event.get("status") or "scheduled")).casefold()
+            not in {"cancelled", "canceled", "postponed", "merged"}
+        ]
+        expect(
+            len(beezy_events) == EXPECTED_808_BEEZY_UPCOMING,
+            f"808-beezy:events-json-count:{len(beezy_events)}!={EXPECTED_808_BEEZY_UPCOMING}",
+        )
+        event_ids = [str(event.get("id") or "") for event in beezy_events]
+        expect(len(event_ids) == len(set(event_ids)), "808-beezy:duplicate-event-ids")
+
     manifest_path = root / MANIFEST
     manifest: dict[str, object] = {}
     expect(manifest_path.is_file(), f"missing:{MANIFEST}")
@@ -551,6 +600,12 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     }
     for key, expected in expected_manifest.items():
         expect(manifest.get(key) == expected, f"manifest:{key}:{manifest.get(key)!r}!={expected!r}")
+    if "official808Events" in manifest:
+        expect(
+            manifest.get("official808Events") == EXPECTED_808_BEEZY_UPCOMING,
+            f"manifest:official808Events:{manifest.get('official808Events')!r}!={EXPECTED_808_BEEZY_UPCOMING!r}",
+        )
+        expect(beezy is not None, "808-beezy:missing-profile")
     if "htmlPageCount" in manifest:
         expect(manifest.get("htmlPageCount") == len(pages), f"manifest:htmlPageCount:{manifest.get('htmlPageCount')}!={len(pages)}")
     if "visibilityCutoff" in manifest:
@@ -581,6 +636,7 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         "profilePageCount": len(profile_pages),
         "profileShowRowCount": profile_show_rows,
         "profilePagesWithPastShows": profile_pages_with_past,
+        "official808EventCount": beezy_show_count,
         "failures": failures,
     }
 

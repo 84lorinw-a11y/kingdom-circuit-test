@@ -147,7 +147,8 @@ jobs:
           python scripts/apply_test_redesign.py _site \
             --source-events _live_source_events.json \
             --source-events _live_source_supplemental_events.json \
-            --source-history _live_source_event_history.json
+            --source-history _live_source_event_history.json \
+            --event-overrides test-overrides/808-beezy-official-events.json
           python scripts/verify_test_redesign.py _site
 
           test -s _site/assets/kc-redesign-v1.css
