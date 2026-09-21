@@ -223,6 +223,10 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         old = sorted(all_classes & OLD_HEADER_CLASSES)
         expect(not old, f"old-header:{page.relative}:{','.join(old)}")
         expect(bool(page.by_class("kc-rd-header")), f"missing-redesign-header:{page.relative}")
+        followbars = page.by_class("kc-rd-followbar")
+        expect(len(followbars) == 1, f"followbar-count:{page.relative}:{len(followbars)}")
+        if len(followbars) == 1:
+            expect("↗" not in followbars[0].text_content(), f"followbar-arrow:{page.relative}")
         robots = [
             node
             for node in nodes
@@ -265,6 +269,7 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         home_classes = {name for node in home.document.nodes for name in node.classes}
         expect("trust-line" not in home_classes, "home:trust-line-present")
         expect("home-paths" not in home_classes, "home:home-paths-present")
+        expect("hero-text" not in home_classes, "home:hero-text-present")
         expect("Verified listings".casefold() not in normalized_text(home.source).casefold(), "home:verified-listings-present")
         home_show_count = count_marker_articles(home.source, "data-event-card")
         show_nodes = home.by_attr("data-kc-rd-stat", "shows")
@@ -310,6 +315,17 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         expect(len(checkboxes) == 1, f"directory:upcoming-checkbox-count:{len(checkboxes)}")
         directory_artist_count = count_marker_articles(directory.source, "data-artist-card")
         expect(directory_artist_count > 0, "directory:no-artist-cards")
+        count_nodes = directory.by_class("kc-rd-directory-count")
+        expect(len(count_nodes) == 1, f"directory:count-blocks:{len(count_nodes)}")
+        expect(
+            integer_from(count_nodes[0] if len(count_nodes) == 1 else None) == directory_artist_count,
+            "directory:displayed-count-mismatch",
+        )
+        for index, next_show in enumerate(directory.by_class("seo-card-next")):
+            expect(
+                not re.search(r"\b\d{1,2}:\d{2}\s*(?:AM|PM)\b", next_show.text_content(), re.I),
+                f"directory:next-show-time:{index}",
+            )
         expect(
             home_artist_stat == directory_artist_count,
             f"home:artist-stat:{home_artist_stat}!={directory_artist_count}",
@@ -345,6 +361,13 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         new_profiles = page.by_class("kc-rd-artist-profile")
         expect(len(new_profiles) == 1, f"profile:marker-count:{page.relative}:{len(new_profiles)}")
         expect(not page.by_class("seo-artist-profile"), f"profile:old-layout-present:{page.relative}")
+        upcoming_totals = page.by_class("kc-rd-upcoming-total")
+        expect(len(upcoming_totals) == 1, f"profile:upcoming-total-count:{page.relative}:{len(upcoming_totals)}")
+        if len(upcoming_totals) == 1:
+            expect(
+                bool(re.fullmatch(r"\d+\s+upcoming", normalized_text(upcoming_totals[0].text_content()), re.I)),
+                f"profile:upcoming-total-text:{page.relative}",
+            )
         rows = page.by_class("kc-rd-show-row")
         profile_show_rows += len(rows)
         for index, row in enumerate(rows):

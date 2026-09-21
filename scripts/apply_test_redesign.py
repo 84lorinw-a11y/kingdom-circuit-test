@@ -91,16 +91,19 @@ def navigation(relative: pathlib.PurePath) -> str:
     return "".join(links)
 
 
-def full_header(relative: pathlib.PurePath) -> str:
-    follow_icon = instagram_icon(token="follow")
-    button_icon = instagram_icon(token="button")
-    return f'''<header class="kc-rd-header">
-  <div class="kc-rd-followbar">
+def follow_bar(token: str) -> str:
+    return f'''<div class="kc-rd-followbar">
     <a class="kc-rd-follow-link" href="{INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="Follow The Kingdom Circuit on Instagram (opens in new tab)">
-      {follow_icon}<span>Follow @thekingdomcircuit</span><span aria-hidden="true">↗</span>
+      {instagram_icon(token=token)}<span>Follow @thekingdomcircuit</span>
     </a>
     <span class="kc-rd-follow-tagline">Christian hip-hop, live and connected</span>
-  </div>
+  </div>'''
+
+
+def full_header(relative: pathlib.PurePath) -> str:
+    button_icon = instagram_icon(token="button")
+    return f'''<header class="kc-rd-header">
+  {follow_bar("follow")}
   <div class="kc-rd-primary">
     <a class="kc-rd-brand" href="{TEST_BASE}" aria-label="Kingdom Circuit home">
       <img src="{TEST_BASE}assets/logo-wordmark.svg?v=1" alt="Kingdom Circuit">
@@ -116,12 +119,10 @@ def full_header(relative: pathlib.PurePath) -> str:
 
 def profile_header() -> str:
     return f'''<header class="kc-rd-header kc-rd-header--profile">
+  {follow_bar("profile-follow")}
   <div class="kc-rd-primary">
     <a class="kc-rd-brand" href="{TEST_BASE}" aria-label="Kingdom Circuit home">
       <img src="{TEST_BASE}assets/logo-wordmark.svg?v=1" alt="Kingdom Circuit">
-    </a>
-    <a class="kc-rd-follow-link" href="{INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="Follow The Kingdom Circuit on Instagram (opens in new tab)">
-      {instagram_icon(token="profile")}<span>Follow @thekingdomcircuit</span><span aria-hidden="true">↗</span>
     </a>
   </div>
 </header>'''
@@ -152,7 +153,7 @@ def replace_legacy_header(document: str, header: str) -> str:
 
 
 def inject_assets(document: str) -> str:
-    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=2'
+    css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=3'
     js = f'{TEST_BASE}assets/kc-redesign-v1.js?v=1'
     if css not in document:
         document = document.replace(
@@ -203,6 +204,7 @@ def transform_home(document: str, show_count: int, artist_count: int) -> str:
         raise ValueError("home mission statement was not found")
     hero = re.sub(r'\s*<p class="trust-line">.*?</p>', "", hero, count=1, flags=re.S)
     hero = re.sub(r'\s*<div class="home-paths".*?</div>', "", hero, count=1, flags=re.S)
+    hero = re.sub(r'\s*<p class="hero-text">.*?</p>', "", hero, count=1, flags=re.S)
     document = document[: match.start()] + hero + document[match.end() :]
     document = re.sub(
         r'<p class="eyebrow">\s*Verified listings\s*</p>\s*',
@@ -225,9 +227,10 @@ def transform_directory(document: str, artist_count: int) -> str:
     if removed != 1:
         raise ValueError("artist directory hero was not found")
     intro = f'''<section class="kc-rd-directory-intro" aria-labelledby="kc-rd-directory-title">
-  <div>
+  <div class="kc-rd-directory-summary">
     <h1 id="kc-rd-directory-title" class="sr-only">Christian Hip-Hop Artists</h1>
-    <p class="kc-rd-directory-count"><strong>{artist_count}</strong><span>CHH Artists Tracked</span></p>
+    <span class="kc-rd-directory-eyebrow">Artist Directory</span>
+    <p class="kc-rd-directory-count"><strong>{artist_count}</strong><span><b>CHH Artists</b><small>Tracked &amp; growing</small></span></p>
   </div>
   <div class="kc-rd-directory-actions">
     <a class="kc-rd-button" href="{TEST_BASE}submit/">Submit a Show</a>
@@ -238,6 +241,21 @@ def transform_directory(document: str, artist_count: int) -> str:
     if marker not in document:
         raise ValueError("artist directory section was not found")
     document = document.replace(marker, intro + '\n<section class="directory-section kc-rd-directory" data-artist-directory', 1)
+
+    def remove_card_time(match: re.Match[str]) -> str:
+        return re.sub(
+            r'\s+-\s+\d{1,2}:\d{2}\s*(?:AM|PM)(?=\s*(?:·|&middot;|&#183;))',
+            "",
+            match.group(0),
+            flags=re.I,
+        )
+
+    document = re.sub(
+        r'<p\b[^>]*class="[^"]*\bseo-card-next\b[^"]*"[^>]*>.*?</p>',
+        remove_card_time,
+        document,
+        flags=re.S,
+    )
     return document
 
 
@@ -387,7 +405,7 @@ def transform_artist_profile(document: str) -> tuple[str, int, bool]:
     {actions_html}
     {next_html}
     <section class="kc-rd-profile-shows" aria-labelledby="kc-rd-shows-title">
-      <div class="kc-rd-profile-section-title"><h2 id="kc-rd-shows-title">All {artist_escaped} Shows</h2><span>{len(events)} upcoming</span></div>
+      <div class="kc-rd-profile-section-title"><h2 id="kc-rd-shows-title">All {artist_escaped} Shows</h2><span class="kc-rd-upcoming-total">{len(events)} upcoming</span></div>
       <div class="kc-rd-show-list">{rows}</div>
     </section>
     {past_html}

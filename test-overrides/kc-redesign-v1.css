@@ -14,10 +14,12 @@
   --kc-rd-line: #342c2a;
   --kc-rd-max: 1180px;
   --kc-rd-radius: 18px;
+  --kc-rd-followbar-height: 28px;
 }
 
 html {
   overflow-x: clip;
+  scroll-padding-top: calc(var(--kc-rd-followbar-height) + 8px);
 }
 
 body {
@@ -43,15 +45,21 @@ body .kc-rd-header {
   position: relative;
   z-index: 50;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
+  padding-top: var(--kc-rd-followbar-height);
   border-bottom: 1px solid #2d2927;
   background: rgba(7, 7, 7, 0.98);
   color: var(--kc-rd-cream);
 }
 
 body .kc-rd-followbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 200;
   display: flex;
-  min-height: 44px;
+  width: 100%;
+  height: var(--kc-rd-followbar-height);
+  min-height: var(--kc-rd-followbar-height);
   align-items: center;
   background: var(--kc-rd-red);
   color: #100a08;
@@ -65,16 +73,16 @@ body .kc-rd-follow-link {
   display: inline-flex;
   width: 100%;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--kc-rd-followbar-height);
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 0 auto;
-  padding: 9px 18px;
+  padding: 3px 16px;
   color: inherit;
-  font-size: 0.72rem;
+  font-size: 0.61rem;
   font-weight: 950;
   letter-spacing: 0.08em;
-  line-height: 1.2;
+  line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -86,11 +94,11 @@ body .kc-rd-follow-link:hover {
 
 body .kc-rd-followbar .kc-rd-instagram-icon {
   display: block;
-  width: 19px;
-  height: 19px;
-  min-width: 19px;
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 4px;
   background: none;
   box-shadow: none;
 }
@@ -189,6 +197,24 @@ body .kc-rd-instagram-icon img {
   object-fit: contain;
 }
 
+body .kc-rd-instagram-button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  place-items: center;
+  border-radius: 12px;
+}
+
+body .kc-rd-instagram-button .kc-rd-instagram-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border: 0;
+  background: none;
+  box-shadow: 0 5px 16px rgba(214, 41, 118, 0.3);
+}
+
 body .kc-rd-nav {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -227,52 +253,19 @@ body .kc-rd-nav a[aria-current="page"] {
 /* Compact profile header follows the supplied artist-page direction. */
 
 body .kc-rd-header--profile {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
+  display: block;
   min-height: 70px;
   border-bottom-color: #252322;
 }
 
 body .kc-rd-header--profile .kc-rd-primary {
-  grid-row: 1;
-  grid-column: 1;
   min-height: 70px;
-  padding-right: 6px;
-}
-
-body .kc-rd-header--profile .kc-rd-followbar {
-  grid-row: 1;
-  grid-column: 2;
-  min-width: 0;
-  min-height: 70px;
-  background: transparent;
-  color: var(--kc-rd-red-soft);
-}
-
-body .kc-rd-header--profile .kc-rd-follow-link {
-  width: auto;
-  min-height: 44px;
-  padding: 8px 14px 8px 6px;
-  font-size: clamp(0.58rem, 2.6vw, 0.72rem);
-  white-space: nowrap;
 }
 
 body .kc-rd-header--profile .kc-rd-actions,
 body .kc-rd-header--profile .kc-rd-nav,
 body .kc-rd-header--profile .kc-rd-submit {
   display: none !important;
-}
-
-body .kc-rd-header--profile .kc-rd-instagram-icon {
-  display: block;
-  width: 22px;
-  height: 22px;
-  min-width: 22px;
-  border: 0;
-  border-radius: 6px;
-  background: none;
-  box-shadow: none;
 }
 
 /* Homepage */
@@ -340,6 +333,10 @@ body .kc-rd-home-stats {
   margin: 24px 0 0;
 }
 
+body #calendar {
+  scroll-margin-top: calc(var(--kc-rd-followbar-height) + 8px);
+}
+
 body .kc-rd-stat {
   display: flex;
   min-width: 0;
@@ -403,31 +400,64 @@ body .kc-rd-directory-intro .sr-only {
   border: 0 !important;
 }
 
+body .kc-rd-directory-summary {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+  padding: 17px 18px;
+  border: 1px solid rgba(223, 103, 78, 0.28);
+  border-left: 4px solid var(--kc-rd-red);
+  border-radius: 0 14px 14px 0;
+  background: linear-gradient(110deg, rgba(223, 103, 78, 0.1), rgba(16, 16, 16, 0.94) 68%);
+}
+
+body .kc-rd-directory-eyebrow {
+  color: var(--kc-rd-red-soft);
+  font-size: 0.65rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 body .kc-rd-directory-count {
   display: flex;
   min-width: 0;
-  align-items: flex-end;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
 }
 
 body .kc-rd-directory-count strong,
 body .kc-rd-directory-count .kc-rd-stat-number {
   color: var(--kc-rd-red-soft);
-  font-size: clamp(4.4rem, 23vw, 7rem);
+  font-size: clamp(3.65rem, 17vw, 5rem);
   font-weight: 950;
-  letter-spacing: -0.075em;
-  line-height: 0.76;
+  letter-spacing: -0.055em;
+  line-height: 0.82;
 }
 
 body .kc-rd-directory-count span:not(.kc-rd-stat-number) {
-  max-width: 12rem;
-  padding-bottom: 4px;
+  display: grid;
+  min-width: 0;
+  gap: 4px;
   color: var(--kc-rd-cream);
-  font-size: 0.73rem;
+  font-size: 0.98rem;
   font-weight: 900;
-  letter-spacing: 0.13em;
-  line-height: 1.3;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
   text-transform: uppercase;
+}
+
+body .kc-rd-directory-count b {
+  font: inherit;
+}
+
+body .kc-rd-directory-count small {
+  color: var(--kc-rd-muted);
+  font-size: 0.66rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
 }
 
 body .kc-rd-directory-actions {
@@ -699,10 +729,10 @@ body .kc-rd-next-venue {
 }
 
 body .kc-rd-profile-section-title {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
   min-width: 0;
   align-items: end;
-  justify-content: space-between;
   gap: 12px;
   margin: 0 15px;
   padding: 9px 0 8px;
@@ -715,9 +745,19 @@ body .kc-rd-profile-section-title {
   text-transform: uppercase;
 }
 
-body .kc-rd-profile-section-title span:last-child {
+body .kc-rd-profile-section-title h2 {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+
+body .kc-rd-profile-section-title .kc-rd-upcoming-total {
+  justify-self: end;
   color: var(--kc-rd-red-soft);
+  font-variant-numeric: tabular-nums;
   text-align: right;
+  white-space: nowrap;
 }
 
 body .kc-rd-show-list {
@@ -1220,19 +1260,14 @@ body .kc-rd-form-page textarea:focus-visible {
   body .kc-rd-header:not(.kc-rd-header--profile) {
     display: grid;
     grid-template-columns: minmax(20px, 1fr) minmax(0, var(--kc-rd-max)) minmax(20px, 1fr);
-    grid-template-rows: auto 78px;
+    grid-template-rows: 78px;
     overflow: visible;
-  }
-
-  body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-followbar {
-    grid-row: 1;
-    grid-column: 1 / -1;
   }
 
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-primary {
     position: relative;
     z-index: 2;
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 2;
     width: 100%;
     max-width: none;
@@ -1250,7 +1285,7 @@ body .kc-rd-form-page textarea:focus-visible {
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav {
     position: relative;
     z-index: 3;
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 2;
     display: flex;
     width: auto;

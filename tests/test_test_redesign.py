@@ -23,7 +23,7 @@ def shell(body: str) -> str:
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="/kingdom-circuit-test/assets/kc-redesign-v1.css">
 <script src="/kingdom-circuit-test/assets/kc-redesign-v1.js" defer></script>
-</head><body><header class="kc-rd-header"><a href="/kingdom-circuit-test/">Kingdom Circuit</a></header>
+</head><body><header class="kc-rd-header"><div class="kc-rd-followbar"><a href="https://www.instagram.com/thekingdomcircuit/">Follow @thekingdomcircuit</a></div><a href="/kingdom-circuit-test/">Kingdom Circuit</a></header>
 {body}</body></html>'''
 
 
@@ -47,9 +47,9 @@ class TestRedesignVerifier(unittest.TestCase):
 
         artists = shell('''
 <main>
-  <section class="kc-rd-directory-intro"><h1>Meet the artists we track.</h1><a href="/kingdom-circuit-test/submit/">Submit a Show</a><a href="/kingdom-circuit-test/submit/artist/">Submit a CHH Artist to Be Listed</a></section>
+  <section class="kc-rd-directory-intro"><h1>Meet the artists we track.</h1><p class="kc-rd-directory-count"><strong>2</strong> CHH Artists</p><a href="/kingdom-circuit-test/submit/">Submit a Show</a><a href="/kingdom-circuit-test/submit/artist/">Submit a CHH Artist to Be Listed</a></section>
   <label><input type="checkbox" data-has-shows-filter> Artists with shows</label>
-  <article data-artist-card><a href="/kingdom-circuit-test/artists/alpha/">Alpha</a></article>
+  <article data-artist-card><a href="/kingdom-circuit-test/artists/alpha/">Alpha</a><p class="seo-card-next">Next: Sep 22, 2026 · Detroit, MI</p></article>
   <article data-artist-card><a href="/kingdom-circuit-test/artists/beta/">Beta</a></article>
 </main>''')
         (root / "artists").mkdir()
@@ -58,6 +58,7 @@ class TestRedesignVerifier(unittest.TestCase):
         profile = shell('''
 <main class="kc-rd-artist-profile">
   <section class="kc-rd-next-show"><a href="/kingdom-circuit-test/event/one/">Sep 22 — Detroit</a></section>
+  <div class="kc-rd-profile-section-title"><h2>All Alpha Shows</h2><span class="kc-rd-upcoming-total">2 upcoming</span></div>
   <div class="kc-rd-show-list">
     <article class="kc-rd-show-row"><a href="/kingdom-circuit-test/event/one/">Sep 22 — Detroit — Saint Andrew's Hall</a></article>
     <article class="kc-rd-show-row"><a href="/kingdom-circuit-test/event/two/">Sep 23 — Chicago — House of Blues</a></article>
@@ -134,7 +135,7 @@ class TestRedesignVerifier(unittest.TestCase):
             beta = root / "artists" / "beta"
             beta.mkdir()
             (beta / "index.html").write_text(
-                shell('<main class="kc-rd-artist-profile"><p>No upcoming shows.</p></main>'),
+                shell('<main class="kc-rd-artist-profile"><div class="kc-rd-profile-section-title"><h2>All Beta Shows</h2><span class="kc-rd-upcoming-total">0 upcoming</span></div><p>No upcoming shows.</p></main>'),
                 encoding="utf-8",
             )
             manifest_path = root / "test-redesign-manifest.json"
@@ -146,6 +147,32 @@ class TestRedesignVerifier(unittest.TestCase):
             report = verify.verify_site(root)
             self.assertEqual(report["profilePageCount"], 2)
             self.assertEqual(report["profileShowRowCount"], 2)
+
+    def test_followbar_arrow_and_directory_time_fail(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = pathlib.Path(temp)
+            self.build_site(root)
+            home = root / "index.html"
+            home.write_text(
+                home.read_text(encoding="utf-8").replace(
+                    "Follow @thekingdomcircuit</a>",
+                    "Follow @thekingdomcircuit <span>↗</span></a>",
+                    1,
+                ),
+                encoding="utf-8",
+            )
+            directory = root / "artists" / "index.html"
+            directory.write_text(
+                directory.read_text(encoding="utf-8").replace(
+                    "Sep 22, 2026 ·",
+                    "Sep 22, 2026 - 7:00 PM ·",
+                    1,
+                ),
+                encoding="utf-8",
+            )
+            failures = "\n".join(verify.audit_site(root)["failures"])
+            self.assertIn("followbar-arrow:index.html", failures)
+            self.assertIn("directory:next-show-time:0", failures)
 
 
 if __name__ == "__main__":
