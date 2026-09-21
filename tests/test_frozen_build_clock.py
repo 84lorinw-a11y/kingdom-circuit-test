@@ -12,6 +12,12 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class FrozenBuildClockTests(unittest.TestCase):
+    def test_workflow_runs_the_production_release_finalizer(self) -> None:
+        workflow = (ROOT / ".github" / "workflows" / "mirror-live.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('KC_FINALIZE_PUBLIC_EXPERIENCE: "1"', workflow)
+
     def test_mirror_date_freezes_date_sensitive_builders(self) -> None:
         env = os.environ.copy()
         env["KC_MIRROR_DATE"] = "2026-09-18"

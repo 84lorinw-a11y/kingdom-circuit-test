@@ -96,6 +96,7 @@ jobs:
         shell: bash
         env:
           KC_MIRROR_DATE: ${{ steps.live_deployment.outputs.cutoff }}
+          KC_FINALIZE_PUBLIC_EXPERIENCE: "1"
           PYTHONPATH: ${{ github.workspace }}/scripts
         run: |
           set -euo pipefail
