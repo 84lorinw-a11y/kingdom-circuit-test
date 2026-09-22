@@ -99,6 +99,24 @@ class TestActiveEventWindow(unittest.TestCase):
 
 
 class TestPastShowsMigration(unittest.TestCase):
+    def test_history_replaces_redesigned_archive_without_duplication(self) -> None:
+        old_row = '<article class="past-show-row"><a href="/old/">Old</a></article>'
+        new_row = '<article class="past-show-row"><a href="/new/">New</a></article>'
+        document = (
+            '<main><section class="past-shows-archive kc-rd-past kc-rd-past-shows" '
+            'data-past-shows-archive><details><summary>Past shows</summary>'
+            f'<div class="past-show-list">{old_row}</div></details></section></main>'
+        )
+
+        replaced = redesign.replace_profile_archive(document, [new_row])
+
+        self.assertEqual(replaced.count("data-past-shows-archive"), 1)
+        self.assertEqual(replaced.count('class="past-show-list"'), 1)
+        self.assertEqual(replaced.count('class="past-show-row"'), 1)
+        self.assertIn("kc-rd-past-shows", replaced)
+        self.assertIn('/new/', replaced)
+        self.assertNotIn('/old/', replaced)
+
     def test_expired_hulvey_show_moves_into_past_shows_once(self) -> None:
         cutoff = dt.date(2026, 9, 20)
         archived_rows = "".join(
@@ -401,6 +419,49 @@ class TestThisMonthSummary(unittest.TestCase):
             "Browse the month chronologically, or filter by artist, state, or event type.",
             transformed,
         )
+
+
+class TestOfficialScheduleOverlay(unittest.TestCase):
+    def test_preserves_schedule_already_present_in_redesigned_live_profile(self) -> None:
+        event = {
+            "id": "manual:808-beezy-test",
+            "title": "808 BEEZY — Live at RWG TOUR 2026",
+            "startDate": "2026-09-22",
+            "venue": "RWG TOUR 2026",
+            "city": "Princeton",
+            "state": "IL",
+            "artists": ["808 BEEZY"],
+            "status": "scheduled",
+        }
+        href = redesign.event_internal_href(event)
+        with tempfile.TemporaryDirectory() as tmp:
+            site = pathlib.Path(tmp)
+            profile = site / "artists" / "808-beezy" / "index.html"
+            profile.parent.mkdir(parents=True)
+            profile.write_text(
+                f'<main class="kc-rd-artist-profile"><article class="kc-rd-show-row"><a href="{href}">Show</a></article></main>',
+                encoding="utf-8",
+            )
+            (site / "events.json").write_text(json.dumps([event]), encoding="utf-8")
+
+            stats = redesign.restore_official_808_beezy_schedule(
+                site,
+                [event],
+                dt.date(2026, 9, 22),
+            )
+
+        self.assertEqual(stats["official808Events"], 1)
+        self.assertEqual(stats["official808PagesCreated"], 0)
+        self.assertEqual(stats["official808ListingsUpdated"], 0)
+
+
+class TestAlreadyRedesignedLivePages(unittest.TestCase):
+    def test_home_and_directory_transforms_are_idempotent(self) -> None:
+        home = '''<section class="kc-rd-home"><h1 class="kc-rd-home-title">Shows</h1><div data-kc-rd-stat="shows">120</div><div data-kc-rd-stat="artists">356</div></section>'''
+        directory = '''<main><section class="kc-rd-directory-intro">Artists</section><section class="kc-rd-directory" data-artist-directory></section></main>'''
+
+        self.assertEqual(redesign.transform_home(home, 120, 356), home)
+        self.assertEqual(redesign.transform_directory(directory, 356, {}), directory)
 
 
 if __name__ == "__main__":

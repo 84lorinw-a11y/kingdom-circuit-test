@@ -515,6 +515,12 @@ def inject_assets(document: str) -> str:
 
 
 def transform_home(document: str, show_count: int, artist_count: int) -> str:
+    if (
+        "kc-rd-home-title" in document
+        and 'data-kc-rd-stat="shows"' in document
+        and 'data-kc-rd-stat="artists"' in document
+    ):
+        return document
     match = re.search(r'<section class="page-hero home-hero">.*?</section>', document, re.S)
     if not match:
         raise ValueError("home hero was not found")
@@ -565,6 +571,8 @@ def transform_directory(
     artist_count: int,
     profile_events: dict[str, list[dict[str, str]]],
 ) -> str:
+    if "kc-rd-directory-intro" in document and "kc-rd-directory" in document:
+        return document
     document, removed = re.subn(
         r'\s*<section class="page-hero hero-compact seo-directory-hero">.*?</section>',
         "",
@@ -779,7 +787,7 @@ def archive_expired_profile_cards(
         return document, 0
 
     section_match = re.search(
-        r'<section class="past-shows-archive"[^>]*>.*?</section>',
+        r'<section\b(?=[^>]*\bdata-past-shows-archive\b)[^>]*>.*?</section>',
         document,
         re.I | re.S,
     )
@@ -803,6 +811,12 @@ def archive_expired_profile_cards(
     rows = added_rows + existing_rows
     section = past_archive_section(rows)
     if section_match:
+        if "kc-rd-past-shows" in section_match.group(0):
+            section = section.replace(
+                'class="past-shows-archive"',
+                'class="past-shows-archive kc-rd-past kc-rd-past-shows"',
+                1,
+            )
         document = document[: section_match.start()] + section + document[section_match.end() :]
     elif "</main>" in document:
         document = document.replace("</main>", section + "\n</main>", 1)
@@ -1019,7 +1033,7 @@ def is_profile_page(relative: pathlib.PurePath, document: str) -> bool:
         and relative.parts[0] == "artists"
         and relative.parts[2] == "index.html"
         and relative.parts[1] != "profile"
-        and "seo-artist-profile" in document
+        and ("seo-artist-profile" in document or "kc-rd-artist-profile" in document)
     )
 
 
@@ -1276,7 +1290,37 @@ def restore_official_808_beezy_schedule(
     profile = profile_path.read_text(encoding="utf-8")
     current_cards = event_cards(profile)
     if not current_cards:
-        raise ValueError("808 BEEZY profile has no event-card template")
+        # Once production already contains the restored schedule, its redesigned
+        # artist profile uses show rows instead of the legacy event-card markup.
+        # In that case the test overlay should preserve the verified live output
+        # rather than trying to render the same schedule a second time.
+        missing_hrefs = [
+            event_internal_href(event)
+            for event in official
+            if event_internal_href(event) not in profile
+        ]
+        events_path = site / "events.json"
+        deployed = json.loads(events_path.read_text(encoding="utf-8"))
+        deployed_ids = {
+            str(event.get("id") or "")
+            for event in deployed
+            if isinstance(event, dict)
+        }
+        missing_ids = [
+            str(event.get("id") or "")
+            for event in official
+            if str(event.get("id") or "") not in deployed_ids
+        ]
+        if "kc-rd-show-row" not in profile or missing_hrefs or missing_ids:
+            raise ValueError(
+                "808 BEEZY profile has no event-card template and the deployed "
+                "schedule does not fully contain the verified override"
+            )
+        return {
+            "official808Events": len(official),
+            "official808PagesCreated": 0,
+            "official808ListingsUpdated": 0,
+        }
     template = current_cards[0]
     rendered = {str(event.get("id")): render_official_event_card(event, template) for event in official}
 
@@ -1672,12 +1716,18 @@ def replace_profile_archive(document: str, rows: list[str]) -> str:
     if not rows:
         return document
     section_match = re.search(
-        r'<section class="past-shows-archive"[^>]*>.*?</section>',
+        r'<section\b(?=[^>]*\bdata-past-shows-archive\b)[^>]*>.*?</section>',
         document,
         re.I | re.S,
     )
     section = past_archive_section(rows)
     if section_match:
+        if "kc-rd-past-shows" in section_match.group(0):
+            section = section.replace(
+                'class="past-shows-archive"',
+                'class="past-shows-archive kc-rd-past kc-rd-past-shows"',
+                1,
+            )
         return document[: section_match.start()] + section + document[section_match.end() :]
     if "</main>" not in document:
         raise ValueError("artist profile main element was not found for Past Shows archive")
@@ -1868,7 +1918,11 @@ def main(argv: list[str] | None = None) -> None:
         elif relative.as_posix() == "artists/index.html":
             document = transform_directory(document, artist_count, profile_events)
         if profile:
-            document, event_rows, has_past = transform_artist_profile(document)
+            if "kc-rd-artist-profile" in document:
+                event_rows = len(re.findall(r'\bclass="[^"]*\bkc-rd-show-row\b', document))
+                has_past = "kc-rd-past-shows" in document
+            else:
+                document, event_rows, has_past = transform_artist_profile(document)
             profile_pages += 1
             profile_show_rows += event_rows
             profile_past_show_rows += len(PAST_SHOW_ROW_PATTERN.findall(document))
