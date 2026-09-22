@@ -50,7 +50,7 @@ class ProductionRedesignModeTests(unittest.TestCase):
         self.assertNotIn("kingdom-circuit-test", page)
         self.assertNotIn("Kingdom Circuit Test", page)
 
-    def test_instagram_favicon_overlay_is_test_only(self) -> None:
+    def test_instagram_favicon_overlay_uses_environment_paths(self) -> None:
         inherited = '''<html><head><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"></head><body></body></html>'''
         redesign.configure_environment(False)
         test_page = redesign.inject_assets(inherited)
@@ -60,8 +60,29 @@ class ProductionRedesignModeTests(unittest.TestCase):
 
         redesign.configure_environment(True)
         production_page = redesign.inject_assets(inherited)
-        self.assertIn("/assets/favicon.svg", production_page)
-        self.assertNotIn("favicon-kc-stacked-v2", production_page)
+        self.assertNotIn("favicon.svg", production_page)
+        self.assertIn("/assets/favicon-kc-stacked-v2-48.png", production_page)
+        self.assertIn("/manifest.webmanifest", production_page)
+        self.assertNotIn("kingdom-circuit-test", production_page)
+
+    def test_production_asset_copy_uses_root_scoped_manifest(self) -> None:
+        redesign.configure_environment(True)
+        with tempfile.TemporaryDirectory() as temp:
+            site = pathlib.Path(temp)
+            redesign.copy_assets(site, ROOT)
+            manifest = json.loads(
+                (site / "manifest.webmanifest").read_text(encoding="utf-8")
+            )
+            self.assertEqual(manifest["id"], "/")
+            self.assertEqual(manifest["start_url"], "/")
+            self.assertEqual(manifest["scope"], "/")
+            self.assertTrue(
+                (site / "assets/favicon-kc-stacked-v2-48.png").is_file()
+            )
+            self.assertEqual(
+                manifest["icons"][0]["src"],
+                "/assets/favicon-kc-stacked-v2-192.png",
+            )
 
 
 if __name__ == "__main__":

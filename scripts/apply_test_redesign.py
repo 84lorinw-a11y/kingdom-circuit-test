@@ -480,25 +480,24 @@ def replace_legacy_header(document: str, header: str) -> str:
 def inject_assets(document: str) -> str:
     css = f'{TEST_BASE}assets/kc-redesign-v1.css?v=6'
     js = f'{TEST_BASE}assets/kc-redesign-v1.js?v=2'
-    if DEPLOYMENT_ENVIRONMENT == "test":
-        document = re.sub(
-            r'''\s*<link\b[^>]*\brel=["'](?:shortcut icon|icon|apple-touch-icon|manifest)["'][^>]*>''',
-            "",
-            document,
-            flags=re.I,
-        )
-        document = re.sub(
-            r'''\s*<meta\b[^>]*\bname=["']apple-mobile-web-app-title["'][^>]*>''',
-            "",
-            document,
-            flags=re.I,
-        )
-        favicon_markup = f'''  <link rel="icon" type="image/png" sizes="48x48" href="{TEST_BASE}assets/favicon-kc-stacked-v2-48.png">
+    document = re.sub(
+        r'''\s*<link\b[^>]*\brel=["'](?:shortcut icon|icon|apple-touch-icon|manifest)["'][^>]*>''',
+        "",
+        document,
+        flags=re.I,
+    )
+    document = re.sub(
+        r'''\s*<meta\b[^>]*\bname=["']apple-mobile-web-app-title["'][^>]*>''',
+        "",
+        document,
+        flags=re.I,
+    )
+    favicon_markup = f'''  <link rel="icon" type="image/png" sizes="48x48" href="{TEST_BASE}assets/favicon-kc-stacked-v2-48.png">
   <link rel="icon" type="image/png" sizes="96x96" href="{TEST_BASE}assets/favicon-kc-stacked-v2-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="{TEST_BASE}assets/favicon-kc-stacked-v2-180.png">
   <link rel="manifest" href="{TEST_BASE}manifest.webmanifest">
   <meta name="apple-mobile-web-app-title" content="Kingdom Circuit">'''
-        document = document.replace("</head>", f"{favicon_markup}\n</head>", 1)
+    document = document.replace("</head>", f"{favicon_markup}\n</head>", 1)
     if css not in document:
         document = document.replace(
             "</head>",
@@ -1045,47 +1044,46 @@ def copy_assets(site: pathlib.Path, repo: pathlib.Path) -> None:
         if not source.is_file():
             raise ValueError(f"missing redesign asset: {source}")
         shutil.copy2(source, asset_dir / filename)
-    if DEPLOYMENT_ENVIRONMENT == "test":
-        source_dir = repo / "test-overrides" / "assets"
-        for filename in FAVICON_ASSET_NAMES:
-            source = source_dir / filename
-            if not source.is_file():
-                raise ValueError(f"missing favicon asset: {source}")
-            shutil.copy2(source, asset_dir / filename)
-        web_manifest = {
-            "name": "Kingdom Circuit",
-            "short_name": "Kingdom Circuit",
-            "id": TEST_BASE,
-            "start_url": TEST_BASE,
-            "scope": TEST_BASE,
-            "display": "standalone",
-            "background_color": "#080808",
-            "theme_color": "#080808",
-            "icons": [
-                {
-                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-192.png",
-                    "sizes": "192x192",
-                    "type": "image/png",
-                    "purpose": "any",
-                },
-                {
-                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-512.png",
-                    "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "any",
-                },
-                {
-                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-maskable-512.png",
-                    "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "maskable",
-                },
-            ],
-        }
-        (site / "manifest.webmanifest").write_text(
-            json.dumps(web_manifest, indent=2) + "\n",
-            encoding="utf-8",
-        )
+    source_dir = repo / "test-overrides" / "assets"
+    for filename in FAVICON_ASSET_NAMES:
+        source = source_dir / filename
+        if not source.is_file():
+            raise ValueError(f"missing favicon asset: {source}")
+        shutil.copy2(source, asset_dir / filename)
+    web_manifest = {
+        "name": "Kingdom Circuit",
+        "short_name": "Kingdom Circuit",
+        "id": TEST_BASE,
+        "start_url": TEST_BASE,
+        "scope": TEST_BASE,
+        "display": "standalone",
+        "background_color": "#080808",
+        "theme_color": "#080808",
+        "icons": [
+            {
+                "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-192.png",
+                "sizes": "192x192",
+                "type": "image/png",
+                "purpose": "any",
+            },
+            {
+                "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-512.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any",
+            },
+            {
+                "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-maskable-512.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "maskable",
+            },
+        ],
+    }
+    (site / "manifest.webmanifest").write_text(
+        json.dumps(web_manifest, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def iter_html(site: pathlib.Path) -> Iterable[pathlib.Path]:
