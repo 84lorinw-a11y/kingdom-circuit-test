@@ -15,6 +15,15 @@ TEST_BASE = "/kingdom-circuit-test/"
 PRODUCTION_GA = "G-N2KK9XF4TJ"
 REDESIGN_CSS = pathlib.Path("assets/kc-redesign-v1.css")
 REDESIGN_JS = pathlib.Path("assets/kc-redesign-v1.js")
+FAVICON_ASSETS = (
+    pathlib.Path("assets/favicon-kc-stacked-v1-48.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v1-96.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v1-180.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v1-192.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v1-512.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v1-maskable-512.png"),
+)
+WEB_MANIFEST = pathlib.Path("manifest.webmanifest")
 MANIFEST = pathlib.Path("test-redesign-manifest.json")
 MANIFEST_MODE = "mobile-first-test-redesign-v1"
 TITLE_LINES = ["Find Christian", "Hip Hop Shows", "Near You!"]
@@ -204,6 +213,27 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
     js_path = root / REDESIGN_JS
     expect(css_path.is_file() and css_path.stat().st_size > 0, f"missing:{REDESIGN_CSS}")
     expect(js_path.is_file() and js_path.stat().st_size > 0, f"missing:{REDESIGN_JS}")
+    for asset in FAVICON_ASSETS:
+        asset_path = root / asset
+        expect(asset_path.is_file() and asset_path.stat().st_size > 0, f"missing:{asset}")
+    web_manifest_path = root / WEB_MANIFEST
+    expect(web_manifest_path.is_file() and web_manifest_path.stat().st_size > 0, f"missing:{WEB_MANIFEST}")
+    if web_manifest_path.is_file():
+        try:
+            web_manifest = json.loads(web_manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            failures.append(f"web-manifest:invalid-json:{exc}")
+        else:
+            expect(web_manifest.get("start_url") == TEST_BASE, "web-manifest:start-url")
+            expect(web_manifest.get("scope") == TEST_BASE, "web-manifest:scope")
+            manifest_icons = {
+                str(icon.get("src") or "")
+                for icon in web_manifest.get("icons", [])
+                if isinstance(icon, dict)
+            }
+            for asset in FAVICON_ASSETS[3:]:
+                expected_src = TEST_BASE + asset.as_posix()
+                expect(expected_src in manifest_icons, f"web-manifest:missing-icon:{expected_src}")
     css = css_path.read_text(encoding="utf-8", errors="ignore") if css_path.is_file() else ""
     expect(".kc-rd-header" in css, "redesign-css:missing-header-rule")
     expect(".kc-rd-directory-intro" in css, "redesign-css:missing-directory-intro-rule")
@@ -270,6 +300,22 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
         expect(TEST_BASE in page.source, f"missing-test-base:{page.relative}")
         expect(has_asset_reference(page, REDESIGN_CSS), f"missing-redesign-css-link:{page.relative}")
         expect(has_asset_reference(page, REDESIGN_JS), f"missing-redesign-js-link:{page.relative}")
+        expected_icon_hrefs = (
+            TEST_BASE + FAVICON_ASSETS[0].as_posix(),
+            TEST_BASE + FAVICON_ASSETS[1].as_posix(),
+            TEST_BASE + FAVICON_ASSETS[2].as_posix(),
+            TEST_BASE + WEB_MANIFEST.as_posix(),
+        )
+        for href in expected_icon_hrefs:
+            expect(
+                page.source.count(f'href="{href}"') == 1,
+                f"favicon-link:{page.relative}:{href}",
+            )
+        expect("favicon.svg" not in page.source, f"legacy-favicon:{page.relative}")
+        expect(
+            page.source.count('name="apple-mobile-web-app-title" content="Kingdom Circuit"') == 1,
+            f"apple-app-title:{page.relative}",
+        )
         failures.extend(f"unprefixed-local-link:{item}" for item in internal_path_failures(page))
 
     page_by_relative = {page.relative.as_posix(): page for page in pages}
