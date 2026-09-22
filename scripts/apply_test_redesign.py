@@ -32,7 +32,7 @@ PAST_PAGE_ROBOTS = "noindex,nofollow"
 MANIFEST_FILENAME = "test-redesign-manifest.json"
 SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
 NEW_WINDOW_DAYS = 7
-PAST_GRACE_DAYS = 1
+PAST_GRACE_DAYS = 0
 INACTIVE_STATUSES = {"cancelled", "canceled", "postponed", "merged"}
 TRUSTED_AUTHORITIES = {
     "artist_calendar",
@@ -138,7 +138,7 @@ def site_today() -> dt.date:
 
 
 def visibility_cutoff(today: dt.date) -> dt.date:
-    """Keep yesterday, today, and future shows in active site listings."""
+    """Keep shows active through their final date, then archive them next day."""
     return today - dt.timedelta(days=PAST_GRACE_DAYS)
 
 
@@ -332,10 +332,10 @@ def patch_runtime(site: pathlib.Path) -> None:
     )
     source = source.replace(
         'async function boot() {\n  const staticCards = [...document.querySelectorAll("[data-event-card]")];',
-        '''function kcStaticVisibilityCutoff() {
+        ('''function kcStaticVisibilityCutoff() {
   const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date()).filter(part => part.type !== "literal").map(part => [part.type, Number(part.value)]));
   const cutoff = new Date(Date.UTC(parts.year, parts.month - 1, parts.day));
-  cutoff.setUTCDate(cutoff.getUTCDate() - 1);
+  cutoff.setUTCDate(cutoff.getUTCDate() - __KC_PAST_GRACE_DAYS__);
   return cutoff;
 }
 function kcStaticCardIsActive(card) {
@@ -347,7 +347,8 @@ function kcStaticCardIsActive(card) {
 async function boot() {
   const allStaticCards = [...document.querySelectorAll("[data-event-card]")];
   const staticCards = allStaticCards.filter(kcStaticCardIsActive);
-  allStaticCards.filter(card => !kcStaticCardIsActive(card)).forEach(card => card.remove());''',
+  allStaticCards.filter(card => !kcStaticCardIsActive(card)).forEach(card => card.remove());'''
+        ).replace("__KC_PAST_GRACE_DAYS__", str(PAST_GRACE_DAYS)),
     )
     path.write_text(source, encoding="utf-8")
 

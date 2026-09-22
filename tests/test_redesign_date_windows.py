@@ -39,10 +39,10 @@ def event_card(
 
 
 class TestActiveEventWindow(unittest.TestCase):
-    def test_cutoff_keeps_yesterday_and_uses_multiday_end_date(self) -> None:
+    def test_cutoff_archives_yesterday_and_uses_multiday_end_date(self) -> None:
         today = dt.date(2026, 9, 21)
         cutoff = redesign.visibility_cutoff(today)
-        self.assertEqual(cutoff, dt.date(2026, 9, 20))
+        self.assertEqual(cutoff, dt.date(2026, 9, 21))
 
         yesterday = {
             "startDate": "2026-09-18",
@@ -52,8 +52,13 @@ class TestActiveEventWindow(unittest.TestCase):
             "startDate": "2026-09-18",
             "endDate": "2026-09-19",
         }
-        self.assertTrue(redesign.is_active_event(yesterday, cutoff))
+        today_show = {
+            "startDate": "2026-09-21",
+            "endDate": "2026-09-21",
+        }
+        self.assertFalse(redesign.is_active_event(yesterday, cutoff))
         self.assertFalse(redesign.is_active_event(two_days_old, cutoff))
+        self.assertTrue(redesign.is_active_event(today_show, cutoff))
 
         document = "<main>" + event_card(
             title="Yesterday Festival",
@@ -74,9 +79,23 @@ class TestActiveEventWindow(unittest.TestCase):
         ) + "</main>"
 
         pruned = redesign.prune_expired_event_cards(document, cutoff)
-        self.assertIn("Yesterday Festival", pruned)
+        self.assertNotIn("Yesterday Festival", pruned)
         self.assertNotIn("Two Days Old", pruned)
-        self.assertEqual(pruned.count("data-event-card"), 1)
+        self.assertEqual(pruned.count("data-event-card"), 0)
+
+    def test_runtime_uses_the_same_zero_day_cutoff(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            app = root / "app.js"
+            app.write_text(
+                'async function boot() {\n  const staticCards = [...document.querySelectorAll("[data-event-card]")];',
+                encoding="utf-8",
+            )
+            redesign.patch_runtime(root)
+            runtime = app.read_text(encoding="utf-8")
+
+        self.assertIn("cutoff.getUTCDate() - 0", runtime)
+        self.assertNotIn("__KC_PAST_GRACE_DAYS__", runtime)
 
 
 class TestPastShowsMigration(unittest.TestCase):

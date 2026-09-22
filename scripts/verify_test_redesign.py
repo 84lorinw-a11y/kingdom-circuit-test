@@ -612,7 +612,7 @@ def audit_site(site_root: pathlib.Path | str) -> dict[str, object]:
                 last_date = card.attrs.get("data-end-date") or card.attrs.get("data-date") or ""
                 if re.fullmatch(r"\d{4}-\d{2}-\d{2}", last_date):
                     expect(last_date >= cutoff, f"expired-card:{page.relative}:{index}:{last_date}<{cutoff}")
-        expect(manifest.get("pastGraceDays") == 1, f"manifest:pastGraceDays:{manifest.get('pastGraceDays')!r}")
+        expect(manifest.get("pastGraceDays") == 0, f"manifest:pastGraceDays:{manifest.get('pastGraceDays')!r}")
         expect(manifest.get("newWindowDays") == 7, f"manifest:newWindowDays:{manifest.get('newWindowDays')!r}")
         expect(manifest.get("newShowCount") == new_show_count, f"manifest:newShowCount:{manifest.get('newShowCount')!r}!={new_show_count}")
         expect(manifest.get("monthShowCount") == month_show_count, f"manifest:monthShowCount:{manifest.get('monthShowCount')!r}!={month_show_count}")
