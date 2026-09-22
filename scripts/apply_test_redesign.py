@@ -31,12 +31,12 @@ UPCOMING_PAGE_ROBOTS = "noindex,nofollow"
 PAST_PAGE_ROBOTS = "noindex,nofollow"
 MANIFEST_FILENAME = "test-redesign-manifest.json"
 FAVICON_ASSET_NAMES = (
-    "favicon-kc-stacked-v1-48.png",
-    "favicon-kc-stacked-v1-96.png",
-    "favicon-kc-stacked-v1-180.png",
-    "favicon-kc-stacked-v1-192.png",
-    "favicon-kc-stacked-v1-512.png",
-    "favicon-kc-stacked-v1-maskable-512.png",
+    "favicon-kc-stacked-v2-48.png",
+    "favicon-kc-stacked-v2-96.png",
+    "favicon-kc-stacked-v2-180.png",
+    "favicon-kc-stacked-v2-192.png",
+    "favicon-kc-stacked-v2-512.png",
+    "favicon-kc-stacked-v2-maskable-512.png",
 )
 SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
 NEW_WINDOW_DAYS = 7
@@ -493,9 +493,9 @@ def inject_assets(document: str) -> str:
             document,
             flags=re.I,
         )
-        favicon_markup = f'''  <link rel="icon" type="image/png" sizes="48x48" href="{TEST_BASE}assets/favicon-kc-stacked-v1-48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="{TEST_BASE}assets/favicon-kc-stacked-v1-96.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="{TEST_BASE}assets/favicon-kc-stacked-v1-180.png">
+        favicon_markup = f'''  <link rel="icon" type="image/png" sizes="48x48" href="{TEST_BASE}assets/favicon-kc-stacked-v2-48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="{TEST_BASE}assets/favicon-kc-stacked-v2-96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{TEST_BASE}assets/favicon-kc-stacked-v2-180.png">
   <link rel="manifest" href="{TEST_BASE}manifest.webmanifest">
   <meta name="apple-mobile-web-app-title" content="Kingdom Circuit">'''
         document = document.replace("</head>", f"{favicon_markup}\n</head>", 1)
@@ -1063,19 +1063,19 @@ def copy_assets(site: pathlib.Path, repo: pathlib.Path) -> None:
             "theme_color": "#080808",
             "icons": [
                 {
-                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v1-192.png",
+                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-192.png",
                     "sizes": "192x192",
                     "type": "image/png",
                     "purpose": "any",
                 },
                 {
-                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v1-512.png",
+                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-512.png",
                     "sizes": "512x512",
                     "type": "image/png",
                     "purpose": "any",
                 },
                 {
-                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v1-maskable-512.png",
+                    "src": f"{TEST_BASE}assets/favicon-kc-stacked-v2-maskable-512.png",
                     "sizes": "512x512",
                     "type": "image/png",
                     "purpose": "maskable",

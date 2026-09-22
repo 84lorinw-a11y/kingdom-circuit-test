@@ -16,12 +16,12 @@ PRODUCTION_GA = "G-N2KK9XF4TJ"
 REDESIGN_CSS = pathlib.Path("assets/kc-redesign-v1.css")
 REDESIGN_JS = pathlib.Path("assets/kc-redesign-v1.js")
 FAVICON_ASSETS = (
-    pathlib.Path("assets/favicon-kc-stacked-v1-48.png"),
-    pathlib.Path("assets/favicon-kc-stacked-v1-96.png"),
-    pathlib.Path("assets/favicon-kc-stacked-v1-180.png"),
-    pathlib.Path("assets/favicon-kc-stacked-v1-192.png"),
-    pathlib.Path("assets/favicon-kc-stacked-v1-512.png"),
-    pathlib.Path("assets/favicon-kc-stacked-v1-maskable-512.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v2-48.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v2-96.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v2-180.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v2-192.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v2-512.png"),
+    pathlib.Path("assets/favicon-kc-stacked-v2-maskable-512.png"),
 )
 WEB_MANIFEST = pathlib.Path("manifest.webmanifest")
 MANIFEST = pathlib.Path("test-redesign-manifest.json")

@@ -153,11 +153,11 @@ jobs:
 
           test -s _site/assets/kc-redesign-v1.css
           test -s _site/assets/kc-redesign-v1.js
-          test -s _site/assets/favicon-kc-stacked-v1-48.png
-          test -s _site/assets/favicon-kc-stacked-v1-180.png
-          test -s _site/assets/favicon-kc-stacked-v1-192.png
-          test -s _site/assets/favicon-kc-stacked-v1-512.png
-          test -s _site/assets/favicon-kc-stacked-v1-maskable-512.png
+          test -s _site/assets/favicon-kc-stacked-v2-48.png
+          test -s _site/assets/favicon-kc-stacked-v2-180.png
+          test -s _site/assets/favicon-kc-stacked-v2-192.png
+          test -s _site/assets/favicon-kc-stacked-v2-512.png
+          test -s _site/assets/favicon-kc-stacked-v2-maskable-512.png
           test -s _site/manifest.webmanifest
           test -s _site/test-redesign-manifest.json
           test -s _site/submit/artist/index.html
@@ -166,7 +166,7 @@ jobs:
           grep -q 'class="kc-rd-home-title"' _site/index.html
           grep -q 'class="kc-rd-directory-intro"' _site/artists/index.html
           grep -q 'data-kc-artist-submit-form' _site/submit/artist/index.html
-          grep -q '/kingdom-circuit-test/assets/favicon-kc-stacked-v1-48.png' _site/index.html
+          grep -q '/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png' _site/index.html
           ! grep -q '/assets/favicon.svg' _site/index.html
 
       - name: Configure GitHub Pages

@@ -55,13 +55,13 @@ class ProductionRedesignModeTests(unittest.TestCase):
         redesign.configure_environment(False)
         test_page = redesign.inject_assets(inherited)
         self.assertNotIn("favicon.svg", test_page)
-        self.assertIn("/kingdom-circuit-test/assets/favicon-kc-stacked-v1-48.png", test_page)
+        self.assertIn("/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png", test_page)
         self.assertIn("/kingdom-circuit-test/manifest.webmanifest", test_page)
 
         redesign.configure_environment(True)
         production_page = redesign.inject_assets(inherited)
         self.assertIn("/assets/favicon.svg", production_page)
-        self.assertNotIn("favicon-kc-stacked-v1", production_page)
+        self.assertNotIn("favicon-kc-stacked-v2", production_page)
 
 
 if __name__ == "__main__":

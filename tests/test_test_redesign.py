@@ -21,9 +21,9 @@ SPEC.loader.exec_module(verify)
 def shell(body: str) -> str:
     return f'''<!doctype html><html><head>
 <meta name="robots" content="noindex,nofollow">
-<link rel="icon" type="image/png" sizes="48x48" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v1-48.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v1-96.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v1-180.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v2-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v2-180.png">
 <link rel="manifest" href="/kingdom-circuit-test/manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Kingdom Circuit">
 <link rel="stylesheet" href="/kingdom-circuit-test/assets/kc-redesign-v1.css">
@@ -43,12 +43,12 @@ class TestRedesignVerifier(unittest.TestCase):
         )
         (root / "assets" / "kc-redesign-v1.js").write_text("document.documentElement.classList.add('kc-rd-ready');", encoding="utf-8")
         favicon_names = (
-            "favicon-kc-stacked-v1-48.png",
-            "favicon-kc-stacked-v1-96.png",
-            "favicon-kc-stacked-v1-180.png",
-            "favicon-kc-stacked-v1-192.png",
-            "favicon-kc-stacked-v1-512.png",
-            "favicon-kc-stacked-v1-maskable-512.png",
+            "favicon-kc-stacked-v2-48.png",
+            "favicon-kc-stacked-v2-96.png",
+            "favicon-kc-stacked-v2-180.png",
+            "favicon-kc-stacked-v2-192.png",
+            "favicon-kc-stacked-v2-512.png",
+            "favicon-kc-stacked-v2-maskable-512.png",
         )
         for filename in favicon_names:
             (root / "assets" / filename).write_bytes(b"test-png")
@@ -57,9 +57,9 @@ class TestRedesignVerifier(unittest.TestCase):
             "start_url": "/kingdom-circuit-test/",
             "scope": "/kingdom-circuit-test/",
             "icons": [
-                {"src": "/kingdom-circuit-test/assets/favicon-kc-stacked-v1-192.png"},
-                {"src": "/kingdom-circuit-test/assets/favicon-kc-stacked-v1-512.png"},
-                {"src": "/kingdom-circuit-test/assets/favicon-kc-stacked-v1-maskable-512.png"},
+                {"src": "/kingdom-circuit-test/assets/favicon-kc-stacked-v2-192.png"},
+                {"src": "/kingdom-circuit-test/assets/favicon-kc-stacked-v2-512.png"},
+                {"src": "/kingdom-circuit-test/assets/favicon-kc-stacked-v2-maskable-512.png"},
             ],
         }
         (root / "manifest.webmanifest").write_text(json.dumps(web_manifest), encoding="utf-8")
@@ -212,14 +212,14 @@ class TestRedesignVerifier(unittest.TestCase):
             home = root / "index.html"
             home.write_text(
                 home.read_text(encoding="utf-8").replace(
-                    '<link rel="icon" type="image/png" sizes="48x48" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v1-48.png">',
+                    '<link rel="icon" type="image/png" sizes="48x48" href="/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png">',
                     '<link rel="icon" href="/kingdom-circuit-test/assets/favicon.svg" type="image/svg+xml">',
                     1,
                 ),
                 encoding="utf-8",
             )
             failures = "\n".join(verify.audit_site(root)["failures"])
-            self.assertIn("favicon-link:index.html:/kingdom-circuit-test/assets/favicon-kc-stacked-v1-48.png", failures)
+            self.assertIn("favicon-link:index.html:/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png", failures)
             self.assertIn("legacy-favicon:index.html", failures)
 
 
