@@ -9,6 +9,7 @@ on:
       - "scripts/live_mirror_v2.py"
       - "scripts/apply_test_redesign.py"
       - "scripts/verify_test_redesign.py"
+      - "scripts/build_mobile_show_test.py"
       - "test-overrides/**"
       - "tests/**"
   schedule:
@@ -73,6 +74,8 @@ jobs:
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/apply_test_redesign.py
           python -m py_compile scripts/verify_test_redesign.py
+          python -m py_compile scripts/build_mobile_show_test.py
+          node --check test-overrides/mobile-show-test.js
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site
@@ -149,6 +152,7 @@ jobs:
             --source-events _live_source_supplemental_events.json \
             --source-history _live_source_event_history.json \
             --event-overrides test-overrides/808-beezy-official-events.json
+          python scripts/build_mobile_show_test.py _site
           python scripts/verify_test_redesign.py _site
 
           test -s _site/assets/kc-redesign-v1.css

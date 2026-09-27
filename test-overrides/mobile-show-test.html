@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0c0b0b">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Test All Shows Page | Kingdom Circuit Test</title>
+  <link rel="stylesheet" href="__BASE__assets/kc-redesign-v1.css?v=6">
+  <link rel="stylesheet" href="__BASE__assets/mobile-show-test.css?v=1">
+</head>
+<body class="kc-mobile-test">
+  <a class="mt-skip" href="#mt-main">Skip to shows</a>
+  <header class="kc-rd-header mt-header">
+    <div class="kc-rd-followbar mt-test-label">TEST ALL SHOWS PAGE</div>
+    <div class="mt-brand"><a href="__BASE__" aria-label="Kingdom Circuit test home"><img src="__BASE__assets/logo-wordmark.svg?v=1" alt="Kingdom Circuit" width="170" height="38"></a><button type="button" id="mt-menu-toggle" aria-controls="mt-menu" aria-expanded="false">Menu</button></div>
+    <nav id="mt-menu" hidden aria-label="Test site navigation"><a href="__BASE__shows/">Current All Shows</a><a href="__BASE__new-shows/">New Shows</a><a href="__BASE__artists/">Artists</a><a href="__BASE__festivals/">Festivals</a><a href="__BASE__submit/">Submit a show</a></nav>
+  </header>
+  <main id="mt-main">
+    <section id="mt-browse">
+      <div class="mt-intro">
+        <h1>Find your next show</h1>
+        <div class="mt-filters">
+          <label class="mt-search"><span class="mt-sr">Search shows</span><input id="mt-search" type="search" placeholder="Artist, city, venue, or show" autocomplete="off"></label>
+          <label><span class="mt-sr">State</span><select id="mt-state"><option value="">All states</option></select></label>
+          <button id="mt-filters-toggle" type="button" aria-controls="mt-more-filters" aria-expanded="false">More filters</button>
+        </div>
+        <div id="mt-more-filters" hidden>
+          <label class="mt-upcoming"><input id="mt-upcoming" type="checkbox" checked> Upcoming shows only</label>
+          <label>Artist<select id="mt-artist"><option value="">All artists</option></select></label>
+          <label>Month<select id="mt-month"><option value="">All months</option></select></label>
+          <label>Event type<select id="mt-type"><option value="">All events</option></select></label>
+          <button id="mt-clear" type="button">Clear filters</button>
+        </div>
+        <div id="mt-active" hidden><span></span><button id="mt-clear-active" type="button">Clear</button></div>
+        <div class="mt-results-bar"><p id="mt-count" aria-live="polite"></p><div class="mt-view" aria-label="Listing layout"><button id="mt-compact" type="button" aria-pressed="true">Compact</button><button id="mt-posters" type="button" aria-pressed="false">Posters</button></div></div>
+      </div>
+      <div id="mt-results"></div>
+      <noscript><p>To use the interactive preview, enable JavaScript or <a href="__BASE__shows/">open the current show calendar</a>.</p></noscript>
+    </section>
+    <section id="mt-detail" hidden aria-label="Show details"></section>
+  </main>
+  <footer class="mt-footer"><a href="__BASE__shows/">Compare with current All Shows</a><a href="__BASE__assets/kingdom-circuit-mobile-preview.zip" download>Download the two-show mockup</a><p>Event details may change. Check the official event page before purchasing or traveling.</p></footer>
+  <script id="mobile-calendar-data" type="application/json">__PAYLOAD__</script>
+  <script src="__BASE__assets/mobile-show-test.js?v=1" defer></script>
+</body>
+</html>
