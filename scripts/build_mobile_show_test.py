@@ -45,6 +45,10 @@ def billing(source):
     return names, links
 
 
+def host_label(source):
+    return clean_text(match_text(r'<p\b[^>]*class="host-line"[^>]*>(.*?)</p>', source))
+
+
 def safe_page(site, href):
     if not href.startswith(BASE + "event/"):
         raise ValueError(f"Not a test event link: {href}")
@@ -71,6 +75,7 @@ def read_detail(site, href):
             "endDate": str(schema.get("endDate") or schema.get("startDate", ""))[:10],
             "dateLabel": field(source, "Date"), "venue": field(source, "Venue"),
             "location": field(source, "Location"), "artists": names, "artistLinks": links,
+            "hostLabel": host_label(source),
             "official": official, "status": field(source, "Status"),
             "age": field(source, "Age restriction"), "original": attribute(original, "href"),
             **image_fields(image_block)}
@@ -92,6 +97,7 @@ def collect(site, today):
                      type=attribute(card.split(">", 1)[0], "data-type"),
                      dateLabel=field(card, "Date"), venue=field(card, "Venue"),
                      location=field(card, "Location"), artists=names, artistLinks=links,
+                     artistKeys=attribute(card.split(">", 1)[0], "data-artists").split("|"),
                      past=False, **image_fields(card))
         event["endDate"] = event["endDate"] or event["date"]
         result.append(event)
