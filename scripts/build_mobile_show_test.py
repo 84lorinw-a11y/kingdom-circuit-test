@@ -15,6 +15,7 @@ from apply_test_redesign import attribute, clean_text, event_cards, inject_asset
 
 BASE = "/kingdom-circuit-test/"
 ROUTE = "test-all-shows/"
+FEED_ROUTE = "test-show-feed/"
 
 
 def match_text(pattern, source, default=""):
@@ -126,13 +127,13 @@ def build(site):
     today = dt.datetime.now(ZoneInfo("America/Los_Angeles")).date().isoformat()
     events, artists = collect(site, today)
     payload = json.dumps({"events": events, "artists": artists, "snapshotDate": today}, ensure_ascii=False).replace("</", "<\\/")
-    template = (repo / "test-overrides/mobile-show-test.html").read_text()
-    document = template.replace("__BASE__", BASE).replace("__PAYLOAD__", payload)
-    document = inject_assets(document)
-    page = site / ROUTE / "index.html"
-    page.parent.mkdir(exist_ok=True)
-    page.write_text(document)
-    for name in ("mobile-show-test.css", "mobile-show-test.js", "kingdom-circuit-mobile-preview.zip"):
+    for route, template_name in ((ROUTE, "mobile-show-test.html"), (FEED_ROUTE, "show-feed-samples.html")):
+        template = (repo / "test-overrides" / template_name).read_text()
+        document = inject_assets(template.replace("__BASE__", BASE).replace("__PAYLOAD__", payload))
+        page = site / route / "index.html"
+        page.parent.mkdir(exist_ok=True)
+        page.write_text(document)
+    for name in ("mobile-show-test.css", "mobile-show-test.js", "show-feed-samples.css", "kingdom-circuit-mobile-preview.zip"):
         shutil.copy2(repo / "test-overrides" / name, site / "assets" / name)
     # Keep the page discoverable without changing ordinary navigation or calendars.
     home = site / "index.html"
@@ -142,7 +143,12 @@ def build(site):
         text = text.replace('<div class="footer-links">', '<div class="footer-links">' + link, 1)
         if "data-mobile-test-link" not in text:
             raise ValueError("Home footer not found")
-        home.write_text(text)
+    if "data-show-feed-link" not in text:
+        text = text.replace('<div class="footer-links">', '<div class="footer-links">' +
+                            f'<a data-show-feed-link href="{BASE}{FEED_ROUTE}">Image-first show samples</a>', 1)
+        if "data-show-feed-link" not in text:
+            raise ValueError("Home footer not found for feed samples")
+    home.write_text(text)
     manifest_path = site / "test-redesign-manifest.json"
     manifest = json.loads(manifest_path.read_text())
     count = len(list(site.rglob("*.html")))
@@ -150,6 +156,7 @@ def build(site):
     if "htmlPageCount" in manifest:
         manifest["htmlPageCount"] = count
     manifest["mobileCalendarTestPath"] = BASE + ROUTE
+    manifest["showFeedSamplesPath"] = BASE + FEED_ROUTE
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"Built Test All Shows Page: {sum(not e['past'] for e in events)} upcoming, {sum(e['past'] for e in events)} archived, {len(artists)} curated artists")
 
@@ -174,7 +181,16 @@ def verify(site):
     assert 'content="noindex,nofollow"' in page and "G-N2KK9XF4TJ" not in page
     assert 'data-mobile-test-link' in (site / "index.html").read_text()
     assert (site / "assets/kingdom-circuit-mobile-preview.zip").stat().st_size > 0
+    feed = (site / FEED_ROUTE / "index.html").read_text()
+    feed_payload = json.loads(match_text(r'<script id="mobile-calendar-data" type="application/json">(.*?)</script>', feed))
+    assert feed_payload == payload, "Feed samples must use the complete identical calendar"
+    assert 'content="noindex,nofollow"' in feed and "G-N2KK9XF4TJ" not in feed
+    assert all(f'id="mt-{view}"' in feed for view in ("feed", "split", "grid"))
+    assert (site / "assets/show-feed-samples.css").stat().st_size > 0
+    assert f'{BASE}{FEED_ROUTE}' in page
+    assert 'data-show-feed-link' in (site / "index.html").read_text()
     print("Mobile test page verified: current card parity, archived shows, full billing/roster, local assets, and test identity")
+    print("Three image-first samples verified: same calendar, approved images, filters and test identity")
 
 
 if __name__ == "__main__":

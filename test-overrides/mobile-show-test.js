@@ -2,12 +2,16 @@
   'use strict';
   const base = '/kingdom-circuit-test/';
   const data = JSON.parse(document.getElementById('mobile-calendar-data').textContent);
+  const imageLab = document.body.classList.contains('mt-image-lab');
+  const pageTitle = document.title;
+  const views = imageLab ? ['feed','split','grid'] : ['compact','posters'];
   const $ = id => document.getElementById('mt-' + id);
   const esc = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const normalized = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const monthName = value => new Date(value + '-15T12:00:00').toLocaleDateString('en-US', {month:'long', year:'numeric'});
   const controls = ['search','state','artist','month','type','upcoming'];
   const params = () => new URLSearchParams(location.search);
+  const view = () => views.includes(params().get('view')) ? params().get('view') : views[0];
   const names = {AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',DC:'Washington, DC',FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming',PR:'Puerto Rico'};
   function options(id, values, label = v => v) {
     $(id).insertAdjacentHTML('beforeend', values.map(v => `<option value="${esc(v)}">${esc(label(v))}</option>`).join(''));
@@ -40,7 +44,8 @@
     return location.pathname + '?' + p;
   }
   function image(event, detail = false) {
-    const sizes = detail ? '(max-width: 650px) calc(100vw - 32px), 580px' : params().get('view') === 'posters' ? '(max-width: 650px) calc(100vw - 32px), 410px' : '(min-width: 650px) 128px, 112px';
+    const layouts = {compact:'(min-width: 650px) 128px, 112px',posters:'(max-width: 650px) calc(100vw - 32px), 410px',feed:'(max-width: 650px) calc(100vw - 32px), 640px',split:'(max-width: 650px) calc((100vw - 32px) * .6), 450px',grid:'(max-width: 650px) calc((100vw - 44px) / 2), 300px'};
+    const sizes = detail ? '(max-width: 650px) calc(100vw - 32px), 580px' : layouts[view()];
     return `<img src="${esc(event.image)}" ${event.srcset ? `srcset="${esc(event.srcset)}" sizes="${sizes}"` : ''} alt="${esc(event.title)} artwork" loading="${detail ? 'eager':'lazy'}" decoding="async" class="${event.artwork ? '' : 'mt-photo'}" style="object-position:${esc(event.position)}">`;
   }
   function status(event) { return event.status && event.status.toLowerCase() !== 'scheduled' ? `<p class="mt-status">${esc(event.status)}</p>` : ''; }
@@ -51,16 +56,26 @@
     const matching = event.artists.filter(name => normalized(name) === artist || (q && normalized(name).includes(q)));
     if (matching.length) artists = [...new Set([...matching, ...artists])].slice(0,3);
     const extra = event.artists.length - artists.length;
+    if (imageLab) {
+      const date = new Date(event.date + 'T12:00:00');
+      const shortDate = date.toLocaleDateString('en-US',{month:'short',day:'numeric',...(event.date.slice(0,4) !== data.snapshotDate.slice(0,4) ? {year:'numeric'} : {})});
+      return `<article class="mt-show mf-show" data-show-key="${esc(event.key)}"><div class="mf-post-header"><p class="mf-post-location">${esc(event.location)}</p><span class="mf-post-date">${esc(shortDate)}</span></div><div class="mt-card-main"><a class="mt-card-image" href="${esc(showHref(event))}" data-show="${esc(event.key)}" aria-label="View ${esc(event.title)}">${image(event)}</a><div class="mf-caption">${status(event)}<p class="mt-date">${esc(event.dateLabel)}</p><h3><a href="${esc(showHref(event))}" data-show="${esc(event.key)}">${esc(event.title)}</a></h3><p class="mt-location">${esc(event.location)}</p><p class="mt-venue">${esc(event.venue)}</p><p class="mt-artists">${esc(artists.join(' · '))}${extra ? ` + ${extra} more` : ''}</p><a class="mt-card-action" href="${esc(showHref(event))}" data-show="${esc(event.key)}">Show details <span aria-hidden="true">↗</span><span class="mt-sr">: ${esc(event.title)}</span></a></div></div></article>`;
+    }
     return `<article class="mt-show" data-show-key="${esc(event.key)}"><div class="mt-card-main"><a class="mt-card-image" href="${esc(showHref(event))}" data-show="${esc(event.key)}" aria-label="View ${esc(event.title)}">${image(event)}</a><div>${status(event)}<p class="mt-date">${esc(event.dateLabel)}</p><h3><a href="${esc(showHref(event))}" data-show="${esc(event.key)}">${esc(event.title)}</a></h3><p class="mt-location">${esc(event.location)}</p><p class="mt-venue">${esc(event.venue)}</p><p class="mt-artists">${esc(artists.join(' · '))}${extra ? ` + ${extra} more` : ''}</p>${extra ? `<a class="mt-bill-link" href="${esc(showHref(event))}#lineup" data-show="${esc(event.key)}" data-lineup>Full lineup (${event.artists.length})</a>` : ''}</div></div><a class="mt-button mt-card-action" href="${esc(showHref(event))}" data-show="${esc(event.key)}">View show<span class="mt-sr">: ${esc(event.title)}</span></a></article>`;
   }
   function renderList() {
     const q = normalized($('search').value.trim());
     const state = $('state').value, artist = normalized($('artist').value), month = $('month').value, type = $('type').value;
     const matches = data.events.filter(e => (!e.past || !$('upcoming').checked) && (!state || e.state === state) && (!month || e.date.slice(0,7) === month) && (!type || e.type === type) && (!artist || (e.artistKeys || e.artists).some(a => normalized(a) === artist)) && (!q || normalized([e.title,e.venue,e.location,e.hostLabel || "",...e.artists].join(' ')).includes(q)));
-    const posters = params().get('view') === 'posters';
-    $('results').classList.toggle('mt-poster-view',posters);
-    $('compact').setAttribute('aria-pressed', String(!posters));
-    $('posters').setAttribute('aria-pressed', String(posters));
+    const selectedView = view();
+    $('results').classList.toggle('mt-poster-view',selectedView === 'posters');
+    $('results').dataset.view = selectedView;
+    views.forEach(id => $(id).setAttribute('aria-pressed',String(id === selectedView)));
+    if (imageLab) {
+      const descriptions = {feed:'Big flyers. A little context. Keep scrolling.',split:'Artwork on the left. The essentials on the right.',grid:'More shows at a glance. Tap a flyer to explore.'};
+      $('view-description').textContent = descriptions[selectedView];
+      document.body.dataset.layout = selectedView;
+    }
     const upcoming = matches.filter(e => !e.past).length;
     $('count').textContent = $('upcoming').checked ? `${matches.length} upcoming show${matches.length === 1 ? '' : 's'}` : `${upcoming} upcoming · ${matches.length - upcoming} past`;
     const labels = [q && `“${$('search').value.trim()}”`, state && (names[state] || state), artist && $('artist').value, month && monthName(month), type, !$('upcoming').checked && 'Including past shows'].filter(Boolean);
@@ -85,7 +100,7 @@
     const event = data.events.find(e => e.key === params().get('show'));
     $('browse').hidden = !!event; $('detail').hidden = !event;
     if (event) renderDetail(event);
-    document.title = (event ? event.title + ' | ' : '') + 'Test All Shows Page | Kingdom Circuit Test';
+    document.title = (event ? event.title + ' | ' : '') + pageTitle;
   }
   function clear() {
     for (const id of ['search','state','artist','month','type']) $(id).value = '';
@@ -93,8 +108,8 @@
   }
   controls.forEach(id => $(id).addEventListener(id === 'search' ? 'input' : 'change',writeControls));
   for (const id of ['clear','clear-active']) $(id).addEventListener('click',clear);
-  for (const id of ['compact','posters']) $(id).addEventListener('click',() => {
-    const p = params(); if (id === 'posters') p.set('view','posters'); else p.delete('view');
+  for (const id of views) $(id).addEventListener('click',() => {
+    const p = params(); p.set('view',id);
     history.replaceState({...history.state,scrollY:window.scrollY},'',location.pathname + (p.size ? '?' + p : '')); renderList();
   });
   function toggle(button, panel) { const open = $(panel).hidden; $(panel).hidden = !open; $(button).setAttribute('aria-expanded',String(open)); }

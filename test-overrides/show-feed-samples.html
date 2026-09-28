@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0c0b0b">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Show Feed Samples | Kingdom Circuit Test</title>
+  <link rel="stylesheet" href="__BASE__assets/kc-redesign-v1.css?v=6">
+  <link rel="stylesheet" href="__BASE__assets/mobile-show-test.css?v=2">
+  <link rel="stylesheet" href="__BASE__assets/show-feed-samples.css?v=1">
+</head>
+<body class="kc-mobile-test mt-image-lab" data-layout="feed">
+  <a class="mt-skip" href="#mt-main">Skip to shows</a>
+  <header class="kc-rd-header mt-header">
+    <div class="kc-rd-followbar mt-test-label">THE SHOW FEED · TEST SITE</div>
+    <div class="mt-brand"><a href="__BASE__" aria-label="Kingdom Circuit test home"><img src="__BASE__assets/logo-wordmark.svg?v=1" alt="Kingdom Circuit" width="170" height="38"></a><button type="button" id="mt-menu-toggle" aria-controls="mt-menu" aria-expanded="false">Menu</button></div>
+    <nav id="mt-menu" hidden aria-label="Test site navigation"><a href="__BASE__test-all-shows/">Earlier layout samples</a><a href="__BASE__shows/">Current All Shows</a><a href="__BASE__new-shows/">New Shows</a><a href="__BASE__artists/">Artists</a><a href="__BASE__submit/">Submit a show</a></nav>
+  </header>
+  <main id="mt-main">
+    <section id="mt-browse">
+      <div class="mt-intro">
+        <div class="mf-heading"><div><p class="mf-eyebrow">CHH. LIVE. NEAR YOU.</p><h1>Find your next show.</h1></div><span class="mf-live-dot" aria-hidden="true"></span></div>
+        <div class="mf-samples" aria-label="Compare show layouts">
+          <button id="mt-feed" type="button" aria-pressed="true"><span class="mf-layout-icon mf-icon-feed" aria-hidden="true"></span><span>1. Feed</span></button>
+          <button id="mt-split" type="button" aria-pressed="false"><span class="mf-layout-icon mf-icon-split" aria-hidden="true"></span><span>2. Split</span></button>
+          <button id="mt-grid" type="button" aria-pressed="false"><span class="mf-layout-icon mf-icon-grid" aria-hidden="true"></span><span>3. Grid</span></button>
+        </div>
+        <p id="mt-view-description" class="mf-view-description" aria-live="polite">Big flyers. A little context. Keep scrolling.</p>
+        <div class="mt-filters">
+          <label class="mt-search"><span class="mt-sr">Search shows</span><input id="mt-search" type="search" placeholder="Artist, city, or show" autocomplete="off"></label>
+          <label><span class="mt-sr">State</span><select id="mt-state"><option value="">All states</option></select></label>
+          <button id="mt-filters-toggle" type="button" aria-controls="mt-more-filters" aria-expanded="false">Filters <span aria-hidden="true">+</span></button>
+        </div>
+        <div id="mt-more-filters" hidden>
+          <label class="mt-upcoming"><input id="mt-upcoming" type="checkbox" checked> Upcoming shows only</label>
+          <label>Artist<select id="mt-artist"><option value="">All artists</option></select></label>
+          <label>Month<select id="mt-month"><option value="">All months</option></select></label>
+          <label>Event type<select id="mt-type"><option value="">All events</option></select></label>
+          <button id="mt-clear" type="button">Clear filters</button>
+        </div>
+        <div id="mt-active" hidden><span></span><button id="mt-clear-active" type="button">Clear</button></div>
+        <div class="mt-results-bar"><p id="mt-count" aria-live="polite"></p><span class="mf-sorted">Soonest first</span></div>
+      </div>
+      <div id="mt-results"></div>
+      <noscript><p>Enable JavaScript to compare these samples, or <a href="__BASE__shows/">open the current show calendar</a>.</p></noscript>
+    </section>
+    <section id="mt-detail" hidden aria-label="Show details"></section>
+  </main>
+  <footer class="mt-footer"><a href="__BASE__test-all-shows/">Earlier layout samples</a><a href="__BASE__shows/">Current All Shows</a><a href="__BASE__submit/">Submit a show</a><p>Event details may change. Check the official event page before purchasing or traveling.</p></footer>
+  <script id="mobile-calendar-data" type="application/json">__PAYLOAD__</script>
+  <script src="__BASE__assets/mobile-show-test.js?v=2" defer></script>
+</body>
+</html>
