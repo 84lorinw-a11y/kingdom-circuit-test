@@ -1743,6 +1743,8 @@ def create_history_event_page(site: pathlib.Path, event: dict[str, object]) -> b
     state = html.escape(str(event.get("state") or ""))
     artists = " · ".join(html.escape(name) for name in history_event_artists(event))
     date = html.escape(past_date_label(str(event.get("startDate") or "")))
+    start_date = html.escape(str(event.get("startDate") or "")[:10], quote=True)
+    end_date = html.escape(str(event.get("endDate") or event.get("startDate") or "")[:10], quote=True)
     canonical = f"https://kingdomcircuit.com{history_event_href(event)}" if DEPLOYMENT_ENVIRONMENT == "production" else ""
     production_head = (
         f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">'
@@ -1759,7 +1761,7 @@ def create_history_event_page(site: pathlib.Path, event: dict[str, object]) -> b
 <header class="site-header"><div class="header-inner"><a class="brand" href="{TEST_BASE}">Kingdom Circuit</a></div></header>
 <main id="kc-main-content"><section class="event-detail-section">
 <p class="eyebrow"><a class="text-link" href="{TEST_BASE}shows/">Shows</a> / Past show</p>
-<article class="event-detail"><div class="event-detail-copy"><p class="eyebrow">Past show</p><h1>{title}</h1>
+<article class="event-detail" data-date="{start_date}" data-end-date="{end_date}"><div class="event-detail-copy"><p class="eyebrow">Past show</p><h1>{title}</h1>
 <p class="artist-line">{artists}</p><div class="past-event-notice"><strong>This event has passed.</strong></div>
 <dl class="detail-list"><div><dt>Date</dt><dd>{date}</dd></div><div><dt>Venue</dt><dd>{venue}</dd></div>
 <div><dt>Location</dt><dd>{city}, {state}</dd></div></dl></div></article></section></main>

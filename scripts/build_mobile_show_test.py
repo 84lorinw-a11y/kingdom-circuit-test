@@ -84,11 +84,13 @@ def read_detail(site, href):
         raise ValueError("Unexpected official URL")
     schemas = [json.loads(s) for s in re.findall(r'<script type="application/ld\+json">(.*?)</script>', source, re.S)]
     schema = next((s for s in schemas if s.get("@type") == "MusicEvent"), {})
+    detail = match_text(r'(<article\b[^>]*class="event-detail"[^>]*>)', source)
+    start_date = str(schema.get("startDate") or attribute(detail, "data-date"))[:10]
+    end_date = str(schema.get("endDate") or attribute(detail, "data-end-date") or start_date)[:10]
     names, links = billing(source)
     return {"key": href.rstrip("/").split("/")[-1], "href": href,
             "title": clean_text(match_text(r'<h1\b[^>]*>(.*?)</h1>', source)),
-            "date": str(schema.get("startDate", ""))[:10],
-            "endDate": str(schema.get("endDate") or schema.get("startDate", ""))[:10],
+            "date": start_date, "endDate": end_date,
             "dateLabel": field(source, "Date"), "venue": field(source, "Venue"),
             "location": field(source, "Location"), "artists": names, "artistLinks": links,
             "hostLabel": host_label(source),

@@ -5,10 +5,20 @@ import unittest
 import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url
+from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url, read_detail
+from apply_test_redesign import create_history_event_page, history_event_href
 
 
 class MobileCalendarContentTests(unittest.TestCase):
+    def test_generated_archive_keeps_exact_dates_for_calendar_preview(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            event = {'id':'archive-test', 'title':'Past festival', 'artists':['Artist'], 'startDate':'2026-10-02','endDate':'2026-10-04','city':'Nashville','state':'TN'}
+            create_history_event_page(site, event)
+            result = read_detail(site, history_event_href(event))
+            self.assertEqual(result['date'], '2026-10-02')
+            self.assertEqual(result['endDate'], '2026-10-04')
+
     def test_approved_local_flyer_is_a_valid_source_without_path_escape(self):
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)
