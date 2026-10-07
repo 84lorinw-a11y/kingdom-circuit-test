@@ -10,6 +10,18 @@ from apply_test_redesign import create_history_event_page, history_event_href
 
 
 class MobileCalendarContentTests(unittest.TestCase):
+    def test_renamed_archive_reuses_reviewed_title_and_artwork(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            old = {'id':'same-event', 'title':'Old artist listing', 'artists':['Artist'], 'startDate':'2026-10-06','city':'Nashville','state':'TN'}
+            corrected = dict(old, title='Reviewed festival name')
+            path = safe_page(site, history_event_href(corrected))
+            path.parent.mkdir(parents=True)
+            page = '<h1>Reviewed festival name</h1><img src="approved-poster.jpg">'
+            path.write_text(page)
+            self.assertTrue(create_history_event_page(site, old))
+            self.assertEqual(safe_page(site, history_event_href(old)).read_text(), page)
+
     def test_generated_archive_keeps_exact_dates_for_calendar_preview(self):
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)

@@ -1736,6 +1736,16 @@ def create_history_event_page(site: pathlib.Path, event: dict[str, object]) -> b
     target = history_event_page(site, event)
     if target.is_file():
         return False
+    # A reviewed title can change the slug while keeping the stable event hash.
+    # The live capture may contain only the corrected page, not its old redirect.
+    # Reuse that complete page instead of creating an image-less archive stub.
+    signature = event.get("id") or json.dumps(event, sort_keys=True)
+    suffix = f"-{str(event.get('startDate') or '')[:10]}-{slug(event.get('city'))}-{fnv(signature)}"
+    reviewed_pages = list((site / 'event').glob(f'*{suffix}/index.html'))
+    if len(reviewed_pages) == 1:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(reviewed_pages[0].read_text(encoding='utf-8'), encoding='utf-8')
+        return True
     target.parent.mkdir(parents=True, exist_ok=True)
     title = html.escape(str(event.get("title") or "Past Christian hip-hop show"))
     venue = html.escape(str(event.get("venue") or "Venue to be announced"))
