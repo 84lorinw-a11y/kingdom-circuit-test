@@ -11,6 +11,7 @@ on:
       - "scripts/verify_test_redesign.py"
       - "scripts/build_mobile_show_test.py"
       - "scripts/build_artist_intake_mockup.py"
+      - "scripts/finalize_artist_details.py"
       - "test-overrides/**"
       - "tests/**"
   schedule:
@@ -77,6 +78,7 @@ jobs:
           python -m py_compile scripts/verify_test_redesign.py
           python -m py_compile scripts/build_mobile_show_test.py
           python -m py_compile scripts/build_artist_intake_mockup.py
+          python -m py_compile scripts/finalize_artist_details.py
           node --check test-overrides/mobile-show-test.js
           node --check test-overrides/artist-intake-mockup.js
           python -m unittest discover -s tests -p 'test_*.py' -v
@@ -176,8 +178,16 @@ jobs:
           grep -q '/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png' _site/index.html
           ! grep -q '/assets/favicon.svg' _site/index.html
 
+      - name: Restore artist schedule details after all overlays
+        run: |
+          python scripts/finalize_artist_details.py _site
+          python scripts/verify_test_redesign.py _site
+
       - name: Build and verify artist intake mockup
         run: python scripts/build_artist_intake_mockup.py _site
+
+      - name: Verify the final deployment artifact
+        run: python scripts/finalize_artist_details.py _site --check
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
