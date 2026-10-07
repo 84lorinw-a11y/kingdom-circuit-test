@@ -2,12 +2,23 @@
 import sys
 from pathlib import Path
 import unittest
+import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from build_mobile_show_test import billing, host_label, image_fields, safe_page
+from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url
 
 
 class MobileCalendarContentTests(unittest.TestCase):
+    def test_approved_local_flyer_is_a_valid_source_without_path_escape(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            (site / 'assets/events').mkdir(parents=True)
+            (site / 'assets/events/flyer.png').write_bytes(b'flyer')
+            self.assertTrue(valid_official_url(site, '/kingdom-circuit-test/assets/events/flyer.png'))
+            self.assertTrue(valid_official_url(site, 'https://tickets.example/event'))
+            for url in ['/kingdom-circuit-test/assets/events/missing.png', '/kingdom-circuit-test/assets/%2e%2e/private.png', 'javascript:alert(1)', '/event/elsewhere/', '//unknown.example/flyer.png']:
+                self.assertFalse(valid_official_url(site, url), url)
+
     def test_hosts_remain_separate_from_performing_lineup(self):
         source = '<p class="artist-line">ADIA - JustCordell</p><p class="host-line">Hosted by DJ Focus and Keal K</p>'
         self.assertEqual(billing(source)[0], ['ADIA', 'JustCordell'])

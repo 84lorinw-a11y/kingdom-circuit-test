@@ -10,6 +10,7 @@ on:
       - "scripts/apply_test_redesign.py"
       - "scripts/verify_test_redesign.py"
       - "scripts/build_mobile_show_test.py"
+      - "scripts/build_artist_intake_mockup.py"
       - "test-overrides/**"
       - "tests/**"
   schedule:
@@ -75,7 +76,9 @@ jobs:
           python -m py_compile scripts/apply_test_redesign.py
           python -m py_compile scripts/verify_test_redesign.py
           python -m py_compile scripts/build_mobile_show_test.py
+          python -m py_compile scripts/build_artist_intake_mockup.py
           node --check test-overrides/mobile-show-test.js
+          node --check test-overrides/artist-intake-mockup.js
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site
@@ -172,6 +175,9 @@ jobs:
           grep -q 'data-kc-artist-submit-form' _site/submit/artist/index.html
           grep -q '/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png' _site/index.html
           ! grep -q '/assets/favicon.svg' _site/index.html
+
+      - name: Build and verify artist intake mockup
+        run: python scripts/build_artist_intake_mockup.py _site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

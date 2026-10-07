@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import re
 import shutil
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 from zoneinfo import ZoneInfo
 
 from apply_test_redesign import attribute, clean_text, event_cards, inject_assets
@@ -59,13 +59,28 @@ def safe_page(site, href):
     return site / relative / "index.html"
 
 
+def valid_official_url(site, url):
+    parsed = urlsplit(html.unescape(url))
+    if parsed.scheme in ('https', 'http') and parsed.netloc:
+        return True
+    # Some artist-submitted shows use the saved, approved flyer as their source.
+    # Preserve that link without allowing arbitrary relative URLs or traversal.
+    path = unquote(parsed.path)
+    if parsed.scheme or parsed.netloc or not path.startswith(BASE + 'assets/'):
+        return False
+    candidate = (site / path[len(BASE):]).resolve()
+    return (candidate.is_relative_to((site / 'assets').resolve())
+            and candidate.suffix.lower() in {'.jpg', '.jpeg', '.png', '.webp'}
+            and candidate.is_file())
+
+
 def read_detail(site, href):
     source = safe_page(site, href).read_text()
     image_block = match_text(r'<div class="event-detail-media">(.*?)</div>', source)
     original = match_text(r'(<a\b[^>]*class="event-image-enlarge"[^>]*>)', image_block)
     official = next((attribute(a, "href") for a in re.findall(r'<a\b[^>]*>.*?</a>', source, re.S)
                      if clean_text(a) == "Official details"), "")
-    if official and not official.startswith(("https://", "http://")):
+    if official and not valid_official_url(site, official):
         raise ValueError("Unexpected official URL")
     schemas = [json.loads(s) for s in re.findall(r'<script type="application/ld\+json">(.*?)</script>', source, re.S)]
     schema = next((s for s in schemas if s.get("@type") == "MusicEvent"), {})

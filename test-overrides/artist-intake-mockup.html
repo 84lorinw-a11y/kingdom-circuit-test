@@ -1,0 +1,55 @@
+<main id="kc-main-content" class="artist-intake-demo">
+  <div class="ai-demo-banner"><span class="ai-demo-tag">TEST PREVIEW</span> Try the form and photo picker. Nothing is sent or uploaded.</div>
+  <div class="ai-layout">
+    <header class="ai-intro">
+      <p class="ai-eyebrow">JOIN THE ARTIST DIRECTORY</p>
+      <h1>Your music.<br>Your next connection.</h1>
+      <p>Make it easier for CHH fans to find you. Share your official profiles and a photo you love.</p>
+      <div class="ai-intro-note"><span aria-hidden="true">✦</span><p>We review every artist before adding them to Kingdom Circuit.</p></div>
+    </header>
+    <form id="artist-intake-demo-form" class="ai-form" novalidate>
+      <section class="ai-section" aria-labelledby="ai-about-title">
+        <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">01</span><h2 id="ai-about-title">Introduce yourself</h2></div>
+        <p class="ai-section-note">Fields marked <span aria-hidden="true">*</span> are required.</p>
+        <div class="ai-fields">
+          <label class="ai-field">Artist or group name <span aria-hidden="true">*</span><input id="ai-name" name="artistName" autocomplete="organization" placeholder="Your artist name" required maxlength="120"></label>
+          <label class="ai-field">Contact email <span aria-hidden="true">*</span><input id="ai-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required maxlength="254"><small>For follow-up only. This won’t appear on your profile.</small></label>
+        </div>
+      </section>
+      <section class="ai-section" aria-labelledby="ai-photo-title">
+        <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">02</span><h2 id="ai-photo-title">Choose your artist photo <em>Optional</em></h2></div>
+        <p class="ai-section-note">A clear photo of you works best. Keep your face in view and skip flyers or screenshots.</p>
+        <div id="ai-dropzone" class="ai-photo-picker">
+          <div class="ai-photo-visual" id="ai-photo-visual"><svg class="ai-photo-icon" viewBox="0 0 48 48" width="48" height="48" fill="none" aria-hidden="true"><rect x="6" y="10" width="36" height="30" rx="6" stroke="currentColor" stroke-width="2"/><path d="m8 33 10-10 9 9 5-5 8 8M31 19h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><img id="ai-photo-preview" alt="Your selected artist photo" hidden></div>
+          <div class="ai-photo-actions">
+            <label class="ai-pick-button" for="ai-photo"><span id="ai-pick-label">Choose photo</span><input id="ai-photo" name="artistPhoto" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" aria-describedby="ai-photo-help ai-photo-status"></label>
+            <p id="ai-photo-help">Choose from your photo library or files.<br><span class="ai-drop-help">You can also drag a photo here.</span><br>JPG, PNG, WebP or HEIC · up to 10 MB</p>
+            <p id="ai-photo-status" class="ai-photo-status" role="status" aria-live="polite">No photo selected.</p>
+            <button type="button" id="ai-remove-photo" class="ai-text-button" hidden>Remove photo</button>
+          </div>
+        </div>
+        <p class="ai-small-note">Choose a photo you have permission to share. In this preview, it stays on your device.</p>
+      </section>
+      <section class="ai-section" aria-labelledby="ai-links-title">
+        <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">03</span><h2 id="ai-links-title">Where can we find you?</h2></div>
+        <p class="ai-section-note" id="ai-links-help">Add at least one official profile. Share the others if you have them.</p>
+        <div class="ai-fields">
+          <label class="ai-field" for="ai-website">Website or Linktree<input id="ai-website" name="website" type="text" inputmode="url" autocapitalize="none" spellcheck="false" placeholder="yourwebsite.com or linktr.ee/you" aria-describedby="ai-links-help" maxlength="1000"></label>
+          <label class="ai-field" for="ai-instagram"><span><i class="ai-social-dot ai-instagram" aria-hidden="true"></i>Instagram</span><input id="ai-instagram" name="instagram" type="text" autocapitalize="none" spellcheck="false" placeholder="@yourhandle or profile link" aria-describedby="ai-links-help" maxlength="1000"></label>
+          <label class="ai-field" for="ai-spotify"><span><i class="ai-social-dot ai-spotify" aria-hidden="true"></i>Spotify<input id="ai-spotify" name="spotify" type="text" inputmode="url" autocapitalize="none" spellcheck="false" placeholder="open.spotify.com/artist/…" aria-describedby="ai-links-help" maxlength="1000"></span><small>Link to your artist profile, not a song or playlist.</small></label>
+          <label class="ai-field" for="ai-youtube"><span><i class="ai-social-dot ai-youtube" aria-hidden="true"></i>YouTube</span><input id="ai-youtube" name="youtube" type="text" inputmode="url" autocapitalize="none" spellcheck="false" placeholder="youtube.com/@yourchannel" aria-describedby="ai-links-help" maxlength="1000"></label>
+        </div>
+        <p id="ai-links-error" class="ai-error" role="alert" hidden></p>
+      </section>
+      <section class="ai-section ai-last-section" aria-labelledby="ai-finish-title">
+        <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">04</span><h2 id="ai-finish-title">Anything else? <em>Optional</em></h2></div>
+        <label class="ai-field" for="ai-notes">A short bio or a note for our team<textarea id="ai-notes" name="notes" rows="3" maxlength="1500" placeholder="Tell us a little about your music, or share anything we should know."></textarea></label>
+        <label class="ai-confirm"><input id="ai-chh" name="chhConfirmation" type="checkbox" required><span>I’m submitting a Christian hip-hop artist or group. <span aria-hidden="true">*</span></span></label>
+        <button class="ai-submit" id="ai-submit-preview" type="button">Preview artist submission <span aria-hidden="true">↗</span></button>
+        <p class="ai-demo-footnote">Demo only — this button previews your details. It does not submit them.</p>
+        <noscript><p class="ai-error">Enable JavaScript to try the photo preview and review your details. This demo does not send submissions.</p></noscript>
+        <section id="ai-review" class="ai-review" tabindex="-1" hidden aria-labelledby="ai-review-title"><p class="ai-eyebrow">PREVIEW ONLY · NOTHING SENT</p><h2 id="ai-review-title">Here’s what you shared</h2><dl id="ai-review-details"></dl><p>This is where the finished form would confirm your submission. Your information hasn’t been sent or saved.</p><button class="ai-text-button" id="ai-edit" type="button">Back to editing</button></section>
+      </section>
+    </form>
+  </div>
+</main>
