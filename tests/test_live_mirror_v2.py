@@ -158,6 +158,32 @@ class ExactLiveMirrorTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 mirror.verify_exact_mirror(live, test)
 
+    def test_isolated_additions_cannot_hide_baseline_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = pathlib.Path(temp)
+            live = self.make_live_fixture(root)
+            test = root / "test"
+            test.mkdir()
+            mirror.write_test_copy(live, test)
+            (test / "sample.js").write_text("// experiment")
+            additions = frozenset({"sample.js"})
+            mirror.verify_exact_mirror(live, test, allowed_additions=additions)
+            with self.assertRaises(SystemExit):
+                mirror.verify_exact_mirror(live, test)
+            with self.assertRaises(ValueError):
+                mirror.verify_exact_mirror(live, test, allowed_additions=additions | {"index.html"})
+            (test / "index.html").write_text((test / "index.html").read_text().replace("Petrina DeLacey", "Wrong artist"))
+            with self.assertRaises(SystemExit):
+                mirror.verify_exact_mirror(live, test, allowed_additions=additions)
+
+    def test_test_identity_covers_submission_and_installed_app(self) -> None:
+        html = '<input type="hidden" name="environment" value="production">'
+        self.assertIn('value="test"', mirror.rewrite_html(html))
+        manifest = {"id": "/", "scope": "/", "start_url": "/", "icons": [{"src": "/assets/icon.png"}]}
+        result = json.loads(mirror.transformed_bytes(pathlib.Path("manifest.webmanifest"), json.dumps(manifest).encode()))
+        self.assertEqual(result["start_url"], mirror.TEST_BASE)
+        self.assertEqual(result["icons"][0]["src"], mirror.TEST_BASE + "assets/icon.png")
+
 
 if __name__ == "__main__":
     unittest.main()

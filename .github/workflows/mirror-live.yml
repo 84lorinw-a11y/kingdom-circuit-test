@@ -7,6 +7,7 @@ on:
       - ".github/workflows/mirror-live.yml"
       - "scripts/capture_live_site.py"
       - "scripts/live_mirror_v2.py"
+      - "scripts/verify_live_baseline.py"
       - "scripts/apply_test_redesign.py"
       - "scripts/verify_test_redesign.py"
       - "scripts/build_mobile_show_test.py"
@@ -74,6 +75,7 @@ jobs:
           set -euo pipefail
           python -m py_compile scripts/capture_live_site.py
           python -m py_compile scripts/live_mirror_v2.py
+          python -m py_compile scripts/verify_live_baseline.py
           python -m py_compile scripts/apply_test_redesign.py
           python -m py_compile scripts/verify_test_redesign.py
           python -m py_compile scripts/build_mobile_show_test.py
@@ -125,69 +127,16 @@ jobs:
           grep -q "\"liveCommit\": \"$LIVE_SHA\"" _site/test-live-mirror-manifest.json
           grep -q "\"liveDeploymentRunId\": \"$LIVE_RUN_ID\"" _site/test-live-mirror-manifest.json
 
-      - name: Fetch live build metadata for date windows
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          LIVE_SHA="${{ steps.live_deployment.outputs.sha }}"
-          gh api \
-            -H "Accept: application/vnd.github.raw+json" \
-            "repos/${LIVE_REPO}/contents/events.json?ref=${LIVE_SHA}" \
-            > _live_source_events.json
-          gh api \
-            -H "Accept: application/vnd.github.raw+json" \
-            "repos/${LIVE_REPO}/contents/supplemental-events.json?ref=${LIVE_SHA}" \
-            > _live_source_supplemental_events.json
-          gh api \
-            -H "Accept: application/vnd.github.raw+json" \
-            "repos/${LIVE_REPO}/contents/event-history.json?ref=${LIVE_SHA}" \
-            > _live_source_event_history.json
-          jq -e 'type == "array"' _live_source_events.json >/dev/null
-          jq -e 'type == "array"' _live_source_supplemental_events.json >/dev/null
-          jq -e 'type == "object" and (.events | type == "array")' _live_source_event_history.json >/dev/null
-
-      - name: Apply and verify the mobile-first test redesign
-        shell: bash
-        run: |
-          set -euo pipefail
-          python scripts/apply_test_redesign.py _site \
-            --source-events _live_source_events.json \
-            --source-events _live_source_supplemental_events.json \
-            --source-history _live_source_event_history.json \
-            --event-overrides test-overrides/808-beezy-official-events.json
-          python scripts/build_mobile_show_test.py _site
-          python scripts/verify_test_redesign.py _site
-
-          test -s _site/assets/kc-redesign-v1.css
-          test -s _site/assets/kc-redesign-v1.js
-          test -s _site/assets/favicon-kc-stacked-v2-48.png
-          test -s _site/assets/favicon-kc-stacked-v2-180.png
-          test -s _site/assets/favicon-kc-stacked-v2-192.png
-          test -s _site/assets/favicon-kc-stacked-v2-512.png
-          test -s _site/assets/favicon-kc-stacked-v2-maskable-512.png
-          test -s _site/manifest.webmanifest
-          test -s _site/test-redesign-manifest.json
-          test -s _site/submit/artist/index.html
-          grep -q '"mode": "live-baseline-with-test-redesign"' _site/test-live-mirror-manifest.json
-          grep -q '"mode": "mobile-first-test-redesign-v1"' _site/test-redesign-manifest.json
-          grep -q 'class="kc-rd-home-title"' _site/index.html
-          grep -q 'class="kc-rd-directory-intro"' _site/artists/index.html
-          grep -q 'data-kc-artist-submit-form' _site/submit/artist/index.html
-          grep -q '/kingdom-circuit-test/assets/favicon-kc-stacked-v2-48.png' _site/index.html
-          ! grep -q '/assets/favicon.svg' _site/index.html
-
-      - name: Restore artist schedule details after all overlays
-        run: |
-          python scripts/finalize_artist_details.py _site
-          python scripts/verify_test_redesign.py _site
+      - name: Preserve the separate show layout experiments
+        run: python scripts/build_mobile_show_test.py _site --isolated
 
       - name: Build and verify artist intake mockup
         run: python scripts/build_artist_intake_mockup.py _site
 
       - name: Verify the final deployment artifact
-        run: python scripts/finalize_artist_details.py _site --check
+        run: |
+          python scripts/finalize_artist_details.py _site --check
+          python scripts/verify_live_baseline.py _live_site _site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

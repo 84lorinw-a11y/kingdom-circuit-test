@@ -139,7 +139,7 @@ def collect(site, today):
     return result, [a["name"] for a in roster if a.get("enabled") is not False]
 
 
-def build(site):
+def build(site, *, isolated=False):
     repo = Path(__file__).resolve().parents[1]
     today = dt.datetime.now(ZoneInfo("America/Los_Angeles")).date().isoformat()
     events, artists = collect(site, today)
@@ -152,6 +152,9 @@ def build(site):
         page.write_text(document)
     for name in ("mobile-show-test.css", "mobile-show-test.js", "show-feed-samples.css", "kingdom-circuit-mobile-preview.zip"):
         shutil.copy2(repo / "test-overrides" / name, site / "assets" / name)
+    if isolated:
+        print(f"Built isolated calendar samples: {sum(not e['past'] for e in events)} upcoming, {sum(e['past'] for e in events)} archived, {len(artists)} artists")
+        return
     # Keep the page discoverable without changing ordinary navigation or calendars.
     home = site / "index.html"
     text = home.read_text()
@@ -178,7 +181,7 @@ def build(site):
     print(f"Built Test All Shows Page: {sum(not e['past'] for e in events)} upcoming, {sum(e['past'] for e in events)} archived, {len(artists)} curated artists")
 
 
-def verify(site):
+def verify(site, *, isolated=False):
     page = (site / ROUTE / "index.html").read_text()
     payload = json.loads(match_text(r'<script id="mobile-calendar-data" type="application/json">(.*?)</script>', page))
     events = payload["events"]
@@ -196,7 +199,8 @@ def verify(site):
             if source.startswith(BASE):
                 assert (site / urlsplit(source).path[len(BASE):]).is_file(), source
     assert 'content="noindex,nofollow"' in page and "G-N2KK9XF4TJ" not in page
-    assert 'data-mobile-test-link' in (site / "index.html").read_text()
+    if not isolated:
+        assert 'data-mobile-test-link' in (site / "index.html").read_text()
     assert (site / "assets/kingdom-circuit-mobile-preview.zip").stat().st_size > 0
     feed = (site / FEED_ROUTE / "index.html").read_text()
     feed_payload = json.loads(match_text(r'<script id="mobile-calendar-data" type="application/json">(.*?)</script>', feed))
@@ -205,7 +209,8 @@ def verify(site):
     assert all(f'id="mt-{view}"' in feed for view in ("feed", "split", "grid"))
     assert (site / "assets/show-feed-samples.css").stat().st_size > 0
     assert f'{BASE}{FEED_ROUTE}' in page
-    assert 'data-show-feed-link' in (site / "index.html").read_text()
+    if not isolated:
+        assert 'data-show-feed-link' in (site / "index.html").read_text()
     print("Mobile test page verified: current card parity, archived shows, full billing/roster, local assets, and test identity")
     print("Three image-first samples verified: same calendar, approved images, filters and test identity")
 
@@ -214,7 +219,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("site", type=Path)
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--isolated", action="store_true", help="Preserve the mirrored home and shared manifests unchanged")
     args = parser.parse_args()
     if not args.verify_only:
-        build(args.site)
-    verify(args.site)
+        build(args.site, isolated=args.isolated)
+    verify(args.site, isolated=args.isolated)

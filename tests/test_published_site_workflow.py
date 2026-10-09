@@ -30,14 +30,15 @@ class PublishedSiteWorkflowTests(unittest.TestCase):
         self.assertIn("noindex,nofollow", workflow)
         self.assertIn("Disallow: /", workflow)
 
-    def test_workflow_supplies_full_live_history_to_test_redesign(self) -> None:
-        workflow = (ROOT / ".github" / "workflows" / "mirror-live.yml").read_text(
-            encoding="utf-8"
-        )
-        self.assertIn("event-history.json?ref=${LIVE_SHA}", workflow)
-        self.assertIn("_live_source_event_history.json", workflow)
-        self.assertIn("--source-history _live_source_event_history.json", workflow)
-        self.assertIn('.events | type == "array"', workflow)
+    def test_workflow_preserves_experiments_without_reapplying_global_redesign(self) -> None:
+        workflow = (ROOT / ".github/workflows/mirror-live.yml").read_text()
+        self.assertIn("python scripts/build_mobile_show_test.py _site --isolated", workflow)
+        self.assertIn("python scripts/build_artist_intake_mockup.py _site", workflow)
+        self.assertNotIn("python scripts/apply_test_redesign.py _site", workflow)
+        self.assertNotIn("python scripts/finalize_artist_details.py _site\n", workflow)
+        gate = workflow.index("python scripts/verify_live_baseline.py _live_site _site")
+        self.assertGreater(gate, workflow.index("python scripts/build_artist_intake_mockup.py _site"))
+        self.assertLess(gate, workflow.index("uses: actions/upload-pages-artifact"))
 
 
 if __name__ == "__main__":

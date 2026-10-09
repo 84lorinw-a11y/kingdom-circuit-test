@@ -83,6 +83,7 @@ def rewrite_root_paths(text: str) -> str:
 
 def rewrite_html(text: str) -> str:
     text = rewrite_site_urls(text).replace(LIVE_GA, TEST_GA)
+    text = re.sub(r'(name=["\']environment["\']\s+value=["\'])production(["\'])', r'\1test\2', text)
     text = re.sub(
         r'(?P<prefix>\b(?:href|src|action)=["\'])/(?!/)',
         lambda match: match.group("prefix") + TEST_BASE,
@@ -141,6 +142,16 @@ def transformed_bytes(relative: pathlib.Path, source: bytes) -> bytes:
     if relative.as_posix() == "robots.txt":
         return b"User-agent: *\nDisallow: /\n"
 
+    if relative.suffix == ".webmanifest":
+        manifest = json.loads(source)
+        for key in ("id", "start_url", "scope"):
+            if str(manifest.get(key, "")).startswith("/"):
+                manifest[key] = TEST_BASE + manifest[key].lstrip("/")
+        for icon in manifest.get("icons", []):
+            if icon.get("src", "").startswith("/"):
+                icon["src"] = TEST_BASE + icon["src"].lstrip("/")
+        return (json.dumps(manifest, indent=2) + "\n").encode()
+
     suffix = relative.suffix.casefold()
     if suffix not in {".html", ".js", ".css", ".xml"}:
         return source
@@ -175,7 +186,8 @@ def write_test_copy(live_dir: pathlib.Path, out_dir: pathlib.Path) -> int:
     return changed_for_environment
 
 
-def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path) -> dict[str, object]:
+def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path, *,
+                        allowed_additions: frozenset[str] = frozenset()) -> dict[str, object]:
     failures: list[str] = []
     source_files = {
         path.relative_to(live_dir)
@@ -189,10 +201,14 @@ def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path) -> dict[s
         for path in out_dir.rglob("*")
         if path.is_file()
     }
-    if source_files != output_files:
-        for relative in sorted(source_files - output_files):
+    additions = {pathlib.Path(path) for path in allowed_additions}
+    if additions & source_files:
+        raise ValueError("Isolated experiments may not replace a live file")
+    expected_files = source_files | additions
+    if expected_files != output_files:
+        for relative in sorted(expected_files - output_files):
             failures.append(f"missing:{relative}")
-        for relative in sorted(output_files - source_files):
+        for relative in sorted(output_files - expected_files):
             failures.append(f"unexpected:{relative}")
 
     adjusted_files = 0
@@ -299,6 +315,7 @@ def main() -> None:
             "production analytics disabled",
             "production CNAME omitted",
             "operational build reports omitted",
+            "test submission environment and web-app scope",
         ],
         "omittedOperationalReports": sorted(OMITTED_REPORT_FILES),
         "testNoindex": True,
