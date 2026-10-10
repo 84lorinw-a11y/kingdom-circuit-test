@@ -54,7 +54,9 @@ def verify(site: Path) -> None:
     assert scripts == [BASE + 'assets/artist-intake-mockup.js?v=' + script_version]
     fields = {a.get('name'): a for tag, a in parser.tags if tag in ('input','textarea')}
     assert set(fields) == {'artistName','email','website','instagram','spotify','youtube','artistPhoto'}
-    assert fields['email']['type'] == 'email' and 'required' not in fields['email']
+    for name, attrs in fields.items():
+        assert not {'required', 'pattern', 'maxlength'} & attrs.keys()
+        if name != 'artistPhoto': assert attrs.get('type', 'text') == 'text'
     assert not any(tag == 'textarea' or attrs.get('type') == 'checkbox' for tag, attrs in parser.tags)
     assert fields['artistPhoto']['type'] == 'file' and '.heic' in fields['artistPhoto']['accept']
     ids = [a['id'] for _, a in parser.tags if 'id' in a]
@@ -68,7 +70,7 @@ def verify(site: Path) -> None:
                 if url.split('?')[0].split('#')[0].endswith('/'): target = target / 'index.html'
                 assert target.is_file(), f'Missing local asset or page: {url}'
     js = (site / 'assets/artist-intake-mockup.js').read_text()
-    for forbidden in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', '.submit('):
+    for forbidden in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', '.submit(', 'reportValidity(', 'checkValidity('):
         assert forbidden not in js, f'Mockup must not send or store data: {forbidden}'
     print('Artist intake mockup verified: separate test route, all fields, local photo preview, no submission or storage.')
 

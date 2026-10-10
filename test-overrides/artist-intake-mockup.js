@@ -9,7 +9,6 @@
   const remove = form.querySelector("#ai-remove-photo");
   const pickLabel = form.querySelector("#ai-pick-label");
   const review = form.querySelector("#ai-review");
-  const linksError = form.querySelector("#ai-links-error");
   let selectedPhoto = null;
   let revision = 0;
   function setPhoto(file) {
@@ -56,37 +55,17 @@
   dropzone.addEventListener("drop", e => { dropzone.classList.remove("is-dragging"); photo.value = ""; setPhoto(e.dataTransfer.files[0]); });
   // This mockup intentionally has no transport, storage, form action or submission endpoint.
   form.addEventListener("submit", e => e.preventDefault());
-  form.addEventListener("input", () => { review.hidden = true; linksError.hidden = true; });
+  form.addEventListener("input", () => { review.hidden = true; });
   const fields = ["website", "instagram", "spotify", "youtube"];
-  function normalize(value, field) {
-    if (field === "instagram" && /^@?[\w.]+$/.test(value)) return `https://www.instagram.com/${value.replace(/^@/, "")}/`;
-    try {
-      const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
-      if (!/^https?:$/.test(url.protocol) || !url.hostname.includes(".") || url.username || url.password) return null;
-      const host = url.hostname.toLowerCase().replace(/^www\./, "");
-      if (field === "instagram" && (host !== "instagram.com" || !/^\/[^/]+\/?$/.test(url.pathname) || /^\/(p|reel|reels|stories|explore|accounts)\/?$/i.test(url.pathname))) return null;
-      if (field === "spotify" && !(host === "open.spotify.com" && /^\/(?:intl-[a-z]+\/)?artist\/[^/]+\/?$/.test(url.pathname))) return null;
-      if (field === "youtube" && !(host === "youtube.com" && /^\/(?:@[^/]+|(?:channel|c|user)\/[^/]+)(?:\/(?:videos|shorts|featured))?\/?$/.test(url.pathname))) return null;
-      return url.href;
-    } catch { return null; }
-  }
   form.querySelector("#ai-submit-preview").addEventListener("click", () => {
-    if (!form.reportValidity()) return;
     const links = {};
-    let invalid = null;
     for (const field of fields) {
-      const input = form.elements.namedItem(field);
-      const value = input.value.trim();
-      if (value) { links[field] = normalize(value, field); if (!links[field] && !invalid) invalid = input; }
-    }
-    if (invalid || !Object.keys(links).length) {
-      linksError.hidden = false;
-      linksError.textContent = invalid ? `Please add a valid ${invalid.name === "website" ? "website or Linktree" : invalid.name === "spotify" ? "Spotify artist profile" : invalid.name === "youtube" ? "YouTube channel" : "Instagram profile"} link.` : "Add at least one official profile so we can find your music.";
-      (invalid || form.elements.namedItem("instagram")).focus(); return;
+      const value = form.elements.namedItem(field).value;
+      if (value.trim()) links[field] = value;
     }
     const details = form.querySelector("#ai-review-details");
     details.replaceChildren();
-    const values = [["Artist",form.elements.namedItem("artistName").value.trim()],["Email",form.elements.namedItem("email").value.trim() || "Not provided"],["Photo",selectedPhoto ? selectedPhoto.name : "No photo selected"],...Object.entries(links)];
+    const values = [["Artist",form.elements.namedItem("artistName").value || "Not provided"],["Email",form.elements.namedItem("email").value || "Not provided"],["Photo",selectedPhoto ? selectedPhoto.name : "No photo selected"],...Object.entries(links)];
     for (const [label,value] of values) { const dt = document.createElement("dt"); const dd = document.createElement("dd"); dt.textContent = label[0].toUpperCase()+label.slice(1); dd.textContent = value; details.append(dt,dd); }
     review.hidden = false; review.focus(); review.scrollIntoView({behavior:"smooth",block:"nearest"});
   });
