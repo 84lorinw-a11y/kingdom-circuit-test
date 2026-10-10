@@ -86,7 +86,7 @@
     }
     const details = form.querySelector("#ai-review-details");
     details.replaceChildren();
-    const values = [["Artist",form.elements.namedItem("artistName").value.trim()],["Email",form.elements.namedItem("email").value.trim()],["Photo",selectedPhoto ? selectedPhoto.name : "No photo selected"],...Object.entries(links),["Notes",form.elements.namedItem("notes").value.trim() || "None"]];
+    const values = [["Artist",form.elements.namedItem("artistName").value.trim()],["Email",form.elements.namedItem("email").value.trim()],["Photo",selectedPhoto ? selectedPhoto.name : "No photo selected"],...Object.entries(links)];
     for (const [label,value] of values) { const dt = document.createElement("dt"); const dd = document.createElement("dd"); dt.textContent = label[0].toUpperCase()+label.slice(1); dd.textContent = value; details.append(dt,dd); }
     review.hidden = false; review.focus(); review.scrollIntoView({behavior:"smooth",block:"nearest"});
   });

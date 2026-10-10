@@ -50,7 +50,8 @@ def verify(site: Path) -> None:
     scripts = [a.get('src') for tag, a in parser.tags if tag == 'script']
     assert scripts == [BASE + 'assets/artist-intake-mockup.js']
     fields = {a.get('name'): a for tag, a in parser.tags if tag in ('input','textarea')}
-    assert {'artistName','email','website','instagram','spotify','youtube','artistPhoto','notes','chhConfirmation'} <= fields.keys()
+    assert set(fields) == {'artistName','email','website','instagram','spotify','youtube','artistPhoto'}
+    assert not any(tag == 'textarea' or attrs.get('type') == 'checkbox' for tag, attrs in parser.tags)
     assert fields['artistPhoto']['type'] == 'file' and '.heic' in fields['artistPhoto']['accept']
     ids = [a['id'] for _, a in parser.tags if 'id' in a]
     assert len(ids) == len(set(ids)), 'Duplicate field ids'
