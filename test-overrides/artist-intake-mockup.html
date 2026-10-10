@@ -7,16 +7,17 @@
       <p>Make it easier for CHH fans to find you. Share your official profiles and your profile picture.</p>
       <div class="ai-intro-note"><span aria-hidden="true">✦</span><p>We review every artist before adding them to Kingdom Circuit.</p></div>
     </header>
-    <form id="artist-intake-demo-form" class="ai-form" action="https://formspree.io/f/mljreawj" method="post" novalidate>
+    <form id="artist-intake-demo-form" class="ai-form" action="https://formspree.io/f/mljreawj" method="post">
       <input type="hidden" name="submission_type" value="CHH artist submission">
       <input type="hidden" name="subject" value="[Test site] Kingdom Circuit artist profile">
       <input type="hidden" name="environment" value="test">
       <input type="hidden" name="page_url" value="https://84lorinw-a11y.github.io/kingdom-circuit-test/test-artist-intake/">
       <section class="ai-section" aria-labelledby="ai-about-title">
         <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">01</span><h2 id="ai-about-title">Introduce yourself</h2></div>
-        <div class="ai-fields">
-          <label class="ai-field">Artist or group name<input id="ai-name" name="artistName" autocomplete="organization" placeholder="Your artist name"></label>
-          <label class="ai-field">Contact email<input id="ai-email" name="contactEmail" type="text" inputmode="email" autocomplete="email" placeholder="you@example.com"><small>For follow-up only. This won’t appear on your profile.</small></label>
+        <label class="ai-field">Artist or group name<input id="ai-name" name="artistName" autocomplete="organization" placeholder="Your artist name"></label>
+        <div class="ai-fields ai-contact-fields">
+          <label class="ai-field">Your name<input id="ai-submitter-name" name="submitter_name" autocomplete="name" placeholder="Your name" required></label>
+          <label class="ai-field">Your email<input id="ai-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required><small>For follow-up only. This won’t appear on your profile.</small></label>
         </div>
       </section>
       <section class="ai-section" aria-labelledby="ai-photo-title">

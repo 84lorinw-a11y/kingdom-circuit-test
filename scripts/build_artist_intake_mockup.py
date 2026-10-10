@@ -26,7 +26,8 @@ def build(site: Path) -> None:
     page = re.sub(r'<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*>', '', page, flags=re.I)
     page = page.replace('<head>', '<head>\n<meta http-equiv="Content-Security-Policy" content="' + policy + '">', 1)
     script_version = hashlib.sha256((assets / 'artist-intake-mockup.js').read_bytes()).hexdigest()[:12]
-    page = page.replace('</head>', f'<link rel="stylesheet" href="{BASE}assets/artist-intake-mockup.css">\n<script defer src="{BASE}assets/artist-intake-mockup.js?v={script_version}"></script>\n</head>', 1)
+    style_version = hashlib.sha256((assets / 'artist-intake-mockup.css').read_bytes()).hexdigest()[:12]
+    page = page.replace('</head>', f'<link rel="stylesheet" href="{BASE}assets/artist-intake-mockup.css?v={style_version}">\n<script defer src="{BASE}assets/artist-intake-mockup.js?v={script_version}"></script>\n</head>', 1)
     target = site / ROUTE / 'index.html'
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(page)
@@ -46,7 +47,7 @@ def verify(site: Path) -> None:
     parser = Elements(); parser.feed(page)
     forms = [attrs for tag, attrs in parser.tags if tag == 'form']
     assert len(forms) == 1 and forms[0].get('action') == ENDPOINT
-    assert forms[0].get('method') == 'post' and 'novalidate' in forms[0]
+    assert forms[0].get('method') == 'post' and 'novalidate' not in forms[0]
     assert f"form-action {ENDPOINT};" in page and f"connect-src {ENDPOINT};" in page
     assert 'noindex,nofollow' in page
     assert 'googletagmanager.com' not in page
@@ -54,13 +55,16 @@ def verify(site: Path) -> None:
     scripts = [a.get('src') for tag, a in parser.tags if tag == 'script']
     script_version = hashlib.sha256((site / 'assets/artist-intake-mockup.js').read_bytes()).hexdigest()[:12]
     assert scripts == [BASE + 'assets/artist-intake-mockup.js?v=' + script_version]
+    style_version = hashlib.sha256((site / 'assets/artist-intake-mockup.css').read_bytes()).hexdigest()[:12]
+    assert f'artist-intake-mockup.css?v={style_version}' in page
     fields = {a.get('name'): a for tag, a in parser.tags if tag in ('input','textarea')}
-    public_fields = {'artistName','contactEmail','website','instagram','spotify','youtube','photoUrl'}
+    public_fields = {'artistName','submitter_name','email','website','instagram','spotify','youtube','photoUrl'}
     metadata = {'submission_type','subject','environment','page_url'}
     assert set(fields) == public_fields | metadata
     for name, attrs in fields.items():
-        assert not {'required', 'pattern', 'maxlength'} & attrs.keys()
-        assert attrs.get('type', 'text') == ('text' if name in public_fields else 'hidden')
+        assert not {'pattern', 'maxlength'} & attrs.keys()
+        assert ('required' in attrs) == (name in {'submitter_name', 'email'})
+        assert attrs.get('type', 'text') == ('email' if name == 'email' else 'text' if name in public_fields else 'hidden')
     assert not any(tag == 'textarea' or attrs.get('type') == 'checkbox' for tag, attrs in parser.tags)
     assert fields['environment']['value'] == 'test'
     assert fields['submission_type']['value'] == 'CHH artist submission'
@@ -78,9 +82,10 @@ def verify(site: Path) -> None:
                 if url.split('?')[0].split('#')[0].endswith('/'): target = target / 'index.html'
                 assert target.is_file(), f'Missing local asset or page: {url}'
     js = (site / 'assets/artist-intake-mockup.js').read_text()
-    for forbidden in ('XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', '.submit(', 'reportValidity(', 'checkValidity('):
+    for forbidden in ('XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', '.submit(', 'checkValidity('):
         assert forbidden not in js, f'Unexpected validation, storage or transport: {forbidden}'
     assert js.count('fetch(') == 1 and 'fetch(form.action,' in js
+    assert 'if (!form.reportValidity()) return;' in js
     assert 'result.ok !== true' in js and 'if (sending) return' in js
     assert 'new FormData(form)' in js and 'method: "POST"' in js
     print('Artist intake verified: approved endpoint, one-step submit, optional photo link, flexible fields and honest result handling.')

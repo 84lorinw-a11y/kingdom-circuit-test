@@ -9,10 +9,10 @@
   form.addEventListener("submit", async event => {
     event.preventDefault();
     if (sending) return;
+    if (!form.reportValidity()) return;
     sending = true;
     const data = new FormData(form);
     data.set("page_url", window.location.origin + window.location.pathname);
-    // Keep contactEmail plain text; the reserved email field is a Reply-To address.
     const controls = Array.from(form.elements).map(control => [control, control.disabled]);
     controls.forEach(([control]) => { control.disabled = true; });
     form.setAttribute("aria-busy", "true");

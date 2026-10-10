@@ -6,13 +6,14 @@ const vm = require('node:vm');
 const script = fs.readFileSync(path.join(__dirname, '../test-overrides/artist-intake-mockup.js'), 'utf8');
 
 function harness(fetcher, values = {}) {
-  const fields = Object.entries({artistName: '', contactEmail: '', website: '', instagram: '', spotify: '', youtube: '', photoUrl: '', environment: 'test', submission_type: 'CHH artist submission', subject: '[Test site] Kingdom Circuit artist profile', page_url: '', ...values}).map(([name, value]) => ({name, value, disabled: false}));
+  const fields = Object.entries({artistName: '', submitter_name: 'Test submitter', email: 'test@example.com', website: '', instagram: '', spotify: '', youtube: '', photoUrl: '', environment: 'test', submission_type: 'CHH artist submission', subject: '[Test site] Kingdom Circuit artist profile', page_url: '', ...values}).map(([name, value]) => ({name, value, disabled: false}));
   const button = {disabled: false, textContent: 'Submit Profile'};
   const status = {textContent: '', classList: {add() {}, remove() {}}};
   const success = {hidden: true, focused: false, focus() {this.focused = true;}};
   let listener;
   const form = {
     action: 'https://formspree.io/f/mljreawj', hidden: false, elements: [...fields, button],
+    valid: true, reportValidity() {return this.valid;},
     querySelector: id => id === '#ai-submit' ? button : status,
     addEventListener: (name, fn) => {listener = fn;},
     setAttribute() {}, removeAttribute() {}
@@ -31,7 +32,7 @@ function harness(fetcher, values = {}) {
 }
 const accepted = () => ({ok: true, status: 200, json: async () => ({ok: true})});
 
-test('free-form profiles and blank photo/email submit unchanged to the approved endpoint', async () => {
+test('required contact fields and flexible profiles submit to the approved endpoint', async () => {
   const h = harness(accepted, {artistName: 'Test Artist', spotify: 'dddd', instagram: '@test'});
   await h.submit();
   const [url, request] = h.calls[0];
@@ -39,21 +40,25 @@ test('free-form profiles and blank photo/email submit unchanged to the approved 
   assert.equal(request.method, 'POST');
   assert.equal(request.headers.Accept, 'application/json');
   assert.equal(request.body.get('spotify'), 'dddd');
-  assert.equal(request.body.get('contactEmail'), '');
+  assert.equal(request.body.get('submitter_name'), 'Test submitter');
+  assert.equal(request.body.get('email'), 'test@example.com');
   assert.equal(request.body.get('photoUrl'), '');
   assert.equal(request.body.get('environment'), 'test');
   assert.equal(request.body.get('page_url'), 'https://84lorinw-a11y.github.io/kingdom-circuit-test/test-artist-intake/');
-  assert.equal(request.body.has('email'), false);
+  assert.equal(request.body.has('contactEmail'), false);
   assert.equal(h.form.hidden, true);
   assert.equal(h.success.hidden, false);
   assert.equal(h.success.focused, true);
 });
 
-test('invalid contact text remains plain data and is not used as a Reply-To address', async () => {
-  const h = harness(accepted, {contactEmail: 'reach me on instagram'});
+test('invalid required contact fields do not send a request or lose entered details', async () => {
+  const h = harness(accepted, {email: '', artistName: 'Keep me', spotify: 'dddd'});
+  h.form.valid = false;
   await h.submit();
-  assert.equal(h.calls[0][1].body.get('contactEmail'), 'reach me on instagram');
-  assert.equal(h.calls[0][1].body.has('email'), false);
+  assert.equal(h.calls.length, 0);
+  assert.equal(h.button.disabled, false);
+  assert.equal(h.success.hidden, true);
+  assert.equal(h.fields.find(f => f.name === 'artistName').value, 'Keep me');
 });
 
 test('only one request can be in flight and no success is shown before confirmation', async () => {
