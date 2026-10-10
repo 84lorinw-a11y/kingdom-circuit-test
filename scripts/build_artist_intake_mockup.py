@@ -54,6 +54,7 @@ def verify(site: Path) -> None:
     assert scripts == [BASE + 'assets/artist-intake-mockup.js?v=' + script_version]
     fields = {a.get('name'): a for tag, a in parser.tags if tag in ('input','textarea')}
     assert set(fields) == {'artistName','email','website','instagram','spotify','youtube','artistPhoto'}
+    assert fields['email']['type'] == 'email' and 'required' not in fields['email']
     assert not any(tag == 'textarea' or attrs.get('type') == 'checkbox' for tag, attrs in parser.tags)
     assert fields['artistPhoto']['type'] == 'file' and '.heic' in fields['artistPhoto']['accept']
     ids = [a['id'] for _, a in parser.tags if 'id' in a]
