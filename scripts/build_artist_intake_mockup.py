@@ -1,4 +1,4 @@
-"""Add an isolated, non-submitting artist intake preview to the test website."""
+"""Add an isolated artist intake form using the owner's approved Formspree endpoint."""
 from pathlib import Path
 import argparse
 import hashlib
@@ -7,6 +7,7 @@ import shutil
 
 BASE = '/kingdom-circuit-test/'
 ROUTE = 'test-artist-intake/'
+ENDPOINT = 'https://formspree.io/f/mljreawj'
 
 
 def build(site: Path) -> None:
@@ -18,10 +19,10 @@ def build(site: Path) -> None:
     page, count = re.subn(r'<main\b[^>]*>.*?</main>', lambda _: main, source, count=1, flags=re.S)
     assert count == 1
     page = re.sub(r'<script\b[^>]*>.*?</script>', '', page, flags=re.S)
-    page = re.sub(r'<title>.*?</title>', '<title>Artist Submission Preview | Kingdom Circuit Test</title>', page, flags=re.S)
+    page = re.sub(r'<title>.*?</title>', '<title>Submit Your Artist Profile | Kingdom Circuit Test</title>', page, flags=re.S)
     page = page.replace(BASE + 'submit/artist/', BASE + ROUTE)
-    page = re.sub(r'(<meta\s+name="description"\s+content=")[^"]*', r'\1Try the Kingdom Circuit artist submission form mockup. No submissions are sent or saved.', page)
-    policy = "default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; connect-src 'none'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';"
+    page = re.sub(r'(<meta\s+name="description"\s+content=")[^"]*', r'\1Submit your artist profile to Kingdom Circuit for review.', page)
+    policy = f"default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; form-action {ENDPOINT}; connect-src {ENDPOINT}; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';"
     page = re.sub(r'<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*>', '', page, flags=re.I)
     page = page.replace('<head>', '<head>\n<meta http-equiv="Content-Security-Policy" content="' + policy + '">', 1)
     script_version = hashlib.sha256((assets / 'artist-intake-mockup.js').read_bytes()).hexdigest()[:12]
@@ -44,25 +45,32 @@ def verify(site: Path) -> None:
     page = (site / ROUTE / 'index.html').read_text()
     parser = Elements(); parser.feed(page)
     forms = [attrs for tag, attrs in parser.tags if tag == 'form']
-    assert len(forms) == 1 and not forms[0].get('action')
-    assert "form-action 'none'" in page and "connect-src 'none'" in page
+    assert len(forms) == 1 and forms[0].get('action') == ENDPOINT
+    assert forms[0].get('method') == 'post' and 'novalidate' in forms[0]
+    assert f"form-action {ENDPOINT};" in page and f"connect-src {ENDPOINT};" in page
     assert 'noindex,nofollow' in page
-    assert 'formspree.io' not in page and 'googletagmanager.com' not in page
+    assert 'googletagmanager.com' not in page
     assert not (site / 'CNAME').exists()
     scripts = [a.get('src') for tag, a in parser.tags if tag == 'script']
     script_version = hashlib.sha256((site / 'assets/artist-intake-mockup.js').read_bytes()).hexdigest()[:12]
     assert scripts == [BASE + 'assets/artist-intake-mockup.js?v=' + script_version]
     fields = {a.get('name'): a for tag, a in parser.tags if tag in ('input','textarea')}
-    assert set(fields) == {'artistName','email','website','instagram','spotify','youtube','artistPhoto'}
+    public_fields = {'artistName','contactEmail','website','instagram','spotify','youtube','photoUrl'}
+    metadata = {'submission_type','subject','environment','page_url'}
+    assert set(fields) == public_fields | metadata
     for name, attrs in fields.items():
         assert not {'required', 'pattern', 'maxlength'} & attrs.keys()
-        if name != 'artistPhoto': assert attrs.get('type', 'text') == 'text'
+        assert attrs.get('type', 'text') == ('text' if name in public_fields else 'hidden')
     assert not any(tag == 'textarea' or attrs.get('type') == 'checkbox' for tag, attrs in parser.tags)
-    assert fields['artistPhoto']['type'] == 'file' and '.heic' in fields['artistPhoto']['accept']
+    assert fields['environment']['value'] == 'test'
+    assert fields['submission_type']['value'] == 'CHH artist submission'
+    assert fields['page_url']['value'] == 'https://84lorinw-a11y.github.io' + BASE + ROUTE
+    assert not any(attrs.get('type') == 'file' for _, attrs in parser.tags), 'Free plan uses a photo link'
+    assert 'ai-review' not in page and 'Preview artist submission' not in page
     ids = [a['id'] for _, a in parser.tags if 'id' in a]
     assert len(ids) == len(set(ids)), 'Duplicate field ids'
     for tag, attrs in parser.tags:
-        if tag == 'button': assert attrs.get('type') == 'button'
+        if tag == 'button': assert attrs.get('type') == 'submit' and attrs.get('id') == 'ai-submit'
         for key in ('src', 'href'):
             url = attrs.get(key, '')
             if url.startswith(BASE):
@@ -70,9 +78,12 @@ def verify(site: Path) -> None:
                 if url.split('?')[0].split('#')[0].endswith('/'): target = target / 'index.html'
                 assert target.is_file(), f'Missing local asset or page: {url}'
     js = (site / 'assets/artist-intake-mockup.js').read_text()
-    for forbidden in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', '.submit(', 'reportValidity(', 'checkValidity('):
-        assert forbidden not in js, f'Mockup must not send or store data: {forbidden}'
-    print('Artist intake mockup verified: separate test route, all fields, local photo preview, no submission or storage.')
+    for forbidden in ('XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', '.submit(', 'reportValidity(', 'checkValidity('):
+        assert forbidden not in js, f'Unexpected validation, storage or transport: {forbidden}'
+    assert js.count('fetch(') == 1 and 'fetch(form.action,' in js
+    assert 'result.ok !== true' in js and 'if (sending) return' in js
+    assert 'new FormData(form)' in js and 'method: "POST"' in js
+    print('Artist intake verified: approved endpoint, one-step submit, optional photo link, flexible fields and honest result handling.')
 
 
 if __name__ == '__main__':

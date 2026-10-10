@@ -83,6 +83,7 @@ jobs:
           python -m py_compile scripts/finalize_artist_details.py
           node --check test-overrides/mobile-show-test.js
           node --check test-overrides/artist-intake-mockup.js
+          node --test tests/artist-intake-submit.test.cjs
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site

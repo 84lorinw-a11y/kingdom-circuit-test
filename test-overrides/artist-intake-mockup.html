@@ -1,5 +1,5 @@
 <main id="kc-main-content" class="artist-intake-demo">
-  <div class="ai-demo-banner"><span class="ai-demo-tag">TEST PREVIEW</span> Try the form and photo picker. Nothing is sent or uploaded.</div>
+  <div class="ai-demo-banner"><span class="ai-demo-tag">TEST FORM</span> Submissions go to Kingdom Circuit.</div>
   <div class="ai-layout">
     <header class="ai-intro">
       <p class="ai-eyebrow">JOIN THE ARTIST DIRECTORY</p>
@@ -7,25 +7,21 @@
       <p>Make it easier for CHH fans to find you. Share your official profiles and your profile picture.</p>
       <div class="ai-intro-note"><span aria-hidden="true">✦</span><p>We review every artist before adding them to Kingdom Circuit.</p></div>
     </header>
-    <form id="artist-intake-demo-form" class="ai-form" novalidate>
+    <form id="artist-intake-demo-form" class="ai-form" action="https://formspree.io/f/mljreawj" method="post" novalidate>
+      <input type="hidden" name="submission_type" value="CHH artist submission">
+      <input type="hidden" name="subject" value="[Test site] Kingdom Circuit artist profile">
+      <input type="hidden" name="environment" value="test">
+      <input type="hidden" name="page_url" value="https://84lorinw-a11y.github.io/kingdom-circuit-test/test-artist-intake/">
       <section class="ai-section" aria-labelledby="ai-about-title">
         <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">01</span><h2 id="ai-about-title">Introduce yourself</h2></div>
         <div class="ai-fields">
           <label class="ai-field">Artist or group name<input id="ai-name" name="artistName" autocomplete="organization" placeholder="Your artist name"></label>
-          <label class="ai-field">Contact email<input id="ai-email" name="email" type="text" inputmode="email" autocomplete="email" placeholder="you@example.com"><small>For follow-up only. This won’t appear on your profile.</small></label>
+          <label class="ai-field">Contact email<input id="ai-email" name="contactEmail" type="text" inputmode="email" autocomplete="email" placeholder="you@example.com"><small>For follow-up only. This won’t appear on your profile.</small></label>
         </div>
       </section>
       <section class="ai-section" aria-labelledby="ai-photo-title">
-        <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">02</span><h2 id="ai-photo-title">Choose your artist photo</h2></div>
-        <div id="ai-dropzone" class="ai-photo-picker">
-          <div class="ai-photo-visual" id="ai-photo-visual"><svg class="ai-photo-icon" viewBox="0 0 48 48" width="48" height="48" fill="none" aria-hidden="true"><rect x="6" y="10" width="36" height="30" rx="6" stroke="currentColor" stroke-width="2"/><path d="m8 33 10-10 9 9 5-5 8 8M31 19h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><img id="ai-photo-preview" alt="Your selected artist photo" hidden></div>
-          <div class="ai-photo-actions">
-            <label class="ai-pick-button" for="ai-photo"><span id="ai-pick-label">Choose photo</span><input id="ai-photo" name="artistPhoto" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" aria-describedby="ai-photo-help ai-photo-status"></label>
-            <p id="ai-photo-help">Choose from your photo library or files.<br><span class="ai-drop-help">You can also drag a photo here.</span><br>JPG, PNG, WebP or HEIC · up to 10 MB</p>
-            <p id="ai-photo-status" class="ai-photo-status" role="status" aria-live="polite">No photo selected.</p>
-            <button type="button" id="ai-remove-photo" class="ai-text-button" hidden>Remove photo</button>
-          </div>
-        </div>
+        <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">02</span><h2 id="ai-photo-title">Your profile picture</h2></div>
+        <label class="ai-field" for="ai-photo-link">Photo link<input id="ai-photo-link" name="photoUrl" type="text" inputmode="url" autocapitalize="none" spellcheck="false" placeholder="Paste a link to your photo"></label>
       </section>
       <section class="ai-section" aria-labelledby="ai-links-title">
         <div class="ai-section-heading"><span class="ai-step" aria-hidden="true">03</span><h2 id="ai-links-title">Where can we find you?</h2></div>
@@ -37,11 +33,13 @@
         </div>
       </section>
       <div class="ai-section ai-last-section">
-        <button class="ai-submit" id="ai-submit-preview" type="button">Preview artist submission <span aria-hidden="true">↗</span></button>
-        <p class="ai-demo-footnote">Demo only — this button previews your details. It does not submit them.</p>
-        <noscript><p class="ai-error">Enable JavaScript to try the photo preview and review your details. This demo does not send submissions.</p></noscript>
-        <section id="ai-review" class="ai-review" tabindex="-1" hidden aria-labelledby="ai-review-title"><p class="ai-eyebrow">PREVIEW ONLY · NOTHING SENT</p><h2 id="ai-review-title">Here’s what you shared</h2><dl id="ai-review-details"></dl><p>This is where the finished form would confirm your submission. Your information hasn’t been sent or saved.</p><button class="ai-text-button" id="ai-edit" type="button">Back to editing</button></section>
+        <button class="ai-submit" id="ai-submit" type="submit">Submit Profile <span aria-hidden="true">↗</span></button>
+        <p id="ai-submit-status" class="ai-submit-status" role="status" aria-live="polite"></p>
       </div>
     </form>
+    <section id="ai-success" class="ai-success" tabindex="-1" hidden aria-labelledby="ai-success-title">
+      <h2 id="ai-success-title">Profile submitted!</h2>
+      <p>Thanks! We’ll review your profile for Kingdom Circuit.</p>
+    </section>
   </div>
 </main>
