@@ -1,6 +1,7 @@
 """Add an isolated, non-submitting artist intake preview to the test website."""
 from pathlib import Path
 import argparse
+import hashlib
 import re
 import shutil
 
@@ -23,7 +24,8 @@ def build(site: Path) -> None:
     policy = "default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; connect-src 'none'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';"
     page = re.sub(r'<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*>', '', page, flags=re.I)
     page = page.replace('<head>', '<head>\n<meta http-equiv="Content-Security-Policy" content="' + policy + '">', 1)
-    page = page.replace('</head>', f'<link rel="stylesheet" href="{BASE}assets/artist-intake-mockup.css">\n<script defer src="{BASE}assets/artist-intake-mockup.js"></script>\n</head>', 1)
+    script_version = hashlib.sha256((assets / 'artist-intake-mockup.js').read_bytes()).hexdigest()[:12]
+    page = page.replace('</head>', f'<link rel="stylesheet" href="{BASE}assets/artist-intake-mockup.css">\n<script defer src="{BASE}assets/artist-intake-mockup.js?v={script_version}"></script>\n</head>', 1)
     target = site / ROUTE / 'index.html'
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(page)
@@ -48,7 +50,8 @@ def verify(site: Path) -> None:
     assert 'formspree.io' not in page and 'googletagmanager.com' not in page
     assert not (site / 'CNAME').exists()
     scripts = [a.get('src') for tag, a in parser.tags if tag == 'script']
-    assert scripts == [BASE + 'assets/artist-intake-mockup.js']
+    script_version = hashlib.sha256((site / 'assets/artist-intake-mockup.js').read_bytes()).hexdigest()[:12]
+    assert scripts == [BASE + 'assets/artist-intake-mockup.js?v=' + script_version]
     fields = {a.get('name'): a for tag, a in parser.tags if tag in ('input','textarea')}
     assert set(fields) == {'artistName','email','website','instagram','spotify','youtube','artistPhoto'}
     assert not any(tag == 'textarea' or attrs.get('type') == 'checkbox' for tag, attrs in parser.tags)
