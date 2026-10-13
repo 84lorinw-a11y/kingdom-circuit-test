@@ -6,6 +6,7 @@ from pathlib import Path
 from live_mirror_v2 import verify_exact_mirror
 from build_mobile_show_test import verify as verify_calendar
 from build_artist_intake_mockup import verify as verify_intake
+from mobile_seo_preview import ASSETS, VERSION, catalog, transform, verify_overlay
 
 EXPERIMENT_FILES = frozenset({
     "test-all-shows/index.html", "test-show-feed/index.html", "test-artist-intake/index.html",
@@ -13,21 +14,31 @@ EXPERIMENT_FILES = frozenset({
     "assets/kingdom-circuit-mobile-preview.zip",
     "assets/artist-intake-mockup.css", "assets/artist-intake-mockup.js",
 })
-ADDITIONS = EXPERIMENT_FILES | {".nojekyll", "test-live-mirror-manifest.json"}
+ADDITIONS = EXPERIMENT_FILES | {".nojekyll", "test-live-mirror-manifest.json"} | {f"assets/{name}" for name in ASSETS}
 
 
 def verify(live: Path, site: Path) -> dict:
-    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS)
+    states = catalog(live)
+    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS,
+                                approved_transform=lambda path, data: transform(path, data, states))
+    overlay = verify_overlay(live, site)
     verify_calendar(site, isolated=True)
     verify_intake(site)
     manifest_path = site / "test-live-mirror-manifest.json"
     manifest = json.loads(manifest_path.read_text())
-    assert manifest["mode"] == "exact-live-artifact-mirror"
-    assert manifest["contentAndLayoutParity"] is True
+    assert manifest["mode"] in {"exact-live-artifact-mirror", "live-mirror-with-mobile-seo-preview"}
     manifest.update(parity)
     manifest["preservedExperimentPaths"] = ["/test-all-shows/", "/test-show-feed/", "/test-artist-intake/"]
     manifest["isolatedExperimentFileCount"] = len(EXPERIMENT_FILES)
     manifest["testRedesignApplied"] = False
+    manifest["mode"] = "live-mirror-with-mobile-seo-preview"
+    manifest["contentAndLayoutParity"] = False
+    manifest["dataFilesByteIdentical"] = True
+    manifest["binaryAssetsByteIdentical"] = True
+    manifest["mobileSeoPreview"] = {"version": VERSION, **overlay}
+    change = "test-only state discovery, location reading order and optional quick-list view"
+    if change not in manifest["testOnlyDifferences"]:
+        manifest["testOnlyDifferences"].append(change)
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     print(json.dumps(manifest, indent=2))
     return manifest

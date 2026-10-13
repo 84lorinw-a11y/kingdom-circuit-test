@@ -187,7 +187,8 @@ def write_test_copy(live_dir: pathlib.Path, out_dir: pathlib.Path) -> int:
 
 
 def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path, *,
-                        allowed_additions: frozenset[str] = frozenset()) -> dict[str, object]:
+                        allowed_additions: frozenset[str] = frozenset(),
+                        approved_transform=None) -> dict[str, object]:
     failures: list[str] = []
     source_files = {
         path.relative_to(live_dir)
@@ -220,6 +221,10 @@ def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path, *,
             continue
         source = live_path.read_bytes()
         expected = transformed_bytes(relative, source)
+        # The normal mirror remains exact. A test overlay may supply a deterministic
+        # transformation recomputed from live input, never an allow-list of ignored files.
+        if approved_transform is not None:
+            expected = approved_transform(relative, expected)
         actual = test_path.read_bytes()
         if actual != expected:
             failures.append(f"content-mismatch:{relative}")

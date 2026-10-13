@@ -40,6 +40,13 @@ class PublishedSiteWorkflowTests(unittest.TestCase):
         self.assertGreater(gate, workflow.index("python scripts/build_artist_intake_mockup.py _site"))
         self.assertLess(gate, workflow.index("uses: actions/upload-pages-artifact"))
 
+    def test_mobile_seo_overlay_is_test_only_and_runs_before_final_gate(self) -> None:
+        workflow = (ROOT / ".github/workflows/mirror-live.yml").read_text()
+        overlay = workflow.index("python scripts/mobile_seo_preview.py _site _live_site")
+        self.assertLess(overlay, workflow.index("python scripts/verify_live_baseline.py _live_site _site"))
+        self.assertGreater(overlay, workflow.index("python scripts/live_mirror_v2.py"))
+        self.assertIn('scripts/mobile_seo_preview.py', workflow.split('schedule:')[0])
+
 
 if __name__ == "__main__":
     unittest.main()
