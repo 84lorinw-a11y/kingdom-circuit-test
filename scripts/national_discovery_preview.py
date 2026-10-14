@@ -175,7 +175,7 @@ def home_content(text, context):
     out = f'''<div class="kc-discovery-home" data-national-home>
 <section class="kc-discovery-hero" aria-label="Find your next show">
 <div class="kc-discovery-intro"><p class="eyebrow">Christian hip-hop, live and connected</p>{title}
-<p class="kc-discovery-deck">Christian hip-hop concerts, Christian rap shows, and festivals across the U.S.</p>
+<p class="kc-discovery-deck">CHH Live and Connected</p>
 <a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context['active'])} shows <span aria-hidden="true">↗</span></a>
 <form class="kc-discovery-search" action="{TEST_BASE}shows/" method="get" role="search">
 <label for="kc-home-search">Have a show or artist in mind?</label><div><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160"><button type="submit">Search</button></div></form></div>

@@ -64,6 +64,8 @@ class NationalDiscoveryTests(unittest.TestCase):
         context = {'states': [], 'as_of': date(2026, 10, 13), 'weekend': [], 'active': [],
                    'recent': [], 'artists': [], 'artist_total': 361}
         home = discovery.home_content(source, context)
+        self.assertIn('<h1>Find shows</h1>', home)
+        self.assertIn('<p class="kc-discovery-deck">CHH Live and Connected</p>', home)
         self.assertIn('<p class="mission-statement">Our existing mission.</p>', home)
         self.assertIn('Browse all 0 shows', home)
         self.assertIn('data-discovery-empty>', home)
