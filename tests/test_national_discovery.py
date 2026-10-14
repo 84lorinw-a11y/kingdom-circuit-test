@@ -70,13 +70,34 @@ class NationalDiscoveryTests(unittest.TestCase):
         self.assertIn('<p class="kc-discovery-deck">CHH concerts, christian rap shows and festivals across the U.S.</p>', home)
         self.assertNotIn('mission-statement', home)
         self.assertNotIn('Why we exist', home)
-        self.assertIn('361</strong> artists to explore', home)
+        self.assertIn('361</strong> artists', home)
         self.assertIn('Browse all 0 shows', home)
         self.assertIn('data-discovery-empty>', home)
         self.assertNotIn('Artists with upcoming shows', home)
         self.assertNotIn('/app.js', home)
         self.assertIn('/seo-static.js', home)
         self.assertIn('name="q"', home)
+        self.assertIn('Search shows by artist, city, venue or show name</label>', home)
+        self.assertNotIn('kc-discovery-when', home)
+        self.assertNotIn('kc-find-artist', home)
+        self.assertIn('aria-label="Browse shows by state"', home)
+
+    def test_compact_home_keeps_search_and_discovery_links_before_listings(self):
+        source = '<main><h1>Old home</h1></main>'
+        context = {'states': [], 'as_of': date(2026, 10, 13), 'weekend': [], 'active': [],
+                   'recent': [], 'artists': [], 'artist_total': 361}
+        doc = discovery.Document(discovery.home_content(source, context))
+        calendar = doc.one(lambda n: n.attrs.get('id') == 'calendar')
+        for predicate in (lambda n: n.has('kc-discovery-counts'),
+                          lambda n: n.has('kc-discovery-search'),
+                          lambda n: n.attrs.get('id') == 'browse-states'):
+            self.assertLess(doc.one(predicate).end, calendar.start)
+        counts = doc.one(lambda n: n.has('kc-discovery-counts'))
+        self.assertEqual([n.attrs['href'] for n in counts.children if n.tag == 'a'],
+                         [discovery.TEST_BASE + 'shows/', discovery.TEST_BASE + 'artists/'])
+        search = doc.one(lambda n: n.has('kc-discovery-search'))
+        self.assertEqual(search.attrs['action'], discovery.TEST_BASE + 'shows/')
+        self.assertEqual(search.attrs['method'], 'get')
 
     def test_about_transfers_exact_mission_and_has_its_own_identity(self):
         source = ('<head><title>Original home</title><meta name="robots" content="noindex,nofollow">'

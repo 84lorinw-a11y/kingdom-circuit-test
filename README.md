@@ -25,6 +25,8 @@ This Weekend calendar, homepage artist portraits and artist breadcrumbs.
 The owner's mission now lives unchanged on a compact About Us page. The eight
 primary navigation links include This Weekend and About Us; the Instagram strip
 and navigation use less space, and Home has a single-line “Find CHH Shows Near You!” heading.
+The homepage intro now uses tighter spacing, one compact show/artist action row,
+search and a small state picker; repeated navigation is removed so listings appear sooner.
 The mission, original page identities, official details, event/artist data,
 photos and full schedules/archives are preserved.
 

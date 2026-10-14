@@ -21,7 +21,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261013-3'
+VERSION = '20261013-4'
 ASSETS = ('national-discovery.css', 'national-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -178,17 +178,13 @@ def home_content(text, context):
 <section class="kc-discovery-hero" aria-label="Find your next show">
 <div class="kc-discovery-intro"><p class="eyebrow">CHH Live and Connected</p>{title}
 <p class="kc-discovery-deck">CHH concerts, christian rap shows and festivals across the U.S.</p>
-<a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context['active'])} shows <span aria-hidden="true">↗</span></a>
-<form class="kc-discovery-search" action="{TEST_BASE}shows/" method="get" role="search">
-<label for="kc-home-search">Have a show or artist in mind?</label><div><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160"><button type="submit">Search</button></div></form></div>
-<section class="kc-discovery-finder" id="browse-states" aria-labelledby="kc-discovery-find-title">
-<h2 id="kc-discovery-find-title">Find your next show</h2>
-<div class="kc-discovery-when"><a href="{WEEKEND_HREF}"><span>This weekend</span><small>{escape(label)}</small></a>
-<a href="{TEST_BASE}shows/this-month/"><span>This month</span><small>{context['as_of']:%B %Y}</small></a></div>
-{picker}{disclosure}<a class="kc-find-artist" href="{TEST_BASE}artists/">Find an artist <span aria-hidden="true">↗</span></a></section>
 <div class="kc-discovery-counts">
-<a href="{TEST_BASE}shows/"><strong>{len(context['active'])}</strong> upcoming shows</a>
-<a href="{TEST_BASE}artists/"><strong>{context['artist_total']}</strong> artists to explore</a></div></section>
+<a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context['active'])} shows <span aria-hidden="true">↗</span></a>
+<a class="kc-discovery-artist-count" href="{TEST_BASE}artists/"><strong>{context['artist_total']}</strong> artists <span aria-hidden="true">↗</span></a></div>
+<form class="kc-discovery-search" action="{TEST_BASE}shows/" method="get" role="search">
+<label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div><input id="kc-home-search" name="q" type="search" placeholder="Artist, city or show" maxlength="160"><button type="submit">Search</button></div></form></div>
+<section class="kc-discovery-finder" id="browse-states" aria-label="Browse shows by state">
+{picker}{disclosure}</section></section>
 <section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading">
 {section_heading(primary_kicker, primary_title, primary_href, primary_action, 'kc-weekend-heading')}
 <div class="kc-teaser-grid">{''.join(teaser(r) for r in primary)}</div>
@@ -429,6 +425,15 @@ def verify(live, site, context):
     assert about.raw(about.one(lambda n: n.has('mission-statement'))) == old_home.raw(old_home.one(lambda n: n.has('mission-statement')))
     assert not any(n.has('mission-statement') for n in home.nodes), 'Mission should live on About Us, not Home'
     assert home.text(home.one(lambda n: n.tag == 'h1')) == HOME_HEADING
+    counts = home.one(lambda n: n.has('kc-discovery-counts'))
+    assert f'Browse all {len(context["active"])} shows' in home.text(counts)
+    assert f'{context["artist_total"]} artists' in home.text(counts)
+    assert {n.attrs.get('href') for n in counts.children if n.tag == 'a'} == {TEST_BASE + 'shows/', TEST_BASE + 'artists/'}
+    search = home.one(lambda n: n.has('kc-discovery-search'))
+    assert search.attrs['action'] == TEST_BASE + 'shows/' and search.attrs['method'] == 'get'
+    assert home.one(lambda n: n.tag == 'input' and n.attrs.get('id') == 'kc-home-search').attrs['name'] == 'q'
+    assert home.text(home.one(lambda n: n.tag == 'label' and n.attrs.get('for') == 'kc-home-search'))
+    assert not any(n.has('kc-discovery-when') for n in home.nodes), 'Date navigation is already available in the header'
     assert about.text(about.one(lambda n: n.tag == 'h1')) == 'About Us'
     assert about.one(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'canonical').attrs['href'] == TEST_SITE + '/about-us/'
     assert about.one(lambda n: n.tag == 'meta' and n.attrs.get('name') == 'robots').attrs['content'] == 'noindex,nofollow'
