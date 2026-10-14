@@ -27,6 +27,9 @@ primary navigation links include This Weekend and About Us; the Instagram strip
 and navigation use less space, and Home has a single-line “Find CHH Shows Near You!” heading.
 The homepage intro now uses tighter spacing, one compact show/artist action row,
 search and a small state picker; repeated navigation is removed so listings appear sooner.
+The latest header refinement removes the homepage tagline, uses the one-line
+“CHH concerts, christian rap shows and festivals!” subtitle, and reduces the
+Instagram strip to 18px and navigation boxes to 32px tall.
 The mission, original page identities, official details, event/artist data,
 photos and full schedules/archives are preserved.
 

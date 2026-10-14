@@ -66,8 +66,10 @@ class NationalDiscoveryTests(unittest.TestCase):
                    'recent': [], 'artists': [], 'artist_total': 361}
         home = discovery.home_content(source, context)
         self.assertIn('<h1 class="kc-rd-home-title">Find CHH Shows Near You!</h1>', home)
-        self.assertIn('<p class="eyebrow">CHH Live and Connected</p><h1', home)
-        self.assertIn('<p class="kc-discovery-deck">CHH concerts, christian rap shows and festivals across the U.S.</p>', home)
+        self.assertNotIn('CHH Live and Connected', home)
+        self.assertIn('<div class="kc-discovery-intro"><h1', home)
+        self.assertIn('<p class="kc-discovery-deck">CHH concerts, christian rap shows and festivals!</p>', home)
+        self.assertNotIn('across the U.S.', home)
         self.assertNotIn('mission-statement', home)
         self.assertNotIn('Why we exist', home)
         self.assertIn('361</strong> artists', home)

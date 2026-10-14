@@ -21,13 +21,14 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261013-4'
+VERSION = '20261013-5'
 ASSETS = ('national-discovery.css', 'national-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
 ABOUT_PATH = 'about-us/index.html'
 ABOUT_HREF = TEST_BASE + 'about-us/'
 HOME_HEADING = 'Find CHH Shows Near You!'
+HOME_SUBTITLE = 'CHH concerts, christian rap shows and festivals!'
 
 
 def today():
@@ -176,8 +177,8 @@ def home_content(text, context):
     tiles = ''.join(artist_tile(a) for a in context['artists'])
     out = f'''<div class="kc-discovery-home" data-national-home>
 <section class="kc-discovery-hero" aria-label="Find your next show">
-<div class="kc-discovery-intro"><p class="eyebrow">CHH Live and Connected</p>{title}
-<p class="kc-discovery-deck">CHH concerts, christian rap shows and festivals across the U.S.</p>
+<div class="kc-discovery-intro">{title}
+<p class="kc-discovery-deck">{HOME_SUBTITLE}</p>
 <div class="kc-discovery-counts">
 <a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context['active'])} shows <span aria-hidden="true">↗</span></a>
 <a class="kc-discovery-artist-count" href="{TEST_BASE}artists/"><strong>{context['artist_total']}</strong> artists <span aria-hidden="true">↗</span></a></div>
@@ -425,6 +426,9 @@ def verify(live, site, context):
     assert about.raw(about.one(lambda n: n.has('mission-statement'))) == old_home.raw(old_home.one(lambda n: n.has('mission-statement')))
     assert not any(n.has('mission-statement') for n in home.nodes), 'Mission should live on About Us, not Home'
     assert home.text(home.one(lambda n: n.tag == 'h1')) == HOME_HEADING
+    assert home.text(home.one(lambda n: n.has('kc-discovery-deck'))) == HOME_SUBTITLE
+    intro = home.one(lambda n: n.has('kc-discovery-intro'))
+    assert not any(n.has('eyebrow') for n in intro.children), 'Owner removed the homepage tagline'
     counts = home.one(lambda n: n.has('kc-discovery-counts'))
     assert f'Browse all {len(context["active"])} shows' in home.text(counts)
     assert f'{context["artist_total"]} artists' in home.text(counts)
