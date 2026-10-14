@@ -9,6 +9,7 @@ on:
       - "scripts/live_mirror_v2.py"
       - "scripts/verify_live_baseline.py"
       - "scripts/mobile_seo_preview.py"
+      - "scripts/national_discovery_preview.py"
       - "scripts/apply_test_redesign.py"
       - "scripts/verify_test_redesign.py"
       - "scripts/build_mobile_show_test.py"
@@ -78,6 +79,7 @@ jobs:
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/verify_live_baseline.py
           python -m py_compile scripts/mobile_seo_preview.py
+          python -m py_compile scripts/national_discovery_preview.py
           python -m py_compile scripts/apply_test_redesign.py
           python -m py_compile scripts/verify_test_redesign.py
           python -m py_compile scripts/build_mobile_show_test.py
@@ -86,8 +88,10 @@ jobs:
           node --check test-overrides/mobile-show-test.js
           node --check test-overrides/artist-intake-mockup.js
           node --check test-overrides/mobile-seo-preview.js
+          node --check test-overrides/national-discovery.js
           node --test tests/artist-intake-submit.test.cjs
           node --test tests/mobile-seo-preview.test.cjs
+          node --test tests/national-discovery.test.cjs
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site
@@ -140,6 +144,9 @@ jobs:
 
       - name: Apply the approved test-only mobile SEO preview
         run: python scripts/mobile_seo_preview.py _site _live_site
+
+      - name: Build the approved national discovery preview
+        run: python scripts/national_discovery_preview.py _site _live_site
 
       - name: Verify the final deployment artifact
         run: |

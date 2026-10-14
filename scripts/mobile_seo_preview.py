@@ -284,7 +284,7 @@ def apply(site, live):
     print(json.dumps({'overlay': VERSION, 'changedPageCount': len(changed), 'states': len(states)}, indent=2))
 
 
-def verify_overlay(live, site):
+def verify_overlay(live, site, *, national_home=False):
     """Independent invariants in addition to final byte-for-byte transform parity."""
     states = catalog(live)
     checked = []
@@ -293,6 +293,12 @@ def verify_overlay(live, site):
         relative = path.relative_to(live)
         before = test_source(live, relative)
         if not eligible(relative.as_posix(), before):
+            continue
+        if national_home and relative.as_posix() == 'index.html':
+            # The owner subsequently approved replacing the duplicate home calendar
+            # with national discovery. The national verifier independently checks
+            # every preview against All Shows and preserves its complete inventory.
+            assert 'data-national-home' in (site / relative).read_text()
             continue
         after = (site / relative).read_text()
         old, new = Document(before), Document(after)

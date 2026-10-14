@@ -1,0 +1,107 @@
+/* National discovery preview. Preserve the approved brand, real photos and full calendars. */
+.kc-discovery-home { --discovery-accent: #f19c80; --discovery-muted: #c5bcb6; --discovery-line: #423129; }
+.kc-discovery-home *, .kc-discovery-home *::before, .kc-discovery-home *::after { box-sizing: border-box; }
+.kc-discovery-hero, .kc-discovery-section, .kc-discovery-submit { max-width: 1180px; margin-inline: auto; }
+.kc-discovery-hero { display: grid; gap: 26px; padding: 30px 20px 36px; }
+.kc-discovery-intro, .kc-discovery-mission, .kc-discovery-finder { min-width: 0; }
+body .kc-discovery-home .kc-rd-home-title { margin: 12px 0 20px; font-size: clamp(2rem, 9.1vw, 3.6rem); line-height: 1.03; letter-spacing: -.035em; }
+.kc-discovery-home .kc-rd-home-title span { display: block; }
+.kc-discovery-deck { color: var(--discovery-muted); font-size: 1rem; line-height: 1.6; margin: 0 0 22px; max-width: 38em; }
+.kc-discovery-primary, .kc-discovery-submit > a { display: inline-flex; justify-content: space-between; align-items: center; gap: 22px; padding: 15px 20px; min-height: 50px; background: #ed8869; border: 1px solid #f7b49b; border-radius: 8px; font-size: 1rem; font-weight: 800; color: #170c08; text-decoration: none; }
+.kc-discovery-primary:hover, .kc-discovery-submit > a:hover { background: #ffb59b; }
+.kc-discovery-search { margin-top: 22px; }
+.kc-discovery-search label { display: block; font-size: .82rem; color: var(--discovery-muted); margin-bottom: 8px; }
+.kc-discovery-search > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; }
+.kc-discovery-search input { min-width: 0; width: 100%; min-height: 48px; border: 1px solid #61463a; border-radius: 7px; background: #100e0c; color: #faf6ef; font: inherit; font-size: 16px; padding: 11px 12px; }
+.kc-discovery-search input::placeholder { color: #b8aaa2; }
+.kc-discovery-search button { min-height: 48px; border: 1px solid #816053; border-radius: 7px; color: #f7eade; background: #2d201b; padding: 10px 14px; font: inherit; font-size: .85rem; font-weight: 750; cursor: pointer; }
+.kc-discovery-finder { padding: 23px 18px 12px; background: linear-gradient(145deg, #22150f, #110e0c); border: 1px solid #634132; border-radius: 14px; }
+.kc-discovery-finder h2 { margin: 0 0 18px; font-size: 1.4rem; font-weight: 750; line-height: 1.2; letter-spacing: -.02em; text-transform: none; }
+.kc-discovery-when { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 20px; }
+.kc-discovery-when a { padding: 14px 11px; border: 1px solid #6f4b38; border-radius: 8px; background: #2a1a12; text-decoration: none; min-width: 0; }
+.kc-discovery-when span, .kc-discovery-when small { display: block; }
+.kc-discovery-when span { font-size: .96rem; color: #f5e3d2; font-weight: 800; }
+.kc-discovery-when small { color: #d5b39e; font-size: .74rem; margin-top: 6px; line-height: 1.45; }
+.kc-discovery-when a:hover { border-color: var(--discovery-accent); }
+.kc-discovery-finder .kc-state-picker button { font-size: .8rem; }
+.kc-find-artist { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-top: 1px solid #4b3528; margin-top: 5px; padding: 12px 0; color: #f3ba9b; font-size: .92rem; font-weight: 750; text-decoration: none; }
+.kc-discovery-mission h2 { font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; color: #d5b786; margin: 0 0 9px; }
+body .kc-discovery-mission .mission-statement { margin: 0; max-width: 60em; font-size: .95rem; font-weight: 400; line-height: 1.65; color: #d0c7c1; }
+.kc-discovery-counts { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 17px; }
+.kc-discovery-counts a { display: inline-flex; align-items: baseline; gap: 7px; min-height: 44px; padding-block: 6px; font-size: .8rem; text-decoration: none; color: #c5b8b0; }
+.kc-discovery-counts strong { color: #f5e5ce; font-size: 1.6rem; }
+.kc-discovery-section { padding: 30px 20px; border-top: 1px solid var(--discovery-line); }
+.kc-discovery-heading { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 20px; }
+.kc-discovery-heading .eyebrow { font-size: .68rem; line-height: 1.5; margin: 0 0 8px; letter-spacing: .08em; }
+.kc-discovery-heading h2 { font-size: clamp(1.55rem, 5.4vw, 2.35rem); letter-spacing: -.035em; line-height: 1.12; margin: 0; text-transform: none; }
+.kc-discovery-heading > a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #f1ac8a; font-size: .88rem; text-decoration: underline; text-underline-offset: 5px; font-weight: 700; }
+.kc-teaser-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.kc-discovery-show { display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: start; gap: 14px; background: #100e0c; border: 1px solid #3b2d25; border-radius: 10px; padding: 13px; min-width: 0; }
+.kc-teaser-image { width: 100%; height: 118px; background: #060606; border-radius: 5px; overflow: hidden; }
+.kc-teaser-image img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.kc-teaser-image img.artist-photo { object-fit: cover; }
+.kc-teaser-copy { min-width: 0; }
+.kc-teaser-copy .event-badges { margin: 0 0 7px; gap: 5px; }
+.kc-teaser-copy .badge { padding: 3px 6px; font-size: .56rem; line-height: 1.2; }
+.kc-teaser-date { font-size: .74rem; font-weight: 700; line-height: 1.45; color: #eabd9a; margin: 0 0 6px; }
+.kc-teaser-copy h3 { margin: 0 0 7px; line-height: 1.3; font-size: 1rem; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.kc-teaser-copy h3 a { display: inline-block; color: #f4efe8; text-decoration: none; padding-block: 3px; }
+.kc-teaser-copy h3 a:hover { color: #f6ac8d; text-decoration: underline; }
+.kc-teaser-copy .artist-line { font-size: .76rem; margin: 0 0 10px; line-height: 1.5; color: #c4b6aa; overflow-wrap: anywhere; }
+.kc-teaser-copy .artist-line a { color: #e1c5a7; text-underline-offset: 3px; }
+.kc-teaser-location { color: #e4d9cd; margin: 0 0 3px; font-size: .84rem; font-weight: 750; }
+.kc-teaser-venue { color: #b8aaa0; font-size: .75rem; line-height: 1.45; margin: 0; }
+.kc-recent-teasers .kc-discovery-show { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+.kc-discovery-artists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+.kc-discovery-artist { display: block; min-width: 0; text-decoration: none; }
+.kc-discovery-artist > div { aspect-ratio: 1; background: #181512; overflow: hidden; border-radius: 9px; border: 1px solid #513c2d; margin-bottom: 10px; }
+.kc-discovery-artist img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.kc-discovery-artist strong { display: block; font-size: 1rem; line-height: 1.25; overflow-wrap: anywhere; color: #f4e7d7; }
+.kc-discovery-artist > span { display: block; font-size: .76rem; line-height: 1.4; color: #c2ad9a; margin-top: 5px; }
+.kc-discovery-submit { margin-top: 10px; margin-bottom: 36px; padding: 25px 20px; background: #20150f; border-block: 1px solid #69472e; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.kc-discovery-submit h2 { font-size: 1.35rem; margin: 0 0 8px; text-transform: none; }
+.kc-discovery-submit p { margin: 0; font-size: .9rem; color: #d4beab; }
+.kc-discovery-breadcrumb { max-width: 1180px; padding: 16px 20px; margin: auto; display: flex; gap: 9px; flex-wrap: wrap; font-size: .8rem; color: #bdb1a4; }
+.kc-discovery-breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; color: #ebba9a; }
+.kc-discovery-breadcrumb > span { display: inline-flex; align-items: center; }
+.kc-directory-guide { max-width: 42em; margin: 12px 0 20px; color: #c6b8aa; font-size: .95rem; line-height: 1.6; }
+.kc-weekend-route { margin: 0 0 16px; font-size: .88rem; }
+.kc-weekend-route a { display: inline-flex; align-items: center; min-height: 44px; color: #eab697; text-underline-offset: 4px; }
+body .kc-weekend-hero { padding-block: 30px; }
+.kc-weekend-hero h1 { font-size: clamp(2rem, 8vw, 4rem); line-height: 1.08; letter-spacing: -.025em; text-wrap: balance; }
+.kc-weekend-expired, .kc-discovery-empty { line-height: 1.6; color: #dfc0a6; padding: 16px 0; }
+.kc-discovery-home :focus-visible, .kc-discovery-breadcrumb a:focus-visible, .kc-weekend-route a:focus-visible { outline: 3px solid #ffc999; outline-offset: 4px; }
+[data-discovery-show][hidden], .kc-weekend-expired[hidden], .kc-discovery-empty[hidden] { display: none !important; }
+@media (min-width: 700px) {
+  .kc-discovery-hero, .kc-discovery-section { padding-inline: 28px; }
+  .kc-teaser-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .kc-discovery-artists { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1000px) {
+  .kc-discovery-hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); grid-template-areas: 'intro finder' 'mission finder'; gap: 28px 60px; padding-block: 48px; }
+  .kc-discovery-intro { grid-area: intro; }
+  .kc-discovery-finder { grid-area: finder; align-self: start; padding: 28px 24px 16px; }
+  .kc-discovery-mission { grid-area: mission; }
+  body .kc-discovery-home .kc-rd-home-title { font-size: 3.5rem; }
+  .kc-discovery-section { padding-block: 38px; }
+  .kc-discovery-show { grid-template-columns: 115px minmax(0, 1fr); gap: 18px; padding: 17px; }
+  .kc-teaser-image { height: 145px; }
+  .kc-teaser-copy h3 { font-size: 1.15rem; }
+  .kc-discovery-artists { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .kc-discovery-submit { border: 1px solid #69472e; border-radius: 10px; }
+}
+@media (max-width: 360px) {
+  .kc-discovery-hero, .kc-discovery-section { padding-inline: 16px; }
+  .kc-discovery-show { grid-template-columns: 66px minmax(0, 1fr); gap: 10px; padding: 10px; }
+  .kc-teaser-image { height: 96px; }
+  .kc-teaser-copy h3 { font-size: .94rem; }
+  .kc-discovery-finder { padding-inline: 14px; }
+}
+@media (max-width: 600px) {
+  /* Keep every existing control, but avoid a screen-long single-column filter stack. */
+  body .calendar .filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: end; padding: 16px; }
+  body .calendar .filters > label { min-width: 0; }
+  body .calendar .filters > label:first-child { grid-column: 1 / -1; }
+  body .calendar .filters input, body .calendar .filters select { min-width: 0; width: 100%; font-size: 16px; min-height: 48px; }
+  body .calendar .filters > button { grid-column: auto; min-width: 0; min-height: 48px; margin: 0; padding: 10px; }
+}
