@@ -22,6 +22,9 @@ discovery, clearer calendar reading order and an optional Quick list view.
 The national discovery layer turns Home into a compact front door, preserves
 the complete All Shows calendar and artist roster, and adds an evergreen
 This Weekend calendar, homepage artist portraits and artist breadcrumbs.
+The owner's mission now lives unchanged on a compact About Us page. The eight
+primary navigation links include This Weekend and About Us; the Instagram strip
+and navigation use less space, and Home has a single-line “Find CHH Shows Near You!” heading.
 The mission, original page identities, official details, event/artist data,
 photos and full schedules/archives are preserved.
 

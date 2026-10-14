@@ -2,7 +2,7 @@
 
 The homepage becomes a selection, never the authority for the full catalog.
 Existing event/artist/location pages, data, assets and SEO identities are retained.
-The only new destination is one evergreen weekend calendar, not filter permutations.
+The new destinations are an evergreen weekend calendar and the owner's About Us page.
 """
 from __future__ import annotations
 
@@ -21,10 +21,13 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261013-2'
+VERSION = '20261013-3'
 ASSETS = ('national-discovery.css', 'national-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
+ABOUT_PATH = 'about-us/index.html'
+ABOUT_HREF = TEST_BASE + 'about-us/'
+HOME_HEADING = 'Find CHH Shows Near You!'
 
 
 def today():
@@ -150,8 +153,7 @@ def artist_tile(artist):
 
 def home_content(text, context):
     doc = Document(text)
-    title = doc.raw(doc.one(lambda n: n.tag == 'h1'))
-    mission = doc.raw(doc.one(lambda n: n.has('mission-statement')))
+    title = f'<h1 class="kc-rd-home-title">{HOME_HEADING}</h1>'
     states = context['states']
     first, last = weekend_window(context['as_of'])
     label = date_label(first, last)
@@ -184,9 +186,9 @@ def home_content(text, context):
 <div class="kc-discovery-when"><a href="{WEEKEND_HREF}"><span>This weekend</span><small>{escape(label)}</small></a>
 <a href="{TEST_BASE}shows/this-month/"><span>This month</span><small>{context['as_of']:%B %Y}</small></a></div>
 {picker}{disclosure}<a class="kc-find-artist" href="{TEST_BASE}artists/">Find an artist <span aria-hidden="true">↗</span></a></section>
-<div class="kc-discovery-mission"><h2>Why we exist</h2>{mission}<div class="kc-discovery-counts">
+<div class="kc-discovery-counts">
 <a href="{TEST_BASE}shows/"><strong>{len(context['active'])}</strong> upcoming shows</a>
-<a href="{TEST_BASE}artists/"><strong>{context['artist_total']}</strong> artists to explore</a></div></div></section>
+<a href="{TEST_BASE}artists/"><strong>{context['artist_total']}</strong> artists to explore</a></div></section>
 <section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading">
 {section_heading(primary_kicker, primary_title, primary_href, primary_action, 'kc-weekend-heading')}
 <div class="kc-teaser-grid">{''.join(teaser(r) for r in primary)}</div>
@@ -216,10 +218,26 @@ def add_shared_navigation(text, relative):
     doc = Document(text)
     footers = [n for n in doc.nodes if n.has('footer-links')]
     changes = []
+    for nav in (n for n in doc.nodes if n.has('kc-rd-nav')):
+        links = [n for n in nav.children if n.tag == 'a']
+        assert len(links) == 6, 'Primary navigation changed upstream; review the eight-link contract'
+        content = ''
+        for link in links:
+            raw = doc.raw(link)
+            if relative in {WEEKEND_PATH, ABOUT_PATH}:
+                raw = raw.replace(' aria-current="page"', '')
+            content += raw
+            if link.attrs.get('href') == TEST_BASE + 'shows/':
+                active = ' aria-current="page"' if relative == WEEKEND_PATH else ''
+                content += f'<a href="{WEEKEND_HREF}"{active}>This Weekend</a>'
+        active = ' aria-current="page"' if relative == ABOUT_PATH else ''
+        content += f'<a href="{ABOUT_HREF}"{active}>About Us</a>'
+        changes.append((nav.start, nav.end,
+                        f'<nav class="kc-rd-nav" aria-label="Primary navigation" data-compact-navigation>{content}</nav>'))
     if footers:
         node = footers[0]
         changes.append((node.opening_end, node.opening_end,
-                        f'<a href="{WEEKEND_HREF}">This Weekend</a>'))
+                        f'<a href="{WEEKEND_HREF}">This Weekend</a><a href="{ABOUT_HREF}">About Us</a>'))
     # Existing artist identity, schedules, social links and archives are untouched.
     if relative.startswith('artists/') and relative != 'artists/index.html':
         shells = [n for n in doc.nodes if 'data-kc-rd-artist-profile' in n.attrs]
@@ -247,9 +265,12 @@ def transform(relative, source, context):
     name = relative.as_posix()
     if name == 'sitemap.xml':
         text = source.decode()
-        url = TEST_SITE + '/shows/this-weekend/'
-        assert url not in text, 'Weekend path already exists in baseline; review the overlay'
-        return text.replace('</urlset>', f'<url><loc>{url}</loc></url>\n</urlset>').encode()
+        additions = ''
+        for path in ('/shows/this-weekend/', '/about-us/'):
+            url = TEST_SITE + path
+            assert url not in text, f'{path} already exists in baseline; review the overlay'
+            additions += f'<url><loc>{url}</loc></url>\n'
+        return text.replace('</urlset>', additions + '</urlset>').encode()
     if relative.suffix != '.html' or name.startswith('test-'):
         return source
     text = source.decode()
@@ -328,6 +349,50 @@ def weekend_page(live, context):
     return transform(Path(WEEKEND_PATH), text.encode(), context)
 
 
+def about_content(text):
+    """Move the exact existing mission into a small, honest standalone page."""
+    doc = Document(text)
+    mission_node = doc.one(lambda n: n.has('mission-statement'))
+    mission = doc.raw(mission_node)
+    description = doc.text(mission_node)
+    title = 'About Us | Kingdom Circuit'
+    canonical = TEST_SITE + '/about-us/'
+    main = doc.one(lambda n: n.tag == 'main')
+    content = (f'<section class="kc-about-page" data-about-page aria-labelledby="kc-about-title">'
+               '<p class="eyebrow">The Kingdom Circuit</p><h1 id="kc-about-title">About Us</h1>'
+               f'<div class="kc-about-mission"><h2>Why we exist</h2>{mission}</div>'
+               f'<div class="kc-about-links"><a class="kc-discovery-primary" href="{TEST_BASE}shows/">Find a show <span aria-hidden="true">↗</span></a>'
+               f'<a href="{TEST_BASE}artists/">Explore artists</a>'
+               f'<a href="{TEST_BASE}submit/">Submit a show</a></div></section>')
+    changes = [(main.opening_end, main.closing_start, content)]
+    for n in doc.nodes:
+        if n.tag == 'title':
+            changes.append((n.start, n.end, f'<title>{title}</title>'))
+        if n.tag == 'meta':
+            key = n.attrs.get('name') or n.attrs.get('property')
+            value = {'description': description, 'og:description': description, 'twitter:description': description,
+                     'og:title': title, 'twitter:title': title, 'og:url': canonical}.get(key)
+            if value:
+                raw = re.sub(r'content="[^"]*"', f'content="{escape(value, quote=True)}"', doc.raw(n))
+                changes.append((n.start, n.end, raw))
+        if n.tag == 'link' and n.attrs.get('rel') == 'canonical':
+            changes.append((n.start, n.end, f'<link rel="canonical" href="{canonical}">'))
+        if n.tag == 'script' and n.attrs.get('type') == 'application/ld+json':
+            schema = {'@context': 'https://schema.org', '@type': 'AboutPage', 'name': 'About Us',
+                      'description': description, 'url': canonical,
+                      'isPartOf': {'@type': 'WebSite', 'name': 'The Kingdom Circuit', 'url': TEST_SITE + '/'}}
+            changes.append((n.start, n.end, '<script type="application/ld+json">' + json.dumps(schema).replace('<', '\\u003c') + '</script>'))
+        if n.tag == 'script' and n.attrs.get('src', '').startswith(TEST_BASE + 'app.js'):
+            changes.append((n.start, n.end, f'<script src="{TEST_BASE}seo-static.js?v=1" defer></script>'))
+    return replace_spans(text, changes)
+
+
+def about_page(live, context):
+    source = test_source(live, 'index.html')
+    source = mobile.transform(Path('index.html'), source.encode(), context['states']).decode()
+    return transform(Path(ABOUT_PATH), about_content(source).encode(), context)
+
+
 def combined_transform(relative, source, context):
     return transform(relative, mobile.transform(relative, source, context['states']), context)
 
@@ -341,9 +406,11 @@ def apply(site, live):
             after = transform(path.relative_to(site), before, context)
             if before != after:
                 path.write_bytes(after)
-    target = site / WEEKEND_PATH
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_bytes(weekend_page(live, context))
+    for relative, generate in ((WEEKEND_PATH, weekend_page), (ABOUT_PATH, about_page)):
+        target = site / relative
+        assert not target.exists(), f'New destination unexpectedly exists: {relative}'
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(generate(live, context))
     for asset in ASSETS:
         (site / 'assets' / asset).write_bytes((ROOT / 'test-overrides' / asset).read_bytes())
     manifest_path = site / 'test-live-mirror-manifest.json'
@@ -357,7 +424,14 @@ def verify(live, site, context):
     """Independent page/content invariants supplement exact recomputed byte parity."""
     home = Document((site / 'index.html').read_text())
     old_home = Document(test_source(live, 'index.html'))
-    assert home.raw(home.one(lambda n: n.has('mission-statement'))) == old_home.raw(old_home.one(lambda n: n.has('mission-statement')))
+    about = Document((site / ABOUT_PATH).read_text())
+    assert (site / ABOUT_PATH).read_bytes() == about_page(live, context)
+    assert about.raw(about.one(lambda n: n.has('mission-statement'))) == old_home.raw(old_home.one(lambda n: n.has('mission-statement')))
+    assert not any(n.has('mission-statement') for n in home.nodes), 'Mission should live on About Us, not Home'
+    assert home.text(home.one(lambda n: n.tag == 'h1')) == HOME_HEADING
+    assert about.text(about.one(lambda n: n.tag == 'h1')) == 'About Us'
+    assert about.one(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'canonical').attrs['href'] == TEST_SITE + '/about-us/'
+    assert about.one(lambda n: n.tag == 'meta' and n.attrs.get('name') == 'robots').attrs['content'] == 'noindex,nofollow'
     all_cards = card_records((site / 'shows/index.html').read_text())
     assert [r['html'] for r in all_cards] == [r['html'] for r in context['records']], 'Full national calendar changed'
     all_urls = {r['href'] for r in all_cards}
@@ -395,12 +469,24 @@ def verify(live, site, context):
             assert target.is_file() or (target / 'index.html').is_file(), f'New broken local link: {link}'
             checked_links.add(parts.path)
     check_new_links(Document(''), weekend)
+    check_new_links(Document(''), about)
+    def check_navigation(doc):
+        for nav in (n for n in doc.nodes if n.has('kc-rd-nav')):
+            links = [n for n in nav.children if n.tag == 'a']
+            assert [doc.text(n) for n in links] == ['Home', 'All Shows', 'This Weekend', 'This Month', 'Festivals', 'New Shows', 'Artists', 'About Us']
+            assert links[2].attrs['href'] == WEEKEND_HREF and links[-1].attrs['href'] == ABOUT_HREF
+    check_navigation(weekend)
+    check_navigation(about)
+    for doc, active_href in ((weekend, WEEKEND_HREF), (about, ABOUT_HREF)):
+        nav = doc.one(lambda n: n.has('kc-rd-nav'))
+        assert [n.attrs['href'] for n in nav.children if n.attrs.get('aria-current') == 'page'] == [active_href]
     for path in live.rglob('*.html'):
         rel = path.relative_to(live)
         before, after = Document(test_source(live, rel)), Document((site / rel).read_text())
         if not any('data-national-discovery' in n.attrs for n in after.nodes):
             continue
         check_new_links(before, after)
+        check_navigation(after)
         assert len([n for n in after.nodes if n.tag == 'h1']) == 1, rel
         # No original metadata, canonical or structured-data changes on existing URLs.
         for predicate in (lambda n: n.tag in {'meta', 'title'} or (n.tag == 'link' and n.attrs.get('rel') == 'canonical'),
@@ -418,7 +504,7 @@ def verify(live, site, context):
     return {'verifiedPages': checked, 'weekendShows': len(context['weekend']),
             'homepageShowPreviews': len(teasers), 'completeCalendarShows': len(all_cards),
             'verifiedNewLocalDestinations': len(checked_links),
-            'allOriginalSeoIdentitiesPreserved': True, 'missionPreserved': True}
+            'allOriginalSeoIdentitiesPreserved': True, 'missionPreserved': True, 'missionLocation': ABOUT_HREF}
 
 
 if __name__ == '__main__':

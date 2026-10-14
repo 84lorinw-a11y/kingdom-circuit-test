@@ -50,6 +50,7 @@ class NationalDiscoveryTests(unittest.TestCase):
         new = discovery.transform(Path('sitemap.xml'), old, {})
         self.assertIn(b'<loc>original</loc>', new)
         self.assertIn(b'/shows/this-weekend/', new)
+        self.assertIn(b'/about-us/', new)
         self.assertNotIn(b'lastmod', new)
         with self.assertRaises(AssertionError):
             discovery.transform(Path('sitemap.xml'), new, {})
@@ -58,22 +59,62 @@ class NationalDiscoveryTests(unittest.TestCase):
         for path in ['events.json','config/artists.json','assets/image.webp','test-all-shows/index.html']:
             self.assertEqual(discovery.transform(Path(path), b'unchanged', {}), b'unchanged')
 
-    def test_home_preserves_mission_and_has_truthful_empty_fallback_without_js(self):
+    def test_home_uses_requested_single_heading_and_moves_mission_to_about(self):
         source = ('<main><h1>Find shows</h1><p class="mission-statement">Our existing mission.</p></main>'
                   '<script src="/kingdom-circuit-test/app.js?v=old" defer></script>')
         context = {'states': [], 'as_of': date(2026, 10, 13), 'weekend': [], 'active': [],
                    'recent': [], 'artists': [], 'artist_total': 361}
         home = discovery.home_content(source, context)
-        self.assertIn('<h1>Find shows</h1>', home)
-        self.assertIn('<p class="eyebrow">CHH Live and Connected</p><h1>Find shows</h1>', home)
+        self.assertIn('<h1 class="kc-rd-home-title">Find CHH Shows Near You!</h1>', home)
+        self.assertIn('<p class="eyebrow">CHH Live and Connected</p><h1', home)
         self.assertIn('<p class="kc-discovery-deck">CHH concerts, christian rap shows and festivals across the U.S.</p>', home)
-        self.assertIn('<p class="mission-statement">Our existing mission.</p>', home)
+        self.assertNotIn('mission-statement', home)
+        self.assertNotIn('Why we exist', home)
+        self.assertIn('361</strong> artists to explore', home)
         self.assertIn('Browse all 0 shows', home)
         self.assertIn('data-discovery-empty>', home)
         self.assertNotIn('Artists with upcoming shows', home)
         self.assertNotIn('/app.js', home)
         self.assertIn('/seo-static.js', home)
         self.assertIn('name="q"', home)
+
+    def test_about_transfers_exact_mission_and_has_its_own_identity(self):
+        source = ('<head><title>Original home</title><meta name="robots" content="noindex,nofollow">'
+                  '<meta name="description" content="Old"><meta property="og:url" content="old">'
+                  '<link rel="canonical" href="old"><script type="application/ld+json">{}</script></head>'
+                  '<main id="kc-main-content"><h1>Old home</h1>'
+                  '<p class="mission-statement">Connect music &amp; community.</p></main>'
+                  '<script src="/kingdom-circuit-test/app.js?v=old" defer></script>')
+        about = discovery.about_content(source)
+        self.assertIn('<p class="mission-statement">Connect music &amp; community.</p>', about)
+        self.assertIn('<h1 id="kc-about-title">About Us</h1>', about)
+        self.assertIn('<h2>Why we exist</h2>', about)
+        self.assertIn('<title>About Us | Kingdom Circuit</title>', about)
+        self.assertIn('"@type": "AboutPage"', about)
+        self.assertIn(f'<link rel="canonical" href="{discovery.TEST_SITE}/about-us/">', about)
+        self.assertIn('content="noindex,nofollow"', about)
+        self.assertNotIn('/app.js', about)
+        self.assertIn('/seo-static.js', about)
+
+    def test_eight_navigation_links_and_correct_active_new_pages(self):
+        labels = [('Home',''), ('All Shows','shows/'), ('This Month','shows/this-month/'),
+                  ('Festivals','festivals/'), ('New Shows','new-shows/'), ('Artists','artists/')]
+        links = ''.join(f'<a href="{discovery.TEST_BASE}{path}"' + (' aria-current="page"' if not path else '') + f'>{label}</a>' for label, path in labels)
+        source = f'<nav class="kc-rd-nav">{links}</nav><div class="footer-links"></div>'
+        for relative, expected in [('index.html', discovery.TEST_BASE),
+                                   (discovery.ABOUT_PATH, discovery.ABOUT_HREF),
+                                   (discovery.WEEKEND_PATH, discovery.WEEKEND_HREF)]:
+            doc = discovery.Document(discovery.add_shared_navigation(source, relative))
+            nav = doc.one(lambda n: n.has('kc-rd-nav'))
+            self.assertEqual([doc.text(n) for n in nav.children],
+                             ['Home','All Shows','This Weekend','This Month','Festivals','New Shows','Artists','About Us'])
+            self.assertEqual([n.attrs['href'] for n in nav.children if n.attrs.get('aria-current') == 'page'], [expected])
+            for label, path in labels:
+                self.assertIn(discovery.TEST_BASE + path, [n.attrs['href'] for n in nav.children])
+
+    def test_changed_upstream_navigation_fails_closed(self):
+        with self.assertRaises(AssertionError):
+            discovery.add_shared_navigation('<nav class="kc-rd-nav"><a href="/">Home</a></nav>', 'index.html')
 
     def test_artist_tile_preserves_real_image_and_focal_point_without_duplicate_name(self):
         tile = discovery.artist_tile({'name':'Artist & Co', 'href':'/artists/a/', 'count':2,
