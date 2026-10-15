@@ -89,9 +89,11 @@ jobs:
           node --check test-overrides/artist-intake-mockup.js
           node --check test-overrides/mobile-seo-preview.js
           node --check test-overrides/national-discovery.js
+          node --check test-overrides/fan-discovery.js
           node --test tests/artist-intake-submit.test.cjs
           node --test tests/mobile-seo-preview.test.cjs
           node --test tests/national-discovery.test.cjs
+          node --test tests/fan-discovery.test.cjs
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site

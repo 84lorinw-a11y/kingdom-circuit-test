@@ -84,22 +84,29 @@ class NationalDiscoveryTests(unittest.TestCase):
         self.assertNotIn('kc-find-artist', home)
         self.assertIn('aria-label="Browse shows by state"', home)
 
-    def test_compact_home_keeps_search_and_discovery_links_before_listings(self):
+    def test_compact_home_keeps_finder_before_shows_and_state_directory_after_shelves(self):
         source = '<main><h1>Old home</h1></main>'
         context = {'states': [], 'as_of': date(2026, 10, 13), 'weekend': [], 'active': [],
                    'recent': [], 'artists': [], 'artist_total': 361}
         doc = discovery.Document(discovery.home_content(source, context))
         calendar = doc.one(lambda n: n.attrs.get('id') == 'calendar')
-        for predicate in (lambda n: n.has('kc-discovery-counts'),
-                          lambda n: n.has('kc-discovery-search'),
-                          lambda n: n.attrs.get('id') == 'browse-states'):
-            self.assertLess(doc.one(predicate).end, calendar.start)
+        self.assertLess(doc.one(lambda n: n.has('kc-discovery-search')).end, calendar.start)
+        self.assertGreater(doc.one(lambda n: n.attrs.get('id') == 'browse-states').start, calendar.end)
         counts = doc.one(lambda n: n.has('kc-discovery-counts'))
         self.assertEqual([n.attrs['href'] for n in counts.children if n.tag == 'a'],
                          [discovery.TEST_BASE + 'shows/', discovery.TEST_BASE + 'artists/'])
         search = doc.one(lambda n: n.has('kc-discovery-search'))
         self.assertEqual(search.attrs['action'], discovery.TEST_BASE + 'shows/')
         self.assertEqual(search.attrs['method'], 'get')
+
+    def test_week_shelves_are_date_driven_nonoverlapping_and_skip_postponed(self):
+        def card(day, title='Show'):
+            return {'name':title, 'href':day, 'attrs':{'data-date':day}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}
+        items = [card('2026-10-19'), card('2026-10-18'), card('2026-10-16','Postponed show'), card('2026-10-15')]
+        week, upcoming = discovery.home_selection({'as_of':date(2026,10,15),'active':items})
+        self.assertEqual([r['href'] for r in week], ['2026-10-15','2026-10-18'])
+        self.assertEqual([r['href'] for r in upcoming], ['2026-10-19'])
+        self.assertEqual(discovery.week_end(date(2026,12,31)), date(2027,1,3))
 
     def test_about_transfers_exact_mission_and_has_its_own_identity(self):
         source = ('<head><title>Original home</title><meta name="robots" content="noindex,nofollow">'

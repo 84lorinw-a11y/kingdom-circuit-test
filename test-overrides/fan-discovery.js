@@ -1,0 +1,158 @@
+/* TEST-only, dependency-free progressive enhancement. Static links/cards remain crawlable. */
+(() => {
+  'use strict';
+  const normalize = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const searchMatch = (haystack, query) => {
+    const h = normalize(haystack), q = normalize(query);
+    return !q || h.includes(q) || h.replace(/ /g, '').includes(q.replace(/ /g, ''));
+  };
+  const addDays = (day, amount) => {
+    const d = new Date(day + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + amount);
+    return d.toISOString().slice(0, 10);
+  };
+  const weekEnd = day => addDays(day, (7 - new Date(day + 'T12:00:00Z').getUTCDay()) % 7);
+  const modes = {all:'All dates', week:'This week', weekend:'This weekend', next30:'Next 30 days', month:'This month', upcoming:'Coming up next'};
+  const dateMatch = (start, end, mode, today) => {
+    if (!start || (end || start) < today) return false;
+    const last = end || start;
+    if (mode === 'week') return start <= weekEnd(today);
+    if (mode === 'upcoming') return start > weekEnd(today);
+    if (mode === 'weekend') return start <= weekEnd(today) && last >= addDays(weekEnd(today), -2);
+    if (mode === 'next30') return start <= addDays(today, 29);
+    if (mode === 'month') return start <= today.slice(0,7) + '-31';
+    return true;
+  };
+  const matches = (card, filters, today) => searchMatch(card.search, filters.q) &&
+    (!filters.artist || (card.artists || '').split('|').some(a => normalize(a) === normalize(filters.artist))) &&
+    (!filters.state || card.state === filters.state) && (!filters.type || card.type === filters.type) &&
+    dateMatch(card.date, card.endDate, filters.dates, today);
+  const artistMatches = (artists, query) => !normalize(query) ? [] : artists.filter(a => searchMatch(a.name, query)).sort((a,b) =>
+    Number(normalize(b.name) === normalize(query)) - Number(normalize(a.name) === normalize(query)) || a.name.localeCompare(b.name));
+  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, searchMatch, addDays, weekEnd, dateMatch, matches, artistMatches};
+  if (typeof document === 'undefined') return;
+
+  const todayString = () => {
+    const parts = new Intl.DateTimeFormat('en-US', {timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    return ['year','month','day'].map(k => parts.find(p => p.type === k).value).join('-');
+  };
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; };
+  function shelves() {
+    document.querySelectorAll('[data-fan-shelf]').forEach(wrap => {
+      const shelf = wrap.querySelector('.kc-fan-shelf'), controls = wrap.querySelector('.kc-fan-shelf-controls');
+      const prev = wrap.querySelector('[data-shelf-prev]'), next = wrap.querySelector('[data-shelf-next]');
+      const update = () => { controls.hidden = shelf.scrollWidth <= shelf.clientWidth + 3; prev.disabled = shelf.scrollLeft <= 3; next.disabled = shelf.scrollLeft + shelf.clientWidth >= shelf.scrollWidth - 3; };
+      const move = direction => { const first = [...shelf.children].find(n => !n.hidden); shelf.scrollBy({left:direction * ((first?.getBoundingClientRect().width || shelf.clientWidth) + 12), behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); };
+      prev.addEventListener('click', () => move(-1)); next.addEventListener('click', () => move(1));
+      shelf.addEventListener('keydown', event => { if (event.target !== shelf) return; if (['ArrowLeft','ArrowRight'].includes(event.key)) { event.preventDefault(); move(event.key === 'ArrowLeft' ? -1 : 1); } });
+      shelf.addEventListener('scroll', update, {passive:true});
+      new ResizeObserver(update).observe(shelf); update();
+    });
+  }
+  function homeFinder() {
+    const form = document.querySelector('[data-fan-finder]'); if (!form) return;
+    form.addEventListener('submit', event => {
+      const state = form.elements.state;
+      // States with no current inventory still have their permanent useful page.
+      if (state.value && state.value.length > 2 && !form.elements.q.value && form.elements.dates.value === 'all') {
+        const href = state.selectedOptions[0].dataset.stateHref;
+        if (href?.startsWith('/kingdom-circuit-test/shows/')) { event.preventDefault(); location.assign(href); }
+      }
+    });
+    form.elements.state.addEventListener('change', () => form.requestSubmit());
+    form.elements.dates.addEventListener('change', () => form.requestSubmit());
+  }
+  function calendar() {
+    const form = document.querySelector('[data-event-filters]');
+    const grid = document.querySelector('[data-event-grid], .event-grid');
+    if (!form || !grid) return;
+    const query = form.querySelector('[data-search-filter]'), state = form.querySelector('[data-state-filter]');
+    const artist = form.querySelector('[data-artist-filter]'), type = form.querySelector('[data-type-filter]');
+    const reset = form.querySelector('[data-reset-filters]');
+    if (!query || !state || !artist || !type) return;
+    const destinations = JSON.parse(document.querySelector('#kc-state-destinations')?.textContent || '{}');
+    const artistNames = new Map(), stateNames = new Set();
+    grid.querySelectorAll('[data-event-card]').forEach(card => {
+      if (card.dataset.state) stateNames.add(card.dataset.state);
+      card.querySelectorAll('.artist-line a').forEach(a => artistNames.set(normalize(a.textContent),a.textContent.trim()));
+    });
+    const populate = (control, entries) => {
+      while (control.options.length > 1) control.remove(1);
+      entries.forEach(([value,name]) => { const option = el('option','',name); option.value = value; control.append(option); });
+    };
+    populate(artist,[...artistNames].sort((a,b) => a[1].localeCompare(b[1])));
+    populate(state,[...stateNames].map(s => [s,destinations[s]?.name || s]).sort((a,b) => a[1].localeCompare(b[1])));
+    form.classList.add('kc-fan-filters');
+    const extra = el('details'), summary = el('summary', '', 'More filters');
+    const fields = el('div','kc-fan-extra-fields');
+    extra.append(summary, fields); fields.append(artist.closest('label'), type.closest('label'));
+    const datesLabel = el('label','field'), datesText = el('span','','Dates'), dates = el('select');
+    dates.setAttribute('aria-label','Dates');
+    Object.entries(modes).forEach(([value,label]) => { const option = el('option','',label); option.value = value; dates.append(option); });
+    datesLabel.append(datesText, dates);
+    form.append(state.closest('label'), datesLabel, extra); if (reset) fields.append(reset);
+    const quick = document.querySelector('.quick-filters'); if (quick) quick.hidden = true;
+    const chips = el('div','kc-fan-active'); chips.setAttribute('aria-label','Selected filters'); form.after(chips);
+    const artistBox = el('section','kc-fan-artist-results'); artistBox.hidden = true;
+    const artistHeading = el('h2','','Matching artists'), artistLinks = el('div');
+    artistBox.append(artistHeading, artistLinks, el('p','','Artist profiles are shown regardless of your location or date filters.'));
+    chips.after(artistBox);
+    const artists = JSON.parse(document.querySelector('#kc-fan-artists')?.textContent || '[]');
+    const setValue = (control, value) => {
+      if (control.tagName === 'SELECT' && value && ![...control.options].some(o => o.value === value)) {
+        const option = el('option','',value); option.value = value; control.append(option);
+      }
+      control.value = value;
+    };
+    const readURL = () => {
+      const p = new URLSearchParams(location.search);
+      query.value = (p.get('q') || '').slice(0,160);
+      setValue(state, p.get('state') || ''); setValue(artist, p.get('artist') || ''); setValue(type, p.get('type') || '');
+      dates.value = modes[p.get('dates')] ? p.get('dates') : 'all';
+      extra.open = !!(artist.value || type.value);
+    };
+    readURL();
+    const count = document.querySelector('[data-results-count]'), empty = document.querySelector('[data-filtered-empty]');
+    function apply(writeURL = true) {
+      const filters = {q:query.value, state:state.value, artist:artist.value, type:type.value, dates:dates.value};
+      let visible = 0; const today = todayString();
+      grid.querySelectorAll('[data-event-card]').forEach(card => { card.hidden = !matches(card.dataset,filters,today); if (!card.hidden) visible++; });
+      if (count) count.textContent = `${visible} show${visible === 1 ? '' : 's'}`;
+      if (empty) empty.hidden = visible !== 0;
+      artistLinks.replaceChildren();
+      const found = artistMatches(artists, query.value); artistBox.hidden = found.length === 0;
+      found.slice(0,8).forEach(a => {
+        if (!a.href.startsWith('/kingdom-circuit-test/artists/')) return;
+        const link = el('a'); link.href = a.href; const copy = el('span');
+        copy.append(el('strong','',a.name), el('small','',a.count ? `${a.count} upcoming show${a.count === 1 ? '' : 's'} overall` : 'No upcoming shows listed · View profile & socials'));
+        link.append(copy,el('span','','↗')); artistLinks.append(link);
+      });
+      if (found.length > 8) { const all = el('a','','Browse all artists →'); all.href = '/kingdom-circuit-test/artists/'; artistLinks.append(all); }
+      chips.replaceChildren();
+      [[query,'Search'],[state,'State'],[dates,'Dates'],[artist,'Artist'],[type,'Type']].forEach(([control,label]) => {
+        if (!control.value || (control === dates && control.value === 'all')) return;
+        const value = control.selectedOptions?.[0]?.textContent || control.value;
+        const button = el('button','',`${value} ×`); button.type = 'button'; button.setAttribute('aria-label',`Remove ${label.toLowerCase()} filter: ${value}`);
+        button.addEventListener('click', () => { control.value = control === dates ? 'all' : ''; apply(); control.focus(); }); chips.append(button);
+      });
+      if (writeURL) {
+        const url = new URL(location.href);
+        ['q','state','artist','type','dates'].forEach(k => { if (filters[k] && !(k === 'dates' && filters[k] === 'all')) url.searchParams.set(k,filters[k]); else url.searchParams.delete(k); });
+        history.replaceState(history.state,'',url);
+      }
+    }
+    // One filter owner prevents older app listeners from undoing date/search matches.
+    ['input','change'].forEach(name => form.addEventListener(name, event => {
+      if (![query,state,artist,type,dates].includes(event.target)) return;
+      event.stopImmediatePropagation(); apply();
+    }, true));
+    form.addEventListener('submit', event => { event.preventDefault(); event.stopImmediatePropagation(); apply(); }, true);
+    reset?.addEventListener('click', event => { event.preventDefault(); event.stopImmediatePropagation(); query.value = ''; [state,artist,type].forEach(c => c.value = ''); dates.value = 'all'; extra.open = false; apply(); }, true);
+    window.addEventListener('popstate', () => { readURL(); apply(false); });
+    // The production calendar can finish rendering after initial HTML hydration.
+    new MutationObserver(() => apply(false)).observe(grid,{childList:true});
+    apply(false);
+  }
+  function init() { shelves(); homeFinder(); calendar(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(init), {once:true});
+  else requestAnimationFrame(init);
+})();

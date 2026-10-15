@@ -21,8 +21,8 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261013-5'
-ASSETS = ('national-discovery.css', 'national-discovery.js')
+VERSION = '20261015-1'
+ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
 ABOUT_PATH = 'about-us/index.html'
@@ -56,6 +56,21 @@ def weekend_matches(start, end, day):
     return start <= last and end >= max(first, day)
 
 
+def week_end(day):
+    return day + timedelta(days=6 - day.weekday())
+
+
+def home_selection(context):
+    """Two nonoverlapping, date-driven shelves; never invent popularity."""
+    day = context['as_of']
+    end = week_end(day)
+    eligible = sorted((r for r in context['active'] if feature_eligible(r)),
+                      key=lambda r: r['attrs']['data-date'])
+    week = [r for r in eligible if r['attrs']['data-date'] <= end.isoformat()][:6]
+    following = [r for r in eligible if r['attrs']['data-date'] > end.isoformat()][:6]
+    return week, following
+
+
 def card_records(text):
     doc = Document(text)
     records = []
@@ -85,7 +100,7 @@ def feature_eligible(record):
     # available, but do not automatically promote them as public shows on home.
     text = (record['name'] + ' ' + ' '.join(record['meta'].values()) + ' ' + record['badges']).lower()
     return not any(x in text for x in ('cancelled', 'canceled', 'sold out', 'details pending',
-                                     'invite only', 'school', 'venue to be announced', 'venue not provided'))
+                                     'postponed', 'invite only', 'school', 'venue to be announced', 'venue not provided'))
 
 
 def load_context(live, as_of):
@@ -117,8 +132,10 @@ def load_context(live, as_of):
     active_by_href = {r['href']: r for r in active}
     recent = [active_by_href[r['href']] for r in card_records(test_source(live, 'new-shows/index.html'))
               if r['href'] in active_by_href]
+    search_artists = [{'name': p['name'], 'href': href, 'count': counts[href]} for href, p in portraits.items()]
     return {'states': states, 'records': records, 'active': active, 'weekend': weekend,
-            'artists': artists, 'artist_total': len(portraits), 'recent': recent, 'as_of': as_of}
+            'artists': artists, 'artist_total': len(portraits), 'search_artists': search_artists,
+            'recent': recent, 'as_of': as_of}
 
 
 def section_heading(eyebrow, title, href, action, ident):
@@ -126,13 +143,15 @@ def section_heading(eyebrow, title, href, action, ident):
             f'<h2 id="{ident}">{escape(title)}</h2></div><a href="{href}">{escape(action)} <span aria-hidden="true">↗</span></a></header>')
 
 
-def teaser(record, image=True):
+def teaser(record, image=True, eager=False):
     attrs = record['attrs']
     picture = ''
     if image:
         # Preserve the exact real image, responsive variants, fit class and focal point.
-        responsive_image = re.sub(r'sizes="[^"]*"', 'sizes="(min-width: 1000px) 115px, (max-width: 360px) 66px, 88px"', record['image'])
-        picture = f'<div class="kc-teaser-image" aria-hidden="true">{responsive_image}</div>'
+        responsive_image = re.sub(r'sizes="[^"]*"', 'sizes="(min-width: 1000px) 270px, 78vw"', record['image'])
+        if eager:
+            responsive_image = responsive_image.replace('loading="lazy"', 'loading="eager" fetchpriority="high"')
+        picture = f'<a class="kc-teaser-image" href="{record["href"]}" tabindex="-1" aria-hidden="true">{responsive_image}</a>'
     return (f'<article class="kc-discovery-show" data-discovery-show data-date="{attrs["data-date"]}" '
             f'data-end-date="{attrs.get("data-end-date") or attrs["data-date"]}">'
             f'{picture}<div class="kc-teaser-copy">{record["badges"]}'
@@ -156,52 +175,37 @@ def home_content(text, context):
     doc = Document(text)
     title = f'<h1 class="kc-rd-home-title">{HOME_HEADING}</h1>'
     states = context['states']
-    first, last = weekend_window(context['as_of'])
-    label = date_label(first, last)
     state_finder = Document(mobile.finder(states))
-    picker = state_finder.raw(state_finder.one(lambda n: 'data-state-picker' in n.attrs))
     disclosure = state_finder.raw(state_finder.one(lambda n: n.tag == 'details'))
-    primary = [r for r in context['weekend'] if feature_eligible(r)][:6]
-    primary_title = 'CHH shows this weekend'
-    primary_kicker = label
-    primary_href, primary_action = WEEKEND_HREF, 'All weekend shows'
-    if not primary:
-        primary = [r for r in context['active'] if feature_eligible(r)][:6]
-        primary_title, primary_kicker = 'Coming up across the circuit', 'Plan your next show'
-        primary_href, primary_action = TEST_BASE + 'shows/', 'All upcoming shows'
-    used = {r['href'] for r in primary}
-    festivals = [r for r in context['active'] if r['attrs'].get('data-type') == 'festival'
-                 and feature_eligible(r) and r['href'] not in used][:3]
-    used.update(r['href'] for r in festivals)
-    recent = [r for r in context['recent'] if feature_eligible(r) and r['href'] not in used][:4]
+    primary, following = home_selection(context)
+    options = ''.join(f'<option value="{s["code"] or s["name"]}" data-state-href="{s["href"]}">{escape(s["name"])}</option>' for s in states)
     tiles = ''.join(artist_tile(a) for a in context['artists'])
-    out = f'''<div class="kc-discovery-home" data-national-home>
+    out = f'''<div class="kc-discovery-home kc-fan-home" data-national-home>
 <section class="kc-discovery-hero" aria-label="Find your next show">
 <div class="kc-discovery-intro">{title}
 <p class="kc-discovery-deck">{HOME_SUBTITLE}</p>
-<div class="kc-discovery-counts">
-<a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context['active'])} shows <span aria-hidden="true">↗</span></a>
-<a class="kc-discovery-artist-count" href="{TEST_BASE}artists/"><strong>{context['artist_total']}</strong> artists <span aria-hidden="true">↗</span></a></div>
-<form class="kc-discovery-search" action="{TEST_BASE}shows/" method="get" role="search">
-<label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div><input id="kc-home-search" name="q" type="search" placeholder="Artist, city or show" maxlength="160"><button type="submit">Search</button></div></form></div>
-<section class="kc-discovery-finder" id="browse-states" aria-label="Browse shows by state">
-{picker}{disclosure}</section></section>
+</div><form class="kc-discovery-search kc-fan-finder" action="{TEST_BASE}shows/" method="get" role="search" data-fan-finder>
+<div class="kc-fan-where-when"><label for="kc-home-state">Location<select id="kc-home-state" name="state"><option value="">All states</option>{options}</select></label>
+<label for="kc-home-dates">Dates<select id="kc-home-dates" name="dates"><option value="all">All dates</option><option value="week">This week</option><option value="weekend">This weekend</option><option value="next30">Next 30 days</option><option value="month">This month</option></select></label></div>
+<label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div class="kc-fan-search-line"><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160"><button type="submit">Find shows <span aria-hidden="true">↗</span></button></div></form>
+</section>
 <section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading">
-{section_heading(primary_kicker, primary_title, primary_href, primary_action, 'kc-weekend-heading')}
-<div class="kc-teaser-grid">{''.join(teaser(r) for r in primary)}</div>
-<p class="kc-discovery-empty" data-discovery-empty{' hidden' if primary else ''}>More shows are on the way. <a href="{TEST_BASE}shows/">Explore the complete calendar.</a></p></section>'''
+{section_heading(date_label(context['as_of'], week_end(context['as_of'])) + ' · Nationwide', 'Happening This Week', TEST_BASE + 'shows/?dates=week', 'View all', 'kc-weekend-heading')}
+{shelf('kc-week-shelf', ''.join(teaser(r, eager=i == 0) for i, r in enumerate(primary)), 'Happening This Week')}
+<p class="kc-discovery-empty" data-discovery-empty{' hidden' if primary else ''}>No more featured shows this week. Explore the next dates below or <a href="{TEST_BASE}shows/">browse all shows.</a></p></section>
+<section class="kc-discovery-section" aria-labelledby="kc-next-heading">
+{section_heading('After ' + week_end(context['as_of']).strftime('%b %d') + ' · Nationwide', 'Coming Up Next', TEST_BASE + 'shows/?dates=upcoming', 'View all', 'kc-next-heading')}
+{shelf('kc-next-shelf', ''.join(teaser(r) for r in following), 'Coming Up Next')}
+<p class="kc-discovery-empty" data-discovery-empty{' hidden' if following else ''}>More dates are on the way. <a href="{TEST_BASE}shows/">Explore all shows.</a></p></section>'''
     if tiles:
         out += (f'<section class="kc-discovery-section" aria-labelledby="kc-artists-heading">'
                 + section_heading('Follow the music', 'Artists with upcoming shows', TEST_BASE + 'artists/', 'All artists', 'kc-artists-heading')
-                + f'<div class="kc-discovery-artists">{tiles}</div></section>')
-    if festivals:
-        out += (f'<section class="kc-discovery-section" aria-labelledby="kc-festivals-heading">'
-                + section_heading('Make a day of it', 'Upcoming festivals', TEST_BASE + 'festivals/', 'All festivals', 'kc-festivals-heading')
-                + '<div class="kc-teaser-grid kc-festival-teasers">' + ''.join(teaser(r) for r in festivals) + '</div></section>')
-    if recent:
-        out += (f'<section class="kc-discovery-section" aria-labelledby="kc-new-heading">'
-                + section_heading('Added to our calendar in the last 7 days', 'Recently added shows', TEST_BASE + 'new-shows/', 'All new listings', 'kc-new-heading')
-                + '<div class="kc-teaser-grid kc-recent-teasers">' + ''.join(teaser(r, image=False) for r in recent) + '</div></section>')
+                + shelf('kc-artist-shelf', tiles, 'Artists with upcoming shows', artists=True) + '</section>')
+    out += (f'<section class="kc-fan-explore" id="browse-states" aria-label="Browse shows by state">'
+            '<h2>Find your next night out</h2><div class="kc-discovery-counts">'
+            f'<a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context["active"])} shows <span aria-hidden="true">↗</span></a>'
+            f'<a class="kc-discovery-artist-count" href="{TEST_BASE}artists/"><strong>{context["artist_total"]}</strong> artists <span aria-hidden="true">↗</span></a></div>'
+            f'<div class="kc-fan-explore-links"><a href="{TEST_BASE}festivals/">Festivals ↗</a><a href="{WEEKEND_HREF}">This weekend ↗</a><a href="{TEST_BASE}shows/this-month/">This month ↗</a></div>{disclosure}</section>')
     out += (f'<section class="kc-discovery-submit"><div><h2>Know a show we should list?</h2>'
             f'<p>Help more people find live Christian hip-hop.</p></div><a href="{TEST_BASE}submit/">Submit a show <span aria-hidden="true">↗</span></a></section></div>')
     main = doc.one(lambda n: n.tag == 'main')
@@ -209,6 +213,14 @@ def home_content(text, context):
     # Home is now delivered content, not a duplicate app-rendered full calendar.
     return re.sub(r'<script\b[^>]*src="' + re.escape(TEST_BASE) + r'app\.js[^\"]*"[^>]*>\s*</script>',
                   f'<script src="{TEST_BASE}seo-static.js?v=1" defer></script>', result)
+
+
+def shelf(ident, content, label, artists=False):
+    cls = 'kc-discovery-artists' if artists else 'kc-teaser-grid'
+    return (f'<div class="kc-fan-shelf-wrap" data-fan-shelf><div class="{cls} kc-fan-shelf" id="{ident}" '
+            f'role="region" aria-label="{escape(label)}" tabindex="0">{content}</div>'
+            f'<div class="kc-fan-shelf-controls" hidden><span>Swipe to explore</span><button type="button" data-shelf-prev aria-label="Previous {escape(label)}" aria-controls="{ident}">←</button>'
+            f'<button type="button" data-shelf-next aria-label="Next {escape(label)}" aria-controls="{ident}">→</button></div></div>')
 
 
 def add_shared_navigation(text, relative):
@@ -279,7 +291,16 @@ def transform(relative, source, context):
         text = home_content(text, context)
     text = add_shared_navigation(text, name)
     assets = (f'<link rel="stylesheet" href="{TEST_BASE}assets/{ASSETS[0]}?v={VERSION}" data-national-discovery>'
-              f'<script src="{TEST_BASE}assets/{ASSETS[1]}?v={VERSION}" defer></script>')
+              f'<script src="{TEST_BASE}assets/{ASSETS[1]}?v={VERSION}" defer></script>'
+              f'<link rel="stylesheet" href="{TEST_BASE}assets/{ASSETS[2]}?v={VERSION}">'
+              f'<script src="{TEST_BASE}assets/{ASSETS[3]}?v={VERSION}" defer></script>')
+    if 'data-event-filters' in text:
+        # These pages already contain the complete route-specific calendar.
+        # Do not let the old app bootstrap replace an empty state/week with all shows.
+        text = re.sub(r'<script\b[^>]*src="' + re.escape(TEST_BASE) + r'app\.js[^\"]*"[^>]*>\s*</script>',
+                      f'<script src="{TEST_BASE}seo-static.js?v=1" defer></script>', text)
+        data = json.dumps(context.get('search_artists', []), ensure_ascii=True).replace('<', '\\u003c')
+        assets += f'<script type="application/json" id="kc-fan-artists">{data}</script>'
     return text.replace('</head>', assets + '</head>', 1).encode()
 
 
@@ -446,7 +467,16 @@ def verify(live, site, context):
     all_urls = {r['href'] for r in all_cards}
     assert {r['href'] for r in card_records(test_source(live, 'index.html'))} <= all_urls, 'A former home listing is missing from All Shows'
     teasers = [n for n in home.nodes if 'data-discovery-show' in n.attrs]
-    assert len(teasers) <= 13, 'Homepage selection grew into another full calendar'
+    assert len(teasers) <= 12, 'Homepage selection grew into another full calendar'
+    expected_week, expected_next = home_selection(context)
+    for ident, expected in (('kc-week-shelf', expected_week), ('kc-next-shelf', expected_next)):
+        shelf_node = home.one(lambda n: n.attrs.get('id') == ident)
+        part = Document(home.raw(shelf_node))
+        assert [n.attrs['href'] for n in part.nodes if n.tag == 'a' and '/event/' in n.attrs.get('href', '')] == [r['href'] for r in expected for _ in range(2)], 'Each preview image and title must link to the correct event'
+    assert len({r['href'] for r in expected_week + expected_next}) == len(teasers), 'Duplicate home shows'
+    assert 'Recently added shows' not in home.source and 'Trending' not in home.source
+    assert home.one(lambda n: n.attrs.get('id') == 'kc-home-state').attrs['name'] == 'state'
+    assert home.one(lambda n: n.attrs.get('id') == 'kc-home-dates').attrs['name'] == 'dates'
     for node in teasers:
         item = Document(home.raw(node))
         h3 = item.one(lambda n: n.tag == 'h3')

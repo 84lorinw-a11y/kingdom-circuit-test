@@ -33,6 +33,12 @@ Instagram strip to 18px and navigation boxes to 32px tall.
 The mission, original page identities, official details, event/artist data,
 photos and full schedules/archives are preserved.
 
+The October 15 fan-first layout keeps the brand palette and adds a compact
+location/date/search finder, horizontal This Week and Coming Up Next shelves,
+and artist portraits. Shelves use real event dates, never popularity or firstSeen.
+Calendar pages use smaller headings, grouped filters and searchable artist
+profiles even when no upcoming shows match. No existing URL is renamed.
+
 The final release gate recomputes the approved transformations for every
 source file, compares data and binary assets byte-for-byte, and independently
 checks content, date handling, metadata, schema and test safeguards. It does
