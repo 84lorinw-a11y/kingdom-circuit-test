@@ -77,3 +77,8 @@
 - All regular calendar cards must match their peers at Brenno's compact size: 218px high on mobile and 237px on desktop, with equal grid widths. This supersedes variable-height full listings and the earlier no-clamping/44px-button presentation rule, not exact source-card preservation.
 - Remove category chips (Concert, Appearance, etc.) from the visible calendar preview, but preserve sold-out/cancellation/pending warnings. Smaller readable type, bounded two-line title/artist previews and a 30px Official details pill keep cards compact. Keep all original text/links in HTML and the full event page; focused artist links must remain usable inside their bounded preview.
 - CSS remains calendar-scoped. Preserve original flyers with contain/no stretching, existing artist-photo fill, all filters, source cards, URLs, metadata, schema, production isolation and independent verification gates.
+
+## October 17 full Coming Up Next week (TEST ONLY)
+
+- Owner requested the whole week in Coming Up Next. Include every eligible show starting the following Monday through Sunday, without the former six-card cap. Show the exact date range; retain horizontal scrolling, uniform Brenno cards, existing eligibility and the current-week/40-artists/next-week order.
+- The existing `dates=upcoming` calendar filter and its View all link must match that bounded next-week window. Label the date choice Next week. Empty weeks must stay empty with a useful all-shows link, not silently extend into later weeks. Preserve full catalog data, all existing URLs/SEO identities and production isolation.

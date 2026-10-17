@@ -11,12 +11,12 @@
     return d.toISOString().slice(0, 10);
   };
   const weekEnd = day => addDays(day, (7 - new Date(day + 'T12:00:00Z').getUTCDay()) % 7);
-  const modes = {all:'All dates', week:'This week', weekend:'This weekend', next30:'Next 30 days', month:'This month', upcoming:'Coming up next'};
+  const modes = {all:'All dates', week:'This week', weekend:'This weekend', upcoming:'Next week', next30:'Next 30 days', month:'This month'};
   const dateMatch = (start, end, mode, today) => {
     if (!start || (end || start) < today) return false;
     const last = end || start;
     if (mode === 'week') return start <= weekEnd(today);
-    if (mode === 'upcoming') return start > weekEnd(today);
+    if (mode === 'upcoming') return start > weekEnd(today) && start <= addDays(weekEnd(today), 7);
     if (mode === 'weekend') return start <= weekEnd(today) && last >= addDays(weekEnd(today), -2);
     if (mode === 'next30') return start <= addDays(today, 29);
     if (mode === 'month') return start <= today.slice(0,7) + '-31';

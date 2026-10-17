@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-8'
+VERSION = '20261017-9'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -124,7 +124,8 @@ def home_selection(context):
     eligible = sorted((r for r in context['active'] if feature_eligible(r)),
                       key=lambda r: r['attrs']['data-date'])
     week = [r for r in eligible if r['attrs']['data-date'] <= end.isoformat()]
-    following = [r for r in eligible if r['attrs']['data-date'] > end.isoformat()][:6]
+    following_end = end + timedelta(days=7)
+    following = [r for r in eligible if end.isoformat() < r['attrs']['data-date'] <= following_end.isoformat()]
     return week, following
 
 
@@ -321,7 +322,7 @@ def home_content(text, context):
 <p class="kc-discovery-deck">{HOME_SUBTITLE}</p>
 </div><form class="kc-discovery-search kc-fan-finder" action="{TEST_BASE}shows/" method="get" role="search" data-fan-finder>
 <div class="kc-fan-where-when"><label for="kc-home-state">State<select id="kc-home-state" name="state"><option value="">All states</option>{options}</select></label>
-<label for="kc-home-dates">Dates<select id="kc-home-dates" name="dates"><option value="all">All dates</option><option value="week">This week</option><option value="weekend">This weekend</option><option value="next30">Next 30 days</option><option value="month">This month</option></select></label></div>
+<label for="kc-home-dates">Dates<select id="kc-home-dates" name="dates"><option value="all">All dates</option><option value="week">This week</option><option value="weekend">This weekend</option><option value="upcoming">Next week</option><option value="next30">Next 30 days</option><option value="month">This month</option></select></label></div>
 <label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div class="kc-fan-search-line"><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160" autocomplete="off"><button type="submit">{SEARCH_ICON} Search</button></div></form>
 </section>
 <section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading">
@@ -334,9 +335,9 @@ def home_content(text, context):
                 + section_heading('Follow the music', 'Artists with upcoming shows', TEST_BASE + 'artists/', 'All artists', 'kc-artists-heading')
                 + shelf('kc-artist-shelf', tiles, 'Artists with upcoming shows', artists=True) + '</section>')
     out += f'''<section class="kc-discovery-section" aria-labelledby="kc-next-heading">
-{section_heading('After ' + week_end(context['as_of']).strftime('%b %d') + ' · Nationwide', 'Coming Up Next', TEST_BASE + 'shows/?dates=upcoming', 'View all', 'kc-next-heading')}
+{section_heading(date_label(week_end(context['as_of']) + timedelta(days=1), week_end(context['as_of']) + timedelta(days=7)) + ' · Nationwide', 'Coming Up Next', TEST_BASE + 'shows/?dates=upcoming', 'View all', 'kc-next-heading')}
 {shelf('kc-next-shelf', ''.join(teaser(r) for r in following), 'Coming Up Next')}
-<p class="kc-discovery-empty" data-discovery-empty{' hidden' if following else ''}>More dates are on the way. <a href="{TEST_BASE}shows/">Explore all shows.</a></p></section>'''
+<p class="kc-discovery-empty" data-discovery-empty{' hidden' if following else ''}>No featured shows listed for next week yet. <a href="{TEST_BASE}shows/">Explore all shows.</a></p></section>'''
     out += (f'<section class="kc-fan-explore" id="browse-states" aria-label="Browse shows by state">'
             '<h2>Find your next night out</h2><div class="kc-discovery-counts">'
             f'<a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context["active"])} shows <span aria-hidden="true">↗</span></a>'
@@ -738,6 +739,15 @@ def verify(live, site, context):
         assert len(artist_shelf.children) == len(context['artists']) <= 40
         assert artist_shelf.start < home.one(lambda n: n.attrs.get('id') == 'kc-next-shelf').start
     expected_week, expected_next = home_selection(context)
+    next_first = context['as_of'] + timedelta(days=7 - context['as_of'].weekday())
+    next_last = next_first + timedelta(days=6)
+    next_inventory = sorted((r for r in all_cards if feature_eligible(r)
+                             and next_first.isoformat() <= r['attrs']['data-date'] <= next_last.isoformat()),
+                            key=lambda r: r['attrs']['data-date'])
+    assert [r['href'] for r in expected_next] == [r['href'] for r in next_inventory], 'Next week must include every eligible Monday–Sunday show, without a cap or later dates'
+    next_section = home.one(lambda n: n.attrs.get('aria-labelledby') == 'kc-next-heading')
+    assert date_label(next_first, next_last) + ' · Nationwide' in home.text(next_section)
+    assert TEST_BASE + 'shows/?dates=upcoming' in home.raw(next_section)
     for ident, expected in (('kc-week-shelf', expected_week), ('kc-next-shelf', expected_next)):
         shelf_node = home.one(lambda n: n.attrs.get('id') == ident)
         part = Document(home.raw(shelf_node))

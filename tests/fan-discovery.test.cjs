@@ -18,9 +18,22 @@ test('week and coming-up do not overlap; expired and multi-day shows are truthfu
   assert.equal(dateMatch('2026-10-19','','week','2026-10-15'),false);
   assert.equal(dateMatch('2026-10-19','','upcoming','2026-10-15'),true);
   assert.equal(dateMatch('2026-10-18','','upcoming','2026-10-15'),false);
+  assert.equal(dateMatch('2026-10-25','','upcoming','2026-10-15'),true);
+  assert.equal(dateMatch('2026-10-26','','upcoming','2026-10-15'),false);
+  assert.equal(dateMatch('2026-10-18','2026-10-20','upcoming','2026-10-15'),false);
   assert.equal(dateMatch('2026-10-14','2026-10-18','weekend','2026-10-17'),true);
   assert.equal(dateMatch('2026-10-16','','weekend','2026-10-17'),false);
   assert.equal(dateMatch('2026-10-14','','all','2026-10-15'),false);
+});
+test('next-week dates roll across the year boundary and never broaden for empty filters', () => {
+  assert.equal(dateMatch('2027-01-04','','upcoming','2026-12-31'),true);
+  assert.equal(dateMatch('2027-01-10','','upcoming','2026-12-31'),true);
+  assert.equal(dateMatch('2027-01-03','','upcoming','2026-12-31'),false);
+  assert.equal(dateMatch('2027-01-11','','upcoming','2026-12-31'),false);
+  const show = {date:'2026-10-23',state:'TX',artists:'guest',search:'Guest Dallas'};
+  assert.equal(matches(show,{q:'guest',state:'TX',dates:'upcoming'},'2026-10-17'),true);
+  assert.equal(matches(show,{state:'FL',dates:'upcoming'},'2026-10-17'),false);
+  assert.equal(matches({...show,date:'2026-10-30'},{state:'TX',dates:'upcoming'},'2026-10-17'),false);
 });
 test('all filters combine, and a zero-results state never broadens to national', () => {
   const c = {date:'2026-10-17',state:'TX',artists:'626authentic|guest',type:'concert',search:'626authentic Dallas'};

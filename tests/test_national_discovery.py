@@ -136,13 +136,36 @@ class NationalDiscoveryTests(unittest.TestCase):
         self.assertIn('noindex,nofollow',page)
         self.assertNotIn('Other homepage show cards have not been resized',page)
 
-    def test_week_shelf_is_not_capped_at_six_and_next_remains_limited(self):
+    def test_both_weekly_shelves_include_all_eligible_shows_without_a_cap(self):
         def record(i, day):
             return {'name':f'Show {i}', 'href':str(i), 'attrs':{'data-date':day}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}
         records = [record(i, '2026-10-17') for i in range(15)] + [record(i+15, '2026-10-23') for i in range(10)]
         week, following = discovery.home_selection({'as_of':date(2026,10,17), 'active':records})
         self.assertEqual(len(week), 15)
-        self.assertEqual(len(following), 6)
+        self.assertEqual(len(following), 10)
+
+    def test_next_week_includes_monday_through_sunday_only(self):
+        def record(day, title='Show'):
+            return {'name':title, 'href':day, 'attrs':{'data-date':day}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}
+        records = [record('2026-10-26'), record('2026-10-25'), record('2026-10-19'),
+                   record('2026-10-18'), record('2026-10-23','Sold out show')]
+        for day in [date(2026,10,12), date(2026,10,17), date(2026,10,18)]:
+            with self.subTest(day=day):
+                week, following = discovery.home_selection({'as_of':day,'active':records})
+                self.assertEqual([r['href'] for r in week], ['2026-10-18'])
+                self.assertEqual([r['href'] for r in following], ['2026-10-19','2026-10-25'])
+
+    def test_empty_next_week_never_broadens_to_later_dates(self):
+        record = {'name':'Future show', 'attrs':{'data-date':'2026-11-01'}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}
+        self.assertEqual(discovery.home_selection({'as_of':date(2026,10,17),'active':[record]}), ([],[]))
+
+    def test_next_week_rolls_across_year_boundary_and_keeps_multiday_nonoverlapping(self):
+        def record(start, end=''):
+            return {'name':'Show', 'href':start, 'attrs':{'data-date':start,'data-end-date':end}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}
+        records = [record('2026-12-30','2027-01-05'), record('2027-01-04'), record('2027-01-10'), record('2027-01-11')]
+        week, following = discovery.home_selection({'as_of':date(2026,12,31),'active':records})
+        self.assertEqual([r['href'] for r in week], ['2026-12-30'])
+        self.assertEqual([r['href'] for r in following], ['2027-01-04','2027-01-10'])
 
     def test_neighbors_are_actual_border_states_with_inventory(self):
         states = [{'name':name, 'count':count} for name,count in [('Kansas',0),('Colorado',2),('Missouri',4),('Oklahoma',0),('Florida',15)]]
@@ -241,6 +264,9 @@ class NationalDiscoveryTests(unittest.TestCase):
         self.assertIn('361</strong> artists', home)
         self.assertIn('Browse all 0 shows', home)
         self.assertIn('data-discovery-empty>', home)
+        self.assertIn('No featured shows listed for next week yet.', home)
+        self.assertIn('October 19–25, 2026 · Nationwide', home)
+        self.assertIn('<option value="upcoming">Next week</option>', home)
         self.assertNotIn('Artists with upcoming shows', home)
         self.assertNotIn('/app.js', home)
         self.assertIn('/seo-static.js', home)
