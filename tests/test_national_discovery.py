@@ -8,6 +8,33 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
+    def test_facebook_header_button_follows_big_instagram_and_preserves_existing_links(self):
+        follow = '<a class="kc-rd-follow-link" href="https://www.instagram.com/thekingdomcircuit/">Follow Instagram</a>'
+        instagram = '<a class="kc-rd-instagram-button" href="https://www.instagram.com/thekingdomcircuit/" aria-label="Instagram"><svg></svg></a>'
+        source = follow + '<div class="kc-rd-actions"><a href="/submit/">Submit a Show</a>' + instagram + '</div>'
+        output = discovery.add_shared_navigation(source, 'index.html')
+        doc = discovery.Document(output)
+        actions = doc.one(lambda n: n.has('kc-rd-actions'))
+        self.assertEqual(len(actions.children), 3)
+        button = actions.children[2]
+        self.assertTrue(button.has('kc-facebook-button'))
+        self.assertEqual(button.attrs['href'], 'https://www.facebook.com/profile.php?id=61593510924754')
+        self.assertEqual(button.attrs['target'], '_blank')
+        self.assertEqual(set(button.attrs['rel'].split()), {'noopener','noreferrer'})
+        self.assertEqual(button.attrs['aria-label'], 'Kingdom Circuit on Facebook (opens in new tab)')
+        self.assertEqual(output.replace(discovery.FACEBOOK_BUTTON, ''), source)
+        self.assertIn(instagram + discovery.FACEBOOK_BUTTON, output)
+        self.assertEqual(doc.one(lambda n: n.has('kc-facebook-icon')).attrs['aria-hidden'], 'true')
+
+    def test_facebook_header_does_not_replace_artist_socials_or_follow_bar(self):
+        source = '<div class="kc-rd-followbar"><a href="https://www.instagram.com/thekingdomcircuit/">Follow</a></div><div class="kc-rd-profile-socials"><a href="https://www.facebook.com/artist">Artist Facebook</a></div>'
+        self.assertEqual(discovery.add_shared_navigation(source, 'event/a/index.html'), source)
+
+    def test_facebook_button_cannot_silently_duplicate_upstream_button(self):
+        source = '<div class="kc-rd-actions"><a class="kc-rd-instagram-button"></a>' + discovery.FACEBOOK_BUTTON + '</div>'
+        with self.assertRaises(AssertionError):
+            discovery.add_shared_navigation(source, 'index.html')
+
     def test_mobile_artist_heading_gets_full_width_without_shortening_or_clipping(self):
         css = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
         mobile = css.split('@media (max-width: 600px) {', 1)[1].split('\n}', 1)[0]

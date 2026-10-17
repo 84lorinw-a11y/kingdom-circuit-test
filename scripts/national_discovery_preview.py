@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-10'
+VERSION = '20261017-11'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -30,6 +30,13 @@ ABOUT_PATH = 'about-us/index.html'
 ABOUT_HREF = TEST_BASE + 'about-us/'
 HOME_HEADING = 'Find CHH Shows Near You!'
 HOME_SUBTITLE = 'CHH concerts, christian rap shows and festivals!'
+FACEBOOK_HREF = 'https://www.facebook.com/profile.php?id=61593510924754'
+FACEBOOK_BUTTON = (f'<a class="kc-facebook-button" href="{FACEBOOK_HREF}" target="_blank" rel="noopener noreferrer" '
+                   'aria-label="Kingdom Circuit on Facebook (opens in new tab)" title="Follow Kingdom Circuit on Facebook">'
+                   '<svg class="kc-facebook-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+                   '<circle cx="12" cy="12" r="11" fill="#0866ff"/>'
+                   '<path fill="#fff" d="M13.5 22v-8h2.7l.4-3h-3.1V9c0-.9.3-1.5 1.6-1.5H17V4.8c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7.2v3H10v8Z"/>'
+                   '</svg></a>')
 CARD_SAMPLE_PATH = 'test-card-preview/index.html'
 CARD_IMAGE_RATIO = '1092 / 1440'  # Approved Brenno poster frame for every shape.
 # Visually reviewed empty/decorative margins only. Match the exact asset and
@@ -364,6 +371,11 @@ def add_shared_navigation(text, relative):
     doc = Document(text)
     footers = [n for n in doc.nodes if n.has('footer-links')]
     changes = []
+    for actions in (n for n in doc.nodes if n.has('kc-rd-actions')):
+        instagram = [n for n in actions.children if n.has('kc-rd-instagram-button')]
+        if instagram:
+            assert len(instagram) == 1 and not any(n.has('kc-facebook-button') for n in actions.children), 'Review changed upstream header social links'
+            changes.append((instagram[0].end, instagram[0].end, FACEBOOK_BUTTON))
     for nav in (n for n in doc.nodes if n.has('kc-rd-nav')):
         links = [n for n in nav.children if n.tag == 'a']
         assert len(links) == 6, 'Primary navigation changed upstream; review the eight-link contract'
@@ -805,6 +817,17 @@ def verify(live, site, context):
             links = [n for n in nav.children if n.tag == 'a']
             assert [doc.text(n) for n in links] == ['Home', 'All Shows', 'This Weekend', 'This Month', 'Festivals', 'New Shows', 'Artists', 'About Us']
             assert links[2].attrs['href'] == WEEKEND_HREF and links[-1].attrs['href'] == ABOUT_HREF
+        for actions in (n for n in doc.nodes if n.has('kc-rd-actions')):
+            links = [n for n in actions.children if n.tag == 'a']
+            instagram = [i for i, n in enumerate(links) if n.has('kc-rd-instagram-button')]
+            if instagram:
+                facebook = [n for n in links if n.has('kc-facebook-button')]
+                assert len(facebook) == 1 and links[instagram[0] + 1] is facebook[0]
+                assert facebook[0].attrs['href'] == FACEBOOK_HREF
+                assert facebook[0].attrs['target'] == '_blank'
+                assert {'noopener', 'noreferrer'} <= set(facebook[0].attrs['rel'].split())
+                assert facebook[0].attrs['aria-label'] == 'Kingdom Circuit on Facebook (opens in new tab)'
+                assert doc.raw(facebook[0]) == FACEBOOK_BUTTON
     check_navigation(weekend)
     check_navigation(about)
     for doc, active_href in ((weekend, WEEKEND_HREF), (about, ABOUT_HREF)):

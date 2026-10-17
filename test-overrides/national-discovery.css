@@ -6,6 +6,24 @@ body .kc-rd-followbar .kc-rd-instagram-icon { width: 8px; height: 8px; min-width
 body .kc-rd-follow-tagline { font-size: 8px; line-height: 9px; }
 body .kc-rd-followbar:focus-within { min-height: 24px; }
 body .kc-rd-follow-link:focus-visible { font-size: 12px; line-height: 24px; outline: 2px solid #fff; outline-offset: -2px; }
+body .kc-facebook-button { display: grid; place-items: center; width: 44px; height: 44px; min-width: 44px; flex-shrink: 0; border-radius: 12px; text-decoration: none; }
+body .kc-facebook-icon { display: block; width: 38px; height: 38px; filter: drop-shadow(0 4px 8px rgb(8 102 255 / .22)); }
+body .kc-facebook-button:hover { background: rgb(8 102 255 / .12); }
+body .kc-facebook-button:focus-visible { outline: 2px solid #ffc999; outline-offset: 2px; }
+@media (max-width: 600px) {
+  body .kc-rd-primary:has(.kc-facebook-button) { gap: 8px; }
+  body .kc-rd-actions:has(.kc-facebook-button) { flex-shrink: 0; gap: 4px; }
+  body .kc-rd-actions:has(.kc-facebook-button) .kc-rd-submit { padding-inline: 8px; font-size: .67rem; }
+}
+@media (max-width: 374px) {
+  body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) { display: grid; grid-template-columns: minmax(0, 1fr) 44px 44px; grid-template-rows: 24px 32px; gap: 4px 8px; padding-block: 8px; }
+  body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) .kc-rd-brand { grid-area: 1 / 1; min-height: 24px; }
+  body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) .kc-rd-brand img { width: 132px; height: 24px; }
+  body:not(.kc-rd-profile-body) .kc-rd-actions:has(.kc-facebook-button) { display: contents; }
+  body:not(.kc-rd-profile-body) .kc-rd-actions:has(.kc-facebook-button) .kc-rd-submit { grid-area: 2 / 1; justify-self: start; min-height: 32px; }
+  body:not(.kc-rd-profile-body) .kc-rd-actions:has(.kc-facebook-button) .kc-rd-instagram-button { grid-area: 1 / 2 / 3 / 3; align-self: center; }
+  body:not(.kc-rd-profile-body) .kc-facebook-button { grid-area: 1 / 3 / 3 / 4; align-self: center; }
+}
 body .kc-rd-nav[data-compact-navigation] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 body .kc-rd-nav[data-compact-navigation] a,
 body .kc-rd-nav[data-compact-navigation] a:nth-child(even) { min-height: 32px; padding: 4px; border-right: 1px solid #302c2a; font-size: clamp(.65rem, 2.8vw, .78rem); white-space: nowrap; }

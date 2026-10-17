@@ -86,3 +86,8 @@
 ## October 17 mobile artist heading (TEST ONLY)
 
 - Keep the exact heading Artists with upcoming shows on one line on mobile. Give it the full section width with fluid, readable type; place All artists beside the Follow the music eyebrow above it. Preserve the full heading text without clipping/ellipsis, the accessible heading/link, desktop layout and all cards.
+
+## October 17 Facebook header link (TEST ONLY)
+
+- Add a blue Facebook icon immediately right of the large Instagram button wherever that shared header action is present. Destination is exactly https://www.facebook.com/profile.php?id=61593510924754, opening in a new tab with a descriptive accessible label and noopener/noreferrer.
+- Match the Instagram button's44px target/38px icon; keep social icons beside each other without overlap. On very narrow phones, the logo and Submit a Show may stack to their left so the logo stays readable. Preserve the orange Instagram strip, existing Instagram/submit links, compact profile-header behavior, all artist socials, navigation and source data/SEO identities. No production change.
