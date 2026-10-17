@@ -8,6 +8,19 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
+    def test_mobile_artist_heading_gets_full_width_without_shortening_or_clipping(self):
+        css = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
+        mobile = css.split('@media (max-width: 600px) {', 1)[1].split('\n}', 1)[0]
+        self.assertIn('[aria-labelledby="kc-artists-heading"] .kc-discovery-heading > div { display: contents; }', mobile)
+        self.assertIn('grid-template-columns: minmax(0, 1fr) auto;', mobile)
+        self.assertIn('grid-column: 2; grid-row: 1; justify-self: end;', mobile)
+        heading = mobile.split('body .kc-fan-home #kc-artists-heading {', 1)[1].split('}', 1)[0]
+        self.assertIn('grid-column: 1 / -1;', heading)
+        self.assertIn('font-size: clamp(1rem, 5.8vw, 1.5rem);', heading)
+        self.assertIn('white-space: nowrap;', heading)
+        self.assertNotIn('overflow', heading)
+        self.assertNotIn('text-overflow', heading)
+
     def test_search_portrait_uses_existing_small_profile_image_and_focal_point(self):
         root = discovery.TEST_BASE + 'assets/'
         image = (f'<img src="{root}hulvey-1280.webp" '

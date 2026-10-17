@@ -82,3 +82,7 @@
 
 - Owner requested the whole week in Coming Up Next. Include every eligible show starting the following Monday through Sunday, without the former six-card cap. Show the exact date range; retain horizontal scrolling, uniform Brenno cards, existing eligibility and the current-week/40-artists/next-week order.
 - The existing `dates=upcoming` calendar filter and its View all link must match that bounded next-week window. Label the date choice Next week. Empty weeks must stay empty with a useful all-shows link, not silently extend into later weeks. Preserve full catalog data, all existing URLs/SEO identities and production isolation.
+
+## October 17 mobile artist heading (TEST ONLY)
+
+- Keep the exact heading Artists with upcoming shows on one line on mobile. Give it the full section width with fluid, readable type; place All artists beside the Follow the music eyebrow above it. Preserve the full heading text without clipping/ellipsis, the accessible heading/link, desktop layout and all cards.
