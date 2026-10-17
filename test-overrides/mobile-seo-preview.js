@@ -18,14 +18,6 @@
   const grid = document.querySelector('.event-grid');
   if (!tools || !grid) return;
   tools.hidden = false;
-  tools.querySelectorAll('[data-show-view]').forEach(button => {
-    button.addEventListener('click', () => {
-      grid.classList.toggle('kc-quick-list', button.dataset.showView === 'list');
-      tools.querySelectorAll('[data-show-view]').forEach(item => {
-        item.setAttribute('aria-pressed', String(item === button));
-      });
-    });
-  });
   const filter = document.querySelector('[data-state-filter]');
   const link = tools.querySelector('[data-selected-state]');
   const destinations = JSON.parse(document.querySelector('#kc-state-destinations')?.textContent || '{}');

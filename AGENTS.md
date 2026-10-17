@@ -30,3 +30,12 @@
 - Keep the original eight navigation destinations and all permanent state links. State directory and total-count actions may appear after the previews to prioritize actual shows. Use the unchanged owner-approved heading/subtitle.
 - Progressive calendar enhancements may rearrange existing filter controls and add artist-name search results, date choices and removable filter labels. Static forms/cards/profiles and data remain preserved byte-for-byte by the existing independent checks. Existing canonical URLs, title/meta/schema, full schedules/archives and production isolation remain mandatory.
 - `fan-discovery.css` and `fan-discovery.js` are applied by the national discovery layer. Match event eligibility, date overlap and empty results across server-rendered shelves and client filters; no autoplay. Verify mobile/desktop, keyboard navigation, zero-show artists and empty-state filters before deploying.
+
+## October 17 owner-approved refinements (TEST ONLY)
+
+- Supersedes the six-item weekly shelf/artist limits: include every eligible public show from today through Sunday, then up to 40 real artists with upcoming shows, then Coming Up Next. Preserve eligibility and all source data.
+- Rename the homepage location selector State, add a search magnifier and direct artist-profile suggestions, and retain directional carousel/dropdown arrows. Search submission remains a combined-results search; choosing a profile suggestion opens that profile.
+- Remove Posters/Quick list switching; keep the normal complete event cards. Recommend actual bordering states with nonzero current inventory for empty states; never silently replace a selected state or claim distance-based proximity.
+- Restore exact full national-calendar event cards below each compact artist schedule, before its unchanged Past Shows. Verify the added cards exactly against the source calendar and verify the original profile after removing only the new section. No data/schema/canonical changes.
+- Orange Instagram strip is half its former 18px height, with reduced text/icon sizes and enlarged keyboard-focus state.
+- The compact portrait card is ONE isolated Brenno comparison at `/test-card-preview/`. Do not apply that sizing to other show cards until the owner approves the sample.

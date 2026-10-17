@@ -57,15 +57,14 @@ test('the test picker refuses production or arbitrary external destinations', ()
   assert.deepEqual(ui.navigations, []);
 });
 
-test('display buttons toggle only a CSS class and expose the selected view', () => {
+test('retired view buttons cannot change the normal show listing', () => {
   const ui = setup();
   ui.buttons[1].fire('click');
-  assert.equal(ui.classes.has('kc-quick-list'), true);
-  assert.equal(ui.buttons[1].attributes['aria-pressed'], 'true');
-  assert.equal(ui.buttons[0].attributes['aria-pressed'], 'false');
+  assert.equal(ui.classes.has('kc-quick-list'), false);
+  assert.equal(ui.buttons[1].attributes['aria-pressed'], undefined);
   ui.buttons[0].fire('click');
   assert.equal(ui.classes.has('kc-quick-list'), false);
-  assert.equal(ui.buttons[0].attributes['aria-pressed'], 'true');
+  assert.equal(ui.buttons[0].attributes['aria-pressed'], undefined);
 });
 
 test('state-page link follows filtering and disappears after Clear filters', async () => {

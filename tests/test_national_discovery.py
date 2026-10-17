@@ -8,6 +8,44 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
+    def test_week_shelf_is_not_capped_at_six_and_next_remains_limited(self):
+        def record(i, day):
+            return {'name':f'Show {i}', 'href':str(i), 'attrs':{'data-date':day}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}
+        records = [record(i, '2026-10-17') for i in range(15)] + [record(i+15, '2026-10-23') for i in range(10)]
+        week, following = discovery.home_selection({'as_of':date(2026,10,17), 'active':records})
+        self.assertEqual(len(week), 15)
+        self.assertEqual(len(following), 6)
+
+    def test_neighbors_are_actual_border_states_with_inventory(self):
+        states = [{'name':name, 'count':count} for name,count in [('Kansas',0),('Colorado',2),('Missouri',4),('Oklahoma',0),('Florida',15)]]
+        self.assertEqual([s['name'] for s in discovery.neighbor_states(states[0],states)], ['Missouri','Colorado'])
+        self.assertEqual(discovery.neighbor_states({'name':'Puerto Rico'}, states), [])
+        for state, neighbors in discovery.STATE_NEIGHBORS.items():
+            for neighbor in filter(None,neighbors.split('|')):
+                self.assertIn(state, discovery.STATE_NEIGHBORS[neighbor].split('|'))
+
+    def test_artist_details_add_exact_full_cards_below_untouched_summary(self):
+        card = '<article data-event-card>Full flyer, date, location and official link</article>'
+        schedule = '<section class="kc-rd-profile-shows"><a class="kc-rd-show-row" href="/event/a/">Compact summary</a></section>'
+        source = '<article data-kc-rd-artist-profile>' + schedule + '<section class="past-shows-archive">Past history</section></article>'
+        output = discovery.artist_details(source, {'records':[{'href':'/event/a/','html':card}]})
+        self.assertIn(schedule, output)
+        self.assertLess(output.index(schedule),output.index(card))
+        self.assertLess(output.index(card),output.index('Past history'))
+        self.assertEqual(output.count('data-artist-show-details'),1)
+        with self.assertRaises(AssertionError):
+            discovery.artist_details(source, {'records':[]})
+
+    def test_no_empty_artist_detail_filler(self):
+        source = '<article data-kc-rd-artist-profile><section class="kc-rd-profile-shows">No shows yet</section></article>'
+        self.assertEqual(discovery.artist_details(source,{'records':[]}), source)
+
+    def test_normal_listing_has_no_retired_view_toggle(self):
+        text = discovery.mobile.add_calendar_tools('<div class="event-grid"></div>',[])
+        self.assertNotIn('Quick list',text)
+        self.assertNotIn('data-show-view',text)
+        self.assertIn('data-selected-state',text)
+
     def test_published_minified_card_metadata_keeps_adjacent_dd(self):
         html = ('<article data-event-card data-date="2026-10-16"><img src="photo.webp">'
                 '<h3><a href="/event/test/">Test &amp; Show</a></h3><p class="artist-line">Artist</p>'

@@ -120,3 +120,43 @@ html:has([data-national-discovery]) body .site-footer { padding-block: 28px; }
   .kc-fan-explore { padding: 24px 28px; }
 }
 @media (prefers-reduced-motion: reduce) { .kc-fan-shelf { scroll-behavior: auto; } }
+
+/* October 17: additive details and clear discovery; sample is deliberately scoped. */
+.kc-search-icon { width: 18px; height: 18px; vertical-align: middle; flex-shrink: 0; }
+body .kc-fan-search-line button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.kc-fan-suggestions { max-width: 900px; margin-top: 10px; }
+.kc-profile-action { color: #efab93; font-size: .73rem; font-weight: 700; max-width: 90px; text-align: right; }
+.kc-neighbor-states { max-width: 1148px; margin: 12px auto 24px; padding: 16px; border: 1px solid #61463a; border-radius: 10px; background: #17100d; }
+.kc-neighbor-states h2 { font-size: 1.15rem; margin: 0 0 8px; text-transform: none; }
+.kc-neighbor-states p { font-size: .85rem; line-height: 1.5; color: #c5bcb6; }
+.kc-neighbor-states[hidden] { display: none; }
+.kc-calendar-tools:has([data-selected-state][hidden]) { display: none; }
+.kc-artist-show-details { padding: 24px 20px; border-top: 1px solid #423129; }
+.kc-artist-show-details h2 { font-size: 1.5rem; text-transform: none; margin: 0 0 18px; }
+body .kc-artist-show-details .event-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 20px; }
+body .kc-artist-show-details .event-card { display: grid; grid-template-columns: minmax(0,1fr); }
+body .kc-artist-show-details .event-media { min-height: 0; aspect-ratio: auto; }
+body .kc-artist-show-details .event-media img { height: auto; width: 100%; max-height: 520px; object-fit: contain; }
+@media (min-width: 760px) {
+  body .kc-artist-show-details .event-card { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; }
+}
+.kc-card-sample-page { max-width: 780px; margin: auto; padding: 24px 16px; }
+.kc-card-sample-page h1 { font-size: 1.8rem; text-transform: none; }
+.kc-card-sample-page > p { font-size: .9rem; color: #c5bcb6; }
+.kc-card-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start; }
+.kc-card-comparison h2 { font-size: .95rem; text-transform: none; margin: 0 0 12px; }
+body .kc-card-comparison .kc-fan-shelf { display: block; overflow: visible; padding: 0; margin: 0; }
+body .kc-card-comparison .kc-current-sample { width: 272px; max-width: 100%; }
+body .kc-card-comparison .kc-current-sample .kc-discovery-show { min-height: 424px; }
+body .kc-card-comparison .kc-current-sample .kc-teaser-image { height: 210px; }
+body .kc-card-comparison .kc-portrait-sample { width: 180px; max-width: 100%; }
+body .kc-card-comparison .kc-portrait-sample .kc-discovery-show { border-radius: 9px; }
+body .kc-card-comparison .kc-portrait-sample .kc-teaser-image { height: auto; aspect-ratio: 1092 / 1440; }
+body .kc-card-comparison .kc-portrait-sample .kc-teaser-copy { flex: none; padding: 8px; }
+body .kc-card-comparison .kc-portrait-sample .kc-teaser-date { font-size: 11px; line-height: 1.3; margin-bottom: 4px; }
+body .kc-card-comparison .kc-portrait-sample h3 { font-size: 14px; line-height: 1.2; margin-bottom: 4px; }
+body .kc-card-comparison .kc-portrait-sample .artist-line,
+body .kc-card-comparison .kc-portrait-sample .kc-teaser-location,
+body .kc-card-comparison .kc-portrait-sample .kc-teaser-venue { font-size: 11px; line-height: 1.3; margin-bottom: 3px; }
+body .kc-card-comparison .kc-portrait-sample .event-badges { display: none; }
+@media (max-width: 560px) { .kc-card-comparison { grid-template-columns: 1fr; } }

@@ -17,7 +17,7 @@ import re
 from live_mirror_v2 import TEST_BASE, transformed_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "20261013-1"
+VERSION = "20261017-1"
 ASSETS = ("mobile-seo-preview.css", "mobile-seo-preview.js")
 VOID = set("area base br col embed hr img input link meta param source track wbr".split())
 
@@ -232,9 +232,6 @@ def add_calendar_tools(text, states):
     if len(grids) != 1:
         raise ValueError("Expected one main event grid")
     tools = '''<div class="kc-calendar-tools" data-calendar-tools hidden>
-<div class="kc-view-toggle" role="group" aria-label="Show display">
-<button type="button" data-show-view="posters" aria-pressed="true">Posters</button>
-<button type="button" data-show-view="list" aria-pressed="false">Quick list</button></div>
 <a class="kc-selected-state" data-selected-state hidden></a></div>'''
     # Small, non-executable configuration derived only from existing live state pages.
     data = {s["code"]: {"href": s["href"], "name": s["name"]} for s in states if s["code"]}

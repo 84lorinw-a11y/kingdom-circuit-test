@@ -21,7 +21,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261015-1'
+VERSION = '20261017-1'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -29,6 +29,50 @@ ABOUT_PATH = 'about-us/index.html'
 ABOUT_HREF = TEST_BASE + 'about-us/'
 HOME_HEADING = 'Find CHH Shows Near You!'
 HOME_SUBTITLE = 'CHH concerts, christian rap shows and festivals!'
+CARD_SAMPLE_PATH = 'test-card-preview/index.html'
+SEARCH_ICON = '<svg class="kc-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+
+# Land-border neighbors only. Islands do not get invented "nearby" states.
+STATE_NEIGHBORS = {
+    'Alabama': 'Florida|Georgia|Mississippi|Tennessee',
+    'Alaska': '', 'Arizona': 'California|Nevada|Utah|New Mexico',
+    'Arkansas': 'Louisiana|Mississippi|Missouri|Oklahoma|Tennessee|Texas',
+    'California': 'Arizona|Nevada|Oregon', 'Colorado': 'Kansas|Nebraska|New Mexico|Oklahoma|Utah|Wyoming',
+    'Connecticut': 'Massachusetts|New York|Rhode Island', 'Delaware': 'Maryland|New Jersey|Pennsylvania',
+    'District of Columbia': 'Maryland|Virginia', 'Florida': 'Alabama|Georgia',
+    'Georgia': 'Alabama|Florida|North Carolina|South Carolina|Tennessee', 'Hawaii': '',
+    'Idaho': 'Montana|Nevada|Oregon|Utah|Washington|Wyoming',
+    'Illinois': 'Indiana|Iowa|Kentucky|Missouri|Wisconsin', 'Indiana': 'Illinois|Kentucky|Michigan|Ohio',
+    'Iowa': 'Illinois|Minnesota|Missouri|Nebraska|South Dakota|Wisconsin',
+    'Kansas': 'Colorado|Missouri|Nebraska|Oklahoma', 'Kentucky': 'Illinois|Indiana|Missouri|Ohio|Tennessee|Virginia|West Virginia',
+    'Louisiana': 'Arkansas|Mississippi|Texas', 'Maine': 'New Hampshire',
+    'Maryland': 'Delaware|District of Columbia|Pennsylvania|Virginia|West Virginia',
+    'Massachusetts': 'Connecticut|New Hampshire|New York|Rhode Island|Vermont',
+    'Michigan': 'Indiana|Ohio|Wisconsin', 'Minnesota': 'Iowa|North Dakota|South Dakota|Wisconsin',
+    'Mississippi': 'Alabama|Arkansas|Louisiana|Tennessee',
+    'Missouri': 'Arkansas|Illinois|Iowa|Kansas|Kentucky|Nebraska|Oklahoma|Tennessee',
+    'Montana': 'Idaho|North Dakota|South Dakota|Wyoming',
+    'Nebraska': 'Colorado|Iowa|Kansas|Missouri|South Dakota|Wyoming', 'Nevada': 'Arizona|California|Idaho|Oregon|Utah',
+    'New Hampshire': 'Maine|Massachusetts|Vermont', 'New Jersey': 'Delaware|New York|Pennsylvania',
+    'New Mexico': 'Arizona|Colorado|Oklahoma|Texas', 'New York': 'Connecticut|Massachusetts|New Jersey|Pennsylvania|Vermont',
+    'North Carolina': 'Georgia|South Carolina|Tennessee|Virginia', 'North Dakota': 'Minnesota|Montana|South Dakota',
+    'Ohio': 'Indiana|Kentucky|Michigan|Pennsylvania|West Virginia',
+    'Oklahoma': 'Arkansas|Colorado|Kansas|Missouri|New Mexico|Texas', 'Oregon': 'California|Idaho|Nevada|Washington',
+    'Pennsylvania': 'Delaware|Maryland|New Jersey|New York|Ohio|West Virginia', 'Puerto Rico': '',
+    'Rhode Island': 'Connecticut|Massachusetts', 'South Carolina': 'Georgia|North Carolina',
+    'South Dakota': 'Iowa|Minnesota|Montana|Nebraska|North Dakota|Wyoming',
+    'Tennessee': 'Alabama|Arkansas|Georgia|Kentucky|Mississippi|Missouri|North Carolina|Virginia',
+    'Texas': 'Arkansas|Louisiana|New Mexico|Oklahoma', 'Utah': 'Arizona|Colorado|Idaho|Nevada|Wyoming',
+    'Vermont': 'Massachusetts|New Hampshire|New York', 'Virginia': 'District of Columbia|Kentucky|Maryland|North Carolina|Tennessee|West Virginia',
+    'Washington': 'Idaho|Oregon', 'West Virginia': 'Kentucky|Maryland|Ohio|Pennsylvania|Virginia',
+    'Wisconsin': 'Illinois|Iowa|Michigan|Minnesota', 'Wyoming': 'Colorado|Idaho|Montana|Nebraska|South Dakota|Utah',
+}
+
+
+def neighbor_states(state, states):
+    names = STATE_NEIGHBORS.get(state['name'], '').split('|')
+    return sorted((s for s in states if s['name'] in names and s['count'] > 0),
+                  key=lambda s: (-s['count'], s['name']))
 
 
 def today():
@@ -66,7 +110,7 @@ def home_selection(context):
     end = week_end(day)
     eligible = sorted((r for r in context['active'] if feature_eligible(r)),
                       key=lambda r: r['attrs']['data-date'])
-    week = [r for r in eligible if r['attrs']['data-date'] <= end.isoformat()][:6]
+    week = [r for r in eligible if r['attrs']['data-date'] <= end.isoformat()]
     following = [r for r in eligible if r['attrs']['data-date'] > end.isoformat()][:6]
     return week, following
 
@@ -105,6 +149,7 @@ def feature_eligible(record):
 
 def load_context(live, as_of):
     states = mobile.catalog(live)
+    baseline_states = states
     records = card_records(test_source(live, 'shows/index.html'))
     active = [r for r in records if (r['attrs'].get('data-end-date') or r['attrs']['data-date']) >= as_of.isoformat()]
     weekend = [r for r in active if weekend_matches(r['attrs']['data-date'], r['attrs'].get('data-end-date'), as_of)]
@@ -128,12 +173,15 @@ def load_context(live, as_of):
             if feature_eligible(record) and href in portraits and href not in upcoming:
                 upcoming.append(href)
     # Counts are computed over every show, while selection follows the next dates.
-    artists = [{**portraits[href], 'href': href, 'count': counts[href]} for href in upcoming[:6]]
+    artists = [{**portraits[href], 'href': href, 'count': counts[href]} for href in upcoming[:40]]
+    # Recalculate recommendation counts from the current, unexpired calendar.
+    state_counts = Counter(r['attrs'].get('data-state', '') for r in active)
+    states = [{**s, 'count': state_counts[s['code']] if s['code'] else 0} for s in states]
     active_by_href = {r['href']: r for r in active}
     recent = [active_by_href[r['href']] for r in card_records(test_source(live, 'new-shows/index.html'))
               if r['href'] in active_by_href]
     search_artists = [{'name': p['name'], 'href': href, 'count': counts[href]} for href, p in portraits.items()]
-    return {'states': states, 'records': records, 'active': active, 'weekend': weekend,
+    return {'states': states, 'baseline_states': baseline_states, 'records': records, 'active': active, 'weekend': weekend,
             'artists': artists, 'artist_total': len(portraits), 'search_artists': search_artists,
             'recent': recent, 'as_of': as_of}
 
@@ -185,22 +233,23 @@ def home_content(text, context):
 <div class="kc-discovery-intro">{title}
 <p class="kc-discovery-deck">{HOME_SUBTITLE}</p>
 </div><form class="kc-discovery-search kc-fan-finder" action="{TEST_BASE}shows/" method="get" role="search" data-fan-finder>
-<div class="kc-fan-where-when"><label for="kc-home-state">Location<select id="kc-home-state" name="state"><option value="">All states</option>{options}</select></label>
+<div class="kc-fan-where-when"><label for="kc-home-state">State<select id="kc-home-state" name="state"><option value="">All states</option>{options}</select></label>
 <label for="kc-home-dates">Dates<select id="kc-home-dates" name="dates"><option value="all">All dates</option><option value="week">This week</option><option value="weekend">This weekend</option><option value="next30">Next 30 days</option><option value="month">This month</option></select></label></div>
-<label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div class="kc-fan-search-line"><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160"><button type="submit">Find shows <span aria-hidden="true">↗</span></button></div></form>
+<label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div class="kc-fan-search-line"><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160" autocomplete="off"><button type="submit">{SEARCH_ICON} Search</button></div></form>
 </section>
 <section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading">
 {section_heading(date_label(context['as_of'], week_end(context['as_of'])) + ' · Nationwide', 'Happening This Week', TEST_BASE + 'shows/?dates=week', 'View all', 'kc-weekend-heading')}
 {shelf('kc-week-shelf', ''.join(teaser(r, eager=i == 0) for i, r in enumerate(primary)), 'Happening This Week')}
 <p class="kc-discovery-empty" data-discovery-empty{' hidden' if primary else ''}>No more featured shows this week. Explore the next dates below or <a href="{TEST_BASE}shows/">browse all shows.</a></p></section>
-<section class="kc-discovery-section" aria-labelledby="kc-next-heading">
-{section_heading('After ' + week_end(context['as_of']).strftime('%b %d') + ' · Nationwide', 'Coming Up Next', TEST_BASE + 'shows/?dates=upcoming', 'View all', 'kc-next-heading')}
-{shelf('kc-next-shelf', ''.join(teaser(r) for r in following), 'Coming Up Next')}
-<p class="kc-discovery-empty" data-discovery-empty{' hidden' if following else ''}>More dates are on the way. <a href="{TEST_BASE}shows/">Explore all shows.</a></p></section>'''
+'''
     if tiles:
         out += (f'<section class="kc-discovery-section" aria-labelledby="kc-artists-heading">'
                 + section_heading('Follow the music', 'Artists with upcoming shows', TEST_BASE + 'artists/', 'All artists', 'kc-artists-heading')
                 + shelf('kc-artist-shelf', tiles, 'Artists with upcoming shows', artists=True) + '</section>')
+    out += f'''<section class="kc-discovery-section" aria-labelledby="kc-next-heading">
+{section_heading('After ' + week_end(context['as_of']).strftime('%b %d') + ' · Nationwide', 'Coming Up Next', TEST_BASE + 'shows/?dates=upcoming', 'View all', 'kc-next-heading')}
+{shelf('kc-next-shelf', ''.join(teaser(r) for r in following), 'Coming Up Next')}
+<p class="kc-discovery-empty" data-discovery-empty{' hidden' if following else ''}>More dates are on the way. <a href="{TEST_BASE}shows/">Explore all shows.</a></p></section>'''
     out += (f'<section class="kc-fan-explore" id="browse-states" aria-label="Browse shows by state">'
             '<h2>Find your next night out</h2><div class="kc-discovery-counts">'
             f'<a class="kc-discovery-primary" href="{TEST_BASE}shows/">Browse all {len(context["active"])} shows <span aria-hidden="true">↗</span></a>'
@@ -270,6 +319,45 @@ def add_shared_navigation(text, relative):
     return replace_spans(text, changes)
 
 
+def artist_details(text, context):
+    """Keep the compact schedule; restore the original full cards directly below it."""
+    doc = Document(text)
+    shells = [n for n in doc.nodes if 'data-kc-rd-artist-profile' in n.attrs]
+    if not shells:
+        return text
+    schedules = [n for n in doc.nodes if n.has('kc-rd-profile-shows')]
+    if not schedules:
+        return text
+    hrefs = [n.attrs['href'] for n in doc.nodes if n.has('kc-rd-show-row')]
+    if not hrefs:
+        return text  # A truthful empty schedule, not fabricated filler.
+    records = {r['href']: r for r in context['records']}
+    missing = set(hrefs) - records.keys()
+    assert not missing, f'Artist schedule lacks matching full event cards: {missing}'
+    cards = ''.join(records[href]['html'] for href in hrefs)
+    section = ('<section class="kc-artist-show-details" data-artist-show-details aria-labelledby="kc-full-show-details">'
+               '<h2 id="kc-full-show-details">Upcoming show details</h2>'
+               f'<div class="event-grid">{cards}</div></section>')
+    return replace_spans(text, [(schedules[0].end, schedules[0].end, section)])
+
+
+def nearby_state_section(text, name, context):
+    state = next((s for s in context['states'] if s['relative'] == name), None)
+    if not state or state['count']:
+        return text
+    neighbors = neighbor_states(state, context['states'])
+    if not neighbors:
+        return text  # Existing national fallback remains available.
+    doc = Document(text)
+    calendar = doc.one(lambda n: n.has('calendar'))
+    links = ''.join(mobile.state_link(s) for s in neighbors)
+    block = ('<section class="kc-neighbor-states" data-neighbor-states aria-labelledby="kc-neighbor-title">'
+             '<h2 id="kc-neighbor-title">Explore shows in neighboring states</h2>'
+             '<p>These states have upcoming shows. Check the city and travel distance before making plans.</p>'
+             f'<nav class="kc-state-links" aria-label="Neighboring states with shows">{links}</nav></section>')
+    return replace_spans(text, [(calendar.end, calendar.end, block)])
+
+
 def transform(relative, source, context):
     name = relative.as_posix()
     if name == 'sitemap.xml':
@@ -290,6 +378,8 @@ def transform(relative, source, context):
     if name == 'index.html':
         text = home_content(text, context)
     text = add_shared_navigation(text, name)
+    text = artist_details(text, context)
+    text = nearby_state_section(text, name, context)
     assets = (f'<link rel="stylesheet" href="{TEST_BASE}assets/{ASSETS[0]}?v={VERSION}" data-national-discovery>'
               f'<script src="{TEST_BASE}assets/{ASSETS[1]}?v={VERSION}" defer></script>'
               f'<link rel="stylesheet" href="{TEST_BASE}assets/{ASSETS[2]}?v={VERSION}">'
@@ -299,9 +389,46 @@ def transform(relative, source, context):
         # Do not let the old app bootstrap replace an empty state/week with all shows.
         text = re.sub(r'<script\b[^>]*src="' + re.escape(TEST_BASE) + r'app\.js[^\"]*"[^>]*>\s*</script>',
                       f'<script src="{TEST_BASE}seo-static.js?v=1" defer></script>', text)
+    if 'data-event-filters' in text or 'data-fan-finder' in text:
         data = json.dumps(context.get('search_artists', []), ensure_ascii=True).replace('<', '\\u003c')
         assets += f'<script type="application/json" id="kc-fan-artists">{data}</script>'
+        neighbors = {}
+        for state in context['states']:
+            entry = {'name': state['name'], 'href': state['href'],
+                     'neighbors': [{k: s[k] for k in ('name', 'href', 'count')} for s in neighbor_states(state, context['states'])]}
+            neighbors[state['code'] or state['name']] = entry
+            neighbors[state['name']] = entry
+        assets += '<script type="application/json" id="kc-fan-neighbors">' + json.dumps(neighbors, ensure_ascii=True).replace('<', '\\u003c') + '</script>'
     return text.replace('</head>', assets + '</head>', 1).encode()
+
+
+def card_sample_page(live, context):
+    record = next((r for r in context['records'] if '/overflow-conference-2026-10-17-buffalo-' in r['href']), None)
+    # Keep the approval sample reviewable after the show moves into the archive.
+    relative = 'event/overflow-conference-2026-10-17-buffalo-2997a5/index.html'
+    if not record and (live / relative).is_file():
+        doc = Document(test_source(live, relative))
+        media = doc.one(lambda n: n.has('event-detail-media'))
+        image = next(n for n in doc.nodes if n.tag == 'img' and media.start < n.start < media.end)
+        meta = {}
+        for dt in (n for n in doc.nodes if n.tag == 'dt'):
+            dd = next(n for n in doc.nodes if n.tag == 'dd' and n.start >= dt.end)
+            meta[doc.text(dt)] = doc.text(dd)
+        record = {'href': TEST_BASE + relative.removesuffix('index.html'),
+                  'attrs': {'data-date': '2026-10-17'}, 'meta': meta,
+                  'name': doc.text(doc.one(lambda n: n.tag == 'h1')), 'image': doc.raw(image),
+                  'artists': doc.raw(doc.one(lambda n: n.has('artist-line'))), 'badges': ''}
+    content = '<p>The Brenno sample show is no longer in the upcoming calendar.</p>'
+    if record:
+        content = (f'<div class="kc-card-comparison"><section><h2>Current card</h2><div class="kc-fan-shelf kc-current-sample">{teaser(record)}</div></section>'
+                   f'<section><h2>Compact portrait sample</h2><div class="kc-fan-shelf kc-portrait-sample">{teaser(record)}</div></section></div>')
+    return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<meta name="robots" content="noindex,nofollow"><title>Brenno card sample | Kingdom Circuit Test</title>'
+            f'<link rel="canonical" href="{TEST_SITE}/test-card-preview/">'
+            f'<link rel="stylesheet" href="{TEST_BASE}styles.css"><link rel="stylesheet" href="{TEST_BASE}assets/kc-redesign-v1.css">'
+            + ''.join(f'<link rel="stylesheet" href="{TEST_BASE}assets/{asset}?v={VERSION}">' for asset in ASSETS if asset.endswith('.css'))
+            + f'</head><body><main class="kc-card-sample-page"><a href="{TEST_BASE}">Back to test home</a><h1>Brenno card sample</h1>'
+            '<p>Only a sample. Other homepage show cards have not been resized.</p>' + content + '</main></body></html>').encode()
 
 
 def weekend_page(live, context):
@@ -412,7 +539,7 @@ def about_page(live, context):
 
 
 def combined_transform(relative, source, context):
-    return transform(relative, mobile.transform(relative, source, context['states']), context)
+    return transform(relative, mobile.transform(relative, source, context['baseline_states']), context)
 
 
 def apply(site, live):
@@ -424,7 +551,7 @@ def apply(site, live):
             after = transform(path.relative_to(site), before, context)
             if before != after:
                 path.write_bytes(after)
-    for relative, generate in ((WEEKEND_PATH, weekend_page), (ABOUT_PATH, about_page)):
+    for relative, generate in ((WEEKEND_PATH, weekend_page), (ABOUT_PATH, about_page), (CARD_SAMPLE_PATH, card_sample_page)):
         target = site / relative
         assert not target.exists(), f'New destination unexpectedly exists: {relative}'
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -467,7 +594,12 @@ def verify(live, site, context):
     all_urls = {r['href'] for r in all_cards}
     assert {r['href'] for r in card_records(test_source(live, 'index.html'))} <= all_urls, 'A former home listing is missing from All Shows'
     teasers = [n for n in home.nodes if 'data-discovery-show' in n.attrs]
-    assert len(teasers) <= 12, 'Homepage selection grew into another full calendar'
+    assert len(teasers) == len(home_selection(context)[0]) + len(home_selection(context)[1]), 'Every eligible weekly show must be available'
+    artist_shelves = [n for n in home.nodes if n.attrs.get('id') == 'kc-artist-shelf']
+    if context['artists']:
+        artist_shelf = artist_shelves[0]
+        assert len(artist_shelf.children) == len(context['artists']) <= 40
+        assert artist_shelf.start < home.one(lambda n: n.attrs.get('id') == 'kc-next-shelf').start
     expected_week, expected_next = home_selection(context)
     for ident, expected in (('kc-week-shelf', expected_week), ('kc-next-shelf', expected_next)):
         shelf_node = home.one(lambda n: n.attrs.get('id') == ident)
@@ -490,6 +622,7 @@ def verify(live, site, context):
     for state in context['states']:
         assert state['href'] in home.source
     assert (site / WEEKEND_PATH).read_bytes() == weekend_page(live, context)
+    assert (site / CARD_SAMPLE_PATH).read_bytes() == card_sample_page(live, context)
     weekend = Document((site / WEEKEND_PATH).read_text())
     assert [r['html'] for r in card_records(weekend.source)] == [r['html'] for r in context['weekend']]
     checked = 0
@@ -532,10 +665,23 @@ def verify(live, site, context):
                           lambda n: n.tag == 'script' and n.attrs.get('type') == 'application/ld+json'):
             assert Counter(before.raw(n) for n in before.nodes if predicate(n)) == Counter(after.raw(n) for n in after.nodes if predicate(n)), rel
         if rel.as_posix() != 'index.html':
+            # The owner's additive full-card section is verified independently,
+            # then removed for exact preservation of the original compact profile.
+            extra = [n for n in after.nodes if 'data-artist-show-details' in n.attrs]
+            original_after = after
+            if extra:
+                assert len(extra) == 1
+                expected_hrefs = [n.attrs['href'] for n in before.nodes if n.has('kc-rd-show-row')]
+                actual_cards = card_records(after.raw(extra[0]))
+                assert [r['href'] for r in actual_cards] == expected_hrefs, rel
+                source_cards = {r['href']: r['html'] for r in context['records']}
+                assert [r['html'] for r in actual_cards] == [source_cards[h] for h in expected_hrefs], rel
+                after = Document(replace_spans(after.source, [(extra[0].start, extra[0].end, '')]))
             for predicate in (lambda n: 'data-event-card' in n.attrs or 'data-artist-card' in n.attrs or n.has('past-show-row'),
                               lambda n: 'data-event-filters' in n.attrs or 'data-artist-directory' in n.attrs,
                               lambda n: 'data-kc-rd-artist-profile' in n.attrs or n.has('event-detail-section')):
                 assert Counter(before.raw(n) for n in before.nodes if predicate(n)) == Counter(after.raw(n) for n in after.nodes if predicate(n)), rel
+            after = original_after
         checked += 1
     for asset in ASSETS:
         assert (site / 'assets' / asset).read_bytes() == (ROOT / 'test-overrides' / asset).read_bytes()

@@ -36,6 +36,36 @@
     return ['year','month','day'].map(k => parts.find(p => p.type === k).value).join('-');
   };
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; };
+  function profileLink(artist) {
+    if (!artist.href.startsWith('/kingdom-circuit-test/artists/')) return null;
+    const link = el('a'); link.href = artist.href;
+    const copy = el('span');
+    copy.append(el('strong','',artist.name), el('small','',artist.count ? `${artist.count} upcoming show${artist.count === 1 ? '' : 's'} · Official socials & show history` : 'Official socials & show history · No upcoming dates listed'));
+    link.append(copy, el('span','kc-profile-action','View artist profile'));
+    return link;
+  }
+  function artistSuggestions(form, query) {
+    const artists = JSON.parse(document.querySelector('#kc-fan-artists')?.textContent || '[]');
+    const box = el('section','kc-fan-artist-results kc-fan-suggestions'); box.hidden = true;
+    box.id = 'kc-home-artist-results'; box.setAttribute('aria-label','Artist profile suggestions');
+    const status = el('p','kc-discovery-sr-only'); status.setAttribute('role','status');
+    const links = el('div');
+    box.append(el('h2','','Artist profiles'), links); form.after(box); form.append(status);
+    query.setAttribute('aria-controls',box.id);
+    query.addEventListener('input', () => {
+      const found = normalize(query.value).length >= 2 ? artistMatches(artists,query.value).slice(0,6) : [];
+      links.replaceChildren(); found.forEach(a => { const link=profileLink(a); if(link) links.append(link); });
+      box.hidden = !links.childElementCount;
+      status.textContent = found.length ? `${found.length} artist profile suggestions available below. Search still shows matching events.` : '';
+    });
+    query.addEventListener('keydown', event => {
+      if (event.key === 'Escape') box.hidden = true;
+      if (event.key === 'ArrowDown' && !box.hidden) { event.preventDefault(); links.querySelector('a')?.focus(); }
+    });
+    box.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { box.hidden = true; query.focus(); }
+    });
+  }
   function shelves() {
     document.querySelectorAll('[data-fan-shelf]').forEach(wrap => {
       const shelf = wrap.querySelector('.kc-fan-shelf'), controls = wrap.querySelector('.kc-fan-shelf-controls');
@@ -50,10 +80,11 @@
   }
   function homeFinder() {
     const form = document.querySelector('[data-fan-finder]'); if (!form) return;
+    artistSuggestions(form, form.elements.q);
     form.addEventListener('submit', event => {
       const state = form.elements.state;
       // States with no current inventory still have their permanent useful page.
-      if (state.value && state.value.length > 2 && !form.elements.q.value && form.elements.dates.value === 'all') {
+      if (state.value && !form.elements.q.value && form.elements.dates.value === 'all') {
         const href = state.selectedOptions[0].dataset.stateHref;
         if (href?.startsWith('/kingdom-circuit-test/shows/')) { event.preventDefault(); location.assign(href); }
       }
@@ -70,6 +101,7 @@
     const reset = form.querySelector('[data-reset-filters]');
     if (!query || !state || !artist || !type) return;
     const destinations = JSON.parse(document.querySelector('#kc-state-destinations')?.textContent || '{}');
+    const neighbors = JSON.parse(document.querySelector('#kc-fan-neighbors')?.textContent || '{}');
     const artistNames = new Map(), stateNames = new Set();
     grid.querySelectorAll('[data-event-card]').forEach(card => {
       if (card.dataset.state) stateNames.add(card.dataset.state);
@@ -80,7 +112,9 @@
       entries.forEach(([value,name]) => { const option = el('option','',name); option.value = value; control.append(option); });
     };
     populate(artist,[...artistNames].sort((a,b) => a[1].localeCompare(b[1])));
-    populate(state,[...stateNames].map(s => [s,destinations[s]?.name || s]).sort((a,b) => a[1].localeCompare(b[1])));
+    const allStates = new Map([...stateNames].map(s => [s,destinations[s]?.name || s]));
+    Object.entries(neighbors).forEach(([key,s]) => { if(key.length === 2 || !Object.values(destinations).some(d => d.name === s.name)) allStates.set(key,s.name); });
+    populate(state,[...allStates].sort((a,b) => a[1].localeCompare(b[1])));
     form.classList.add('kc-fan-filters');
     const extra = el('details'), summary = el('summary', '', 'More filters');
     const fields = el('div','kc-fan-extra-fields');
@@ -96,6 +130,9 @@
     const artistHeading = el('h2','','Matching artists'), artistLinks = el('div');
     artistBox.append(artistHeading, artistLinks, el('p','','Artist profiles are shown regardless of your location or date filters.'));
     chips.after(artistBox);
+    const alternatives = el('section','kc-neighbor-states'); alternatives.hidden = true;
+    alternatives.setAttribute('aria-label','Alternative states with upcoming shows');
+    artistBox.after(alternatives);
     const artists = JSON.parse(document.querySelector('#kc-fan-artists')?.textContent || '[]');
     const setValue = (control, value) => {
       if (control.tagName === 'SELECT' && value && ![...control.options].some(o => o.value === value)) {
@@ -121,12 +158,18 @@
       artistLinks.replaceChildren();
       const found = artistMatches(artists, query.value); artistBox.hidden = found.length === 0;
       found.slice(0,8).forEach(a => {
-        if (!a.href.startsWith('/kingdom-circuit-test/artists/')) return;
-        const link = el('a'); link.href = a.href; const copy = el('span');
-        copy.append(el('strong','',a.name), el('small','',a.count ? `${a.count} upcoming show${a.count === 1 ? '' : 's'} overall` : 'No upcoming shows listed · View profile & socials'));
-        link.append(copy,el('span','','↗')); artistLinks.append(link);
+        const link = profileLink(a); if(link) artistLinks.append(link);
       });
       if (found.length > 8) { const all = el('a','','Browse all artists →'); all.href = '/kingdom-circuit-test/artists/'; artistLinks.append(all); }
+      alternatives.replaceChildren();
+      const nearby = neighbors[state.value]?.neighbors || [];
+      alternatives.hidden = visible !== 0 || !state.value || !nearby.length;
+      if (!alternatives.hidden) {
+        alternatives.append(el('h2','','Explore shows in neighboring states'),el('p','','These links show all upcoming dates and artists in each state, not your current filters. Check the city and travel distance before making plans.'));
+        const nav = el('nav','kc-state-links'); nav.setAttribute('aria-label','Neighboring states with shows');
+        nearby.forEach(s => { if(!s.href.startsWith('/kingdom-circuit-test/shows/') || !s.count) return; const a=el('a'); a.href=s.href; a.append(el('span','',s.name),el('small','',`${s.count} upcoming`)); nav.append(a); });
+        alternatives.append(nav);
+      }
       chips.replaceChildren();
       [[query,'Search'],[state,'State'],[dates,'Dates'],[artist,'Artist'],[type,'Type']].forEach(([control,label]) => {
         if (!control.value || (control === dates && control.value === 'all')) return;

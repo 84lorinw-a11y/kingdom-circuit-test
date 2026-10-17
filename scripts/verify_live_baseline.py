@@ -16,7 +16,7 @@ EXPERIMENT_FILES = frozenset({
     "assets/kingdom-circuit-mobile-preview.zip",
     "assets/artist-intake-mockup.css", "assets/artist-intake-mockup.js",
 })
-ADDITIONS = (EXPERIMENT_FILES | {".nojekyll", "test-live-mirror-manifest.json", discovery.WEEKEND_PATH, discovery.ABOUT_PATH}
+ADDITIONS = (EXPERIMENT_FILES | {".nojekyll", "test-live-mirror-manifest.json", discovery.WEEKEND_PATH, discovery.ABOUT_PATH, discovery.CARD_SAMPLE_PATH}
              | {f"assets/{name}" for name in (*ASSETS, *discovery.ASSETS)})
 
 
@@ -41,7 +41,7 @@ def verify(live: Path, site: Path) -> dict:
     manifest["binaryAssetsByteIdentical"] = True
     manifest["mobileSeoPreview"] = {"version": VERSION, **overlay}
     manifest['nationalDiscovery'].update(national)
-    change = "test-only state discovery, location reading order and optional quick-list view"
+    change = "test-only state discovery and location reading order with a single normal show listing"
     if change not in manifest["testOnlyDifferences"]:
         manifest["testOnlyDifferences"].append(change)
     national_change = 'test-only national homepage, evergreen weekend calendar, About Us mission page, compact eight-link navigation, artist breadcrumbs and discovery links'

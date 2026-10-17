@@ -1,7 +1,11 @@
 /* National discovery preview. Preserve the approved brand, real photos and full calendars. */
-:root { --kc-rd-followbar-height: 18px; }
-body .kc-rd-follow-link { padding-block: 0; line-height: 1; }
-body .kc-rd-followbar .kc-rd-instagram-icon { width: 13px; height: 13px; min-width: 13px; }
+:root { --kc-rd-followbar-height: 9px; }
+body .kc-rd-followbar { min-height: 9px; padding-block: 0; line-height: 9px; }
+body .kc-rd-follow-link { min-height: 9px; padding-block: 0; line-height: 9px; font-size: 8px; gap: 3px; }
+body .kc-rd-followbar .kc-rd-instagram-icon { width: 8px; height: 8px; min-width: 8px; }
+body .kc-rd-follow-tagline { font-size: 8px; line-height: 9px; }
+body .kc-rd-followbar:focus-within { min-height: 24px; }
+body .kc-rd-follow-link:focus-visible { font-size: 12px; line-height: 24px; outline: 2px solid #fff; outline-offset: -2px; }
 body .kc-rd-nav[data-compact-navigation] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 body .kc-rd-nav[data-compact-navigation] a,
 body .kc-rd-nav[data-compact-navigation] a:nth-child(even) { min-height: 32px; padding: 4px; border-right: 1px solid #302c2a; font-size: clamp(.65rem, 2.8vw, .78rem); white-space: nowrap; }
