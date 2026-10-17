@@ -196,7 +196,12 @@ def discovered_urls(
         except json.JSONDecodeError:
             pass
     elif "javascript" in content_type:
-        raw_values.extend(QUOTED_SITE_PATH.findall(text))
+        # Runtime portrait validation uses startsWith('/assets/'). That bare
+        # directory is a string prefix, not a fetchable asset. Only suppress
+        # it in JS discovery; real HTML/CSS URLs and named assets stay required.
+        raw_values.extend(
+            value for value in QUOTED_SITE_PATH.findall(text) if value != "/assets/"
+        )
 
     for value in raw_values:
         reference_base = url

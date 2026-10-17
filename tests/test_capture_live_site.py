@@ -34,7 +34,10 @@ class FixtureHandler(BaseHTTPRequestHandler):
         "/event/": ("text/html", b"event"),
         "/submit/": ("text/html", b"submit"),
         "/styles.css": ("text/css", b"body{background:url('/assets/bg.webp')}") ,
-        "/app.js": ("application/javascript", b'const art="/assets/js.webp";'),
+        "/app.js": (
+            "application/javascript",
+            b'const art="/assets/js.webp"; const valid=art.startsWith("/assets/");',
+        ),
         "/seo-static.js": ("application/javascript", b""),
         "/seo-enhancements.js": ("application/javascript", b""),
         "/events.json": ("application/json", json.dumps([{"image": "assets/event.webp"}]).encode()),
@@ -84,6 +87,19 @@ class FixtureHandler(BaseHTTPRequestHandler):
 
 
 class LiveCaptureTests(unittest.TestCase):
+    def test_asset_directory_prefix_is_not_a_javascript_dependency(self) -> None:
+        origin = "https://kingdomcircuit.com"
+        required, _ = capture_module.discovered_urls(
+            origin + "/assets/fan-discovery.js", "application/javascript",
+            b"src.startsWith('/assets/'); const photo='/assets/portrait.webp';"
+            b"const artists='/artists/';", origin,
+        )
+        self.assertEqual(required, {origin + "/assets/portrait.webp", origin + "/artists/"})
+        html_required, _ = capture_module.discovered_urls(
+            origin + "/", "text/html", b'<img src="/assets/">', origin,
+        )
+        self.assertEqual(html_required, {origin + "/assets/"})
+
     def test_captures_sitemap_pages_and_runtime_dependencies(self) -> None:
         server = ThreadingHTTPServer(("127.0.0.1", 0), FixtureHandler)
         thread = threading.Thread(target=server.serve_forever, daemon=True)
