@@ -8,6 +8,19 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
+    def test_search_portrait_uses_existing_small_profile_image_and_focal_point(self):
+        root = discovery.TEST_BASE + 'assets/'
+        image = (f'<img src="{root}hulvey-1280.webp" '
+                 f'srcset="{root}hulvey-1280.webp 1280w, {root}hulvey-320.webp 320w, {root}hulvey-640.webp 640w" '
+                 'style="object-position:50% 30%" onerror="doNotCopy()">')
+        self.assertEqual(discovery.search_portrait(image), {'src': root + 'hulvey-320.webp', 'position':'50% 30%'})
+
+    def test_search_portrait_handles_plain_images_and_rejects_nonlocal_sources(self):
+        root = discovery.TEST_BASE + 'assets/'
+        self.assertEqual(discovery.search_portrait(f'<img src="{root}photo.jpg">'), {'src':root+'photo.jpg','position':'center'})
+        self.assertEqual(discovery.search_portrait('<img src="https://external.test/photo.jpg">'), {})
+        self.assertEqual(discovery.search_portrait('<img>'), {})
+
     def test_compact_calendars_preserve_full_details_and_scope(self):
         css = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
         compact = css.split('/* Compact full calendars:', 1)[1].split('body .event-detail-section', 1)[0]

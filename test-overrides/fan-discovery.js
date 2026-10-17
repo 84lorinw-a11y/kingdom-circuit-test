@@ -28,7 +28,7 @@
     dateMatch(card.date, card.endDate, filters.dates, today);
   const artistMatches = (artists, query) => !normalize(query) ? [] : artists.filter(a => searchMatch(a.name, query)).sort((a,b) =>
     Number(normalize(b.name) === normalize(query)) - Number(normalize(a.name) === normalize(query)) || a.name.localeCompare(b.name));
-  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, searchMatch, addDays, weekEnd, dateMatch, matches, artistMatches};
+  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, searchMatch, addDays, weekEnd, dateMatch, matches, artistMatches, profileLink};
   if (typeof document === 'undefined') return;
 
   const todayString = () => {
@@ -37,11 +37,22 @@
   };
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; };
   function profileLink(artist) {
-    if (!artist.href.startsWith('/kingdom-circuit-test/artists/')) return null;
-    const link = el('a'); link.href = artist.href;
-    const copy = el('span');
+    if (!artist.href?.startsWith('/kingdom-circuit-test/artists/')) return null;
+    const link = el('a','kc-profile-link'); link.href = artist.href;
+    const avatar = el('span','kc-profile-avatar'); avatar.setAttribute('aria-hidden','true');
+    const words = String(artist.name || '').trim().split(/\s+/);
+    const initials = words.length > 1 ? words[0][0] + words.at(-1)[0] : Array.from(words[0]).slice(0,2).join('');
+    avatar.append(el('span','kc-profile-initials',initials.toUpperCase()));
+    if (artist.portrait?.src?.startsWith('/kingdom-circuit-test/assets/')) {
+      const photo = el('img'); photo.alt = ''; photo.width = 72; photo.height = 72;
+      photo.loading = 'lazy'; photo.decoding = 'async';
+      photo.style.objectPosition = artist.portrait.position || 'center';
+      photo.addEventListener('error', () => photo.remove(), {once:true});
+      photo.src = artist.portrait.src; avatar.append(photo);
+    }
+    const copy = el('span','kc-profile-copy');
     copy.append(el('strong','',artist.name), el('small','',artist.count ? `${artist.count} upcoming show${artist.count === 1 ? '' : 's'} · Official socials & show history` : 'Official socials & show history · No upcoming dates listed'));
-    link.append(copy, el('span','kc-profile-action','View artist profile'));
+    link.append(avatar, copy, el('span','kc-profile-action','View artist profile'));
     return link;
   }
   function artistSuggestions(form, query) {

@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-6'
+VERSION = '20261017-7'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -160,6 +160,27 @@ def feature_eligible(record):
                                      'postponed', 'invite only', 'school', 'venue to be announced', 'venue not provided'))
 
 
+def search_portrait(image):
+    """Use an existing small directory-photo variant, not a show flyer or new asset."""
+    attrs = Document(image).one(lambda n: n.tag == 'img').attrs
+    candidates = []
+    for item in attrs.get('srcset', '').split(','):
+        match = re.fullmatch(r'\s*(\S+)\s+(\d+)w\s*', item)
+        if match and match[1].startswith(TEST_BASE + 'assets/'):
+            candidates.append((int(match[2]), match[1]))
+    candidates.sort()
+    src = next((src for width, src in candidates if width >= 216),
+               candidates[-1][1] if candidates else attrs.get('src', ''))
+    if not src.startswith(TEST_BASE + 'assets/'):
+        return {}
+    position = 'center'
+    for declaration in attrs.get('style', '').split(';'):
+        key, _, value = declaration.partition(':')
+        if key.strip() == 'object-position' and re.fullmatch(r'[\w.%+\-\s]+', value.strip()):
+            position = value.strip()
+    return {'src': src, 'position': position}
+
+
 def load_context(live, as_of):
     states = mobile.catalog(live)
     baseline_states = states
@@ -193,7 +214,8 @@ def load_context(live, as_of):
     active_by_href = {r['href']: r for r in active}
     recent = [active_by_href[r['href']] for r in card_records(test_source(live, 'new-shows/index.html'))
               if r['href'] in active_by_href]
-    search_artists = [{'name': p['name'], 'href': href, 'count': counts[href]} for href, p in portraits.items()]
+    search_artists = [{'name': p['name'], 'href': href, 'count': counts[href],
+                       'portrait': search_portrait(p['image'])} for href, p in portraits.items()]
     return {'states': states, 'baseline_states': baseline_states, 'records': records, 'active': active, 'weekend': weekend,
             'artists': artists, 'artist_total': len(portraits), 'search_artists': search_artists,
             'recent': recent, 'as_of': as_of}
@@ -694,6 +716,21 @@ def verify(live, site, context):
     assert about.one(lambda n: n.tag == 'meta' and n.attrs.get('name') == 'robots').attrs['content'] == 'noindex,nofollow'
     all_cards = card_records((site / 'shows/index.html').read_text())
     assert [r['html'] for r in all_cards] == [r['html'] for r in context['records']], 'Full national calendar changed'
+    # Search uses the original directory photo for every artist, including zero-show profiles.
+    directory = Document(test_source(live, 'artists/index.html'))
+    original_portraits = {}
+    for node in directory.nodes:
+        if 'data-artist-card' in node.attrs:
+            item = Document(directory.raw(node))
+            heading = item.one(lambda n: n.tag == 'h2')
+            href = next(n.attrs['href'] for n in heading.children if n.tag == 'a')
+            original_portraits[href] = search_portrait(item.raw(item.one(lambda n: n.tag == 'img')))
+    search_data = json.loads(home.text(home.one(lambda n: n.attrs.get('id') == 'kc-fan-artists')))
+    assert {a['href']: a['portrait'] for a in search_data} == original_portraits
+    for artist in search_data:
+        if artist['portrait']:
+            path = artist['portrait']['src'].removeprefix(TEST_BASE)
+            assert (site / path).is_file(), f'Missing search portrait: {path}'
     all_urls = {r['href'] for r in all_cards}
     assert {r['href'] for r in card_records(test_source(live, 'index.html'))} <= all_urls, 'A former home listing is missing from All Shows'
     teasers = [n for n in home.nodes if 'data-discovery-show' in n.attrs]

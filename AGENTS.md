@@ -65,3 +65,8 @@
 - Owner requested the regular show listings use a compact portrait image treatment similar to Happening This Week, removing wasted image space. This supersedes the earlier layout-only restriction on full calendars: CSS may present portrait artwork beside full details, one listing per row on phones and two on wide desktop screens.
 - Keep every original calendar card byte-for-byte, including full billing, dates, venue/location, status labels, image metadata and working official/event/artist links. Do not truncate full-listing text. Flyers retain contain/no stretching and artist photos may fill; preserve original files. Keep hidden filter results hidden and maintain accessible metadata labels and 44px official-details actions.
 - Scope these styles to `.calendar`; homepage shelves, artist profile detail cards and event detail posters retain their existing presentation. No URL, canonical, schema, data or production changes. Existing exact-card and source-baseline gates remain mandatory.
+
+## October 17 artist portraits in search (TEST ONLY)
+
+- Owner requested clickable circular artist-profile photos in search, like the homepage upcoming-artist circles, while retaining matching shows below. Add the same original artist-directory photo to both homepage suggestions and calendar matching-artist results, with an explicit profile action. Preserve name/count metadata, zero-show profile results, keyboard access, filters and all event cards.
+- Use a small existing optimized image variant and the original focal position; no invented/replacement photos or new image files. Missing/broken images fall back to initials without breaking the profile link. Keep test isolation and exact source-content/SEO-identity checks.
