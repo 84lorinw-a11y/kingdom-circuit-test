@@ -21,17 +21,21 @@ class NationalDiscoveryTests(unittest.TestCase):
         self.assertEqual(discovery.search_portrait('<img src="https://external.test/photo.jpg">'), {})
         self.assertEqual(discovery.search_portrait('<img>'), {})
 
-    def test_compact_calendars_preserve_full_details_and_scope(self):
+    def test_compact_calendars_use_uniform_boxes_without_affecting_other_cards(self):
         css = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
         compact = css.split('/* Compact full calendars:', 1)[1].split('body .event-detail-section', 1)[0]
         self.assertIn('.calendar .event-card[hidden] { display: none; }', compact)
-        self.assertIn('aspect-ratio: 1092 / 1440 !important;', compact)
+        self.assertIn('height: 218px;', compact)
+        self.assertIn('height: 237px;', compact)
+        self.assertIn('height: 100%;', compact)
         self.assertIn('.calendar .event-media img.event-artwork', compact)
         self.assertIn('object-fit: contain;', compact)
         self.assertIn('grid-template-columns: repeat(2, minmax(0, 1fr));', compact)
-        self.assertIn('min-height: 44px;', compact)
-        self.assertNotIn('line-clamp', compact)
-        self.assertNotIn('text-overflow', compact)
+        self.assertIn('min-height: 30px !important;', compact)
+        self.assertIn('.event-badges .badge-gold { display: none; }', compact)
+        self.assertNotIn('.event-badges { display: none;', compact)
+        self.assertIn('-webkit-line-clamp: 2;', compact)
+        self.assertIn('.artist-line:focus-within { display: block; overflow-y: auto; }', compact)
         self.assertNotIn('.kc-artist-show-details', compact)
 
     def test_every_artwork_shape_uses_brenno_standard_frame(self):

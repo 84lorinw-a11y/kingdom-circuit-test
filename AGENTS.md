@@ -70,3 +70,9 @@
 
 - Owner requested clickable circular artist-profile photos in search, like the homepage upcoming-artist circles, while retaining matching shows below. Add the same original artist-directory photo to both homepage suggestions and calendar matching-artist results, with an explicit profile action. Preserve name/count metadata, zero-show profile results, keyboard access, filters and all event cards.
 - Use a small existing optimized image variant and the original focal position; no invented/replacement photos or new image files. Missing/broken images fall back to initials without breaking the profile link. Keep test isolation and exact source-content/SEO-identity checks.
+
+## October 17 uniform regular listings (latest owner correction, TEST ONLY)
+
+- All regular calendar cards must match their peers at Brenno's compact size: 218px high on mobile and 237px on desktop, with equal grid widths. This supersedes variable-height full listings and the earlier no-clamping/44px-button presentation rule, not exact source-card preservation.
+- Remove category chips (Concert, Appearance, etc.) from the visible calendar preview, but preserve sold-out/cancellation/pending warnings. Smaller readable type, bounded two-line title/artist previews and a 30px Official details pill keep cards compact. Keep all original text/links in HTML and the full event page; focused artist links must remain usable inside their bounded preview.
+- CSS remains calendar-scoped. Preserve original flyers with contain/no stretching, existing artist-photo fill, all filters, source cards, URLs, metadata, schema, production isolation and independent verification gates.

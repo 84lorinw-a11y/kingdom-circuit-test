@@ -27,7 +27,7 @@ body .kc-fan-shelf .kc-teaser-image img.artist-photo { object-fit: contain; }
 body .kc-fan-shelf .kc-teaser-image[data-artwork-treatment="photo-fill"] img:not([data-kc-fallback-used]) { object-fit: cover; }
 body .kc-fan-shelf .kc-teaser-image[data-artwork-treatment="border-trim"] img:not([data-kc-fallback-used]) { position: absolute; width: var(--kc-art-w); height: var(--kc-art-h); max-width: none; left: var(--kc-art-x); top: var(--kc-art-y); }
 body .kc-fan-shelf .kc-teaser-copy { display: grid; grid-template-rows: 14px 34px 14px 14px 14px; row-gap: 1px; align-content: start; padding: 8px; flex: 1; min-height: 0; width: 100%; box-sizing: border-box; }
-/* Type labels remain in the complete listing, as in the approved Brenno sample. */
+/* Category labels are omitted from compact previews. */
 body .kc-fan-shelf .kc-teaser-copy .event-badges { display: none; }
 body .kc-fan-shelf .kc-teaser-date { font-size: 11px; line-height: 14px; color: #eabd9a; margin: 0; }
 body .kc-fan-shelf .kc-teaser-copy h3 { font-size: 14px; margin: 0; line-height: 17px; overflow: hidden; }
@@ -116,7 +116,7 @@ html:has([data-national-discovery]) body .event-card { border-radius: 12px; over
 html:has([data-national-discovery]) body .event-card h3 { font-size: 1.2rem; line-height: 1.25; }
 html:has([data-national-discovery]) body .event-content { padding: 16px; }
 html:has([data-national-discovery]) body .event-meta { gap: 9px; }
-/* Compact full calendars: portrait artwork beside complete, untruncated details.
+/* Compact full calendars: uniform Brenno-sized boxes with bounded text previews.
    Scoped to calendars so home previews, artist details and event pages stay intact. */
 html:has([data-national-discovery]) body .calendar .event-grid {
   grid-template-columns: minmax(0, 1fr);
@@ -125,15 +125,19 @@ html:has([data-national-discovery]) body .calendar .event-grid {
 }
 html:has([data-national-discovery]) body .calendar .event-card {
   grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
-  align-items: start;
+  align-items: stretch;
+  height: 218px;
+  box-sizing: border-box;
+  position: relative;
   min-width: 0;
 }
 html:has([data-national-discovery]) body .calendar .event-card[hidden] { display: none; }
 html:has([data-national-discovery]) body .calendar .event-media {
   /* Override the source site's !important landscape-frame safeguard, only here. */
-  aspect-ratio: 1092 / 1440 !important;
+  aspect-ratio: auto !important;
   min-height: 0;
-  height: auto;
+  height: 100% !important;
+  align-self: stretch;
   border-radius: 0;
 }
 html:has([data-national-discovery]) body .calendar .event-media img.event-artwork {
@@ -145,36 +149,57 @@ html:has([data-national-discovery]) body .calendar .event-media img.artist-photo
   padding: 0;
 }
 html:has([data-national-discovery]) body .calendar .event-content {
-  padding: 10px;
-  gap: 8px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 30px;
+  padding: 8px;
+  gap: 4px;
+  height: 100%;
+  box-sizing: border-box;
+  min-height: 0;
   min-width: 0;
-  justify-content: flex-start;
   overflow-wrap: anywhere;
 }
-html:has([data-national-discovery]) body .calendar .event-badges { gap: 5px; margin-bottom: 6px; }
-html:has([data-national-discovery]) body .calendar .badge { font-size: .6rem; padding: 3px 6px; }
-html:has([data-national-discovery]) body .calendar .event-card h3 { font-size: 1rem; line-height: 1.25; margin: 0 0 6px; }
-html:has([data-national-discovery]) body .calendar .artist-line { font-size: .78rem; line-height: 1.4; margin: 0; }
-html:has([data-national-discovery]) body .calendar .event-meta { gap: 5px; margin: 10px 0 0; font-size: .78rem; line-height: 1.4; }
+/* Hide categories only. Sold-out / cancellation / pending warnings stay visible. */
+html:has([data-national-discovery]) body .calendar .event-badges .badge-gold { display: none; }
+html:has([data-national-discovery]) body .calendar .event-badges { position: absolute; left: 5px; bottom: 5px; max-width: calc(40% - 10px); margin: 0; gap: 3px; z-index: 1; }
+html:has([data-national-discovery]) body .calendar .badge { font-size: 10px; line-height: 12px; padding: 3px 5px; background: #17100d; }
+html:has([data-national-discovery]) body .calendar .event-main { min-width: 0; min-height: 0; }
+html:has([data-national-discovery]) body .calendar .event-card h3 { font-size: 14px; line-height: 16px; height: 32px; margin: 0 0 4px; }
+html:has([data-national-discovery]) body .calendar .event-card h3 a,
+html:has([data-national-discovery]) body .calendar .artist-line,
+html:has([data-national-discovery]) body .calendar .event-meta dd {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+html:has([data-national-discovery]) body .calendar .event-card h3 a { max-height: 32px; }
+html:has([data-national-discovery]) body .calendar .artist-line { font-size: 11.5px; line-height: 14px; height: 28px; margin: 0; }
+/* Focused artist links can scroll inside the two-line area without growing the card. */
+html:has([data-national-discovery]) body .calendar .artist-line:focus-within { display: block; overflow-y: auto; }
+html:has([data-national-discovery]) body .calendar .host-line { font-size: 10.5px; line-height: 14px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html:has([data-national-discovery]) body .calendar .event-meta { gap: 3px; margin: 4px 0 0; font-size: 11.5px; line-height: 14px; }
 html:has([data-national-discovery]) body .calendar .event-meta > div { display: block; }
+html:has([data-national-discovery]) body .calendar .event-meta dd { margin: 0; max-height: 28px; }
 /* The dl retains its accessible labels; the familiar values don't need a label column. */
 html:has([data-national-discovery]) body .calendar .event-meta dt {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
 }
 html:has([data-national-discovery]) body .calendar .event-meta > div:first-child dd { color: #eabd9a; font-weight: 700; }
-html:has([data-national-discovery]) body .calendar .event-meta > div:last-child dd { color: #f4efe8; font-weight: 700; }
-html:has([data-national-discovery]) body .calendar .event-footer { gap: 8px; }
+html:has([data-national-discovery]) body .calendar .event-meta > div:last-child dd { color: #f4efe8; font-weight: 700; -webkit-line-clamp: 1; max-height: 14px; }
+html:has([data-national-discovery]) body .calendar .event-footer { gap: 4px; min-width: 0; align-items: center; }
 html:has([data-national-discovery]) body .calendar .official-button {
-  min-height: 44px; padding: 9px 11px; font-size: .75rem; line-height: 1.25;
+  min-height: 30px !important; height: 30px; padding: 4px 8px; font-size: 11px; line-height: 14px;
+  border-width: 1px; border-radius: 15px; box-sizing: border-box;
   display: inline-flex; align-items: center; justify-content: center; text-align: center;
 }
 @media (min-width: 600px) {
-  html:has([data-national-discovery]) body .calendar .event-card { grid-template-columns: 178px minmax(0, 1fr); }
-  html:has([data-national-discovery]) body .calendar .event-content { padding: 14px; }
-  html:has([data-national-discovery]) body .calendar .event-card h3 { font-size: 1.1rem; }
+  html:has([data-national-discovery]) body .calendar .event-card { grid-template-columns: 178px minmax(0, 1fr); height: 237px; }
+  html:has([data-national-discovery]) body .calendar .event-content { padding: 10px; }
+  html:has([data-national-discovery]) body .calendar .event-badges { max-width: 168px; }
+  html:has([data-national-discovery]) body .calendar .event-card h3 { font-size: 16px; line-height: 18px; height: 36px; }
+  html:has([data-national-discovery]) body .calendar .event-card h3 a { max-height: 36px; }
   html:has([data-national-discovery]) body .calendar .artist-line,
-  html:has([data-national-discovery]) body .calendar .event-meta { font-size: .85rem; }
+  html:has([data-national-discovery]) body .calendar .event-meta { font-size: 12.5px; }
 }
 @media (min-width: 1000px) {
   html:has([data-national-discovery]) body .calendar .event-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
