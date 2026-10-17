@@ -59,3 +59,9 @@
 
 - Owner supplied the founding story (July2026), catalog/source description, community quote and exploratory Canada outreach. Add these to the existing About Us route with readable mobile sections, preserving the original mission without a redundant restatement.
 - Use actual unexpired catalog/artist totals from the same build as the listings, with an honest as-of date; never freeze the draft136+/361 figures or fabricate a refresh timestamp. Keep the supplied quote anonymous and Canada wording exploratory, not an announced partnership. Link existing show/artist submission routes, official website and Instagram. Do not invent founder names, contact details, testimonials or policies.
+
+## October 17 compact full show listings (TEST ONLY)
+
+- Owner requested the regular show listings use a compact portrait image treatment similar to Happening This Week, removing wasted image space. This supersedes the earlier layout-only restriction on full calendars: CSS may present portrait artwork beside full details, one listing per row on phones and two on wide desktop screens.
+- Keep every original calendar card byte-for-byte, including full billing, dates, venue/location, status labels, image metadata and working official/event/artist links. Do not truncate full-listing text. Flyers retain contain/no stretching and artist photos may fill; preserve original files. Keep hidden filter results hidden and maintain accessible metadata labels and 44px official-details actions.
+- Scope these styles to `.calendar`; homepage shelves, artist profile detail cards and event detail posters retain their existing presentation. No URL, canonical, schema, data or production changes. Existing exact-card and source-baseline gates remain mandatory.
