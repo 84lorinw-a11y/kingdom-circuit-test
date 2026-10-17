@@ -2,7 +2,33 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const {searchMatch, weekEnd, dateMatch, matches, artistMatches} = require('../test-overrides/fan-discovery.js');
+const {searchMatch, weekEnd, dateMatch, matches, artistMatches, calendarScope, completeCalendarURL, syncStateShortcut} = require('../test-overrides/fan-discovery.js');
+test('date landing pages route broader filters to the full calendar with all selections intact', () => {
+  for (const [path,scope] of [['this-weekend','weekend'],['this-month','month']]) {
+    const pathname = '/kingdom-circuit-test/shows/' + path + '/';
+    assert.equal(calendarScope(pathname),scope);
+    assert.equal(calendarScope(pathname + 'index.html'),scope);
+    assert.equal(completeCalendarURL(pathname,{dates:scope}),null);
+    for (const dates of ['all','week','weekend','upcoming','next30','month'].filter(d=>d!==scope)) {
+      const result = new URL(completeCalendarURL(pathname,{dates,q:'CJ & friends',state:'TX',artist:'hulvey',type:'concert'}),'https://example.test');
+      assert.equal(result.pathname,'/kingdom-circuit-test/shows/');
+      assert.equal(result.searchParams.get('dates'),dates === 'all' ? null : dates);
+      for (const [key,value] of Object.entries({q:'CJ & friends',state:'TX',artist:'hulvey',type:'concert'})) assert.equal(result.searchParams.get(key),value);
+    }
+  }
+  assert.equal(completeCalendarURL('/kingdom-circuit-test/shows/',{dates:'upcoming'}),null);
+  assert.equal(completeCalendarURL('/kingdom-circuit-test/festivals/',{dates:'upcoming'}),null);
+});
+test('active filter owner updates state shortcut for changes, chip removal, reset and history', () => {
+  const link = {removeAttribute(key) { delete this[key]; }};
+  const destinations = {TX:{name:'Texas',href:'/kingdom-circuit-test/shows/texas/'},FL:{name:'Florida',href:'/kingdom-circuit-test/shows/florida/'},BAD:{name:'Bad',href:'https://external.test/'}};
+  for (const state of ['','TX','FL','','TX','BAD']) {
+    syncStateShortcut(link,destinations,state);
+    assert.equal(link.hidden,!['TX','FL'].includes(state));
+    if (!link.hidden) { assert.equal(link.href,destinations[state].href); assert.equal(link.textContent,`View all ${destinations[state].name} shows →`); }
+    else { assert.equal(link.href,undefined); assert.equal(link.textContent,''); }
+  }
+});
 test('search handles punctuation, accents and artist-name spacing', () => {
   for (const [hay,q] of [['626authentic','626 Authentic'],['Ky’Aliyah','kyaliyah'],['ÉGR — Live','egr live'],['nobigdyl.','nobigdyl']]) assert.equal(searchMatch(hay,q),true);
   assert.equal(searchMatch('Dallas','Houston'),false);

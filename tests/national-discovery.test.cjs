@@ -1,5 +1,12 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const {previewExpired} = require('../test-overrides/national-discovery.js');
+test('stale weekly previews are suppressed after Sunday, including year rollover', () => {
+  assert.equal(previewExpired('2026-10-18','2026-10-18'),false);
+  assert.equal(previewExpired('2026-10-18','2026-10-19'),true);
+  assert.equal(previewExpired('2027-01-03','2027-01-04'),true);
+  assert.equal(previewExpired(undefined,'2026-10-19'),false);
+});
 const {normalize, activeOn, matches} = require('../test-overrides/national-discovery.js');
 const card = {date:'2026-10-16', endDate:'2026-10-18', search:'Artist – Live in Dallas', artists:'artist|guest', state:'TX', type:'concert'};
 test('multi-day shows remain available through their final date', () => {

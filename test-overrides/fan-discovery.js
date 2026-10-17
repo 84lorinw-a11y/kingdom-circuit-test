@@ -28,7 +28,26 @@
     dateMatch(card.date, card.endDate, filters.dates, today);
   const artistMatches = (artists, query) => !normalize(query) ? [] : artists.filter(a => searchMatch(a.name, query)).sort((a,b) =>
     Number(normalize(b.name) === normalize(query)) - Number(normalize(a.name) === normalize(query)) || a.name.localeCompare(b.name));
-  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, searchMatch, addDays, weekEnd, dateMatch, matches, artistMatches, profileLink};
+  const calendarScope = pathname => pathname.replace(/index\.html$/, '').endsWith('/shows/this-weekend/') ? 'weekend' :
+    pathname.replace(/index\.html$/, '').endsWith('/shows/this-month/') ? 'month' : 'all';
+  function completeCalendarURL(pathname, filters) {
+    const scope = calendarScope(pathname);
+    if (scope === 'all' || filters.dates === scope) return null;
+    const params = new URLSearchParams();
+    ['q','state','artist','type','dates'].forEach(key => {
+      if (filters[key] && !(key === 'dates' && filters[key] === 'all')) params.set(key, filters[key]);
+    });
+    return '/kingdom-circuit-test/shows/' + (params.size ? '?' + params : '');
+  }
+  function syncStateShortcut(link, destinations, value) {
+    if (!link) return;
+    const state = destinations[value];
+    const valid = state?.href?.startsWith('/kingdom-circuit-test/shows/');
+    link.hidden = !valid;
+    if (valid) { link.href = state.href; link.textContent = `View all ${state.name} shows →`; }
+    else { link.removeAttribute('href'); link.textContent = ''; }
+  }
+  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, searchMatch, addDays, weekEnd, dateMatch, matches, artistMatches, profileLink, calendarScope, completeCalendarURL, syncStateShortcut};
   if (typeof document === 'undefined') return;
 
   const todayString = () => {
@@ -155,13 +174,20 @@
       const p = new URLSearchParams(location.search);
       query.value = (p.get('q') || '').slice(0,160);
       setValue(state, p.get('state') || ''); setValue(artist, p.get('artist') || ''); setValue(type, p.get('type') || '');
-      dates.value = modes[p.get('dates')] ? p.get('dates') : 'all';
+      dates.value = modes[p.get('dates')] ? p.get('dates') : calendarScope(location.pathname);
       extra.open = !!(artist.value || type.value);
     };
     readURL();
     const count = document.querySelector('[data-results-count]'), empty = document.querySelector('[data-filtered-empty]');
     function apply(writeURL = true) {
       const filters = {q:query.value, state:state.value, artist:artist.value, type:type.value, dates:dates.value};
+      // Date landing pages contain only their own window. Broader choices must
+      // use the complete calendar, retaining every other selected filter.
+      const destination = completeCalendarURL(location.pathname, filters);
+      if (destination) { location.replace(destination); return; }
+      // This controller owns input, chips, reset and history; older target-phase
+      // change listeners do not run after its capture-phase filtering handler.
+      syncStateShortcut(document.querySelector('[data-selected-state]'), destinations, state.value);
       let visible = 0; const today = todayString();
       grid.querySelectorAll('[data-event-card]').forEach(card => { card.hidden = !matches(card.dataset,filters,today); if (!card.hidden) visible++; });
       if (count) count.textContent = `${visible} show${visible === 1 ? '' : 's'}`;

@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-12'
+VERSION = '20261017-13'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -332,7 +332,7 @@ def home_content(text, context):
 <label for="kc-home-dates">Dates<select id="kc-home-dates" name="dates"><option value="all">All dates</option><option value="week">This week</option><option value="weekend">This weekend</option><option value="upcoming">Next week</option><option value="next30">Next 30 days</option><option value="month">This month</option></select></label></div>
 <label class="kc-discovery-sr-only" for="kc-home-search">Search shows by artist, city, venue or show name</label><div class="kc-fan-search-line"><input id="kc-home-search" name="q" type="search" placeholder="Artist, city, venue or show" maxlength="160" autocomplete="off"><button type="submit">{SEARCH_ICON} Search</button></div></form>
 </section>
-<section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading">
+<section class="kc-discovery-section" id="calendar" aria-labelledby="kc-weekend-heading" data-preview-week-end="{week_end(context['as_of'])}">
 {section_heading(date_label(context['as_of'], week_end(context['as_of'])) + ' · Nationwide', 'Happening This Week', TEST_BASE + 'shows/?dates=week', 'View all', 'kc-weekend-heading')}
 {shelf('kc-week-shelf', ''.join(teaser(r, eager=i == 0) for i, r in enumerate(primary)), 'Happening This Week')}
 <p class="kc-discovery-empty" data-discovery-empty{' hidden' if primary else ''}>No more featured shows this week. Explore the next dates below or <a href="{TEST_BASE}shows/">browse all shows.</a></p></section>
@@ -341,7 +341,7 @@ def home_content(text, context):
         out += (f'<section class="kc-discovery-section" aria-labelledby="kc-artists-heading">'
                 + section_heading('Follow the music', 'Artists with upcoming shows', TEST_BASE + 'artists/', 'All artists', 'kc-artists-heading')
                 + shelf('kc-artist-shelf', tiles, 'Artists with upcoming shows', artists=True) + '</section>')
-    out += f'''<section class="kc-discovery-section" aria-labelledby="kc-next-heading">
+    out += f'''<section class="kc-discovery-section" aria-labelledby="kc-next-heading" data-preview-week-end="{week_end(context['as_of'])}">
 {section_heading(date_label(week_end(context['as_of']) + timedelta(days=1), week_end(context['as_of']) + timedelta(days=7)) + ' · Nationwide', 'Coming Up Next', TEST_BASE + 'shows/?dates=upcoming', 'View all', 'kc-next-heading')}
 {shelf('kc-next-shelf', ''.join(teaser(r) for r in following), 'Coming Up Next')}
 <p class="kc-discovery-empty" data-discovery-empty{' hidden' if following else ''}>No featured shows listed for next week yet. <a href="{TEST_BASE}shows/">Explore all shows.</a></p></section>'''

@@ -3,12 +3,13 @@
   'use strict';
   const normalize = value => String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim();
   const activeOn = (card, date) => (card.endDate || card.date || '9999-12-31') >= date;
+  const previewExpired = (weekEnd, today) => !!weekEnd && weekEnd < today;
   const matches = (card, filters, date) => activeOn(card, date) &&
     (!filters.q || normalize(card.search).includes(normalize(filters.q))) &&
     (!filters.artist || (card.artists || '').split('|').includes(filters.artist)) &&
     (!filters.state || card.state === filters.state) &&
     (!filters.type || card.type === filters.type);
-  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, activeOn, matches};
+  if (typeof module !== 'undefined' && module.exports) module.exports = {normalize, activeOn, matches, previewExpired};
   if (typeof document === 'undefined') return;
 
   function init() {
@@ -19,6 +20,19 @@
     document.querySelectorAll('.kc-discovery-section').forEach(section => {
       const empty = section.querySelector('[data-discovery-empty]');
       if (empty) empty.hidden = !!section.querySelector('[data-discovery-show]:not([hidden])');
+      if (previewExpired(section.dataset.previewWeekEnd, today)) {
+        // A delayed daily build must never label last week's cards as this week.
+        const shelf = section.querySelector('[data-fan-shelf]');
+        if (shelf) shelf.hidden = true;
+        const notice = document.createElement('p');
+        notice.textContent = 'Weekly previews are refreshing. ';
+        const calendar = document.createElement('a');
+        calendar.href = '/kingdom-circuit-test/shows/';
+        calendar.textContent = 'Browse all upcoming shows';
+        notice.append(calendar);
+        section.append(notice);
+        if (empty) empty.hidden = true;
+      }
     });
     const params = new URLSearchParams(location.search);
     const form = document.querySelector('[data-event-filters]');
