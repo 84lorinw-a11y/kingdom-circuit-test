@@ -39,3 +39,8 @@
 - Restore exact full national-calendar event cards below each compact artist schedule, before its unchanged Past Shows. Verify the added cards exactly against the source calendar and verify the original profile after removing only the new section. No data/schema/canonical changes.
 - Orange Instagram strip is half its former 18px height, with reduced text/icon sizes and enlarged keyboard-focus state.
 - The compact portrait card is ONE isolated Brenno comparison at `/test-card-preview/`. Do not apply that sizing to other show cards until the owner approves the sample.
+
+## October 17 artwork-adaptive cards (approved)
+
+- Owner approved the Brenno sample and applying it to both homepage show shelves on TEST ONLY. Use 180px cards with compact details. Standard portrait, square and landscape images retain their natural proportions; tall Story images fit inside a capped 3:4 frame with side margins. Never stretch or crop away flyer details. Cards align at the top and may be shorter for square/wide artwork.
+- Preserve original image files, srcset, intrinsic dimensions, alt text, event details and destinations. Only responsive `sizes` changes to match the smaller preview. Keep normal full calendars, artist detail cards and artist tiles unchanged. The existing `/test-card-preview/` now demonstrates all four real formats, using the same styles as homepage shelves.

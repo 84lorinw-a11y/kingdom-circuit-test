@@ -8,6 +8,52 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
+    def test_artwork_shapes_preserve_ratio_except_tall_frame_cap(self):
+        for width, height, shape, ratio in [
+            (1092,1440,'portrait','1092 / 1440'),
+            (1080,1350,'portrait','1080 / 1350'),
+            (1000,1500,'portrait','1000 / 1500'),
+            (1080,1920,'tall','3 / 4'),
+            (1080,1080,'square','1080 / 1080'),
+            (1280,692,'landscape','1280 / 692'),
+        ]:
+            with self.subTest(shape=shape, width=width, height=height):
+                self.assertEqual(discovery.artwork_layout(f'<img width="{width}" height="{height}">'), (shape,ratio))
+
+    def test_unknown_dimensions_use_safe_uncropped_portrait_frame(self):
+        for attributes in ['', 'width="0" height="100"', 'width="-30" height="20"', 'width="bad" height="100"']:
+            self.assertEqual(discovery.artwork_layout(f'<img {attributes}>'), ('unknown','3 / 4'))
+
+    def test_adaptive_teaser_preserves_original_image_and_all_event_facts(self):
+        image = '<img src="real.webp" srcset="small.webp 320w, real.webp 1080w" width="1080" height="1920" sizes="100vw" alt="Full flyer" loading="lazy" style="object-position:center">'
+        record = {'attrs':{'data-date':'2026-10-17'}, 'href':'/event/a/', 'image':image,
+                  'name':'Show name', 'artists':'<p class="artist-line">Brenno</p>',
+                  'badges':'<div class="event-badges">Concert</div>',
+                  'meta':{'Date':'Saturday, 3:30 PM','Venue':'Music Hall','Location':'Buffalo, NY'}}
+        output = discovery.teaser(record, eager=True)
+        self.assertIn('data-artwork-shape="tall"',output)
+        self.assertIn('style="--kc-artwork-ratio:3 / 4"',output)
+        self.assertIn('sizes="178px"',output)
+        self.assertIn('loading="eager" fetchpriority="high"',output)
+        old = discovery.Document(image).one(lambda n:n.tag=='img')
+        shown = discovery.Document(output).one(lambda n:n.tag=='img')
+        for attr in ['src','srcset','width','height','alt','style']:
+            self.assertEqual(old.attrs[attr],shown.attrs[attr])
+        for value in ['Show name','Brenno','Saturday, 3:30 PM','Music Hall','Buffalo, NY','Concert']:
+            self.assertIn(value,output)
+        self.assertEqual(output.count('href="/event/a/"'),2)
+
+    def test_card_formats_gallery_uses_same_teasers_as_home(self):
+        records = [{'attrs':{'data-date':'2026-10-17'},'href':f'/event/{shape}/','name':shape,
+                    'image':f'<img src="{shape}.webp" width="{w}" height="{h}">',
+                    'artists':'<p class="artist-line">Artist</p>','badges':'Concert','meta':{'Venue':'Music Hall'}}
+                   for shape,w,h in [('portrait',800,1000),('tall',600,1100),('square',1000,1000),('landscape',1600,900)]]
+        page = discovery.card_sample_page(Path('/no-live-files'), {'records':records,'active':records}).decode()
+        for record in records:
+            self.assertIn(discovery.teaser(record),page)
+        self.assertIn('noindex,nofollow',page)
+        self.assertNotIn('Other homepage show cards have not been resized',page)
+
     def test_week_shelf_is_not_capped_at_six_and_next_remains_limited(self):
         def record(i, day):
             return {'name':f'Show {i}', 'href':str(i), 'attrs':{'data-date':day}, 'meta':{'Venue':'Hall'}, 'badges':'Concert'}

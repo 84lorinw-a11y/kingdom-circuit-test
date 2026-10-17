@@ -21,7 +21,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-1'
+VERSION = '20261017-2'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -191,16 +191,38 @@ def section_heading(eyebrow, title, href, action, ident):
             f'<h2 id="{ident}">{escape(title)}</h2></div><a href="{href}">{escape(action)} <span aria-hidden="true">↗</span></a></header>')
 
 
+def artwork_layout(image_html):
+    """Use source dimensions, never crop/rewrite the actual artwork to fit a card."""
+    image = Document(image_html).one(lambda n: n.tag == 'img')
+    try:
+        width, height = int(image.attrs.get('width', '')), int(image.attrs.get('height', ''))
+    except ValueError:
+        return 'unknown', '3 / 4'
+    if width <= 0 or height <= 0:
+        return 'unknown', '3 / 4'
+    ratio = width / height
+    if ratio < .65:
+        # A full Story flyer fits inside a capped portrait frame, with side margins.
+        return 'tall', '3 / 4'
+    shape = 'portrait' if ratio < .9 else 'square' if ratio <= 1.1 else 'landscape'
+    return shape, f'{width} / {height}'
+
+
 def teaser(record, image=True, eager=False):
     attrs = record['attrs']
     picture = ''
+    shape, ratio = artwork_layout(record['image']) if image else ('unknown', '3 / 4')
     if image:
-        # Preserve the exact real image, responsive variants, fit class and focal point.
-        responsive_image = re.sub(r'sizes="[^"]*"', 'sizes="(min-width: 1000px) 270px, 78vw"', record['image'])
+        # Preserve the real image, responsive variants and focal point. Only sizes
+        # changes to match the approved 180px card (178px inside its border).
+        responsive_image = re.sub(r'sizes="[^"]*"', 'sizes="178px"', record['image'])
+        if 'sizes=' not in responsive_image:
+            responsive_image = responsive_image.replace('<img ', '<img sizes="178px" ', 1)
         if eager:
             responsive_image = responsive_image.replace('loading="lazy"', 'loading="eager" fetchpriority="high"')
         picture = f'<a class="kc-teaser-image" href="{record["href"]}" tabindex="-1" aria-hidden="true">{responsive_image}</a>'
-    return (f'<article class="kc-discovery-show" data-discovery-show data-date="{attrs["data-date"]}" '
+    return (f'<article class="kc-discovery-show" data-discovery-show data-artwork-shape="{shape}" '
+            f'style="--kc-artwork-ratio:{ratio}" data-date="{attrs["data-date"]}" '
             f'data-end-date="{attrs.get("data-end-date") or attrs["data-date"]}">'
             f'{picture}<div class="kc-teaser-copy">{record["badges"]}'
             f'<p class="kc-teaser-date">{escape(record["meta"].get("Date", ""))}</p>'
@@ -418,17 +440,27 @@ def card_sample_page(live, context):
                   'attrs': {'data-date': '2026-10-17'}, 'meta': meta,
                   'name': doc.text(doc.one(lambda n: n.tag == 'h1')), 'image': doc.raw(image),
                   'artists': doc.raw(doc.one(lambda n: n.has('artist-line'))), 'badges': ''}
-    content = '<p>The Brenno sample show is no longer in the upcoming calendar.</p>'
+    examples = {}
     if record:
-        content = (f'<div class="kc-card-comparison"><section><h2>Current card</h2><div class="kc-fan-shelf kc-current-sample">{teaser(record)}</div></section>'
-                   f'<section><h2>Compact portrait sample</h2><div class="kc-fan-shelf kc-portrait-sample">{teaser(record)}</div></section></div>')
+        examples['portrait'] = record
+    for candidate in context['active']:
+        shape, _ = artwork_layout(candidate['image'])
+        if shape not in examples and feature_eligible(candidate):
+            examples[shape] = candidate
+    labels = [('portrait', 'Portrait', 'Full poster at its natural proportions.'),
+              ('tall', 'Tall / Story', 'Full flyer inside a capped portrait frame.'),
+              ('square', 'Square', 'Full square, with the details directly underneath.'),
+              ('landscape', 'Wide', 'Full width, with a shorter image area.')]
+    content = '<div class="kc-card-formats">' + ''.join(
+        f'<section><h2>{label}</h2><p>{description}</p><div class="kc-fan-shelf">{teaser(examples[shape])}</div></section>'
+        for shape, label, description in labels if shape in examples) + '</div>'
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<meta name="robots" content="noindex,nofollow"><title>Brenno card sample | Kingdom Circuit Test</title>'
+            '<meta name="robots" content="noindex,nofollow"><title>Show card formats | Kingdom Circuit Test</title>'
             f'<link rel="canonical" href="{TEST_SITE}/test-card-preview/">'
             f'<link rel="stylesheet" href="{TEST_BASE}styles.css"><link rel="stylesheet" href="{TEST_BASE}assets/kc-redesign-v1.css">'
             + ''.join(f'<link rel="stylesheet" href="{TEST_BASE}assets/{asset}?v={VERSION}">' for asset in ASSETS if asset.endswith('.css'))
-            + f'</head><body><main class="kc-card-sample-page"><a href="{TEST_BASE}">Back to test home</a><h1>Brenno card sample</h1>'
-            '<p>Only a sample. Other homepage show cards have not been resized.</p>' + content + '</main></body></html>').encode()
+            + f'</head><body><main class="kc-card-sample-page"><a href="{TEST_BASE}">Back to test home</a><h1>Show card formats</h1>'
+            '<p>The approved Brenno style, adapted to real artwork. Now applied to both homepage show rows on the test site.</p>' + content + '</main></body></html>').encode()
 
 
 def weekend_page(live, context):
@@ -616,6 +648,12 @@ def verify(live, site, context):
         source = next(r for r in all_cards if r['href'] == link.attrs['href'])
         assert item.text(h3) == source['name']
         assert source['artists'] in item.source and source['badges'] in item.source
+        original_image = Document(source['image']).one(lambda n: n.tag == 'img')
+        shown_image = item.one(lambda n: n.tag == 'img')
+        for attribute in ('src', 'srcset', 'width', 'height', 'alt', 'style'):
+            assert shown_image.attrs.get(attribute) == original_image.attrs.get(attribute), f'Preview artwork changed: {attribute}'
+        assert shown_image.attrs['sizes'] == '178px'
+        assert node.attrs['data-artwork-shape'] == artwork_layout(source['image'])[0]
         for field in ('Date', 'Venue', 'Location'):
             assert escape(source['meta'].get(field, '')) in item.source
     assert not any(n.attrs.get('src', '').startswith(TEST_BASE + 'app.js') for n in home.nodes)
