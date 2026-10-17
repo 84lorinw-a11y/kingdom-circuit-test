@@ -251,16 +251,54 @@ class NationalDiscoveryTests(unittest.TestCase):
                   '<main id="kc-main-content"><h1>Old home</h1>'
                   '<p class="mission-statement">Connect music &amp; community.</p></main>'
                   '<script src="/kingdom-circuit-test/app.js?v=old" defer></script>')
-        about = discovery.about_content(source)
+        about = discovery.about_content(source, {'active':[{}] * 148, 'artist_total':370, 'as_of':date(2026,10,17)})
         self.assertIn('<p class="mission-statement">Connect music &amp; community.</p>', about)
         self.assertIn('<h1 id="kc-about-title">About Us</h1>', about)
-        self.assertIn('<h2>Why we exist</h2>', about)
+        self.assertIn('<h2 id="kc-about-mission">Why we exist</h2>', about)
         self.assertIn('<title>About Us | Kingdom Circuit</title>', about)
         self.assertIn('"@type": "AboutPage"', about)
         self.assertIn(f'<link rel="canonical" href="{discovery.TEST_SITE}/about-us/">', about)
         self.assertIn('content="noindex,nofollow"', about)
         self.assertNotIn('/app.js', about)
         self.assertIn('/seo-static.js', about)
+
+    def test_about_story_preserves_supplied_facts_and_anonymous_quote(self):
+        source = '<main><p class="mission-statement">Original mission.</p></main>'
+        about = discovery.about_content(source, {'active':[], 'artist_total':370, 'as_of':date(2026,10,17)})
+        doc = discovery.Document(about)
+        self.assertEqual(about.count('Original mission.'), 1)
+        self.assertEqual(len([n for n in doc.nodes if n.tag == 'h1']), 1)
+        self.assertEqual(len([n for n in doc.nodes if n.tag == 'h2']), 6)
+        for fact in ['July 2026', 'Instagram Stories', 'artist announcements, venues, promoters, ticket platforms, and social media',
+                     'established and emerging artists', 'Canada4Christ', 'we’re exploring how to build useful coverage for Canada']:
+            self.assertIn(fact, about)
+        quote = doc.one(lambda n: n.tag == 'blockquote')
+        self.assertEqual(doc.text(quote), '“I\'ve been looking at The Kingdom Circuit and really appreciate what you\'re doing for the CHH community.”')
+
+    def test_about_counts_and_date_follow_current_catalog_including_empty(self):
+        source = '<main><p class="mission-statement">Mission.</p></main>'
+        for count, artists, day in [(148,370,date(2026,10,17)), (0,371,date(2026,11,1))]:
+            with self.subTest(count=count):
+                about = discovery.about_content(source, {'active':[{}] * count, 'artist_total':artists, 'as_of':day})
+                doc = discovery.Document(about)
+                self.assertEqual(doc.text(doc.one(lambda n: 'data-about-upcoming-count' in n.attrs)), str(count))
+                self.assertEqual(doc.text(doc.one(lambda n: 'data-about-artist-count' in n.attrs)), str(artists))
+                self.assertEqual(doc.one(lambda n: n.tag == 'time').attrs['datetime'], day.isoformat())
+                self.assertNotIn('136+', about)
+                self.assertNotIn('361 artists', about)
+
+    def test_about_actions_use_existing_test_routes_and_official_contact_links(self):
+        source = '<main><p class="mission-statement">Mission.</p></main>'
+        doc = discovery.Document(discovery.about_content(source, {'active':[], 'artist_total':0, 'as_of':date(2026,10,17)}))
+        links = {doc.text(n): n.attrs['href'] for n in doc.nodes if n.tag == 'a'}
+        self.assertEqual(links, {
+            'Find a show ↗':discovery.TEST_BASE + 'shows/',
+            'Explore artists':discovery.TEST_BASE + 'artists/',
+            'Submit a show':discovery.TEST_BASE + 'submit/',
+            'Submit an artist':discovery.TEST_BASE + 'submit/artist/',
+            'KingdomCircuit.com':'https://kingdomcircuit.com',
+            '@thekingdomcircuit':'https://www.instagram.com/thekingdomcircuit/',
+        })
 
     def test_eight_navigation_links_and_correct_active_new_pages(self):
         labels = [('Home',''), ('All Shows','shows/'), ('This Month','shows/this-month/'),

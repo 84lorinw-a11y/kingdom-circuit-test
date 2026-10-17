@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-4'
+VERSION = '20261017-5'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -569,21 +569,40 @@ def weekend_page(live, context):
     return transform(Path(WEEKEND_PATH), text.encode(), context)
 
 
-def about_content(text):
-    """Move the exact existing mission into a small, honest standalone page."""
+def about_content(text, context):
+    """Owner-supplied story, original mission, and build-derived catalog totals."""
     doc = Document(text)
     mission_node = doc.one(lambda n: n.has('mission-statement'))
     mission = doc.raw(mission_node)
-    description = doc.text(mission_node)
+    description = 'Kingdom Circuit brings Christian hip hop concerts and festivals together in one place so more fans find the shows and more artists play to packed rooms.'
     title = 'About Us | Kingdom Circuit'
     canonical = TEST_SITE + '/about-us/'
     main = doc.one(lambda n: n.tag == 'main')
-    content = (f'<section class="kc-about-page" data-about-page aria-labelledby="kc-about-title">'
-               '<p class="eyebrow">The Kingdom Circuit</p><h1 id="kc-about-title">About Us</h1>'
-               f'<div class="kc-about-mission"><h2>Why we exist</h2>{mission}</div>'
-               f'<div class="kc-about-links"><a class="kc-discovery-primary" href="{TEST_BASE}shows/">Find a show <span aria-hidden="true">↗</span></a>'
-               f'<a href="{TEST_BASE}artists/">Explore artists</a>'
-               f'<a href="{TEST_BASE}submit/">Submit a show</a></div></section>')
+    content = f'''<article class="kc-about-page" data-about-page aria-labelledby="kc-about-title">
+<header class="kc-about-intro"><p class="eyebrow">The Kingdom Circuit</p><h1 id="kc-about-title">About Us</h1>
+<p class="kc-about-lead">{description}</p></header>
+<section class="kc-about-section" aria-labelledby="kc-about-story"><h2 id="kc-about-story">How we started</h2>
+<p>We started Kingdom Circuit in July 2026 after missing CHH shows near us simply because we didn’t know they were happening. The announcements seemed to get lost in Instagram Stories. We searched for a site bringing CHH concerts and festivals together, couldn’t find what we were looking for, and decided to build it ourselves.</p></section>
+<section class="kc-about-section" aria-labelledby="kc-about-today"><h2 id="kc-about-today">What you’ll find here</h2>
+<p class="kc-about-totals">Today, we have <strong><span data-about-upcoming-count>{len(context['active'])}</span> upcoming shows listed and are tracking <span data-about-artist-count>{context['artist_total']}</span> artists</strong>.</p>
+<p class="kc-about-count-date">Catalog totals as of <time datetime="{context['as_of'].isoformat()}">{context['as_of']:%B} {context['as_of'].day}, {context['as_of'].year}</time>.</p>
+<p>Many artists submit their shows directly to us, and we also gather information from artist announcements, venues, promoters, ticket platforms, and social media.</p>
+<p>Fans can browse concerts and festivals, visit artist profiles to see their upcoming shows, and follow links to official event details and tickets. We also turn those listings into Instagram content to help the shows reach more people.</p></section>
+<section class="kc-about-section kc-about-mission" aria-labelledby="kc-about-mission"><h2 id="kc-about-mission">Why we exist</h2>{mission}
+<p>We support both established and emerging artists. We want every CHH show packed, with more fans showing up, supporting artists, and hearing the gospel.</p></section>
+<section class="kc-about-section" aria-labelledby="kc-about-community"><h2 id="kc-about-community">Encouragement from the community</h2>
+<p>The encouragement from artists has meant a lot to us. One artist shared:</p>
+<blockquote><p>“I've been looking at The Kingdom Circuit and really appreciate what you're doing for the CHH community.”</p></blockquote>
+<p>That kind of feedback reinforces why we started and motivates us to keep building.</p></section>
+<section class="kc-about-section" aria-labelledby="kc-about-canada"><h2 id="kc-about-canada">Connecting with Canada</h2>
+<p>We started with U.S. show listings. After connecting with Canadian CHH artists and Canada4Christ, we’re exploring how to build useful coverage for Canada too.</p>
+<p>We’d love to connect with Canadian artists, promoters, and venues who can help us find upcoming shows and get more fans in the room. Artists and shows can also be submitted directly through our website.</p></section>
+<section class="kc-about-section" aria-labelledby="kc-about-connect"><h2 id="kc-about-connect">Find a show. Share a show.</h2>
+<div class="kc-about-links"><a class="kc-discovery-primary" href="{TEST_BASE}shows/">Find a show <span aria-hidden="true">↗</span></a>
+<a href="{TEST_BASE}artists/">Explore artists</a><a href="{TEST_BASE}submit/">Submit a show</a><a href="{TEST_BASE}submit/artist/">Submit an artist</a></div>
+<div class="kc-about-contact"><p>Website: <a href="https://kingdomcircuit.com">KingdomCircuit.com</a></p>
+<p>Instagram: <a href="https://www.instagram.com/thekingdomcircuit/">@thekingdomcircuit</a></p></div></section>
+</article>'''
     changes = [(main.opening_end, main.closing_start, content)]
     for n in doc.nodes:
         if n.tag == 'title':
@@ -610,7 +629,7 @@ def about_content(text):
 def about_page(live, context):
     source = test_source(live, 'index.html')
     source = mobile.transform(Path('index.html'), source.encode(), context['states']).decode()
-    return transform(Path(ABOUT_PATH), about_content(source).encode(), context)
+    return transform(Path(ABOUT_PATH), about_content(source, context).encode(), context)
 
 
 def combined_transform(relative, source, context):
@@ -647,6 +666,15 @@ def verify(live, site, context):
     about = Document((site / ABOUT_PATH).read_text())
     assert (site / ABOUT_PATH).read_bytes() == about_page(live, context)
     assert about.raw(about.one(lambda n: n.has('mission-statement'))) == old_home.raw(old_home.one(lambda n: n.has('mission-statement')))
+    assert about.text(about.one(lambda n: 'data-about-upcoming-count' in n.attrs)) == str(len(context['active']))
+    assert about.text(about.one(lambda n: 'data-about-artist-count' in n.attrs)) == str(context['artist_total'])
+    assert about.one(lambda n: n.tag == 'time').attrs['datetime'] == context['as_of'].isoformat()
+    for section_id in ('kc-about-story', 'kc-about-today', 'kc-about-mission', 'kc-about-community', 'kc-about-canada', 'kc-about-connect'):
+        assert about.one(lambda n: n.attrs.get('id') == section_id).tag == 'h2'
+    assert f'href="{TEST_BASE}submit/artist/"' in about.source
+    assert 'We started Kingdom Circuit in July 2026' in about.source
+    assert "I've been looking at The Kingdom Circuit and really appreciate what you're doing for the CHH community." in about.source
+    assert 'Canada4Christ' in about.source and 'we’re exploring' in about.source
     assert not any(n.has('mission-statement') for n in home.nodes), 'Mission should live on About Us, not Home'
     assert home.text(home.one(lambda n: n.tag == 'h1')) == HOME_HEADING
     assert home.text(home.one(lambda n: n.has('kc-discovery-deck'))) == HOME_SUBTITLE

@@ -54,3 +54,8 @@
 
 - Owner approved enlarging preview artwork: fill frames with plain artist photos and remove visually reviewed empty/decorative flyer borders with CSS-only framing. Retain 180×350 cards and Brenno's image frame. Never stretch images or cut off important flyer text. Text-heavy or unreviewed flyers default to contain; some margins are intentional.
 - Bind reviewed bounds to the exact source asset/dimensions, not artist or event names. Preserve original files, full event-page posters, image metadata, URLs and all other content. Responsive sizes must reflect the enlarged image, and broken-image fallbacks must not inherit a crop. Test only.
+
+## October 17 About Us story (TEST ONLY)
+
+- Owner supplied the founding story (July2026), catalog/source description, community quote and exploratory Canada outreach. Add these to the existing About Us route with readable mobile sections, preserving the original mission without a redundant restatement.
+- Use actual unexpired catalog/artist totals from the same build as the listings, with an honest as-of date; never freeze the draft136+/361 figures or fabricate a refresh timestamp. Keep the supplied quote anonymous and Canada wording exploratory, not an announced partnership. Link existing show/artist submission routes, official website and Instagram. Do not invent founder names, contact details, testimonials or policies.
