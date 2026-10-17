@@ -298,10 +298,12 @@ class NationalDiscoveryTests(unittest.TestCase):
         doc = discovery.Document(about)
         self.assertEqual(about.count('Original mission.'), 1)
         self.assertEqual(len([n for n in doc.nodes if n.tag == 'h1']), 1)
-        self.assertEqual(len([n for n in doc.nodes if n.tag == 'h2']), 6)
+        self.assertEqual(len([n for n in doc.nodes if n.tag == 'h2']), 5)
         for fact in ['July 2026', 'Instagram Stories', 'artist announcements, venues, promoters, ticket platforms, and social media',
-                     'established and emerging artists', 'Canada4Christ', 'we’re exploring how to build useful coverage for Canada']:
+                     'established and emerging artists']:
             self.assertIn(fact, about)
+        self.assertNotRegex(about.lower(), r'canad(?:a|ian)')
+        self.assertNotIn('kc-about-canada', about)
         quote = doc.one(lambda n: n.tag == 'blockquote')
         self.assertEqual(doc.text(quote), '“I\'ve been looking at The Kingdom Circuit and really appreciate what you\'re doing for the CHH community.”')
 

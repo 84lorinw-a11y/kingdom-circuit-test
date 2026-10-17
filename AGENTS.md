@@ -59,6 +59,7 @@
 
 - Owner supplied the founding story (July2026), catalog/source description, community quote and exploratory Canada outreach. Add these to the existing About Us route with readable mobile sections, preserving the original mission without a redundant restatement.
 - Use actual unexpired catalog/artist totals from the same build as the listings, with an honest as-of date; never freeze the draft136+/361 figures or fabricate a refresh timestamp. Keep the supplied quote anonymous and Canada wording exploratory, not an announced partnership. Link existing show/artist submission routes, official website and Instagram. Do not invent founder names, contact details, testimonials or policies.
+- Latest owner correction: remove the entire Canada outreach section (including Canada4Christ) from About Us. Keep the other five sections, catalog totals, mission, quote and links unchanged. This is a copy-only test-site change; do not remove Canadian artists or shows from the catalog.
 
 ## October 17 compact full show listings (TEST ONLY)
 

@@ -616,9 +616,6 @@ def about_content(text, context):
 <p>The encouragement from artists has meant a lot to us. One artist shared:</p>
 <blockquote><p>“I've been looking at The Kingdom Circuit and really appreciate what you're doing for the CHH community.”</p></blockquote>
 <p>That kind of feedback reinforces why we started and motivates us to keep building.</p></section>
-<section class="kc-about-section" aria-labelledby="kc-about-canada"><h2 id="kc-about-canada">Connecting with Canada</h2>
-<p>We started with U.S. show listings. After connecting with Canadian CHH artists and Canada4Christ, we’re exploring how to build useful coverage for Canada too.</p>
-<p>We’d love to connect with Canadian artists, promoters, and venues who can help us find upcoming shows and get more fans in the room. Artists and shows can also be submitted directly through our website.</p></section>
 <section class="kc-about-section" aria-labelledby="kc-about-connect"><h2 id="kc-about-connect">Find a show. Share a show.</h2>
 <div class="kc-about-links"><a class="kc-discovery-primary" href="{TEST_BASE}shows/">Find a show <span aria-hidden="true">↗</span></a>
 <a href="{TEST_BASE}artists/">Explore artists</a><a href="{TEST_BASE}submit/">Submit a show</a><a href="{TEST_BASE}submit/artist/">Submit an artist</a></div>
@@ -691,12 +688,12 @@ def verify(live, site, context):
     assert about.text(about.one(lambda n: 'data-about-upcoming-count' in n.attrs)) == str(len(context['active']))
     assert about.text(about.one(lambda n: 'data-about-artist-count' in n.attrs)) == str(context['artist_total'])
     assert about.one(lambda n: n.tag == 'time').attrs['datetime'] == context['as_of'].isoformat()
-    for section_id in ('kc-about-story', 'kc-about-today', 'kc-about-mission', 'kc-about-community', 'kc-about-canada', 'kc-about-connect'):
+    for section_id in ('kc-about-story', 'kc-about-today', 'kc-about-mission', 'kc-about-community', 'kc-about-connect'):
         assert about.one(lambda n: n.attrs.get('id') == section_id).tag == 'h2'
     assert f'href="{TEST_BASE}submit/artist/"' in about.source
     assert 'We started Kingdom Circuit in July 2026' in about.source
     assert "I've been looking at The Kingdom Circuit and really appreciate what you're doing for the CHH community." in about.source
-    assert 'Canada4Christ' in about.source and 'we’re exploring' in about.source
+    assert not re.search(r'canad(?:a|ian)', about.text(about.one(lambda n: 'data-about-page' in n.attrs)), re.I), 'Owner removed Canada outreach from About Us'
     assert not any(n.has('mission-statement') for n in home.nodes), 'Mission should live on About Us, not Home'
     assert home.text(home.one(lambda n: n.tag == 'h1')) == HOME_HEADING
     assert home.text(home.one(lambda n: n.has('kc-discovery-deck'))) == HOME_SUBTITLE
