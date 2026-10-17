@@ -669,6 +669,9 @@ def combined_transform(relative, source, context):
 
 
 def apply(site, live):
+    if mobile.live_has_promoted_discovery(live):
+        print('National discovery is now live; no duplicate preview overlay is needed.')
+        return
     as_of = today()
     context = load_context(live, as_of)
     for path in sorted(site.rglob('*')):

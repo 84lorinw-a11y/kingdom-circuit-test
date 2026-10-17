@@ -266,7 +266,24 @@ def transform(relative, source, states):
     return text.replace('</head>', assets + '</head>', 1).encode()
 
 
+def live_has_promoted_discovery(live):
+    """After promotion, mirror the live layout instead of applying it twice."""
+    home = (live / 'index.html').read_text()
+    if 'data-national-home' not in home:
+        return False
+    assert 'data-national-discovery' in home and 'Find CHH Shows Near You!' in home, 'Unrecognized live discovery layout'
+    for relative in ('about-us/index.html', 'shows/this-weekend/index.html',
+                     'assets/mobile-seo-preview.css', 'assets/mobile-seo-preview.js',
+                     'assets/national-discovery.css', 'assets/national-discovery.js',
+                     'assets/fan-discovery.css', 'assets/fan-discovery.js'):
+        assert (live / relative).is_file(), f'Incomplete promoted live release: {relative}'
+    return True
+
+
 def apply(site, live):
+    if live_has_promoted_discovery(live):
+        print('Discovery is now live; preserving the exact production layout in test.')
+        return
     states = catalog(live)
     changed = []
     for path in sorted(site.rglob('*.html')):

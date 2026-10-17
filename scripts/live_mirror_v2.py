@@ -16,6 +16,7 @@ LIVE_GA = "G-N2KK9XF4TJ"
 TEST_GA = "G-TEST-DISABLED"
 
 INTERNAL_PATH_PREFIXES = (
+    "about-us/",
     "assets/",
     "artists/",
     "config/",
@@ -52,7 +53,7 @@ OMITTED_REPORT_FILES = frozenset(
     }
 )
 ROOT_SITE_TARGET = (
-    r"(?:(?:assets|artists|config|event|festivals|new-shows|shows|submit)/)"
+    r"(?:(?:about-us|assets|artists|config|event|festivals|new-shows|shows|submit)/)"
     r"|(?:app\.js|events\.json|robots\.txt|run-status\.json|"
     r"seo-enhancements\.js|seo-static\.js|sitemap\.xml|styles\.css|"
     r"supplemental-events\.json)"

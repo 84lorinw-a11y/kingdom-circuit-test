@@ -7,7 +7,7 @@ from pathlib import Path
 from live_mirror_v2 import verify_exact_mirror
 from build_mobile_show_test import verify as verify_calendar
 from build_artist_intake_mockup import verify as verify_intake
-from mobile_seo_preview import ASSETS, VERSION, verify_overlay
+from mobile_seo_preview import ASSETS, VERSION, verify_overlay, live_has_promoted_discovery
 import national_discovery_preview as discovery
 
 EXPERIMENT_FILES = frozenset({
@@ -23,6 +23,23 @@ ADDITIONS = (EXPERIMENT_FILES | {".nojekyll", "test-live-mirror-manifest.json", 
 def verify(live: Path, site: Path) -> dict:
     manifest_path = site / "test-live-mirror-manifest.json"
     manifest = json.loads(manifest_path.read_text())
+    if live_has_promoted_discovery(live):
+        additions = EXPERIMENT_FILES | {'test-live-mirror-manifest.json'}
+        if not (live / '.nojekyll').exists():
+            additions = additions | {'.nojekyll'}
+        parity = verify_exact_mirror(live, site,
+            allowed_additions=additions)
+        verify_calendar(site, isolated=True)
+        verify_intake(site)
+        manifest.update(parity)
+        manifest.update({'mode': 'exact-live-artifact-mirror', 'contentAndLayoutParity': True,
+                         'dataFilesByteIdentical': True, 'binaryAssetsByteIdentical': True,
+                         'testRedesignApplied': False, 'promotedDiscoveryMirrored': True,
+                         'preservedExperimentPaths': ['/test-all-shows/', '/test-show-feed/', '/test-artist-intake/'],
+                         'isolatedExperimentFileCount': len(EXPERIMENT_FILES)})
+        manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
+        print(json.dumps(manifest, indent=2))
+        return manifest
     context = discovery.load_context(live, date.fromisoformat(manifest['nationalDiscovery']['asOfDate']))
     parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS,
                                 approved_transform=lambda path, data: discovery.combined_transform(path, data, context))
