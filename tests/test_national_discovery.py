@@ -51,6 +51,50 @@ class NationalDiscoveryTests(unittest.TestCase):
         self.assertIn('text-overflow: ellipsis;',css)
         self.assertIn('object-fit: contain;',css)
 
+    def test_unknown_flyers_and_replacement_dimensions_never_get_a_crop(self):
+        for image in ['<img src="new-flyer.webp" width="800" height="800">',
+                      '<img src="/assets/9aaded4384127f8719630099-w1280.webp" width="640" height="640">',
+                      '<img width="0" height="800">', '<img>']:
+            self.assertEqual(discovery.artwork_presentation(image), ('contain', '', 178))
+
+    def test_only_plain_artist_photos_get_automatic_fill(self):
+        self.assertEqual(discovery.artwork_presentation('<img class="artist-photo" width="1000" height="1000">'),
+                         ('photo-fill', '', 235))
+        self.assertEqual(discovery.artwork_presentation('<img class="event-artwork" data-artist-key="mission" width="1000" height="1000">'),
+                         ('contain', '', 178))
+
+    def test_reviewed_crop_geometry_preserves_ratio_and_entire_safe_rectangle(self):
+        frame_height = 1440 / 1092
+        for filename, (width, height, bounds) in discovery.ARTWORK_SAFE_BOUNDS.items():
+            with self.subTest(image=filename):
+                treatment, style, sizes = discovery.artwork_presentation(f'<img src="/assets/{filename}" width="{width}" height="{height}">')
+                self.assertEqual(treatment, 'border-trim')
+                values = {key: float(value.rstrip('%')) / 100 for key, value in (v.split(':') for v in style.split(';'))}
+                w, h, x, y = (values['--kc-art-' + key] for key in ('w','h','x','y'))
+                self.assertAlmostEqual(w / (h * frame_height), width / height, places=5)
+                left, top, right, bottom = bounds
+                self.assertGreaterEqual(x + w * left, -.00001)
+                self.assertGreaterEqual(y + h * top, -.00001)
+                self.assertLessEqual(x + w * right, 1.00001)
+                self.assertLessEqual(y + h * bottom, 1.00001)
+                self.assertGreaterEqual(sizes, w * 178 - .001)
+                self.assertGreaterEqual(w, min(1, frame_height * width / height))
+
+    def test_artwork_crop_is_preview_only_and_fallback_is_not_cropped(self):
+        image = '<img src="/assets/9aaded4384127f8719630099-w1280.webp" width="1280" height="1280" style="object-position:center" sizes="100vw">'
+        record = {'attrs':{'data-date':'2026-10-17'}, 'href':'/event/a/', 'image':image,
+                  'name':'The Sazon Experience', 'artists':'<p class="artist-line">Giovani</p>', 'badges':'', 'meta':{}}
+        output = discovery.teaser(record)
+        self.assertEqual(record['image'], image)
+        self.assertIn('data-artwork-treatment="border-trim"', output)
+        self.assertIn('sizes="235px"', output)
+        shown = discovery.Document(output).one(lambda n:n.tag == 'img')
+        original = discovery.Document(image).one(lambda n:n.tag == 'img')
+        for attr in ('src','width','height','style'):
+            self.assertEqual(shown.attrs[attr], original.attrs[attr])
+        css = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
+        self.assertIn('[data-artwork-treatment="border-trim"] img:not([data-kc-fallback-used])',css)
+
     def test_card_formats_gallery_uses_same_teasers_as_home(self):
         records = [{'attrs':{'data-date':'2026-10-17'},'href':f'/event/{shape}/','name':shape,
                     'image':f'<img src="{shape}.webp" width="{w}" height="{h}">',

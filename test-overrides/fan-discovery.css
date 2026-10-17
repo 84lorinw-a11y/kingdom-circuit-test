@@ -21,9 +21,11 @@ body .kc-fan-home .kc-discovery-heading > a { font-size: .76rem; flex-shrink: 0;
 body .kc-fan-shelf { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 180px; gap: 12px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #9c5c47 #20150f; padding: 2px 2px 12px; margin-inline: -2px; align-items: start; }
 .kc-fan-shelf > * { scroll-snap-align: start; }
 body .kc-fan-shelf .kc-discovery-show { display: flex; flex-direction: column; width: 180px; height: 350px; gap: 0; padding: 0; border-color: #423129; overflow: hidden; border-radius: 9px; background: #100e0c; box-sizing: border-box; }
-body .kc-fan-shelf .kc-teaser-image { display: block; height: auto; aspect-ratio: var(--kc-artwork-ratio, 1092 / 1440); border-radius: 0; background: #080808; flex: none; }
+body .kc-fan-shelf .kc-teaser-image { display: block; position: relative; overflow: hidden; height: auto; aspect-ratio: var(--kc-artwork-ratio, 1092 / 1440); border-radius: 0; background: #080808; flex: none; }
 body .kc-fan-shelf .kc-teaser-image img,
 body .kc-fan-shelf .kc-teaser-image img.artist-photo { object-fit: contain; }
+body .kc-fan-shelf .kc-teaser-image[data-artwork-treatment="photo-fill"] img:not([data-kc-fallback-used]) { object-fit: cover; }
+body .kc-fan-shelf .kc-teaser-image[data-artwork-treatment="border-trim"] img:not([data-kc-fallback-used]) { position: absolute; width: var(--kc-art-w); height: var(--kc-art-h); max-width: none; left: var(--kc-art-x); top: var(--kc-art-y); }
 body .kc-fan-shelf .kc-teaser-copy { display: grid; grid-template-rows: 14px 34px 14px 14px 14px; row-gap: 1px; align-content: start; padding: 8px; flex: 1; min-height: 0; width: 100%; box-sizing: border-box; }
 /* Type labels remain in the complete listing, as in the approved Brenno sample. */
 body .kc-fan-shelf .kc-teaser-copy .event-badges { display: none; }

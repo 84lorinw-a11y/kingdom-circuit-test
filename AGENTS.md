@@ -49,3 +49,8 @@
 
 - Supersedes adaptive card heights: EVERY homepage show preview must be 180px wide by 350px high, using Brenno's 1092:1440 image-frame ratio for all artwork shapes. All image bottoms, text rows and card bottoms align. Preserve contain/no stretching; square and wide artwork have black margins in the shared portrait frame.
 - Use fixed preview text rows (date, two-line title, artist, location, venue) with ellipses where needed. Preserve complete text and links in HTML, accessible names, hover titles, event pages and full listings. Never force all cards to a taller size merely to fit the longest copy.
+
+## October 17 safe image enlargement (latest approval)
+
+- Owner approved enlarging preview artwork: fill frames with plain artist photos and remove visually reviewed empty/decorative flyer borders with CSS-only framing. Retain 180×350 cards and Brenno's image frame. Never stretch images or cut off important flyer text. Text-heavy or unreviewed flyers default to contain; some margins are intentional.
+- Bind reviewed bounds to the exact source asset/dimensions, not artist or event names. Preserve original files, full event-page posters, image metadata, URLs and all other content. Responsive sizes must reflect the enlarged image, and broken-image fallbacks must not inherit a crop. Test only.

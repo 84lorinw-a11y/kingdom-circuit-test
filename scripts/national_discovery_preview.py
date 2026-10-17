@@ -11,6 +11,7 @@ from collections import Counter
 from datetime import date, datetime, timedelta
 from html import escape
 import json
+from math import ceil
 from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
@@ -21,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-3'
+VERSION = '20261017-4'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -31,6 +32,17 @@ HOME_HEADING = 'Find CHH Shows Near You!'
 HOME_SUBTITLE = 'CHH concerts, christian rap shows and festivals!'
 CARD_SAMPLE_PATH = 'test-card-preview/index.html'
 CARD_IMAGE_RATIO = '1092 / 1440'  # Approved Brenno poster frame for every shape.
+# Visually reviewed empty/decorative margins only. Match the exact asset and
+# dimensions, not an event/artist name, so replacement flyers default to contain.
+# Bounds are left, top, right, bottom as fractions of the original image.
+ARTWORK_SAFE_BOUNDS = {
+    '1914811f461045f3cde8d98a-w720.webp': (720, 1010, (0, .018, 1, .982)),  # CJ: blank top/bottom paper
+    'fb18ec129d915d345e02bd1d-w608.webp': (608, 1080, (0, .10, 1, .87)),  # Faith Fest: yellow top/bottom space
+    '3a35b500fb25a34f0df71c80-w720.webp': (720, 720, (.045, 0, .955, 1)),  # Mission: side margins, keep date/tickets
+    'bc7652d5faeb8580c20b76c8-w1280.webp': (1280, 1600, (.026, 0, .974, 1)),  # CENDIA: decorative sides
+    '9aaded4384127f8719630099-w1280.webp': (1280, 1280, (.12, 0, .88, 1)),  # Sazon: empty orange sides
+    'cde71a5a77b9203a03388413-w720.webp': (720, 1280, (0, .145, 1, .855)),  # Family Day: embedded black bars
+}
 SEARCH_ICON = '<svg class="kc-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 
 # Land-border neighbors only. Islands do not get invented "nearby" states.
@@ -208,19 +220,50 @@ def artwork_layout(image_html):
     return shape, CARD_IMAGE_RATIO
 
 
+def artwork_presentation(image_html):
+    """CSS-only framing: keep original files and full event-page posters intact."""
+    image = Document(image_html).one(lambda n: n.tag == 'img')
+    try:
+        width, height = int(image.attrs.get('width', '')), int(image.attrs.get('height', ''))
+    except ValueError:
+        return 'contain', '', 178
+    if width <= 0 or height <= 0:
+        return 'contain', '', 178
+    frame_ratio = 1092 / 1440
+    if image.has('artist-photo'):
+        return 'photo-fill', '', ceil(max(178, 178 / frame_ratio * width / height))
+    reviewed = ARTWORK_SAFE_BOUNDS.get(Path(urlsplit(image.attrs.get('src', '')).path).name)
+    if not reviewed or (width, height) != reviewed[:2]:
+        return 'contain', '', 178
+    left, top, right, bottom = reviewed[2]
+    assert 0 <= left < right <= 1 and 0 <= top < bottom <= 1
+    # Fit the reviewed content rectangle, never distort it. Any remaining
+    # margins are intentional: content touching an edge must not be cut off.
+    frame_height = 1 / frame_ratio
+    scale = min(1 / (width * (right - left)), frame_height / (height * (bottom - top)))
+    rendered_width, rendered_height = width * scale, height * scale
+    x = (1 - rendered_width * (right - left)) / 2 - rendered_width * left
+    y = (frame_height - rendered_height * (bottom - top)) / 2 - rendered_height * top
+    style = ';'.join(f'--kc-art-{key}:{value * 100:.5f}%'
+                     for key, value in [('w', rendered_width), ('h', rendered_height / frame_height),
+                                        ('x', x), ('y', y / frame_height)])
+    return 'border-trim', style, ceil(rendered_width * 178)
+
+
 def teaser(record, image=True, eager=False):
     attrs = record['attrs']
     picture = ''
     shape, ratio = artwork_layout(record['image']) if image else ('unknown', CARD_IMAGE_RATIO)
     if image:
-        # Preserve the real image, responsive variants and focal point. Only sizes
-        # changes to match the approved 180px card (178px inside its border).
-        responsive_image = re.sub(r'sizes="[^"]*"', 'sizes="178px"', record['image'])
+        treatment, framing, rendered_width = artwork_presentation(record['image'])
+        # Preserve image identity/focal metadata; request enough pixels for zoom.
+        responsive_image = re.sub(r'sizes="[^"]*"', f'sizes="{rendered_width}px"', record['image'])
         if 'sizes=' not in responsive_image:
-            responsive_image = responsive_image.replace('<img ', '<img sizes="178px" ', 1)
+            responsive_image = responsive_image.replace('<img ', f'<img sizes="{rendered_width}px" ', 1)
         if eager:
             responsive_image = responsive_image.replace('loading="lazy"', 'loading="eager" fetchpriority="high"')
-        picture = f'<a class="kc-teaser-image" href="{record["href"]}" tabindex="-1" aria-hidden="true">{responsive_image}</a>'
+        picture = (f'<a class="kc-teaser-image" href="{record["href"]}" tabindex="-1" aria-hidden="true" '
+                   f'data-artwork-treatment="{treatment}" style="{framing}">{responsive_image}</a>')
     return (f'<article class="kc-discovery-show" data-discovery-show data-artwork-shape="{shape}" '
             f'style="--kc-artwork-ratio:{ratio}" data-date="{attrs["data-date"]}" '
             f'data-end-date="{attrs.get("data-end-date") or attrs["data-date"]}">'
@@ -448,9 +491,9 @@ def card_sample_page(live, context):
         if shape not in examples and feature_eligible(candidate):
             examples[shape] = candidate
     labels = [('portrait', 'Portrait', 'Brenno is the standard card and image frame.'),
-              ('tall', 'Tall / Story', 'Full flyer fits the same frame with side margins.'),
-              ('square', 'Square', 'Full square fits the same portrait frame.'),
-              ('landscape', 'Wide', 'Full wide image fits the same portrait frame.')]
+              ('tall', 'Tall / Story', 'Reviewed empty borders are trimmed to enlarge the flyer.'),
+              ('square', 'Square', 'Artist photos fill the frame; text-heavy flyers stay protected.'),
+              ('landscape', 'Wide', 'Photos fill the frame; full originals remain on the show page.')]
     content = '<div class="kc-card-formats">' + ''.join(
         f'<section><h2>{label}</h2><p>{description}</p><div class="kc-fan-shelf">{teaser(examples[shape])}</div></section>'
         for shape, label, description in labels if shape in examples) + '</div>'
@@ -460,7 +503,7 @@ def card_sample_page(live, context):
             f'<link rel="stylesheet" href="{TEST_BASE}styles.css"><link rel="stylesheet" href="{TEST_BASE}assets/kc-redesign-v1.css">'
             + ''.join(f'<link rel="stylesheet" href="{TEST_BASE}assets/{asset}?v={VERSION}">' for asset in ASSETS if asset.endswith('.css'))
             + f'</head><body><main class="kc-card-sample-page"><a href="{TEST_BASE}">Back to test home</a><h1>Show card formats</h1>'
-            '<p>Every card is the same size as Brenno: 180 × 350 pixels. All image frames and text rows line up, without cropping or stretching the artwork.</p>' + content + '</main></body></html>').encode()
+            '<p>Every card stays the same size as Brenno: 180 × 350 pixels. Photos fill the frame and reviewed flyer borders are trimmed. Important flyer content stays visible; original images remain on each show page.</p>' + content + '</main></body></html>').encode()
 
 
 def weekend_page(live, context):
@@ -652,7 +695,11 @@ def verify(live, site, context):
         shown_image = item.one(lambda n: n.tag == 'img')
         for attribute in ('src', 'srcset', 'width', 'height', 'alt', 'style'):
             assert shown_image.attrs.get(attribute) == original_image.attrs.get(attribute), f'Preview artwork changed: {attribute}'
-        assert shown_image.attrs['sizes'] == '178px'
+        treatment, framing, rendered_width = artwork_presentation(source['image'])
+        assert shown_image.attrs['sizes'] == f'{rendered_width}px'
+        image_link = item.one(lambda n: n.has('kc-teaser-image'))
+        assert image_link.attrs['data-artwork-treatment'] == treatment
+        assert image_link.attrs['style'] == framing
         assert node.attrs['data-artwork-shape'] == artwork_layout(source['image'])[0]
         assert node.attrs['style'] == f'--kc-artwork-ratio:{CARD_IMAGE_RATIO}'
         for field in ('Date', 'Venue', 'Location'):
