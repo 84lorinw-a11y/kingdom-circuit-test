@@ -96,3 +96,10 @@
 
 - Owner requested undoing the tiny orange strip: use a 24px bar, 11px text and 14px Instagram icon, retaining the orange theme and existing copy/link. This supersedes the earlier 9px strip.
 - Tighten vertical padding between the bar and header controls, and below the eight navigation boxes before the homepage intro. Preserve social-button hit targets, all eight links, narrow-phone layout, page content and SEO identities. Keep anchor/focus clearance compatible with the taller fixed bar. Production remains unchanged.
+
+## October 17 production promotion (supersedes TEST ONLY status above)
+
+- Owner explicitly approved production deployment. The reviewed layout from test36be2c60 is now live through production288c967b7ea0b570676e86f4704dcc8728bba076, successful run39063884533. Earlier TEST ONLY labels describe history, not the current deployment. Preserve all latest reviewed layout/content requirements above.
+- Production uses native scripts/mobile_discovery.py, scripts/national_discovery.py and scripts/finalize_fan_discovery.py after the retained legacy SEO/design pipeline. Do not copy this test harness or test identity settings into production.
+- Once capture detects the complete promoted production layout, test must mirror that artifact exactly with environment-only safety conversion; do not apply mobile/national overlays a second time. Preserve the three isolated test experiments, noindex/nofollow, blocked robots, disabled analytics, test paths and absent CNAME. Incomplete promotion detection fails closed.
+- Existing 1,178 production pages and all previous sitemap URLs were preserved; only /about-us/ and /shows/this-weekend/ were added. Public release verification passed57pages and6assets. Counts are a dated snapshot; continue mirroring current published content rather than freezing it.
