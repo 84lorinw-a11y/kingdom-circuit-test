@@ -1,7 +1,7 @@
 /* Fan-first layout. Existing colors, logos, artwork and page identities remain. */
-html { scroll-padding-top: 24px; }
+html { scroll-padding-top: calc(var(--kc-rd-followbar-height) + 8px); }
 body .kc-fan-home { --fan-line: #423129; --fan-accent: #ed8869; }
-body .kc-fan-home .kc-discovery-hero { display: block; padding: 18px 16px 12px; }
+body .kc-fan-home .kc-discovery-hero { display: block; padding: 10px 16px 12px; }
 body .kc-fan-home .kc-discovery-intro { max-width: 700px; }
 body .kc-fan-home .kc-rd-home-title { font-size: clamp(1.1rem, 7.15cqi, 2.65rem); margin-bottom: 5px; }
 body .kc-fan-home .kc-discovery-deck { margin: 0 0 12px; }
@@ -224,7 +224,7 @@ html:has([data-national-discovery]) body .kc-discovery-breadcrumb { padding-bloc
 html:has([data-national-discovery]) body .site-footer { padding-block: 28px; }
 .kc-fan-shelf :focus-visible, .kc-fan-shelf:focus-visible, .kc-fan-filters :focus-visible, .kc-fan-active :focus-visible, .kc-fan-artist-results :focus-visible { outline: 2px solid #ffc999; outline-offset: 3px; }
 @media (min-width: 800px) {
-  body .kc-fan-home .kc-discovery-hero { padding: 28px 28px 20px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: center; }
+  body .kc-fan-home .kc-discovery-hero { padding: 16px 28px 20px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: center; }
   body .kc-fan-home .kc-discovery-intro { grid-area: auto; }
   body .kc-fan-home .kc-discovery-section { padding: 24px 28px 12px; }
   body .kc-fan-home .kc-discovery-artists { grid-auto-columns: calc((100% - 60px)/6); }

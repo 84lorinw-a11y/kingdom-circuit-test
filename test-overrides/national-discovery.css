@@ -1,11 +1,12 @@
 /* National discovery preview. Preserve the approved brand, real photos and full calendars. */
-:root { --kc-rd-followbar-height: 9px; }
-body .kc-rd-followbar { min-height: 9px; padding-block: 0; line-height: 9px; }
-body .kc-rd-follow-link { min-height: 9px; padding-block: 0; line-height: 9px; font-size: 8px; gap: 3px; }
-body .kc-rd-followbar .kc-rd-instagram-icon { width: 8px; height: 8px; min-width: 8px; }
-body .kc-rd-follow-tagline { font-size: 8px; line-height: 9px; }
+:root { --kc-rd-followbar-height: 24px; }
+body .kc-rd-followbar { min-height: 24px; padding-block: 0; line-height: 24px; }
+body .kc-rd-follow-link { min-height: 24px; padding-block: 0; line-height: 24px; font-size: 11px; gap: 5px; }
+body .kc-rd-followbar .kc-rd-instagram-icon { width: 14px; height: 14px; min-width: 14px; }
+body .kc-rd-follow-tagline { font-size: 11px; line-height: 24px; }
 body .kc-rd-followbar:focus-within { min-height: 24px; }
 body .kc-rd-follow-link:focus-visible { font-size: 12px; line-height: 24px; outline: 2px solid #fff; outline-offset: -2px; }
+body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-primary { min-height: 56px; padding-block: 6px; }
 body .kc-facebook-button { display: grid; place-items: center; width: 44px; height: 44px; min-width: 44px; flex-shrink: 0; border-radius: 12px; text-decoration: none; }
 body .kc-facebook-icon { display: block; width: 38px; height: 38px; filter: drop-shadow(0 4px 8px rgb(8 102 255 / .22)); }
 body .kc-facebook-button:hover { background: rgb(8 102 255 / .12); }
@@ -16,7 +17,7 @@ body .kc-facebook-button:focus-visible { outline: 2px solid #ffc999; outline-off
   body .kc-rd-actions:has(.kc-facebook-button) .kc-rd-submit { padding-inline: 8px; font-size: .67rem; }
 }
 @media (max-width: 374px) {
-  body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) { display: grid; grid-template-columns: minmax(0, 1fr) 44px 44px; grid-template-rows: 24px 32px; gap: 4px 8px; padding-block: 8px; }
+  body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) { display: grid; grid-template-columns: minmax(0, 1fr) 44px 44px; grid-template-rows: 24px 32px; gap: 4px 8px; padding-block: 4px; }
   body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) .kc-rd-brand { grid-area: 1 / 1; min-height: 24px; }
   body:not(.kc-rd-profile-body) .kc-rd-primary:has(.kc-facebook-button) .kc-rd-brand img { width: 132px; height: 24px; }
   body:not(.kc-rd-profile-body) .kc-rd-actions:has(.kc-facebook-button) { display: contents; }
@@ -127,14 +128,14 @@ body .kc-weekend-hero { padding-block: 30px; }
 }
 @media (min-width: 760px) {
   body .kc-rd-header:not(.kc-rd-header--profile) { display: block; }
-  body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-primary { min-height: 60px; max-width: 1180px; margin-inline: auto; padding-block: 8px; }
+  body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-primary { min-height: 56px; max-width: 1180px; margin-inline: auto; padding-block: 6px; }
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav[data-compact-navigation] { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); width: 100%; max-width: 1180px; margin-inline: auto; border-top: 1px solid #302c2a; }
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav[data-compact-navigation] a { min-height: 32px; padding: 4px; border-right: 1px solid #302c2a; border-bottom: 1px solid #302c2a; font-size: .75rem; }
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav[data-compact-navigation] a:last-child { border-right: 0; }
 }
 @media (min-width: 1200px) {
-  body .kc-rd-header:not(.kc-rd-header--profile) { display: grid; grid-template-rows: 64px; }
-  body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-primary { min-height: 64px; }
+  body .kc-rd-header:not(.kc-rd-header--profile) { display: grid; grid-template-rows: 56px; }
+  body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-primary { min-height: 56px; }
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav[data-compact-navigation] { display: flex; width: auto; gap: 3px; align-self: center; border: 0; }
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav[data-compact-navigation] a,
   body .kc-rd-header:not(.kc-rd-header--profile) .kc-rd-nav[data-compact-navigation] a:last-child { padding-inline: 7px; border: 1px solid #302c2a; border-radius: 4px; }

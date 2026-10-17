@@ -8,6 +8,20 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
+    def test_readable_follow_bar_and_tighter_header_spacing(self):
+        css = (Path(__file__).resolve().parents[1] / 'test-overrides/national-discovery.css').read_text()
+        fan = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
+        self.assertIn('--kc-rd-followbar-height: 24px;', css)
+        follow = css.split('body .kc-rd-follow-link {', 1)[1].split('}', 1)[0]
+        self.assertIn('font-size: 11px;', follow)
+        self.assertIn('min-height: 24px;', follow)
+        self.assertIn('width: 14px; height: 14px; min-width: 14px;', css)
+        self.assertIn('grid-template-rows: 56px;', css)
+        self.assertIn('min-height: 56px; padding-block: 6px;', css)
+        self.assertIn('padding: 10px 16px 12px;', fan)
+        self.assertIn('padding: 16px 28px 20px;', fan)
+        self.assertIn('scroll-padding-top: calc(var(--kc-rd-followbar-height) + 8px);', fan)
+
     def test_facebook_header_button_follows_big_instagram_and_preserves_existing_links(self):
         follow = '<a class="kc-rd-follow-link" href="https://www.instagram.com/thekingdomcircuit/">Follow Instagram</a>'
         instagram = '<a class="kc-rd-instagram-button" href="https://www.instagram.com/thekingdomcircuit/" aria-label="Instagram"><svg></svg></a>'

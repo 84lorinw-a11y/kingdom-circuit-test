@@ -91,3 +91,8 @@
 
 - Add a blue Facebook icon immediately right of the large Instagram button wherever that shared header action is present. Destination is exactly https://www.facebook.com/profile.php?id=61593510924754, opening in a new tab with a descriptive accessible label and noopener/noreferrer.
 - Match the Instagram button's44px target/38px icon; keep social icons beside each other without overlap. On very narrow phones, the logo and Submit a Show may stack to their left so the logo stays readable. Preserve the orange Instagram strip, existing Instagram/submit links, compact profile-header behavior, all artist socials, navigation and source data/SEO identities. No production change.
+
+## October 17 readable follow bar and tighter header spacing (TEST ONLY)
+
+- Owner requested undoing the tiny orange strip: use a 24px bar, 11px text and 14px Instagram icon, retaining the orange theme and existing copy/link. This supersedes the earlier 9px strip.
+- Tighten vertical padding between the bar and header controls, and below the eight navigation boxes before the homepage intro. Preserve social-button hit targets, all eight links, narrow-phone layout, page content and SEO identities. Keep anchor/focus clearance compatible with the taller fixed bar. Production remains unchanged.
