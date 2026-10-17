@@ -20,20 +20,24 @@ body .kc-fan-home .kc-discovery-heading > a { font-size: .76rem; flex-shrink: 0;
 .kc-fan-shelf-wrap { min-width: 0; }
 body .kc-fan-shelf { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 180px; gap: 12px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #9c5c47 #20150f; padding: 2px 2px 12px; margin-inline: -2px; align-items: start; }
 .kc-fan-shelf > * { scroll-snap-align: start; }
-body .kc-fan-shelf .kc-discovery-show { display: flex; flex-direction: column; gap: 0; padding: 0; border-color: #423129; overflow: hidden; border-radius: 9px; background: #100e0c; box-sizing: border-box; }
-body .kc-fan-shelf .kc-teaser-image { display: block; height: auto; aspect-ratio: var(--kc-artwork-ratio, 3 / 4); border-radius: 0; background: #080808; flex: none; }
+body .kc-fan-shelf .kc-discovery-show { display: flex; flex-direction: column; width: 180px; height: 350px; gap: 0; padding: 0; border-color: #423129; overflow: hidden; border-radius: 9px; background: #100e0c; box-sizing: border-box; }
+body .kc-fan-shelf .kc-teaser-image { display: block; height: auto; aspect-ratio: var(--kc-artwork-ratio, 1092 / 1440); border-radius: 0; background: #080808; flex: none; }
 body .kc-fan-shelf .kc-teaser-image img,
 body .kc-fan-shelf .kc-teaser-image img.artist-photo { object-fit: contain; }
-body .kc-fan-shelf .kc-teaser-copy { display: flex; flex-direction: column; padding: 8px; flex: none; width: 100%; box-sizing: border-box; }
+body .kc-fan-shelf .kc-teaser-copy { display: grid; grid-template-rows: 14px 34px 14px 14px 14px; row-gap: 1px; align-content: start; padding: 8px; flex: 1; min-height: 0; width: 100%; box-sizing: border-box; }
 /* Type labels remain in the complete listing, as in the approved Brenno sample. */
 body .kc-fan-shelf .kc-teaser-copy .event-badges { display: none; }
-body .kc-fan-shelf .kc-teaser-date { font-size: 11px; line-height: 1.3; color: #eabd9a; margin: 0 0 4px; }
-body .kc-fan-shelf .kc-teaser-copy h3 { font-size: 14px; margin: 0 0 4px; line-height: 1.2; }
+body .kc-fan-shelf .kc-teaser-date { font-size: 11px; line-height: 14px; color: #eabd9a; margin: 0; }
+body .kc-fan-shelf .kc-teaser-copy h3 { font-size: 14px; margin: 0; line-height: 17px; overflow: hidden; }
+body .kc-fan-shelf .kc-teaser-copy h3 a { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; padding: 0; }
 body .kc-fan-shelf .kc-teaser-location,
 body .kc-fan-shelf .kc-teaser-venue,
-body .kc-fan-shelf .artist-line { font-size: 11px; line-height: 1.3; margin-bottom: 3px; }
-/* Full lineups remain in the HTML and expand on focus; no information is removed. */
-body .kc-fan-shelf .artist-line:not(:focus-within) { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+body .kc-fan-shelf .artist-line { font-size: 11px; line-height: 14px; margin: 0; }
+/* Previews stay equal-height. Full text remains accessible and on event pages. */
+body .kc-fan-shelf .kc-teaser-date,
+body .kc-fan-shelf .kc-teaser-location,
+body .kc-fan-shelf .kc-teaser-venue,
+body .kc-fan-shelf .artist-line { display: block; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .kc-fan-shelf-controls { display: flex; justify-content: end; align-items: center; gap: 8px; padding-top: 4px; }
 .kc-fan-shelf-controls > span { margin-right: auto; font-size: .7rem; color: #b8aaa0; }
 .kc-fan-shelf-controls button { width: 44px; height: 44px; border: 1px solid #634132; border-radius: 50%; color: #f4efe8; background: #211711; font: inherit; font-size: 1.3rem; cursor: pointer; }

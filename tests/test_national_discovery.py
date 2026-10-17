@@ -8,21 +8,21 @@ import national_discovery_preview as discovery
 
 
 class NationalDiscoveryTests(unittest.TestCase):
-    def test_artwork_shapes_preserve_ratio_except_tall_frame_cap(self):
+    def test_every_artwork_shape_uses_brenno_standard_frame(self):
         for width, height, shape, ratio in [
             (1092,1440,'portrait','1092 / 1440'),
-            (1080,1350,'portrait','1080 / 1350'),
-            (1000,1500,'portrait','1000 / 1500'),
-            (1080,1920,'tall','3 / 4'),
-            (1080,1080,'square','1080 / 1080'),
-            (1280,692,'landscape','1280 / 692'),
+            (1080,1350,'portrait','1092 / 1440'),
+            (1000,1500,'portrait','1092 / 1440'),
+            (1080,1920,'tall','1092 / 1440'),
+            (1080,1080,'square','1092 / 1440'),
+            (1280,692,'landscape','1092 / 1440'),
         ]:
             with self.subTest(shape=shape, width=width, height=height):
                 self.assertEqual(discovery.artwork_layout(f'<img width="{width}" height="{height}">'), (shape,ratio))
 
     def test_unknown_dimensions_use_safe_uncropped_portrait_frame(self):
         for attributes in ['', 'width="0" height="100"', 'width="-30" height="20"', 'width="bad" height="100"']:
-            self.assertEqual(discovery.artwork_layout(f'<img {attributes}>'), ('unknown','3 / 4'))
+            self.assertEqual(discovery.artwork_layout(f'<img {attributes}>'), ('unknown','1092 / 1440'))
 
     def test_adaptive_teaser_preserves_original_image_and_all_event_facts(self):
         image = '<img src="real.webp" srcset="small.webp 320w, real.webp 1080w" width="1080" height="1920" sizes="100vw" alt="Full flyer" loading="lazy" style="object-position:center">'
@@ -32,7 +32,7 @@ class NationalDiscoveryTests(unittest.TestCase):
                   'meta':{'Date':'Saturday, 3:30 PM','Venue':'Music Hall','Location':'Buffalo, NY'}}
         output = discovery.teaser(record, eager=True)
         self.assertIn('data-artwork-shape="tall"',output)
-        self.assertIn('style="--kc-artwork-ratio:3 / 4"',output)
+        self.assertIn('style="--kc-artwork-ratio:1092 / 1440"',output)
         self.assertIn('sizes="178px"',output)
         self.assertIn('loading="eager" fetchpriority="high"',output)
         old = discovery.Document(image).one(lambda n:n.tag=='img')
@@ -42,6 +42,14 @@ class NationalDiscoveryTests(unittest.TestCase):
         for value in ['Show name','Brenno','Saturday, 3:30 PM','Music Hall','Buffalo, NY','Concert']:
             self.assertIn(value,output)
         self.assertEqual(output.count('href="/event/a/"'),2)
+
+    def test_uniform_card_styles_bound_title_and_text_without_cropping_images(self):
+        css = (Path(__file__).resolve().parents[1] / 'test-overrides/fan-discovery.css').read_text()
+        self.assertIn('width: 180px; height: 350px;',css)
+        self.assertIn('grid-template-rows: 14px 34px 14px 14px 14px;',css)
+        self.assertIn('-webkit-line-clamp: 2;',css)
+        self.assertIn('text-overflow: ellipsis;',css)
+        self.assertIn('object-fit: contain;',css)
 
     def test_card_formats_gallery_uses_same_teasers_as_home(self):
         records = [{'attrs':{'data-date':'2026-10-17'},'href':f'/event/{shape}/','name':shape,

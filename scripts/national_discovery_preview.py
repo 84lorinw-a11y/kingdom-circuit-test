@@ -21,7 +21,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261017-2'
+VERSION = '20261017-3'
 ASSETS = ('national-discovery.css', 'national-discovery.js', 'fan-discovery.css', 'fan-discovery.js')
 WEEKEND_PATH = 'shows/this-weekend/index.html'
 WEEKEND_HREF = TEST_BASE + 'shows/this-weekend/'
@@ -30,6 +30,7 @@ ABOUT_HREF = TEST_BASE + 'about-us/'
 HOME_HEADING = 'Find CHH Shows Near You!'
 HOME_SUBTITLE = 'CHH concerts, christian rap shows and festivals!'
 CARD_SAMPLE_PATH = 'test-card-preview/index.html'
+CARD_IMAGE_RATIO = '1092 / 1440'  # Approved Brenno poster frame for every shape.
 SEARCH_ICON = '<svg class="kc-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 
 # Land-border neighbors only. Islands do not get invented "nearby" states.
@@ -192,26 +193,25 @@ def section_heading(eyebrow, title, href, action, ident):
 
 
 def artwork_layout(image_html):
-    """Use source dimensions, never crop/rewrite the actual artwork to fit a card."""
+    """Classify source artwork but use the same approved Brenno frame for all."""
     image = Document(image_html).one(lambda n: n.tag == 'img')
     try:
         width, height = int(image.attrs.get('width', '')), int(image.attrs.get('height', ''))
     except ValueError:
-        return 'unknown', '3 / 4'
+        return 'unknown', CARD_IMAGE_RATIO
     if width <= 0 or height <= 0:
-        return 'unknown', '3 / 4'
+        return 'unknown', CARD_IMAGE_RATIO
     ratio = width / height
     if ratio < .65:
-        # A full Story flyer fits inside a capped portrait frame, with side margins.
-        return 'tall', '3 / 4'
+        return 'tall', CARD_IMAGE_RATIO
     shape = 'portrait' if ratio < .9 else 'square' if ratio <= 1.1 else 'landscape'
-    return shape, f'{width} / {height}'
+    return shape, CARD_IMAGE_RATIO
 
 
 def teaser(record, image=True, eager=False):
     attrs = record['attrs']
     picture = ''
-    shape, ratio = artwork_layout(record['image']) if image else ('unknown', '3 / 4')
+    shape, ratio = artwork_layout(record['image']) if image else ('unknown', CARD_IMAGE_RATIO)
     if image:
         # Preserve the real image, responsive variants and focal point. Only sizes
         # changes to match the approved 180px card (178px inside its border).
@@ -225,10 +225,10 @@ def teaser(record, image=True, eager=False):
             f'style="--kc-artwork-ratio:{ratio}" data-date="{attrs["data-date"]}" '
             f'data-end-date="{attrs.get("data-end-date") or attrs["data-date"]}">'
             f'{picture}<div class="kc-teaser-copy">{record["badges"]}'
-            f'<p class="kc-teaser-date">{escape(record["meta"].get("Date", ""))}</p>'
-            f'<h3><a href="{record["href"]}">{escape(record["name"])}</a></h3>'
-            f'{record["artists"]}<p class="kc-teaser-location">{escape(record["meta"].get("Location", ""))}</p>'
-            f'<p class="kc-teaser-venue">{escape(record["meta"].get("Venue", ""))}</p></div></article>')
+            f'<p class="kc-teaser-date" title="{escape(record["meta"].get("Date", ""))}">{escape(record["meta"].get("Date", ""))}</p>'
+            f'<h3><a href="{record["href"]}" title="{escape(record["name"])}">{escape(record["name"])}</a></h3>'
+            f'{record["artists"]}<p class="kc-teaser-location" title="{escape(record["meta"].get("Location", ""))}">{escape(record["meta"].get("Location", ""))}</p>'
+            f'<p class="kc-teaser-venue" title="{escape(record["meta"].get("Venue", ""))}">{escape(record["meta"].get("Venue", ""))}</p></div></article>')
 
 
 def artist_tile(artist):
@@ -447,10 +447,10 @@ def card_sample_page(live, context):
         shape, _ = artwork_layout(candidate['image'])
         if shape not in examples and feature_eligible(candidate):
             examples[shape] = candidate
-    labels = [('portrait', 'Portrait', 'Full poster at its natural proportions.'),
-              ('tall', 'Tall / Story', 'Full flyer inside a capped portrait frame.'),
-              ('square', 'Square', 'Full square, with the details directly underneath.'),
-              ('landscape', 'Wide', 'Full width, with a shorter image area.')]
+    labels = [('portrait', 'Portrait', 'Brenno is the standard card and image frame.'),
+              ('tall', 'Tall / Story', 'Full flyer fits the same frame with side margins.'),
+              ('square', 'Square', 'Full square fits the same portrait frame.'),
+              ('landscape', 'Wide', 'Full wide image fits the same portrait frame.')]
     content = '<div class="kc-card-formats">' + ''.join(
         f'<section><h2>{label}</h2><p>{description}</p><div class="kc-fan-shelf">{teaser(examples[shape])}</div></section>'
         for shape, label, description in labels if shape in examples) + '</div>'
@@ -460,7 +460,7 @@ def card_sample_page(live, context):
             f'<link rel="stylesheet" href="{TEST_BASE}styles.css"><link rel="stylesheet" href="{TEST_BASE}assets/kc-redesign-v1.css">'
             + ''.join(f'<link rel="stylesheet" href="{TEST_BASE}assets/{asset}?v={VERSION}">' for asset in ASSETS if asset.endswith('.css'))
             + f'</head><body><main class="kc-card-sample-page"><a href="{TEST_BASE}">Back to test home</a><h1>Show card formats</h1>'
-            '<p>The approved Brenno style, adapted to real artwork. Now applied to both homepage show rows on the test site.</p>' + content + '</main></body></html>').encode()
+            '<p>Every card is the same size as Brenno: 180 × 350 pixels. All image frames and text rows line up, without cropping or stretching the artwork.</p>' + content + '</main></body></html>').encode()
 
 
 def weekend_page(live, context):
@@ -654,6 +654,7 @@ def verify(live, site, context):
             assert shown_image.attrs.get(attribute) == original_image.attrs.get(attribute), f'Preview artwork changed: {attribute}'
         assert shown_image.attrs['sizes'] == '178px'
         assert node.attrs['data-artwork-shape'] == artwork_layout(source['image'])[0]
+        assert node.attrs['style'] == f'--kc-artwork-ratio:{CARD_IMAGE_RATIO}'
         for field in ('Date', 'Venue', 'Location'):
             assert escape(source['meta'].get(field, '')) in item.source
     assert not any(n.attrs.get('src', '').startswith(TEST_BASE + 'app.js') for n in home.nodes)

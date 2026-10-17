@@ -44,3 +44,8 @@
 
 - Owner approved the Brenno sample and applying it to both homepage show shelves on TEST ONLY. Use 180px cards with compact details. Standard portrait, square and landscape images retain their natural proportions; tall Story images fit inside a capped 3:4 frame with side margins. Never stretch or crop away flyer details. Cards align at the top and may be shorter for square/wide artwork.
 - Preserve original image files, srcset, intrinsic dimensions, alt text, event details and destinations. Only responsive `sizes` changes to match the smaller preview. Keep normal full calendars, artist detail cards and artist tiles unchanged. The existing `/test-card-preview/` now demonstrates all four real formats, using the same styles as homepage shelves.
+
+## October 17 uniform Brenno standard (latest owner correction)
+
+- Supersedes adaptive card heights: EVERY homepage show preview must be 180px wide by 350px high, using Brenno's 1092:1440 image-frame ratio for all artwork shapes. All image bottoms, text rows and card bottoms align. Preserve contain/no stretching; square and wide artwork have black margins in the shared portrait frame.
+- Use fixed preview text rows (date, two-line title, artist, location, venue) with ellipses where needed. Preserve complete text and links in HTML, accessible names, hover titles, event pages and full listings. Never force all cards to a taller size merely to fit the longest copy.
