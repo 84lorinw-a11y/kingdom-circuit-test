@@ -52,6 +52,16 @@ Game URL: https://84lorinw-a11y.github.io/kingdom-circuit-test/play/
 
 The owner approved password-free testing on October 18, 2026. This route is intentionally absent from site navigation and sitemaps and includes `noindex,nofollow`. It is publicly accessible to anyone with the address; there is no server or shared password on GitHub Pages.
 
-Edit `test-overrides/chh-show-night/` and update the SHA-256 inventory in `test-overrides/chh-show-night-manifest.json` for intentional source changes. The mirror workflow runs `scripts/build_chh_game.py _site` before the final release verifier. That script rewrites `/play/` asset URLs for the test base path and verifies exact file contents, imports, the asset inventory, indexing policy and absence of password endpoints. Existing site pages remain an exact environment-adjusted copy of the published site. Do not copy the local Node server, `.env`, development artifacts or old assets into this repository.
+Edit `test-overrides/chh-show-night/` and update the SHA-256 inventory in `test-overrides/chh-show-night-manifest.json` for intentional source changes. The mirror workflow runs `scripts/build_chh_game.py _site` before the final release verifier. That script rewrites `/play/` asset URLs for the test base path and verifies exact file contents, imports, the asset inventory, indexing policy and absence of password endpoints. Existing site pages remain an exact environment-adjusted copy of the published site. Keep the local password server, `.env`, development artifacts and obsolete art out of the public game inventory. The separate `game-backend/` source is intentionally outside the Pages artifact.
 
 Game behavior checks: `node --test tests/chh-game/*.test.mjs`. Deployment checks: `python -m unittest discover -s tests -p 'test_*.py'`, followed by the full mirror workflow. Publishing this test branch does not promote the game to KingdomCircuit.com.
+
+## October 18 rebuild
+
+The game uses a single-screen touch layout, detailed illustrated scenes and people, and four replayable challenges: Eli, Joz, Steven and Chamblissnation. Every challenge has the same hit/clean-hit scoring. **No session score cap:** completed rounds add to each activity subtotal and the total forever; 1,000-point intervals are celebrations, never a finish line. Music-backed rounds stay 21–26 seconds and keep the approved excerpts. Nickname entry requires no signup.
+
+The larger opening marquee names Steven Malcolm, Eli Williams and Joz. The right venue wall carries Kingdom Circuit’s logo. Chamblissnation’s supplied products, logo and family message appear in merch; two fans wear the supplied outfits. VIP photos include the full wall emblem and six people under the @thekingdomcircuit banner.
+
+The static board saves the best complete session on the device and says so. The optional Node 24/SQLite service in [game-backend](game-backend/README.md) has been implemented and tested locally; it needs online hosting and persistent storage before the published test has shared scores. No server/database or token is shipped inside the static artifact.
+
+Built-in image generation produced the new scene, crowd and item assets. Selected paths and the prompt specifications are recorded in `docs/chh-rebuild-art.json`. Existing artist artwork and approved audio are preserved.

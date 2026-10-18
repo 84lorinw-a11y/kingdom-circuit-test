@@ -43,7 +43,11 @@ def verify(site: Path) -> dict:
     assert '<meta name="robots" content="noindex,nofollow">' in page
     assert 'id="lock"' not in page and 'type="password"' not in page
     assert 'TEST PREVIEW' in page and 'Content-Security-Policy' in page
-    assert 'aria-valuemax="125"' in page and 'data-step="eli"' in page
+    assert 'id="scoreboard"' in page and 'id="menu"' in page
+    assert 'aria-valuemax="125"' not in page
+    scoring = (site / 'play/scoring.mjs').read_text()
+    assert 'ROUND_MAX=1000' in scoring and 'OPPORTUNITIES=20' in scoring
+    assert all(name in scoring for name in ('eli', 'joz', 'steven', 'chamblissnation'))
     for name in expected:
         path = site / name
         if path.suffix not in TEXT_EXTENSIONS:
@@ -58,7 +62,7 @@ def verify(site: Path) -> dict:
     for other in site.rglob('*'):
         if other.is_file() and other.suffix in {'.html', '.xml'} and 'play' not in other.relative_to(site).parts:
             assert BASE not in other.read_text(), f'Game unexpectedly advertised: {other}'
-    return {'route': BASE, 'fileCount': len(expected), 'passwordRequired': False, 'maxXP': 125}
+    return {'route': BASE, 'fileCount': len(expected), 'passwordRequired': False, 'roundMaximum': 1000, 'sessionScoreCapped': False}
 
 
 def build(site: Path) -> dict:

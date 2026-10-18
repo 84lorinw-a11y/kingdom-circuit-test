@@ -1,5 +1,5 @@
-import {stageTracks} from './music-config.mjs';
-import {createStagePlayback} from './stage-audio.mjs';
+import {stageTracks} from './music-config.mjs?v=rebuild-11';
+import {createStagePlayback} from './stage-audio.mjs?v=rebuild-11';
 export const stageSpots=[
  {id:'steven',x:335,y:475,label:'Steven · OUTSIDE',tag:'STEVEN · OUTSIDE'},
  {id:'joz',x:720,y:475,label:'Joz · BIRKENSTOCK',tag:'JOZ · BIRKENSTOCK'}

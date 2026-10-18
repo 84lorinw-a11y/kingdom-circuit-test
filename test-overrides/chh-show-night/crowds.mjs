@@ -24,6 +24,7 @@ export const crowdCounts={outside:outside.length,show:show.length,vip:vip.length
 const avatarLookalikes={gold:[0,31],blue:[1,34],beanie:[2,33],teal:[3,30],pink:[5,31],sunset:[4,32],blonde:[6,32]};
 export function crowdActors(room,time,reduceMotion,player){return({outside,show,vip}[room]||[]).map(a=>{
  const overlap=a.y>player.y-8&&a.y<player.y+105&&Math.abs(a.x-player.x)<65;
- const swap=room!=='show'&&avatarLookalikes[player.avatar];const who=swap&&a.who===`crowd-${room}:${swap[0]}`?`crowd-${room}:${swap[1]}`:a.who;
+ const swap=room!=='show'&&avatarLookalikes[player.avatar];let who=swap&&a.who===`crowd-${room}:${swap[0]}`?`crowd-${room}:${swap[1]}`:a.who;
+ if(room==='show'&&a.who==='crowd-show:24')who='brand:0';if(room==='show'&&a.who==='crowd-show:29')who='brand:1';
  const animated=!reduceMotion;return{...a,who,y:a.y+(animated?Math.sin(time/420+a.phase)*1.7:0),lean:animated?Math.sin(time/650+a.phase)*.018:0,alpha:overlap?.35:1};
 });}

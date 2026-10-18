@@ -1,18 +1,23 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs';
-import {drawPerson,loadPeople} from './sprites.mjs';
-import {crowdActors,crowdCounts} from './crowds.mjs';
-import {createCelebration} from './celebration.mjs';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs';
-import {avatars,avatarFor,playerName} from './avatars.mjs';
-import {mountDjBooth} from './dj-booth.mjs?v=bass-10';
-import {mountMerch,mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs';
-import {walkable as canWalk,findPath} from './navigation.mjs';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=mobile-audio-1';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=rebuild-11';
+import {drawPerson,loadPeople} from './sprites.mjs?v=rebuild-11';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=rebuild-11';
+import {createCelebration} from './celebration.mjs?v=rebuild-11';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=rebuild-11';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=rebuild-11';
+import {mountRound} from './rounds.mjs?v=rebuild-11';
+import {createRoundAudio} from './round-audio.mjs?v=rebuild-11';
+import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=rebuild-11';
+import {gameIds,gameNames} from './scoring.mjs?v=rebuild-11';
+import {mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs?v=rebuild-11';
+import {walkable as canWalk,findPath} from './navigation.mjs?v=rebuild-11';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=rebuild-11';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=rebuild-11';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
-const worshipMusic=createWorshipMusic($('.arcade'));let atFront=null;
+const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
+const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};document.addEventListener('pointerdown',unlockAudio,{capture:true,passive:true});document.addEventListener('keydown',unlockAudio,{capture:true});
 const storageKey='kc-show-night-v1', W=1024,H=683;
 let state;try{state=restore(localStorage.getItem(storageKey));}catch{state=initialState();}
+state.sessionId ||= crypto.randomUUID();onlineScores.connect(state).catch(()=>{});
 let stopBeat=null,stopActivity=null;
 let keys=new Set(),route=[],autoAction=null,walking=false,frame=0,last=0,camera=0,viewWidth=W,paused=false,raisingUntil=0,photoBusy=false,photoURL=null,toastTimer,introTimer,soundOn=false,audio=null,particles=[],trail=[],followerPositions=[];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -27,12 +32,12 @@ function tone(kind='up'){
 function burst(x=state.x,y=state.y-60){if(reduceMotion)return;for(let i=0;i<35;i++)particles.push({x,y,vx:(Math.random()-.5)*180,vy:-70-Math.random()*130,life:1.2,color:['#ffc45b','#ff7053','#79d8ae','#c7a0f4'][i%4]});}
 function sync(){
  $('#player-tag').textContent=state.name?`${state.name.toUpperCase()} · THAT’S YOU`:'FOLLOW YOUR NAME TAG';
- const n=score(state);$('#xp-value').textContent=n;$('#xp-fill').style.width=`${n/MAX_SCORE*100}%`;$('#xp-meter').setAttribute('aria-valuenow',n);$('#xp-rank').textContent=n===MAX_SCORE?'ALL GLORY TO JESUS.':state.worship?'HANDS HIGH':state.merch?'REPPING THE MOVEMENT':n>=30?'CREW’S ALL HERE':'JUST PULLED UP';
+ const n=score(state);$('#xp-value').textContent=n.toLocaleString();scoreStore.record(state);$('#session-rounds').textContent=`${state.rounds} ROUNDS`;
  $('#friends').textContent=`${state.friends.length}/2`;$('#coins').textContent=coins(state);$('#objective').textContent=objective(state);$('#room-name').textContent=`${roomInfo[state.room][0]} / ${roomInfo[state.room][1]}`;
  let activeFound=false;document.querySelectorAll('#checklist li').forEach(li=>{const k=li.dataset.step,done=k==='friends'?state.friends.length===2:!!state[k];li.classList.toggle('done',done);li.classList.toggle('active',!done&&!activeFound);if(!done)activeFound=true;li.querySelector('.step-icon').textContent=done?'✓':String([...li.parentElement.children].indexOf(li)+1).padStart(2,'0');});
- $('#photo-button').hidden=!state.photo;$('#celebrate-button').hidden=n<MAX_SCORE;$('#xp-next').textContent=pointsToGo(state);renderDestinations();safeSave();
+ renderDestinations();safeSave();
 }
-function apply(action,value){const oldRoom=state.room,oldScore=score(state);state=act(state,action,value);if(state.room!==oldRoom){worshipMusic.leave();atFront=null;raisingUntil=0;route=[];autoAction=null;trail=[];followerPositions=[];announceRoom();}if(score(state)>oldScore){tone();burst();}if(oldScore<MAX_SCORE&&score(state)===MAX_SCORE)victoryPending=true;sync();}
+function apply(action,value){if(['invite','enter','worship','vip','photo','show','outside'].includes(action))onlineScores.journey(action,value);const oldRoom=state.room,oldScore=score(state);state=act(state,action,value);if(state.room!==oldRoom){worshipMusic.leave();atFront=null;raisingUntil=0;route=[];autoAction=null;trail=[];followerPositions=[];announceRoom();}if(action==='profile')onlineScores.connect(state).catch(()=>{});if(score(state)>oldScore){tone();burst();}if(Math.floor(oldScore/MAX_SCORE)<Math.floor(score(state)/MAX_SCORE))victoryPending=true;sync();}
 function announceRoom(){const info=roomInfo[state.room];$('#room-intro small').textContent=`CHAPTER ${info[0]}`;$('#room-intro strong').textContent=info[2];$('#room-intro').classList.add('visible');clearTimeout(introTimer);introTimer=setTimeout(()=>$('#room-intro').classList.remove('visible'),1500);}
 function hotspots(){
  if(state.room==='outside')return [
@@ -40,10 +45,10 @@ function hotspots(){
  ...(!state.friends.includes('grace')?[{id:'grace',x:348,y:578,label:'Invite Grace',tag:'GRACE',action:'invite',value:'grace'}]:[]),
  {id:'enter',x:740,y:385,label:'Venue entrance',tag:'THE SHOW',action:'enter'}];
  if(state.room==='show')return [
- {id:'merch',x:105,y:455,label:state.merch?'Merch ✓':'Merch · 10 coins',tag:'MERCH',action:'merch',done:!!state.merch},
- {id:'dj',...practiceSpot,label:'Eli · B–I–B–L–E',tag:'ELI · B–I–B–L–E',action:'dj',done:!!state.eli},
- ...stageSpots.map(p=>({...p,action:'worship',done:state.worship})),
- {id:'vip',x:940,y:447,label:'VIP · open to everyone',tag:'VIP →',action:'vip'},
+ {id:'merch',x:105,y:455,label:'Merch',tag:'FAMILY HAUL',action:'merch',done:!!state.merch},
+ {id:'dj',...practiceSpot,label:'Eli',tag:'ELI · B–I–B–L–E',action:'dj',done:!!state.eli},
+ ...stageSpots.map(p=>({...p,label:p.id==='joz'?'Joz':'Steven',action:'artist',done:state.totals[p.id]>0})),
+ {id:'vip',x:940,y:447,label:'VIP',tag:'VIP →',action:'vip'},
  {id:'outside',x:75,y:625,label:'← Outside',tag:'EXIT',action:'outside'}];
  return [
  {id:'photo',x:505,y:442,label:state.photo?'Another VIP photo':'Meet the band',tag:'PHOTO SPOT',action:'photo',done:state.photo},
@@ -70,8 +75,8 @@ function interact(h=nearest()){
  if(state.friends.length<2){notify('Bring your people! Invite both Jay and Grace first.');return;}apply('enter');
  }else if(h.action==='merch'){
  openMerch();
- }else if(h.action==='worship'){
- raiseHands(h.id);
+ }else if(h.action==='artist'){
+ raiseHands(h.id);openArtistGame(h.id);
  }else if(h.action==='vip'){
  apply('vip');
  }else if(h.action==='dj'){
@@ -83,14 +88,13 @@ function interact(h=nearest()){
  }else apply(h.action);
 }
 function activityHost(content){const host=document.createElement('div');content.insertBefore(host,content.lastElementChild);return host;}
-function openMerch(){
- const content=openDialog('Rep the movement.','Pick a tee. Land your haul in the tote. Then get back to the music.',[{label:'BACK TO THE SHOW',secondary:true}],state.merch?'MERCH BOOTH · FREE REPLAY':'MERCH BOOTH · +20 XP');
- stopActivity=mountMerch(activityHost(content),{owned:state.merch,onCue:()=>tone('step'),onFinish:color=>{const owned=!!state.merch;apply('merch',color);dialog.close();notify(owned?'Clean catch! Your original tee and coins stay yours.':'Merch secured! +20 XP. See you up front.');}});
-}
-function raiseHands(id=stageSpotAt(state)){
- if(!id)return;const done=state.worship;apply('worship');raisingUntil=performance.now()+10000;
- if(atFront!==id){atFront=id;worshipMusic.enter(id);}
- notify(done?'Hands high. All glory to Jesus!':'Hands high. All glory to Jesus! +25 XP.');
+function openMerch(){openArtistGame('chamblissnation');}
+function raiseHands(id){if(!id)return;apply('worship');raisingUntil=performance.now()+10000;atFront=id;}
+function openArtistGame(game){
+ if(dialog.open)return;
+ route=[];autoAction=null;keys.clear();
+ const content=$('#dialog-content');content.replaceChildren();dialog.classList.add('game-dialog');dialog.showModal();
+ stopActivity=mountRound(content,{game,audio:roundAudio,art:images,online:onlineScores,onExit:()=>dialog.close(),onFinish:result=>{apply('round',result);}});
 }
 function openPhotoStyle(){
  const content=openDialog('Make this one yours.','Choose a crew pose and frame. Then we’ll count you in: 3, 2, 1.',[{label:'TAKE THE PHOTO',fn:takePhoto},{label:'Not quite ready',secondary:true}],'VIP PHOTO · YOUR CREW');
@@ -98,21 +102,14 @@ function openPhotoStyle(){
  stopActivity=mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,style:chosen,onChange:value=>{chosen=value;}});
  content.querySelector('.dialog-actions button').onclick=()=>{apply('photoStyle',chosen);dialog.close();takePhoto();};
 }
-function openBeatChallenge(){
- worshipMusic.leave();
- const content=openDialog('B–I–B–L–E with Eli',state.eli?'Your +25 XP is earned. Play again to improve your beat score.':'Press Start Game, then tap each letter at the gold line. Finish the round to earn +25 XP.',[{label:'BACK TO THE SHOW',secondary:true}],state.eli?'ELI · +25 XP EARNED':'ELI · +25 SHOW NIGHT XP');
- const exitBar=document.createElement('div');exitBar.className='dj-exit-bar';const exit=document.createElement('button');exit.type='button';exit.className='secondary';exit.textContent='← LEAVE DJ BOOTH';exit.onclick=()=>{stopBeat?.();stopBeat=null;dialog.close();};const hint=document.createElement('span');hint.textContent='LEAVE ANYTIME · ESC';exitBar.append(exit,hint);content.prepend(exitBar);
- const host=document.createElement('div');host.className='dj-booth';content.insertBefore(host,content.lastElementChild);
- stopBeat=mountDjBooth(host,{best:state.beatBest,rewardEarned:state.eli,onFinish:n=>{const earned=state.eli;apply('beat',n);if(!earned)notify('Eli’s set complete! +25 XP.');if(n>=8)burst();},onActivity:()=>{raisingUntil=performance.now()+700;}});
- dialog.scrollTop=0;host.querySelector('.beat-start-buttons button').focus({preventScroll:true});
-}
+function openBeatChallenge(){openArtistGame('eli');}
 function openPlayerSetup(){
  const content=openDialog(state.profileReady?'Your player. Your vibe.':'Who’s coming to the show?','Choose your character and the name your crew will know you by.',[],'PLAYER SELECT · CHH SHOW NIGHT');
  const form=document.createElement('form');form.className='player-form';
  const nameLabel=document.createElement('label');nameLabel.htmlFor='player-name';nameLabel.textContent='YOUR NAME';
  const input=document.createElement('input');input.id='player-name';input.name='player-name';input.maxLength=18;input.required=true;input.autocomplete='nickname';input.placeholder='Enter your name';input.value=state.name||'';
  let selected=state.avatar||'red';const grid=document.createElement('div');grid.className='avatar-grid';grid.setAttribute('role','group');grid.setAttribute('aria-label','Choose your character');
- avatars.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='avatar-choice';b.dataset.avatar=a.id;b.setAttribute('aria-pressed',a.id===selected);const portrait=document.createElement('canvas');portrait.width=140;portrait.height=180;portrait.setAttribute('aria-hidden','true');const g=portrait.getContext('2d');g.imageSmoothingEnabled=false;drawPerson(g,70,172,a.sprite,{scale:2.7});const label=document.createElement('span');label.textContent=a.label;b.append(portrait,label);b.onclick=()=>{selected=a.id;grid.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',button===b));};grid.append(b);});
+ avatars.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='avatar-choice';b.dataset.avatar=a.id;b.setAttribute('aria-pressed',a.id===selected);const portrait=document.createElement('canvas');portrait.width=140;portrait.height=180;portrait.setAttribute('aria-hidden','true');const g=portrait.getContext('2d');g.imageSmoothingEnabled=true;drawPerson(g,70,172,a.sprite,{scale:2.7});const label=document.createElement('span');label.textContent=a.label;b.append(portrait,label);b.onclick=()=>{selected=a.id;grid.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',button===b));};grid.append(b);});
  const submit=document.createElement('button');submit.type='submit';submit.className='player-start';submit.textContent=state.profileReady?'SAVE MY PLAYER →':'LET’S MAKE A NIGHT →';
  form.append(nameLabel,input,grid,submit);form.onsubmit=e=>{e.preventDefault();if(!playerName(input.value)){input.setCustomValidity('Enter your name to start.');input.reportValidity();return;}input.setCustomValidity('');apply('profile',{name:input.value,avatar:selected});dialog.close();notify(`Welcome, ${state.name}. Bring your people!`);};input.oninput=()=>input.setCustomValidity('');content.insertBefore(form,content.lastElementChild);if(state.profileReady){const cancel=document.createElement('button');cancel.className='secondary';cancel.textContent='Keep my player';cancel.onclick=()=>dialog.close();content.lastElementChild.append(cancel);}input.focus();
 }
@@ -121,10 +118,13 @@ async function takePhoto(){
  photoBusy=true;route=[];keys.clear();for(const n of ['3','2','1']){$('#countdown').textContent=n;tone('step');await pause(700);}$('#countdown').textContent='';if(!reduceMotion){$('#flash').classList.remove('firing');void $('#flash').offsetWidth;$('#flash').classList.add('firing');}apply('photo');tone('photo');await pause(200);await showPhoto();photoBusy=false;
 }
 async function makePhoto(){
- const c=document.createElement('canvas');c.width=1200;c.height=900;const g=c.getContext('2d');g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,900);g.drawImage(images.vip,20,20,1160,770);
- drawPhotoLineup(g,{avatar:avatarFor(state).sprite,pose:state.photoStyle.pose});
+ const c=document.createElement('canvas');c.width=1200;c.height=900;const g=c.getContext('2d');g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,900);g.drawImage(images.vip,350,0,1186,800,20,20,1160,770);
+ g.fillStyle='#0b1928';g.fillRect(100,55,880,620);g.strokeStyle='#ffcd6c';g.lineWidth=3;g.strokeRect(100,55,880,620);g.fillStyle='#fff0d8';g.textAlign='center';g.font='bold 37px monospace';g.fillText('@thekingdomcircuit',540,111);g.font='20px monospace';g.fillText('YOUR CREW · VIP',540,151);
+ // Keep the complete wall emblem visible beside the close crew portrait.
+ g.fillStyle='#0b1928';g.fillRect(990,105,172,236);g.drawImage(images.kcLogo,996,139,160,160);
+ drawPhotoLineup(g,{avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:180,y:670,spacing:145,scale:6.4});
  g.fillStyle='#101b2c';g.fillRect(38,692,1124,79);g.textAlign='center';g.fillStyle='#ffc363';g.font='bold 27px monospace';g.fillText('YOUR CREW. YOUR FAITH. YOUR MEMORY.',600,726);g.fillStyle='#e9efed';g.font='16px monospace';g.fillText('KINGDOM CIRCUIT  /  CHH SHOW NIGHT  /  VIP',600,753);
- g.textAlign='left';g.fillStyle='#101b2c';g.font='bold 32px monospace';g.fillText('NIGHT MADE.',42,840);g.font='15px monospace';g.fillText(`JAY + ${(state.name||'YOU').toUpperCase()} + GRACE • BACKSTAGE WITH THE BAND`,42,870);g.textAlign='right';g.font='bold 26px monospace';g.fillText(`${score(state)} / ${MAX_SCORE} XP`,1158,840);g.font='14px monospace';g.fillText('ALL GLORY TO JESUS.',1158,868);
+ g.textAlign='left';g.fillStyle='#101b2c';g.font='bold 32px monospace';g.fillText('NIGHT MADE.',42,840);g.font='15px monospace';g.fillText(`JAY + ${(state.name||'YOU').toUpperCase()} + GRACE • BACKSTAGE WITH THE BAND`,42,870);g.textAlign='right';g.font='bold 26px monospace';g.fillText(`${score(state).toLocaleString()} POINTS`,1158,840);g.font='14px monospace';g.fillText('ALL GLORY TO JESUS.',1158,868);
  return new Promise(resolve=>c.toBlob(resolve,'image/png'));
 }
 async function showPhoto(){
@@ -140,10 +140,11 @@ function render(time){
  const rect=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(rect.width*ratio),ch=Math.round(rect.height*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  viewWidth=H*(rect.width/rect.height);camera=Math.max(0,Math.min(W-viewWidth,state.x-viewWidth/2));if(viewWidth>=W){camera=0;viewWidth=W;}
- ctx.setTransform(canvas.width/viewWidth,0,0,canvas.height/H,-camera*canvas.width/viewWidth,0);ctx.imageSmoothingEnabled=false;
+ ctx.setTransform(canvas.width/viewWidth,0,0,canvas.height/H,-camera*canvas.width/viewWidth,0);ctx.imageSmoothingEnabled=true;
  ctx.clearRect(camera,0,viewWidth,H);ctx.drawImage(images[state.room],0,0,W,H);
  if(state.room==='show'&&!reduceMotion){ctx.save();ctx.globalAlpha=.03+Math.sin(time/800)*.018;ctx.fillStyle='#ffd079';ctx.fillRect(0,0,W,400);ctx.restore();}
  if(state.room==='show'){
+  drawVenueBranding();
   drawPracticeBooth(ctx,time);
   for(const [id,who,x] of [['steven','mc',335],['joz','singer',720]]){const singing=worshipMusic.playing===id;drawPerson(ctx,x,363,who,{scale:2.9,lean:singing&&!reduceMotion?Math.sin(time/240)*.025:0});if(singing)label(x,219,'♪ '+(id==='steven'?'OUTSIDE':'BIRKENSTOCK'),{color:'#7ed9b1'});}
  }
@@ -183,7 +184,7 @@ function render(time){
 
  for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=190*dt;p.life-=dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,5,5);}ctx.globalAlpha=1;particles=particles.filter(p=>p.life>0);
  if(route.length){const end=route[route.length-1];ctx.strokeStyle='#fff4c4';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(end.x-5,end.y);ctx.lineTo(end.x+5,end.y);ctx.moveTo(end.x,end.y-5);ctx.lineTo(end.x,end.y+5);ctx.stroke();}
- $('#action-label').textContent=target?{invite:'INVITE FRIEND',enter:'ENTER SHOW',merch:'GET MERCH',dj:'DJ BOOTH',worship:'HANDS UP',vip:'ENTER VIP',photo:'TAKE PHOTO',outside:'GO OUTSIDE',show:'MAIN STAGE',refresh:'SAY HELLO'}[target.action]:'WALK & INTERACT';
+ $('#action-label').textContent=target?{artist:'PLAY ARTIST',invite:'INVITE FRIEND',enter:'ENTER SHOW',merch:'GET MERCH',dj:'DJ BOOTH',worship:'HANDS UP',vip:'ENTER VIP',photo:'TAKE PHOTO',outside:'GO OUTSIDE',show:'MAIN STAGE',refresh:'SAY HELLO'}[target.action]:'WALK & INTERACT';
  requestAnimationFrame(render);
 }
 function update(dt,time){
@@ -191,7 +192,7 @@ function update(dt,time){
  if(dx||dy){route=[];autoAction=null;}else if(route.length){const p=route[0],d=Math.hypot(p.x-state.x,p.y-state.y);if(d<5){state.x=p.x;state.y=p.y;route.shift();if(!route.length&&autoAction){const h=autoAction;autoAction=null;interact(h);}return;}dx=(p.x-state.x)/d;dy=(p.y-state.y)/d;}
  const d=Math.hypot(dx,dy);if(d){dx/=d;dy/=d;const speed=180*dt;if(walkable(state.x+dx*speed,state.y))state.x+=dx*speed;if(walkable(state.x,state.y+dy*speed))state.y+=dy*speed;}
  walking=Math.hypot(old.x-state.x,old.y-state.y)>.05;
- const nowAtFront=stageSpotAt(state);if(nowAtFront&&nowAtFront!==atFront)raiseHands(nowAtFront);else if(!nowAtFront&&atFront){atFront=null;raisingUntil=0;worshipMusic.leave();}
+ const nowAtFront=stageSpotAt(state);if(nowAtFront&&nowAtFront!==atFront&&(!autoAction||autoAction.id===nowAtFront)){raiseHands(nowAtFront);openArtistGame(nowAtFront);}else if(!nowAtFront&&atFront){atFront=null;raisingUntil=0;worshipMusic.leave();}
  if(walking){trail.unshift({x:state.x,y:state.y});if(trail.length>100)trail.pop();}
  state.friends.forEach((_,i)=>{const desired=walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);p.x=Math.max(32,p.x);p.y=Math.min(640,p.y);followerPositions[i]=p;});
  if(route.length&&!walking&&d){route=[];autoAction=null;notify('Try the open floor, or choose a destination below.');}
@@ -202,15 +203,40 @@ window.addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,te
 window.addEventListener('keyup',e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key])keys.delete(keyMap[key]);});
 window.addEventListener('blur',()=>keys.clear());document.addEventListener('visibilitychange',()=>{keys.clear();paused=document.hidden;safeSave();});
 document.querySelectorAll('[data-dir]').forEach(b=>{const release=()=>{keys.delete(b.dataset.dir);b.classList.remove('held');};b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.dir);b.classList.add('held');};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;});
-$('#interact').onclick=interactButton;$('#photo-button').onclick=showPhoto;$('#celebrate-button').onclick=()=>celebration.play();
+$('#interact').onclick=interactButton;$('#menu').onclick=openMenu;$('#scoreboard').onclick=openBoard;
 $('#sound').onclick=()=>{soundOn=!soundOn;$('#sound').setAttribute('aria-pressed',soundOn);$('#sound span').textContent=soundOn?'Sound on':'Sound off';tone();};
 $('#player-profile').onclick=()=>openPlayerSetup();
-$('#help').onclick=()=>openDialog('A little guide to a great night.','Move with arrow keys or WASD. Click the on-screen A button, or press E / Space, to interact or walk to the nearest activity. The keyboard A key moves left. Destination buttons also walk you there. Bring both friends to the show, then explore freely: merch, Eli’s B–I–B–L–E game, Steven’s OUTSIDE spot on the left, Joz’s BIRKENSTOCK spot on the right, and VIP in any order. Walk to either artist’s front-row ring and your crew raises their hands automatically. Eli’s ring is in the middle. Bring your two friends (+30 XP), finish merch and take your bag (+20), raise your hands (+25), finish Eli’s beat game (+25), and take your VIP photo (+25). At 125 XP you unlock fireworks; your VIP photo is yours to download. Each activity awards XP once per night. Replay Eli’s game to improve your best beat score. All glory to Jesus.',[{label:'LET’S PLAY'}],'HOW TO PLAY');
-$('#restart').onclick=()=>openDialog('One more night?','This resets your game progress on this device. Download your current VIP photo first if you want to keep it.',[{label:'START FRESH',fn:()=>{state={...initialState(),name:state.name,avatar:state.avatar,profileReady:state.profileReady,beatBest:state.beatBest};trail=[];followerPositions=[];particles=[];victoryPending=false;celebration.stop();raisingUntil=0;atFront=null;worshipMusic.leave();sync();announceRoom();}},{label:'Keep this night',secondary:true}],'NEW GAME');
+function openMenu(){
+ const content=openDialog('Your night.','Tap the floor to walk or use the quick destinations. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
+ {label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
+ ...(state.photo?[{label:'VIP PHOTO',fn:showPhoto}]:[]),
+ {label:'FIREWORKS',fn:()=>celebration.play()},
+ {label:'FRESH SESSION',secondary:true,fn:()=>openDialog('Start a new night?','Your best session stays on this device. This starts a new total and journey.',[{label:'START FRESH',fn:()=>{scoreStore.record(state);state={...initialState(),sessionId:crypto.randomUUID(),name:state.name,avatar:state.avatar,profileReady:true};trail=[];followerPositions=[];atFront=null;onlineScores.connect(state).catch(()=>{});celebration.stop();sync();announceRoom();}},{label:'KEEP THIS NIGHT',secondary:true}])},
+ {label:'BACK TO THE SHOW',secondary:true}],'CHH SHOW NIGHT · TEST PREVIEW');
+}
+async function openBoard(){
+ const content=openDialog('The scoreboards.','Best session • All four games count equally.',[{label:'BACK TO MY NIGHT',secondary:true}],'KINGDOM CIRCUIT');
+ const host=activityHost(content);host.className='board';
+ const row=scoreStore.record(state);const status=document.createElement('p');status.textContent='Loading scores…';host.append(status);
+ const columns=['Nickname',...gameIds.map(id=>gameNames[id]),'Journey','Total'];
+ function table(rows){const wrap=document.createElement('div');wrap.className='table-scroll';const t=document.createElement('table'),head=document.createElement('tr');columns.forEach(label=>{const th=document.createElement('th');th.textContent=label;head.append(th);});t.append(head);rows.forEach(r=>{const tr=document.createElement('tr');[r.nickname,...gameIds.map(id=>r[id]),r.journey,r.total].forEach(v=>{const td=document.createElement('td');td.textContent=typeof v==='number'?v.toLocaleString():v;tr.append(td);});t.append(tr);});wrap.append(t);return wrap;}
+ host.append(document.createTextNode('CURRENT SESSION'),table([row]));
+ try{const board=await(onlineScores.enabled?onlineScores.board():scoreStore.board());if(!host.isConnected)return;status.textContent=board.mode==='device'?'Your best session is saved on this device. The shared online leaderboard is not connected yet.':'Best sessions from the community';host.append(document.createTextNode('BEST SESSION'),table(board.rows));}catch{status.textContent='Online board unavailable. Your session is saved on this device.';}
+ const share=document.createElement('button');share.textContent='SHARE SCORECARD';share.onclick=()=>shareScore(row);host.append(share);
+}
+async function shareScore(row){
+ const c=document.createElement('canvas');c.width=720;c.height=1000;const g=c.getContext('2d');g.fillStyle='#0b1928';g.fillRect(0,0,720,1000);g.drawImage(images.kcLogo,275,40,170,170);g.textAlign='center';g.fillStyle='#ffcb6c';g.font='bold 38px monospace';g.fillText('CHH SHOW NIGHT',360,265);g.fillStyle='#f8efda';g.font='24px monospace';g.fillText(row.nickname,360,320);g.font='bold 88px monospace';g.fillText(row.total.toLocaleString(),360,435);g.font='20px monospace';g.fillText('SESSION POINTS',360,475);gameIds.forEach((id,i)=>{g.textAlign='left';g.fillStyle='#7ed9b1';g.fillText(gameNames[id],65,560+i*60);g.textAlign='right';g.fillStyle='#fff0d6';g.fillText(row[id].toLocaleString(),655,560+i*60);});g.textAlign='center';g.fillStyle='#ffcb6c';g.fillText('BUILT FOR THE FANS. ALL FOR THE KING.',360,870);g.fillStyle='#f8efda';g.fillText('@thekingdomcircuit · TEST PREVIEW',360,920);const blob=await new Promise(r=>c.toBlob(r));if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Kingdom-Circuit-Scorecard.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function drawVenueBranding(){
+ // Runtime venue signage keeps the supplied logo exact and leaves the VIP marker readable.
+ ctx.fillStyle='#091724';ctx.fillRect(901,143,113,193);ctx.drawImage(images.kcLogo,902,166,111,111);ctx.textAlign='center';ctx.font='bold 11px monospace';ctx.fillStyle='#ffce76';ctx.fillText('VIP LOUNGE',958,309);
+ ctx.fillStyle='#0a1524';ctx.fillRect(13,95,174,78);if(images.logo)ctx.drawImage(images.logo,19,99,162,47);ctx.font='bold 5.6px monospace';ctx.fillStyle='#fff0d8';ctx.fillText('YOUR PEOPLE MY PEOPLE WE FAMILY',100,158);
+ if(images.merch){for(let i=0;i<3;i++)ctx.drawImage(images.merch,images.merch.width/3*i,0,images.merch.width/3,images.merch.height,24+i*53,169,50,58);}
+}
 dialog.addEventListener('cancel',e=>{if(!state.profileReady)e.preventDefault();});
-dialog.addEventListener('close',()=>{stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();canvas.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{dialog.classList.remove('game-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();canvas.focus({preventScroll:true});});
 async function start(){
- try{await loadPeople();await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name==='show'?'show-stage-v6':name==='vip'?'vip-branded-v7':name}.webp`;})));sync();announceRoom();requestAnimationFrame(render);if(!state.profileReady)openPlayerSetup();}
+ try{await loadPeople();await Promise.all(Object.entries({merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-v8.webp`;})));sync();announceRoom();requestAnimationFrame(render);if(!state.profileReady)openPlayerSetup();}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}
 }
 start();

@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs';
+import {drawPerson} from './sprites.mjs?v=rebuild-11';
 // Eli performs and hosts his practice station at center stage.
 export const practiceSpot={x:512,y:475};
 export function drawPracticeBooth(ctx,time=0){

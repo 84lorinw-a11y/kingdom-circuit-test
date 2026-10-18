@@ -1,9 +1,9 @@
-import {MAX_SCORE} from './state.mjs';
+import {MAX_SCORE} from './state.mjs?v=rebuild-11';
 export function createCelebration({reduceMotion=false}={}){
  const layer=document.createElement('div');layer.id='celebration';layer.setAttribute('popover','manual');
  const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');
  const message=document.createElement('div');message.className='victory-message';message.setAttribute('role','status');
- message.innerHTML=`<small>${MAX_SCORE} / ${MAX_SCORE} SHOW NIGHT XP</small><strong>NIGHT MADE.</strong><span>ALL GLORY TO JESUS.</span><p>Your crew. Your music. Your VIP memory.</p>`;
+ message.innerHTML=`<small>SHOW NIGHT MILESTONE</small><strong>KEEP SHINING.</strong><span>ALL GLORY TO JESUS.</span><p>Your crew. Your music. Your VIP memory.</p>`;
  layer.append(canvas,message);document.body.append(layer);const ctx=canvas.getContext('2d');
  let raf=0,timer=0,started=0,previous=0,nextLaunch=0,sparks=[],rockets=[];
  const colors=['#ffcd6e','#78e1be','#ffa49b','#d7b6ff','#f9f1d6'];

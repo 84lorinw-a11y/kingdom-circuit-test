@@ -1,34 +1,12 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import {initialState,act,score,coins,restore} from '../../test-overrides/chh-show-night/state.mjs';
-test('Complete journey earns exactly 125; coins are spent once',()=>{
- let s=initialState();s=act(s,'enter');assert.equal(s.room,'outside');s=act(s,'invite','jay');s=act(s,'invite','jay');assert.equal(score(s),15);s=act(s,'invite','grace');assert.equal(score(s),30);s=act(s,'enter');assert.equal(s.room,'show');s=act(s,'vip');assert.equal(s.room,'vip');s=act(s,'show');s=act(s,'merch','mint');assert.equal(coins(s),10);assert.equal(score(s),50);s=act(s,'merch','black');assert.equal(s.merch,'mint');s=act(s,'worship');assert.equal(score(s),75);s=act(s,'beat',6);assert.equal(score(s),100);s=act(s,'beat',9);assert.equal(score(s),100);s=act(s,'vip');assert.equal(s.room,'vip');s=act(s,'photo');assert.equal(score(s),125);s=act(s,'photo');assert.equal(score(s),125);s=act(s,'show');s=act(s,'outside');assert.equal(s.room,'outside');assert.equal(score(s),125);
-});
-test('Saved progress survives reload and rejects corrupt data',()=>{
- assert.deepEqual(restore('broken'),initialState());assert.deepEqual(restore('{}'),initialState());let s=initialState();for(const [a,v] of [['invite','jay'],['invite','grace'],['enter'],['merch','cream'],['worship'],['vip'],['photo']])s=act(s,a,v);const restored=restore(JSON.stringify(s));assert.equal(score(restored),100);assert.equal(restored.room,'vip');assert.equal(restored.merch,'cream');
- const invalid=restore(JSON.stringify({version:1,friends:['jay','jay','fake'],room:'vip',worship:true,photo:true,merch:'mint',entered:true}));assert.equal(score(invalid),15);assert.equal(invalid.room,'outside');
-});
-
-test('Worship is freely available before merch and survives a save without awarding twice',()=>{
- let s=initialState();for(const [a,v] of [['invite','jay'],['invite','grace'],['enter'],['worship']])s=act(s,a,v);
- assert.equal(s.worship,true);assert.equal(s.merch,null);assert.equal(score(s),55);s=restore(JSON.stringify(s));assert.equal(s.worship,true);assert.equal(score(act(s,'worship')),55);
- assert.equal(act(s,'vip').room,'vip');s=act(s,'merch','black');s=act(s,'vip');s=act(s,'photo');assert.equal(score(s),100);
-});
-
-test('VIP styling is validated, saved, and compatible with older saves',()=>{
- let s=initialState();assert.deepEqual(s.photoStyle,{pose:'classic',frame:'gold'});
- assert.deepEqual(act(s,'photoStyle',{pose:'lean',frame:'mint'}).photoStyle,s.photoStyle);
- for(const [a,v] of [['invite','jay'],['invite','grace'],['enter'],['merch','cream'],['worship'],['vip']])s=act(s,a,v);
- s=act(s,'photoStyle',{pose:'lean',frame:'mint'});s=act(s,'photo');
- const saved=restore(JSON.stringify(s));assert.deepEqual(saved.photoStyle,{pose:'lean',frame:'mint'});assert.equal(score(saved),100);assert.equal(coins(saved),10);
- assert.deepEqual(act(s,'photoStyle',{pose:'bad',frame:'javascript:bad'}).photoStyle,{pose:'classic',frame:'gold'});
- delete s.photoStyle;assert.deepEqual(restore(JSON.stringify(s)).photoStyle,{pose:'classic',frame:'gold'});
-});
-
-
-test('VIP and its photo work before merch or worship, including after reload',()=>{
- let s=initialState();for(const [a,v] of [['invite','jay'],['invite','grace'],['enter'],['vip'],['photo']])s=act(s,a,v);
- assert.equal(s.room,'vip');assert.equal(s.merch,null);assert.equal(s.worship,false);assert.equal(score(s),55);assert.equal(coins(s),20);
- s=restore(JSON.stringify(s));assert.equal(s.room,'vip');assert.equal(s.photo,true);assert.equal(score(s),55);
- s=act(s,'photo');assert.equal(score(s),55);s=act(s,'show');s=act(s,'worship');s=act(s,'merch','cream');assert.equal(score(s),100);
-});
+import test from 'node:test';import assert from 'node:assert/strict';
+import {initialState,act,score,coins,restore,journeyScore} from '../../test-overrides/chh-show-night/state.mjs';
+import {gameIds,roundScore,roundSchedule,roundSeconds} from '../../test-overrides/chh-show-night/scoring.mjs';
+import {bestSession} from '../../test-overrides/chh-show-night/leaderboard.mjs';
+const entered=()=>['jay','grace'].reduce((s,f)=>act(s,'invite',f),initialState());
+const round=(game,id='test')=>({game,id,events:Array.from({length:20},(_,id)=>({id,hit:true,perfect:true}))});
+test('All four have identical opportunity count, bonuses and 1000 maximum',()=>{for(const game of gameIds){const notes=roundSchedule(game,9);assert.equal(notes.length,20);assert.ok(notes[19].at<roundSeconds[game]);assert.ok(roundSeconds[game]>=20&&roundSeconds[game]<=30);assert.equal(roundScore(round(game).events).total,1000);assert.equal(roundScore(round(game).events.map(e=>({...e,perfect:false}))).total,800);}});
+test('Unlimited repeated rounds add equally; duplicate delivery cannot award twice',()=>{let s=act(entered(),'enter');for(let n=0;n<100;n++)for(const game of gameIds){const r=round(game,game+n);s=act(s,'round',r);const total=score(s);s=act(s,'round',r);assert.equal(score(s),total);}assert.equal(s.rounds,400);for(const game of gameIds)assert.equal(s.totals[game],100000);assert.equal(score(s),400030);assert.equal(coins(s),10);});
+test('Journey remains free and its rewards are once per session',()=>{let s=initialState();assert.equal(act(s,'enter').room,'outside');s=act(entered(),'enter');s=act(s,'vip');assert.equal(s.room,'vip');s=act(s,'photo');assert.equal(score(s),55);assert.equal(score(act(s,'photo')),55);s=act(s,'show');s=act(s,'worship');assert.equal(journeyScore(s),80);assert.equal(score(act(s,'worship')),80);assert.equal(s.merch,null);});
+test('Corrupt/offstage/duplicate or incomplete round events never score',()=>{let s=act(entered(),'enter');for(const r of [{...round('eli'),game:'fake'},{...round('eli'),events:[]},{...round('eli'),events:Array(20).fill({id:0,hit:true,perfect:true})},{...round('eli'),events:round('eli').events.map(e=>({...e,hit:false}))}])assert.equal(score(act(s,'round',r)),30);assert.equal(score(act(initialState(),'round',round('eli'))),0);});
+test('Saved v2 scores survive and legacy saves keep identity/journey without invented game scores',()=>{let s=act(act(entered(),'enter'),'round',round('joz'));s=act(s,'vip');s=act(s,'photoStyle',{pose:'lean',frame:'mint'});const saved=restore(JSON.stringify(s));assert.equal(score(saved),1030);assert.equal(saved.room,'vip');assert.deepEqual(saved.photoStyle,{pose:'lean',frame:'mint'});assert.equal(score(restore('broken')),0);const legacy=restore(JSON.stringify({version:1,name:'River',avatar:'red',profileReady:true,friends:['jay','grace'],entered:true,room:'show',worship:true,eli:true,merch:'cream',photo:true}));assert.equal(legacy.name,'River');assert.equal(score(legacy),80);assert.deepEqual(legacy.totals,{eli:0,joz:0,steven:0,chamblissnation:0});});
+test('Best board uses one complete session, never mixes component highs',()=>{const a={total:3000,eli:2000,joz:1000},b={total:2500,eli:0,joz:2500};assert.deepEqual(bestSession(a,b),a);assert.deepEqual(bestSession(a,{...b,total:3500}),{...b,total:3500});});

@@ -1,0 +1,81 @@
+{
+  "mode": "Built-in image_gen tool (no fallback CLI)",
+  "promptRecord": "Final prompt specifications, normalized for reuse; referenced source images were inspected before edits.",
+  "encoding": "Lossless WebP encoding only; alpha and every nontransparent RGB pixel compared identical to the selected generated PNG. No raster content editing by scripts.",
+  "assets": [
+    {
+      "path": "test-overrides/chh-show-night/assets/outside-v8.webp",
+      "selectedGeneratedFile": "exec-fdc01807-13f1-4bf6-b56a-31b1e92c14cc.png",
+      "prompt": "Edit the existing illustrated exterior only: enlarge the lit entrance marquee, with KINGDOM CIRCUIT PRESENTS above STEVEN MALCOLM, ELI WILLIAMS and JOZ on separate readable lines. Preserve the venue entrance, sunset waterfront, walkable ground, perspective and detailed illustrated style."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/show-v8.webp",
+      "selectedGeneratedFile": "exec-e7516d91-4102-42c2-a096-e258461d2515.png",
+      "prompt": "Style-transfer the existing stage into a detailed illustrated concert venue. Preserve the stage geometry, merch area at left, cross and JESUS IS KING text, clear foreground and right wall panel for a runtime logo. Realistic lighting/materials and adult-proportioned vendor; no additional performers on the empty stage."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/vip-v8.webp",
+      "selectedGeneratedFile": "exec-019a8e41-102e-4eba-8e1f-53f0dfb02b0a.png",
+      "prompt": "Detailed illustrated VIP lounge matching the existing room layout. Central photo backdrop with @thekingdomcircuit, red carpet, warm brick, lounge furniture and refreshment station, large Kingdom Circuit wall logo; clear central space for the game characters."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/heroes-v3.webp",
+      "selectedGeneratedFile": "exec-dc9eeff3-c0e6-477d-ae54-fc01c712b1cc.png",
+      "prompt": "Transparent six-column, two-row character sheet. Detailed illustrated adults with realistic proportions, distinct faces, outfits and inclusive skin tones, including the main red player, green friend and purple friend. Front idle row with arms down; matching rear hands-up worship row. Full bodies and generous transparent gutters. Final edit lowers the top-row arms while retaining the identities."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/crowd-outside-v7.webp",
+      "selectedGeneratedFile": "exec-91c5dae5-2133-4470-8c62-c7de1ec795c6.png",
+      "prompt": "Transparent 6×6 sheet of 36 distinct concert fans, realistic adult proportions in detailed graphic-novel illustration. Front/three-quarter social poses, varied hairstyles and outfits, full bodies. Approximately 24 Black, six Latino and six white people, men and women. No repeated people, no backgrounds; clear cell spacing."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/crowd-show-v7.webp",
+      "selectedGeneratedFile": "exec-52cfccca-e645-4a36-b7dc-83dc8e57549d.png",
+      "prompt": "Transparent 6×6 sheet of 36 different concert fans seen from behind or rear three-quarter, hands raised toward the stage. Detailed illustrated adults, realistic proportions, varied clothing and hair, approximately 24 Black, six Latino and six white people. Full bodies, separate cells and clear gutters."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/crowd-vip-v7.webp",
+      "selectedGeneratedFile": "exec-0e90e223-76b1-4ef2-b482-037c21102558.png",
+      "prompt": "Transparent 6×6 sheet of 36 unique fans mingling backstage, front and three-quarter standing poses. Detailed illustrated realistic adult proportions, distinct faces/hair/clothes, approximately 24 Black, six Latino and six white people. No duplicate identities or background, clear cell gutters."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/brand-fans-v1.webp",
+      "selectedGeneratedFile": "exec-2ac31fae-9abd-476a-8f4a-d835d116de33.png",
+      "prompt": "Use the supplied Chamblissnation blue lettered hoodie/sweatpants and navy/hot-pink hoodie/shorts as clothing references. Two distinct Black male fans, detailed illustrated realistic adult proportions, wearing those recognizable outfits. Transparent 2×2 sheet: front idle above, matching rear hands raised below. Full bodies, no background."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/merch-chamblissnation-v1.webp",
+      "selectedGeneratedFile": "exec-c909fba2-e854-48f8-8f79-89404d4d4e04.png",
+      "prompt": "Use the three supplied product photographs as references. Transparent three-column garment cutout atlas: camouflage YOUR PEOPLE MY PEOPLE WE FAMILY tee, black/white/red flame baseball jersey, hot-pink flame jersey top. Keep the actual designs and colors recognizable; garments only, no boxes or people, no photo backgrounds."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/joz-items-v1.webp",
+      "selectedGeneratedFile": "exec-1669bb6c-4e88-42cc-9c98-a3cec8db3981.png",
+      "prompt": "Transparent two-column game item atlas, detailed illustrated: tan leather double-buckle sandals on the left, structured luxury-style handbag on the right. Recognizable silhouettes, separate cells, no background or added text."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/joz-game-v1.webp",
+      "selectedGeneratedFile": "exec-0260dae2-84ac-4f75-887d-c29b412cc369.png",
+      "prompt": "Portrait illustrated game environment for a music-backed sandal-catching round: warm terracotta venue, plants, amber and teal concert lighting, detailed realistic materials. Clear central lane and foreground for falling items and the player. No people, UI, logos or text."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/steven-game-v1.webp",
+      "selectedGeneratedFile": "exec-3525b52d-d4ed-43d8-902d-33444c9a8940.png",
+      "prompt": "Portrait detailed illustrated golden-hour outdoor block-party street, colorful murals, string lights and warm sunshine. Open central path for the player and incoming fans. Authentic inviting neighborhood atmosphere, no characters or UI."
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/merch-game-v1.webp",
+      "selectedGeneratedFile": "exec-fe265342-a8f6-45c9-a4d6-a79cf1cf8474.png",
+      "prompt": "Portrait detailed illustrated concert merch booth with navy and gold tones, clothing racks to the sides and clear central space for falling merchandise and a tote. Warm venue lighting and realistic materials; no text, people or UI."
+    }
+  ],
+  "preservedAssets": [
+    "artist-eli-v2.webp",
+    "artist-steven-v1.webp",
+    "artist-joz-v1.webp",
+    "pit-photographers-v1.webp",
+    "kingdom-circuit-instagram.webp"
+  ],
+  "suppliedLogo": "chamblissnation-logo.webp is the supplied exact logo, losslessly encoded, not AI-redrawn.",
+  "audio": "Approved audio files are unchanged from the previous test build."
+}

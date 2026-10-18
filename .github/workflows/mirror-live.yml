@@ -17,6 +17,7 @@ on:
       - "scripts/build_chh_game.py"
       - "scripts/finalize_artist_details.py"
       - "test-overrides/**"
+      - "game-backend/**"
       - "tests/**"
   schedule:
     - cron: "0 8 * * *"
@@ -71,6 +72,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Set up Node for game score-service tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
 
       - name: Verify mirror harness
         shell: bash
