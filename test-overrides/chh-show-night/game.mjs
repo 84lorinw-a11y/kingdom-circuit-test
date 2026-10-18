@@ -9,7 +9,7 @@ import {createRoundAudio} from './round-audio.mjs?v=mobile-20';
 import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=vip-18';
 import {gameIds,gameNames} from './scoring.mjs?v=vip-18';
 import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=vip-18';
-import {walkable as canWalk,findPath,clampPosition} from './navigation.mjs?v=mobile-20';
+import {walkable as canWalk,findPath,clampPosition} from './navigation.mjs?v=floor-22';
 import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=vip-18';
 import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=vip-18';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
@@ -210,14 +210,14 @@ function render(time){
  requestAnimationFrame(render);
 }
 function update(dt,time){
- Object.assign(state,clampPosition(state));
+ Object.assign(state,clampPosition(state,state.room));
  let dx=0,dy=0;const old={x:state.x,y:state.y};if(keys.has('up'))dy--;if(keys.has('down'))dy++;if(keys.has('left'))dx--;if(keys.has('right'))dx++;
  if(dx||dy){route=[];autoAction=null;}else if(route.length){const p=route[0],d=Math.hypot(p.x-state.x,p.y-state.y);if(d<5){state.x=p.x;state.y=p.y;route.shift();if(!route.length&&autoAction){const h=autoAction;autoAction=null;interact(h);}return;}dx=(p.x-state.x)/d;dy=(p.y-state.y)/d;}
  const d=Math.hypot(dx,dy);if(d){dx/=d;dy/=d;const speed=180*dt;if(walkable(state.x+dx*speed,state.y))state.x+=dx*speed;if(walkable(state.x,state.y+dy*speed))state.y+=dy*speed;}
  walking=Math.hypot(old.x-state.x,old.y-state.y)>.05;
  const nowAtFront=stageSpotAt(state);if(nowAtFront&&nowAtFront!==atFront&&(!autoAction||autoAction.id===nowAtFront)){raiseHands(nowAtFront);openArtistGame(nowAtFront);}else if(!nowAtFront&&atFront){atFront=null;raisingUntil=0;worshipMusic.leave();}
  if(walking){trail.unshift({x:state.x,y:state.y});if(trail.length>100)trail.pop();}
- state.friends.forEach((_,i)=>{const desired=walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);p.x=Math.max(32,p.x);p.y=Math.min(640,p.y);followerPositions[i]=p;});
+ state.friends.forEach((_,i)=>{const desired=walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);Object.assign(p,clampPosition(p,state.room));p.y=Math.min(640,p.y);followerPositions[i]=p;});
  if(route.length&&!walking&&d){route=[];autoAction=null;notify('Try the open floor, or choose a destination below.');}
 }
 let dragPointer=null;
@@ -239,7 +239,7 @@ $('#interact').onclick=interactButton;$('#menu').onclick=openMenu;$('#scoreboard
 $('#sound').onclick=toggleSound;
 $('#player-profile').onclick=()=>openPlayerSetup();
 function openMenu(){
- const content=openDialog('Your night.','Tap anywhere or drag to walk. Scenery won’t block you. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
+ const content=openDialog('Your night.','Tap or drag to walk. The stage and merch table are off limits; the crowd and grass won’t block you. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
  {label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
  ...(state.photo?[{label:'VIP PHOTO',fn:showPhoto}]:[]),
  {label:'FIREWORKS',fn:()=>celebration.play()},

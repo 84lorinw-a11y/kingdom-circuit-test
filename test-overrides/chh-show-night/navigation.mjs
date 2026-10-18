@@ -1,12 +1,14 @@
-// Scenery is decorative. Only the outer room edges constrain movement.
+// Keep the venue's stage and merch display above one clear audience-floor edge.
+// Grass, crowds and lounge furniture remain decorative and never obstruct routes.
 export const roomBounds={left:32,right:992,top:170,bottom:644};
-export function clampPosition({x,y}){
- return {x:Math.max(roomBounds.left,Math.min(roomBounds.right,Number.isFinite(x)?x:512)),y:Math.max(roomBounds.top,Math.min(roomBounds.bottom,Number.isFinite(y)?y:570))};
+const floorTop=room=>room==='show'?444:roomBounds.top;
+export function clampPosition({x,y},room){
+ return {x:Math.max(roomBounds.left,Math.min(roomBounds.right,Number.isFinite(x)?x:512)),y:Math.max(floorTop(room),Math.min(roomBounds.bottom,Number.isFinite(y)?y:570))};
 }
 export function walkable(room,x,y){
- return Number.isFinite(x)&&Number.isFinite(y)&&x>=roomBounds.left&&x<=roomBounds.right&&y>=roomBounds.top&&y<=roomBounds.bottom;
+ return Number.isFinite(x)&&Number.isFinite(y)&&x>=roomBounds.left&&x<=roomBounds.right&&y>=floorTop(room)&&y<=roomBounds.bottom;
 }
 export function findPath(room,start,end){
- // Direct movement cannot get caught in grass, furniture or a pathfinding loop.
- return [clampPosition(end)];
+ // Taps above the stage/table lead to the floor in front, without a pathfinding loop.
+ return [clampPosition(end,room)];
 }
