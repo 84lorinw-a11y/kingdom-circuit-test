@@ -27,6 +27,8 @@
 
 - All-player scoreboard: show ranked rows with Player, Eli, Joz, Steven, Merch, Journey and Total at the end. Retain each player's best complete session and include zero-score entrants. Pagination must allow access to every player, not just a top-100 list. Preserve nickname-only entry and distinguish different names starting new games on a shared phone. Clearly label browser-only scores until a persistent online service is actually connected; never invent past players or import unverified local game scores as online results.
 
+- Blue Soul player: preserve the higher navy crew neckline in both the normal/leaning and VIP peace-sign poses. Keep her existing saved character ID and other appearance unchanged.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.
