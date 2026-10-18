@@ -5,11 +5,22 @@ import unittest
 import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url, read_detail
+from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url, read_detail, lineup_notice, verify_billing
 from apply_test_redesign import create_history_event_page, history_event_href
 
 
 class MobileCalendarContentTests(unittest.TestCase):
+    def test_unannounced_lineup_requires_the_explicit_published_notice(self):
+        source = '<p data-kc-event-notice>Lineup to be announced. Outdoor Fan Fest starts at 3 PM.</p>'
+        notice = lineup_notice(source)
+        self.assertEqual(notice, 'Lineup to be announced. Outdoor Fan Fest starts at 3 PM.')
+        event = {'href': '/event/festival/', 'artists': [], 'artistLinks': {}, 'lineupNotice': notice}
+        verify_billing(event)
+        for invalid in ('', 'Doors open at 5 PM', 'Artist name missing'):
+            with self.assertRaises(AssertionError): verify_billing(dict(event, lineupNotice=invalid))
+        with self.assertRaises(AssertionError): verify_billing(dict(event, artistLinks={'Invented': '/artist/'}))
+        verify_billing(dict(event, artists=['Confirmed Artist'], lineupNotice=''))
+
     def test_renamed_archive_reuses_reviewed_title_and_artwork(self):
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)

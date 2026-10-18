@@ -50,6 +50,16 @@ def host_label(source):
     return clean_text(match_text(r'<p\b[^>]*class="host-line"[^>]*>(.*?)</p>', source))
 
 
+def lineup_notice(source):
+    notice = clean_text(match_text(r'<p\b[^>]*data-kc-event-notice[^>]*>(.*?)</p>', source))
+    return notice if re.search(r'\blineup\s+(?:to be announced|has not yet been announced)\b', notice, re.I) else ''
+
+
+def verify_billing(event):
+    assert event['artists'] or (not event['artistLinks'] and lineup_notice(
+        '<p data-kc-event-notice>' + html.escape(event.get('lineupNotice', '')) + '</p>')), event['href']
+
+
 def safe_page(site, href):
     if not href.startswith(BASE + "event/"):
         raise ValueError(f"Not a test event link: {href}")
@@ -94,6 +104,7 @@ def read_detail(site, href):
             "dateLabel": field(source, "Date"), "venue": field(source, "Venue"),
             "location": field(source, "Location"), "artists": names, "artistLinks": links,
             "hostLabel": host_label(source),
+            "lineupNotice": lineup_notice(source),
             "official": official, "status": field(source, "Status"),
             "age": field(source, "Age restriction"), "original": attribute(original, "href"),
             **image_fields(image_block)}
@@ -191,7 +202,8 @@ def verify(site, *, isolated=False):
     assert len({e["href"] for e in events}) == len(events)
     assert len(current) == len(event_cards((site / "shows/index.html").read_text()))
     for e in events:
-        assert e["title"] and e["artists"] and e["image"] and e["dateLabel"], e["href"]
+        assert e["title"] and e["image"] and e["dateLabel"], e["href"]
+        verify_billing(e)
         assert safe_page(site, e["href"]).is_file()
         for link in e["artistLinks"].values():
             assert (site / link[len(BASE):].strip("/") / "index.html").is_file(), link

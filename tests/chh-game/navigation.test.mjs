@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {findPath,walkable} from '../../test-overrides/chh-show-night/navigation.mjs';
+test('All room destinations remain reachable without crossing scenery, including refreshments to the VIP exit',()=>{
+ const rooms={outside:[{x:470,y:575},{x:210,y:590},{x:348,y:578},{x:740,y:385},{x:975,y:625}],show:[{x:500,y:575},{x:105,y:455},{x:335,y:475},{x:512,y:475},{x:720,y:475},{x:940,y:447},{x:75,y:625},{x:900,y:585}],vip:[{x:500,y:570},{x:505,y:442},{x:105,y:310},{x:875,y:410},{x:200,y:635}]};
+ for(const [room,points]of Object.entries(rooms))for(const start of points)for(const end of points){const route=findPath(room,start,end);assert.ok(route.length,`${room}: ${JSON.stringify(start)} → ${JSON.stringify(end)}`);let prev=start;for(const next of route){const steps=Math.max(1,Math.ceil(Math.hypot(prev.x-next.x,prev.y-next.y)));for(let i=0;i<=steps;i++){const t=i/steps;assert.ok(walkable(room,prev.x+(next.x-prev.x)*t,prev.y+(next.y-prev.y)*t),`${room} route hit scenery`);}prev=next;}assert.deepEqual(route.at(-1),end);}
+});

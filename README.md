@@ -46,3 +46,12 @@ not ignore changed files. Do not reapply the older global redesign or deploy
 this test harness to production. Production promotion requires a separate
 request and production-specific implementation; this preview cannot measure
 Google rankings because indexing is intentionally disabled.
+# CHH Show Night — test game
+
+Game URL: https://84lorinw-a11y.github.io/kingdom-circuit-test/play/
+
+The owner approved password-free testing on October 18, 2026. This route is intentionally absent from site navigation and sitemaps and includes `noindex,nofollow`. It is publicly accessible to anyone with the address; there is no server or shared password on GitHub Pages.
+
+Edit `test-overrides/chh-show-night/` and update the SHA-256 inventory in `test-overrides/chh-show-night-manifest.json` for intentional source changes. The mirror workflow runs `scripts/build_chh_game.py _site` before the final release verifier. That script rewrites `/play/` asset URLs for the test base path and verifies exact file contents, imports, the asset inventory, indexing policy and absence of password endpoints. Existing site pages remain an exact environment-adjusted copy of the published site. Do not copy the local Node server, `.env`, development artifacts or old assets into this repository.
+
+Game behavior checks: `node --test tests/chh-game/*.test.mjs`. Deployment checks: `python -m unittest discover -s tests -p 'test_*.py'`, followed by the full mirror workflow. Publishing this test branch does not promote the game to KingdomCircuit.com.

@@ -14,6 +14,7 @@ on:
       - "scripts/verify_test_redesign.py"
       - "scripts/build_mobile_show_test.py"
       - "scripts/build_artist_intake_mockup.py"
+      - "scripts/build_chh_game.py"
       - "scripts/finalize_artist_details.py"
       - "test-overrides/**"
       - "tests/**"
@@ -84,6 +85,7 @@ jobs:
           python -m py_compile scripts/verify_test_redesign.py
           python -m py_compile scripts/build_mobile_show_test.py
           python -m py_compile scripts/build_artist_intake_mockup.py
+          python -m py_compile scripts/build_chh_game.py
           python -m py_compile scripts/finalize_artist_details.py
           node --check test-overrides/mobile-show-test.js
           node --check test-overrides/artist-intake-mockup.js
@@ -94,6 +96,8 @@ jobs:
           node --test tests/mobile-seo-preview.test.cjs
           node --test tests/national-discovery.test.cjs
           node --test tests/fan-discovery.test.cjs
+          for source in test-overrides/chh-show-night/*.mjs; do node --check "$source"; done
+          node --test tests/chh-game/*.test.mjs
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site
@@ -152,6 +156,7 @@ jobs:
 
       - name: Verify the final deployment artifact
         run: |
+          python scripts/build_chh_game.py _site
           python scripts/finalize_artist_details.py _site --check
           python scripts/verify_live_baseline.py _live_site _site
 

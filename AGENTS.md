@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 18 CHH Show Night test game
+
+- The owner explicitly authorized publishing the game without a password on the existing test site. Keep `/play/` as a direct-link, noindex/nofollow test route, absent from ordinary navigation and sitemaps. This does not authorize a production deployment.
+- Durable game source and the exact approved asset inventory are in `test-overrides/chh-show-night/` and `chh-show-night-manifest.json`. Update the manifest when intentionally changing source; never include local `.env`, password-gate files, development artifacts or unused artwork.
+- `scripts/build_chh_game.py` adds the game during every daily mirror. Final verification compares every published game file with the manifest-pinned source and retains exact parity for all pre-existing live pages. Do not bypass those checks or expose a Node password gate as a static page.
+- Preserve the approved music excerpts, character artwork, free VIP access and independent Eli +25 XP award. The full night totals 125 XP and unlocks fireworks.
+
 - This repository deploys the test site only. Never push to or change `84lorinw-a11y/kingdom-circuit` unless the user separately and explicitly asks for a production promotion.
 - Treat checked-in root HTML/JSON as an old generated snapshot, not the durable implementation. Test-only changes belong in the overlay scripts under `scripts/` and their matching verification scripts.
 - Preserve the test safeguards: `/kingdom-circuit-test/` base paths, `noindex,nofollow`, production analytics disabled, no `CNAME`, no operational/source-report files in the deployed artifact, and no workflow commits of generated output.
