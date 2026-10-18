@@ -1,9 +1,18 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {createScoreStore,createOnlineScores} from '../../test-overrides/chh-show-night/leaderboard.mjs';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from '../../test-overrides/chh-show-night/leaderboard.mjs';
 import {scoreColumns} from '../../test-overrides/chh-show-night/scoreboard-view.mjs';
 import {initialState,act} from '../../test-overrides/chh-show-night/state.mjs';
 const memory=()=>{const data=new Map();return {getItem:k=>data.get(k),setItem:(k,v)=>data.set(k,v)};};
 const profile=(name,id)=>({...act(initialState(),'profile',{name,avatar:'red'}),sessionId:id});
+test('Exit confirmation waits for the shared save and never labels offline points as online',async()=>{
+ const state={...profile('River','exit-save'),totals:{eli:1000,joz:800,steven:0,chamblissnation:0}};
+ let release;const online={enabled:true,connect:()=>new Promise(resolve=>{release=resolve;})};let finished=false;
+ const saving=confirmSessionSave(state,online).then(value=>{finished=true;return value;});await Promise.resolve();assert.equal(finished,false);
+ release({state});assert.equal((await saving).status,'online');
+ assert.equal((await confirmSessionSave(state,{enabled:true,connect:async()=>({state:{...state,totals:{...state.totals,eli:0}}})})).status,'partial');
+ assert.equal((await confirmSessionSave(state,{enabled:true,connect:async()=>{throw Error('offline');}})).status,'waiting');
+ assert.equal((await confirmSessionSave(state,{enabled:false},{localSaved:false})).status,'unsaved');
+});
 test('The scoreboard puts all four games and journey before the final Total column',()=>{assert.deepEqual(scoreColumns.map(c=>c[0]),['rank','nickname','eli','joz','steven','chamblissnation','journey','total']);});
 test('Device storage preserves every named player, best whole sessions, and a legacy best score',async()=>{
  const storage=memory(),legacy={nickname:'Earlier Fan',sessionId:'old',total:90,eli:0,joz:90,steven:0,chamblissnation:0,journey:0};storage.setItem('kc-show-night-scores-v2',JSON.stringify({playerId:'device-a',best:legacy}));

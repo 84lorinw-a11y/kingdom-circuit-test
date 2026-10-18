@@ -33,6 +33,8 @@
 
 - October 18 shared scores: Google Sheets + Apps Script is authorized and connected on TEST, superseding the earlier decision to table it. Use workbook `1YhSyRhnLUFliM8x-ngY1WH8OCvIfxJBGZmt701mWLb4`, **CHH Show Up** (gid 72099769), and its hidden `_CHH Score Data` helper. Preserve unrelated artist/business tabs and sharing settings. The bound **Kingdom Circuit CHH Test Scores** project runs the reviewed `game-backend/apps-script/Code.gs`. Anonymous browser saves across all four games, duplicate receipts and independent identities were verified. Keep server/helper files outside the static artifact; never store raw player tokens in the sheet. Preserve automatic retries and persistent pending-round saves. Production remains separately authorized. Endpoint and operational notes are in `game-backend/apps-script/README.md`.
 
+- Score exit flow: a session is one saved night including replays; refreshing can continue it. Explain this on entry and the scoreboard. Provide Save & Exit in the menu and save-before-reset for New Game. Only confirm an online save after the service returns the matching current total; distinguish pending, device-only and historical unverified points. Never imply that closing a mobile browser can reliably trigger an online save.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.

@@ -1,8 +1,18 @@
-import {score,journeyScore,act} from './state.mjs?v=scores-27';
-import {gameIds} from './scoring.mjs?v=scores-27';
-import {createGoogleScores} from './google-scores.mjs?v=scores-27';
+import {score,journeyScore,act} from './state.mjs?v=save-28';
+import {gameIds} from './scoring.mjs?v=save-28';
+import {createGoogleScores} from './google-scores.mjs?v=save-28';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
+export async function confirmSessionSave(state,online,{localSaved=true}={}){
+ const total=score(state);
+ if(!online.enabled)return {status:localSaved?'device':'unsaved',total,localSaved};
+ try{
+  const response=await online.connect(state);
+  if(!response?.state)throw Error('Save was not confirmed');
+  const saved=score(response.state);
+  return {status:saved===total&&!online.pendingCount?'online':'partial',saved,total,localSaved};
+ }catch{return {status:localSaved?'waiting':'unsaved',total,localSaved};}
+}
 export function createScoreStore(storage=localStorage){
  const key='kc-show-night-scores-v2';let data;try{data=JSON.parse(storage.getItem(key))||{};}catch{data={};}
  data.playerId??=crypto.randomUUID();data.best??=null;data.players??={};
@@ -37,6 +47,7 @@ export function createOnlineScores(storage=localStorage,{base=typeof document!==
   if(s.room==='outside'&&remote.room!=='outside')await send('outside');
   if(s.room==='show'&&remote.room!=='show')await send('show');
   if(s.room==='vip'&&remote.room!=='vip'){if(remote.room!=='show')await send('show');await send('vip');}
+  return {state:remote};
  }
  return {enabled:!!base,get base(){return base;},
  connect(s){latest=structuredClone(s);if(!base||!s.name)return Promise.resolve();const snapshot=structuredClone(s);return enqueue(()=>openSession(snapshot));},

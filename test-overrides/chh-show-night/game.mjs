@@ -1,21 +1,21 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=scores-27';
-import {drawPerson,loadPeople} from './sprites.mjs?v=scores-27';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=scores-27';
-import {createCelebration} from './celebration.mjs?v=scores-27';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=scores-27';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=scores-27';
-import {mountRound} from './rounds.mjs?v=scores-27';
-import {createRoundAudio} from './round-audio.mjs?v=scores-27';
-import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=scores-27';
-import {createScoreTable} from './scoreboard-view.mjs?v=scores-27';
-import {gameIds,gameNames} from './scoring.mjs?v=scores-27';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=scores-27';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=scores-27';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=scores-27';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=scores-27';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=scores-27';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=scores-27';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=scores-27';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=save-28';
+import {drawPerson,loadPeople} from './sprites.mjs?v=save-28';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=save-28';
+import {createCelebration} from './celebration.mjs?v=save-28';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=save-28';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=save-28';
+import {mountRound} from './rounds.mjs?v=save-28';
+import {createRoundAudio} from './round-audio.mjs?v=save-28';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=save-28';
+import {createScoreTable} from './scoreboard-view.mjs?v=save-28';
+import {gameIds,gameNames} from './scoring.mjs?v=save-28';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=save-28';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=save-28';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=save-28';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=save-28';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=save-28';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=save-28';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=save-28';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
 const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};
@@ -30,7 +30,7 @@ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const celebration=createCelebration({reduceMotion});let victoryPending=false;
 const roomInfo={outside:['01','OUTSIDE THE VENUE','BRING YOUR PEOPLE.'],show:['02','THE MAIN STAGE','GOOD MUSIC. GREATER PURPOSE.'],vip:['03','THE VIP LOUNGE','MAKE A MEMORY.']};
 const images={};
-const safeSave=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}};
+const safeSave=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));return true;}catch{return false;}};
 function notify(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3600);}
 try{soundOn=localStorage.getItem('kc-show-night-sound')!=='off';}catch{}
 roundAudio.setMuted(!soundOn);
@@ -139,9 +139,10 @@ function openPlayerSetup({entry=false}={}){
  const updateHint=()=>{const choice=avatars.find(a=>a.id===selected);hint.textContent=choice?`${choice.label} selected`:'Tap a character to choose.';};updateHint();
  avatars.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='avatar-choice';b.dataset.avatar=a.id;b.setAttribute('aria-pressed',a.id===selected);const portrait=document.createElement('canvas');portrait.width=140;portrait.height=180;portrait.setAttribute('aria-hidden','true');const g=portrait.getContext('2d');g.imageSmoothingEnabled=true;drawPerson(g,70,172,a.sprite,{scale:2.7});const label=document.createElement('span');label.textContent=a.label;b.append(portrait,label);b.onclick=()=>{selected=a.id;grid.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',button===b));updateHint();};grid.append(b);});
  const submit=document.createElement('button');submit.type='submit';submit.className='player-start';submit.textContent=entry&&returning?'CONTINUE MY NIGHT →':returning?'SAVE MY PLAYER →':'START MY NIGHT →';
- form.append(nameLabel,input,grid,hint,submit);
+ const saveHint=document.createElement('p');saveHint.className='player-choice-hint';saveHint.textContent='Finish rounds to bank points. Before leaving: ☰ → Save & Exit.';
+ form.append(nameLabel,input,grid,hint,submit,saveHint);
  form.onsubmit=e=>{e.preventDefault();if(!playerName(input.value)){input.setCustomValidity('Enter your name to start.');input.reportValidity();return;}input.setCustomValidity('');if(!avatars.some(a=>a.id===selected)){hint.textContent='Choose a character before starting.';grid.querySelector('button').focus();return;}apply('profile',{name:input.value,avatar:selected});playerEntryPending=false;modal.close();announceRoom();notify(`Welcome, ${state.name}. Bring your people!`);};input.oninput=()=>input.setCustomValidity('');content.insertBefore(form,content.lastElementChild);
- if(entry&&returning){const fresh=document.createElement('button');fresh.className='secondary';fresh.textContent='NEW PLAYER / NEW GAME';fresh.onclick=startFreshNight;content.lastElementChild.append(fresh);}
+ if(entry&&returning){const fresh=document.createElement('button');fresh.className='secondary';fresh.textContent='NEW PLAYER / NEW GAME';fresh.onclick=requestFreshNight;content.lastElementChild.append(fresh);}
  else if(returning){const cancel=document.createElement('button');cancel.className='secondary';cancel.textContent='Keep my player';cancel.onclick=()=>modal.close();content.lastElementChild.append(cancel);}
  // Focus the title so the phone keyboard does not hide the character choices.
  const heading=content.querySelector('h2');heading.tabIndex=-1;heading.focus({preventScroll:true});
@@ -268,11 +269,32 @@ $('#player-profile').onclick=()=>openPlayerSetup();
 function openMenu(){
  cancelPhoto();
  const content=openDialog('Your night.','Follow the gold circles and Next prompt. Tap or drag to walk. The stage and merch table are off limits; the crowd and grass won’t block you. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
- {label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
+ {label:'SAVE & EXIT',fn:()=>saveBeforeExit()},{label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
  ...(state.photo?[{label:'VIP PHOTO',fn:showPhoto}]:[]),
  {label:'FIREWORKS',fn:()=>celebration.play()},
- {label:'NEW GAME',secondary:true,fn:()=>openDialog('Start a new night?','Choose a new name and player. Your best session stays saved.',[{label:'CHOOSE MY PLAYER',fn:startFreshNight},{label:'KEEP THIS NIGHT',secondary:true}])},
+ {label:'NEW GAME',secondary:true,fn:requestFreshNight},
  {label:'BACK TO THE SHOW',secondary:true}],'CHH SHOW NIGHT · TEST PREVIEW');
+}
+function requestFreshNight(){
+ openDialog('Start a new night?','A session is one night, including every replay. Your highest whole-night total stays on the board. Save this night before starting over.',[{label:'SAVE POINTS & START NEW NIGHT',fn:()=>saveBeforeExit({newNight:true})},{label:'KEEP THIS NIGHT',secondary:true}],'KEEP YOUR POINTS');
+}
+async function saveBeforeExit({newNight=false}={}){
+ endBreak();cancelPhoto();roundAudio.stop();route=[];autoAction=null;keys.clear();dragPointer=null;
+ scoreStore.record(state);const snapshot=structuredClone(state),localSaved=safeSave();
+ openDialog('Saving your points…','Keep this page open while we confirm your score on the shared board.',[{label:'KEEP PLAYING',secondary:true}],'SAVE & EXIT');
+ let active=true;modal.attach(()=>{active=false;});
+ const result=await confirmSessionSave(snapshot,onlineScores,{localSaved});if(!active)return;
+ const count=result.total.toLocaleString(),resume={label:newNight?'KEEP THIS NIGHT':'KEEP PLAYING',secondary:true};
+ const next={label:'START NEW NIGHT',fn:startFreshNight};
+ if(result.status==='online'){
+  openDialog('Points saved.',`${count} points saved to the shared scoreboard. ${newNight?'You can start a new night now.':'You can close this tab now. Continue later to add to this night, or start fresh.'} Your highest whole-night total stays on the board.`,newNight?[next,resume]:[resume,next],'SAVE CONFIRMED');
+ }else if(result.status==='partial'){
+  openDialog(`${result.saved.toLocaleString()} points saved online.`,`${count} points are in this night on your device. Some earlier or offline rounds could not be verified for the shared board. ${localSaved?'Your full night is saved on this device.':'Keep this tab open; device saving is unavailable.'}`,localSaved?[resume,next]:[resume],'CHECK YOUR SAVE');
+ }else if(result.status==='device'){
+  openDialog('Saved on this device.',`${count} points saved here. The shared board is not connected. You can close this tab and continue on this device later.`,newNight?[next,resume]:[resume,next],'DEVICE SAVE');
+ }else{
+  openDialog('Not saved online yet.',`${localSaved?'Your night is saved on this device.':'Device saving is unavailable.'} Keep this page open and retry before leaving to confirm your points on the shared board.`,[{label:'TRY SAVE AGAIN',fn:()=>saveBeforeExit({newNight})},resume,...(newNight&&localSaved?[{label:'START NEW NIGHT ANYWAY',secondary:true,fn:startFreshNight}]:[])],'SAVE NEEDS ATTENTION');
+ }
 }
 async function openBoard(){
  const content=openDialog('Scoreboard','',[{label:'BACK TO SHOW',secondary:true}],'CHH SHOW NIGHT');
@@ -284,7 +306,7 @@ async function openBoard(){
  const status=document.createElement('p');status.className='score-status';status.setAttribute('role','status');status.textContent='Loading players…';
  const host=document.createElement('div');host.className='board';const row=scoreStore.record(state);
  const current=document.createElement('p');current.className='score-current';current.textContent=`Your current session · ${row.nickname} · ${row.total.toLocaleString()} points`;
- const swipe=document.createElement('p');swipe.className='score-swipe';swipe.textContent='Swipe for artist scores →';
+ const swipe=document.createElement('p');swipe.className='score-swipe';swipe.textContent='Best session = your highest whole-night total, including replays. Before leaving: ☰ → Save & Exit. Swipe for artist scores →';
  const more=document.createElement('button');more.className='score-more';more.textContent='SHOW MORE PLAYERS';more.hidden=true;
  const share=document.createElement('button');share.textContent='SHARE MY SCORE';share.onclick=()=>shareScore(row);actions.prepend(share);
  content.replaceChildren(header,status,current,swipe,host,more,actions);
