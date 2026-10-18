@@ -5,7 +5,7 @@ test('Every room has a substantial crowd',()=>{assert.deepEqual(crowdCounts,{out
 test('Crowd bodies stay close to player size and the white boy and girl are selectable',()=>{
  for(const room of ['outside','show','vip']){
   const actors=crowdActors(room,0,true,{x:500,y:600});assert.ok(actors.every(a=>a.scale>=2.05&&a.scale<=2.4));
-  assert.ok(actors.some(a=>a.who==='fan:0'));assert.ok(actors.some(a=>a.who==='fan:3'));
+  assert.ok(actors.some(a=>a.who==='women:0'));assert.ok(actors.some(a=>a.who==='fan:3'));
  }
  assert.ok(avatars.some(a=>a.sprite===4));assert.ok(avatars.some(a=>a.sprite==='crowd-vip:34'));
 });

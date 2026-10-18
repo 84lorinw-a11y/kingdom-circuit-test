@@ -13,7 +13,7 @@ test('Each artist triggers only in front of their own stage position; Eli remain
 });
 test('The same balanced cast attends all three rooms, without duplicate people',()=>{
  assert.deepEqual(crowdCounts,{outside:30,show:30,vip:30});
- assert.deepEqual(sharedCast.reduce((n,p)=>(n[p.appearance]=(n[p.appearance]||0)+1,n),{}),{white:10,Black:10,brown:10});
+ assert.deepEqual(sharedCast.reduce((n,p)=>(n[p.appearance]=(n[p.appearance]||0)+1,n),{}),{Black:12,brown:10,white:8});
  const expected=sharedCast.map(p=>p.who).sort();
  for(const room of ['outside','show','vip']){
   const cast=crowdActors(room,0,true,{x:500,y:600});
@@ -24,7 +24,7 @@ test('The same balanced cast attends all three rooms, without duplicate people',
 });
 test('Steven keeps exactly the fans caught, including the branded fans',()=>{
  const events=[{id:0,hit:true},{id:1,hit:true},{id:2,hit:false},{id:4,hit:true}];
- assert.deepEqual(collectedFans(events),['fan:0','brand:0','brand:1']);
+ assert.deepEqual(collectedFans(events),['women:0','brand:0','brand:1']);
  assert.ok(Array.from({length:20},(_,i)=>stevenFan(i)).every(who=>sharedCast.some(p=>p.who===who)));
  assert.equal(new Set(Array.from({length:20},(_,i)=>stevenFan(i))).size,20);
 });

@@ -1,8 +1,8 @@
 // A single designed cast travels through the entire night. Skin-tone groups describe
 // the art direction, not information collected about players.
 export const sharedCast=Array.from({length:30},(_,i)=>({
- id:`fan-${i}`,who:i===1?'brand:0':i===4?'brand:1':`fan:${i}`,
- appearance:['white','Black','brown'][i%3]
+ id:`fan-${i}`,who:i===0?'women:0':i===12?'women:1':i===1?'brand:0':i===4?'brand:1':`fan:${i}`,
+ appearance:i===0||i===12?'Black':['white','Black','brown'][i%3]
 }));
 export const stevenFan=id=>sharedCast[((id%sharedCast.length)+sharedCast.length)%sharedCast.length].who;
 export function collectedFans(events){return events.filter(e=>e.hit).map(e=>stevenFan(e.id));}

@@ -1,7 +1,7 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=show-12';
-import {stevenFan,collectedFans} from './crowds.mjs?v=show-12';
-import {drawPerson} from './sprites.mjs?v=show-12';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=show-12';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=shirts-13';
+import {stevenFan,collectedFans} from './crowds.mjs?v=shirts-13';
+import {drawPerson} from './sprites.mjs?v=shirts-13';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=shirts-13';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
 const instructions={eli:'Tap the glowing pad when its letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag your tote. Catch the Chamblissnation drops.'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
@@ -63,7 +63,7 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
     g.fillStyle='#07131ec9';g.fillRect(50,16,320,70);g.fillStyle='#ffcf76';g.font='bold 28px monospace';g.textAlign='center';g.fillText('BIRKENSTOCK',210,46);g.font='12px monospace';g.fillStyle='#f5e8ce';g.fillText('MORE SOLE. LESS STATUS.',210,70);
    }
    for(const n of notes){const y=430-(n.at-t)*170;if(n.done||y<140||y>480)continue;
-    if(game==='joz')sandal(n.x,y);else if(game==='steven')drawPerson(g,n.x,y,stevenFan(n.id),{scale:1.1,walking:true,frame:t*8});else shirt(n.x,y,68,n.kind);
+    if(game==='joz')sandal(n.x,y);else if(game==='steven')drawPerson(g,n.x,y,stevenFan(n.id),{scale:1.1,walking:true,frame:t*8});else shirt(n.x,y,102,n.kind);
     if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<52,Math.abs(px-n.x)<23);
    }
    if(game==='joz')for(let i=0;i<7;i++){const at=3.1+i*2.4,y=430-(at-t)*170,x=60+(i*133)%300;if(y>120&&y<480)sandal(x,y,true);if(t>=at&&t-dt<at&&Math.abs(px-x)<40){combo=0;streak.textContent='0×';report('BAGS? LET THEM PASS.','#ff987f');}}

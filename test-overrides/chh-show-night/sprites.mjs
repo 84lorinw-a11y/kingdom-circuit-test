@@ -5,7 +5,7 @@ const heroIds=['player','jay','grace','mc','dj','singer'];
 // Generated rows have slightly different spacing; cut only through transparent gutters.
 const rowCuts={};
 export async function loadPeople(){
- await Promise.all([['heroes',6,2,'heroes-v3'],['brand',2,2,'brand-fans-v1'],['photographers',2,1,'pit-photographers-v1'],['eli',1,1,'artist-eli-v2'],['steven',1,1,'artist-steven-v1'],['joz',1,1,'artist-joz-v1'],['crowd-vip',6,6,'crowd-vip-v7'],['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file])=>{
+ await Promise.all([['women',2,2,'fan-women-v13'],['heroes',6,2,'heroes-v3'],['brand',2,2,'brand-fans-v1'],['photographers',2,1,'pit-photographers-v1'],['eli',1,1,'artist-eli-v2'],['steven',1,1,'artist-steven-v1'],['joz',1,1,'artist-joz-v1'],['crowd-vip',6,6,'crowd-vip-v7'],['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file])=>{
   const img=new Image();img.src=`/play/assets/${file}.webp`;
   await img.decode();const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(img,0,0);const pixels=g.getImageData(0,0,c.width,c.height).data;
   const cells=[];const cw=img.width/cols,ch=img.height/rows;
@@ -20,13 +20,14 @@ export async function loadPeople(){
  }));
 }
 export function drawPerson(ctx,x,y,who='player',{scale=2.25,frame=0,walking=false,back=false,hands=false,alpha=1,flip=false,lean=0}={}){
+ const woman=typeof who==='string'&&who.startsWith('women:')?Number(who.split(':')[1]):null;
  const branded=typeof who==='string'&&who.startsWith('brand:')?Number(who.split(':')[1]):null;
  const photographer=typeof who==='string'&&who.startsWith('pit:')?Number(who.split(':')[1]):null;
  const roomFan=typeof who==='string'&&who.startsWith('crowd-')?who.split(':'):null;
  const sharedFan=typeof who==='string'&&who.startsWith('fan:')?Number(who.split(':')[1]):null;
- const isFan=typeof who==='number',solo=who==='dj'?'eli':who==='mc'?'steven':who==='singer'?'joz':null;const atlas=atlases[sharedFan!==null?(back||hands?'fansBack':'fansFront'):branded!==null?'brand':photographer!==null?'photographers':roomFan?.[0]||solo||(isFan?'heroes':'heroes')];if(!atlas)return;
- const index=sharedFan!==null?sharedFan:branded!==null?branded:photographer!==null?photographer:roomFan?Number(roomFan[1]):isFan?([0,3,5,1,5,4][who%6]):(who==='blonde-fan'?2:heroIds.indexOf(who));const src=atlas.cells[solo?0:Math.max(0,index)+(sharedFan===null&&!roomFan&&(back||hands)?branded!==null?2:6:0)];if(!src||src.w<1||src.h<1)return;
- const height=scale*57*(sharedFan!==null&&(back||hands)?1.1:1),width=height*src.w/src.h,bob=walking?Math.abs(Math.sin(frame))*3.5:0;
+ const isFan=typeof who==='number',solo=who==='dj'?'eli':who==='mc'?'steven':who==='singer'?'joz':null;const atlas=atlases[woman!==null?'women':sharedFan!==null?(back||hands?'fansBack':'fansFront'):branded!==null?'brand':photographer!==null?'photographers':roomFan?.[0]||solo||(isFan?'heroes':'heroes')];if(!atlas)return;
+ const index=woman!==null?woman:sharedFan!==null?sharedFan:branded!==null?branded:photographer!==null?photographer:roomFan?Number(roomFan[1]):isFan?([0,3,5,1,5,4][who%6]):(who==='blonde-fan'?2:heroIds.indexOf(who));const src=atlas.cells[solo?0:Math.max(0,index)+(sharedFan===null&&!roomFan&&(back||hands)?woman!==null||branded!==null?2:6:0)];if(!src||src.w<1||src.h<1)return;
+ const height=scale*57*((sharedFan!==null||woman!==null)&&(back||hands)?1.1:1),width=height*src.w/src.h,bob=walking?Math.abs(Math.sin(frame))*3.5:0;
  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle='#0710194d';ctx.beginPath();ctx.ellipse(x,y,width*.44,height*.043,0,0,Math.PI*2);ctx.fill();
  ctx.translate(Math.round(x),Math.round(y-bob));if(flip)ctx.scale(-1,1);ctx.rotate(lean+(walking?Math.sin(frame)*.022:0));
  // Small alternating foot offsets and body bob give a readable walking cycle.

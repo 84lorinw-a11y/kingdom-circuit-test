@@ -1,0 +1,11 @@
+{
+  "mode": "Built-in image_gen",
+  "path": "test-overrides/chh-show-night/assets/fan-women-v13.webp",
+  "selectedGeneratedFile": "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-4f5f36af-4621-49d4-90b9-0ee7addf278e.png",
+  "transparent_background": true,
+  "referenced_image_paths": [
+    "/Users/lorinwilliamson/Documents/Kingdom Circuit Workspaces/oct18-chh-game-test/test-overrides/chh-show-night/assets/fans-front-v12.webp",
+    "/Users/lorinwilliamson/Documents/Kingdom Circuit Workspaces/oct18-chh-game-test/test-overrides/chh-show-night/assets/fans-back-v12.webp"
+  ],
+  "prompt": "Create a small transparent 2 columns by 2 rows character sprite sheet matching the detailed illustrated realistic proportions and linework of these concert crowd references. ONLY TWO new Black young adult women, each with matching front and back views. Top row front standing relaxed; bottom row SAME two women from rear raising hands in worship. Left column: Black woman with rich deep brown skin, long neat black locs, warm smile, cream denim jacket over white top, black straight jeans, white sneakers. Right column: Black woman with medium-dark brown skin, short rounded natural black curls, warm smile, cobalt blue jacket over white top, white jeans, white sneakers. Distinct faces and hair; recognizable Black women, tasteful youthful modern streetwear. Natural realistic adult bodies, not chibi/cartoon proportions. Complete full body including raised hands and shoes entirely inside each equal cell. Generous transparent gutters so no figures touch any cell edge. Four isolated figures total, 2x2 grid, top fronts bottom backs, no scenery, no text, no labels, no extra people."
+}
