@@ -1,5 +1,5 @@
 import {djTrack} from './music-config.mjs';
-import {createBassEffects} from './bass-fx.mjs';
+import {createBassEffects} from './bass-fx.mjs?v=bass-10';
 export function beatNotes(bpm=100,firstBeatMs=null){const step=60000/bpm;return Array.from({length:10},(_,i)=>({letter:'BIBLE'[i%5],at:(firstBeatMs??step*4)+step*i,status:'pending'}));}
 export function judgeTap(notes,elapsed){const target=notes.filter(n=>n.status==='pending').sort((a,b)=>Math.abs(a.at-elapsed)-Math.abs(b.at-elapsed))[0];if(!target||Math.abs(target.at-elapsed)>210)return null;target.status='hit';return{target,perfect:Math.abs(target.at-elapsed)<=95};}
 export function mountRhythm(container,{best=0,rewardEarned=false,onFinish=()=>{},onActivity=()=>{}}={}){
@@ -19,8 +19,8 @@ export function mountRhythm(container,{best=0,rewardEarned=false,onFinish=()=>{}
  const musicRow=document.createElement('div');musicRow.className='song-controls';
  const musicStatus=document.createElement('span');musicStatus.setAttribute('aria-live','polite');musicStatus.textContent='Sound on for this game.';
  const stopMusic=document.createElement('button');stopMusic.className='secondary';stopMusic.textContent='STOP MUSIC';stopMusic.disabled=true;musicRow.append(musicStatus,stopMusic);
- const effects=document.createElement('button');effects.className='bass-toggle secondary';effects.type='button';effects.setAttribute('aria-pressed',String(!reduceMotion));effects.textContent=reduceMotion?'BASS FX OFF · REDUCED MOTION':'BASS FX ON';effects.disabled=reduceMotion;
- effects.onclick=()=>{const enabled=bass.setEnabled(effects.getAttribute('aria-pressed')!=='true');effects.setAttribute('aria-pressed',String(enabled));effects.textContent=enabled?'BASS FX ON':'BASS FX OFF';};
+ const effects=document.createElement('button');effects.className='bass-toggle secondary';effects.type='button';effects.setAttribute('aria-pressed',String(!reduceMotion));effects.textContent=reduceMotion?'BASS FX OFF · REDUCED MOTION':'BASS FX · STRONG';effects.disabled=reduceMotion;
+ effects.onclick=()=>{const enabled=bass.setEnabled(effects.getAttribute('aria-pressed')!=='true');effects.setAttribute('aria-pressed',String(enabled));effects.textContent=enabled?'BASS FX · STRONG':'BASS FX OFF';};
  container.append(music,header,reward,buttons,score,stage,feedback,hint,tap,musicRow,effects);
  const elapsed=()=>(music.currentTime-djTrack.offsetSeconds)*1000;
  function render(){

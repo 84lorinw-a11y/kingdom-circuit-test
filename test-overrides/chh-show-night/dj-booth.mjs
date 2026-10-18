@@ -1,5 +1,5 @@
 import {djTrack} from './music-config.mjs';
-import {mountRhythm} from './rhythm.mjs';
+import {mountRhythm} from './rhythm.mjs?v=bass-10';
 import {drawPerson} from './sprites.mjs';
 
 export function mountDjBooth(container,options={}){

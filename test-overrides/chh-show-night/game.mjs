@@ -4,7 +4,7 @@ import {crowdActors,crowdCounts} from './crowds.mjs';
 import {createCelebration} from './celebration.mjs';
 import {pitPhotographers,drawCameraFlash} from './pit.mjs';
 import {avatars,avatarFor,playerName} from './avatars.mjs';
-import {mountDjBooth} from './dj-booth.mjs';
+import {mountDjBooth} from './dj-booth.mjs?v=bass-10';
 import {mountMerch,mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs';
 import {walkable as canWalk,findPath} from './navigation.mjs';
 import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs';
