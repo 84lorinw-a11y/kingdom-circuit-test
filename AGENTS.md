@@ -17,6 +17,8 @@
 
 - Latest October 18 cast revision: use the identical 30-person cast across exterior, main stage and VIP (8 white, 12 Black, 10 brown-skinned illustrated fans; the owner subsequently replaced two white women with Black women). Steven collects these exact people and keeps the caught crew with him. Merch marker says Merch; keep vendor face clear. Right venue wall has only the orange-rimmed Kingdom Circuit logo matching the VIP room, no door or steps. VIP photo uses the actual lounge backdrop and a prominent player name.
 
+- Latest VIP photo revision: preview and download share a tighter crop around the six-person group beneath the actual VIP banner. Keep Classic and Lean In and add Peace Sign for every selectable player. Jay wears the woodland Chamblissnation “Your People My People We Family” tee in every room and photo pose. This photo crop supersedes the older wide composition including the lounge furniture and side-wall emblem.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.

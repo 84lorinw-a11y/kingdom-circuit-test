@@ -1,4 +1,4 @@
-import {djTrack,stageTracks,merchTrack} from './music-config.mjs?v=bounce-16';
+import {djTrack,stageTracks,merchTrack} from './music-config.mjs?v=vip-18';
 // A single context is unlocked by the first real gesture and reused on every replay.
 export function createRoundAudio(){
  let context,source,gain,analyser,limiter,generation=0,started=0,offset=0,active=null;const buffers=new Map();

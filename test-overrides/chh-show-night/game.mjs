@@ -1,17 +1,17 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=shirts-13';
-import {drawPerson,loadPeople} from './sprites.mjs?v=shirts-13';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=shirts-13';
-import {createCelebration} from './celebration.mjs?v=shirts-13';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=shirts-13';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=shirts-13';
-import {mountRound} from './rounds.mjs?v=bounce-16';
-import {createRoundAudio} from './round-audio.mjs?v=bounce-16';
-import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=shirts-13';
-import {gameIds,gameNames} from './scoring.mjs?v=bounce-16';
-import {mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs?v=shirts-13';
-import {walkable as canWalk,findPath} from './navigation.mjs?v=shirts-13';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=shirts-13';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=shirts-13';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=vip-18';
+import {drawPerson,loadPeople} from './sprites.mjs?v=vip-18';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=vip-18';
+import {createCelebration} from './celebration.mjs?v=vip-18';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=vip-18';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=vip-18';
+import {mountRound} from './rounds.mjs?v=vip-18';
+import {createRoundAudio} from './round-audio.mjs?v=vip-18';
+import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=vip-18';
+import {gameIds,gameNames} from './scoring.mjs?v=vip-18';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=vip-18';
+import {walkable as canWalk,findPath} from './navigation.mjs?v=vip-18';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=vip-18';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=vip-18';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
 const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};document.addEventListener('pointerdown',unlockAudio,{capture:true,passive:true});document.addEventListener('keydown',unlockAudio,{capture:true});
@@ -118,19 +118,14 @@ async function takePhoto(){
  photoBusy=true;route=[];keys.clear();for(const n of ['3','2','1']){$('#countdown').textContent=n;tone('step');await pause(700);}$('#countdown').textContent='';if(!reduceMotion){$('#flash').classList.remove('firing');void $('#flash').offsetWidth;$('#flash').classList.add('firing');}apply('photo');tone('photo');await pause(200);await showPhoto();photoBusy=false;
 }
 async function makePhoto(){
- const c=document.createElement('canvas');c.width=1200;c.height=900;const g=c.getContext('2d');
- g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,900);
- // Photograph the real lounge: its cloth backdrop, red carpet and wall emblem.
- g.save();g.beginPath();g.rect(20,20,1160,725);g.clip();
- const zoom=1160/1110;g.translate(20-426*zoom,20);g.scale(zoom,zoom);
- g.drawImage(images.vip,0,0,1536,1024);
- drawPhotoLineup(g,{avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:585,y:570,spacing:76,scale:5.15});
- g.restore();
+ const c=document.createElement('canvas');c.width=1200;c.height=1180;const g=c.getContext('2d');
+ g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,1180);
+ drawVipPhoto(g,{backdrop:images.vip,avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:20,y:20,width:1160,height:1000});
  g.fillStyle='#101b2c';g.textAlign='center';
  const name=`${(state.name||'YOU').toUpperCase()}'S SHOW NIGHT`;
- g.font=`bold ${Math.min(43,1040/(name.length*.61))}px monospace`;g.fillText(name,600,804);
- g.font='bold 22px monospace';g.fillText(`${score(state).toLocaleString()} POINTS · BACKSTAGE WITH YOUR CREW`,600,845);
- g.font='16px monospace';g.fillText('KINGDOM CIRCUIT · ALL GLORY TO JESUS.',600,877);
+ g.font=`bold ${Math.min(52,1040/(name.length*.61))}px monospace`;g.fillText(name,600,1080);
+ g.font='bold 22px monospace';g.fillText(`${score(state).toLocaleString()} POINTS · BACKSTAGE WITH YOUR CREW`,600,1124);
+ g.font='16px monospace';g.fillText('KINGDOM CIRCUIT · ALL GLORY TO JESUS.',600,1158);
  return new Promise(resolve=>c.toBlob(resolve,'image/png'));
 }
 async function showPhoto(){

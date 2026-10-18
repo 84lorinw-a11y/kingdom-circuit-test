@@ -1,4 +1,4 @@
-import {MAX_SCORE} from './state.mjs?v=shirts-13';
+import {MAX_SCORE} from './state.mjs?v=vip-18';
 export function createCelebration({reduceMotion=false}={}){
  const layer=document.createElement('div');layer.id='celebration';layer.setAttribute('popover','manual');
  const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');

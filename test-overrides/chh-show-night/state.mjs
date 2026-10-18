@@ -1,8 +1,8 @@
-import {avatars,playerName} from './avatars.mjs?v=shirts-13';
-import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=shirts-13';
+import {avatars,playerName} from './avatars.mjs?v=vip-18';
+import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=vip-18';
 export const MAX_SCORE=1000; // First celebration milestone, never a total-score ceiling.
 export const initialState=()=>({version:2,name:'',avatar:'red',profileReady:false,beatBest:0,eli:false,photoStyle:{pose:'classic',frame:'gold'},room:'outside',friends:[],merch:null,worship:false,photo:false,entered:false,x:470,y:575,totals:blankTotals(),roundIds:[],rounds:0,sessionId:''});
-export const validPhotoStyle=value=>({pose:['classic','lean'].includes(value?.pose)?value.pose:'classic',frame:['gold','mint','rose'].includes(value?.frame)?value.frame:'gold'});
+export const validPhotoStyle=value=>({pose:['classic','lean','peace'].includes(value?.pose)?value.pose:'classic',frame:['gold','mint','rose'].includes(value?.frame)?value.frame:'gold'});
 export const journeyScore=s=>s.friends.length*15+(s.worship?25:0)+(s.photo?25:0);
 export const score=s=>journeyScore(s)+gameIds.reduce((n,id)=>n+(s.totals?.[id]||0),0);
 export const coins=s=>20-(s.merch?10:0);

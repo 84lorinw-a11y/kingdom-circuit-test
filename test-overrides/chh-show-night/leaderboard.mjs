@@ -1,5 +1,5 @@
-import {score,journeyScore} from './state.mjs?v=shirts-13';
-import {gameIds} from './scoring.mjs?v=shirts-13';
+import {score,journeyScore} from './state.mjs?v=vip-18';
+import {gameIds} from './scoring.mjs?v=vip-18';
 // Empty on the static test site until an online score service is connected.
 export const SCORE_SERVICE='';
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
