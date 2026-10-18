@@ -1,8 +1,8 @@
-import {djTrack,stageTracks} from './music-config.mjs?v=shirts-13';
+import {djTrack,stageTracks,merchTrack} from './music-config.mjs?v=bounce-16';
 // A single context is unlocked by the first real gesture and reused on every replay.
 export function createRoundAudio(){
  let context,source,gain,analyser,limiter,generation=0,started=0,offset=0,active=null;const buffers=new Map();
- const tracks={eli:djTrack,...stageTracks};
+ const tracks={eli:djTrack,...stageTracks,chamblissnation:merchTrack};
  async function buffer(id){if(!buffers.has(id))buffers.set(id,fetch(tracks[id].src).then(r=>{if(!r.ok)throw Error('Music unavailable');return r.arrayBuffer();}).then(b=>context.decodeAudioData(b)).catch(e=>{buffers.delete(id);throw e;}));return buffers.get(id);}
  function unlock(){try{context??=new(window.AudioContext||window.webkitAudioContext)();const promise=context.resume();Object.keys(tracks).forEach(id=>buffer(id).catch(()=>{}));return promise;}catch{return Promise.reject(Error('Audio unavailable'));}}
  function stop(){generation++;if(source){source.onended=null;source.stop();source.disconnect();source=null;}gain?.disconnect();analyser?.disconnect();limiter?.disconnect();active=null;}

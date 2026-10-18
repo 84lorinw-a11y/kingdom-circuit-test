@@ -1,0 +1,14 @@
+{
+  "title": "Bounce Back",
+  "artist": "Joz",
+  "sourceUrl": "https://www.youtube.com/watch?v=6bP67Jo_JWY",
+  "sourceChannel": "Joz - Topic",
+  "sourceType": "Distributor-provided recording, Joz Music / DistroKid",
+  "trackStartSeconds": 15.4,
+  "trackEndSeconds": 40.4,
+  "durationSeconds": 25,
+  "localFile": "assets/music/joz-bounce-back-25s.m4a",
+  "sha256": "535bc304ec6f129366da03adb14b012436079eae15a03f0e65b5008bb5dbe36e",
+  "purpose": "Owner-requested soundtrack for the Chamblissnation merch game on TEST only. Short first-test selection; existing artist excerpts unchanged.",
+  "edit": "35ms fade in, 200ms fade out, mild 1.12x gain with peak limiter; no looping."
+}

@@ -58,7 +58,7 @@ Game behavior checks: `node --test tests/chh-game/*.test.mjs`. Deployment checks
 
 ## October 18 rebuild
 
-The game uses a single-screen touch layout, detailed illustrated scenes and people, and four replayable challenges: Eli, Joz, Steven and Chamblissnation. Every challenge has the same hit/clean-hit scoring. **No session score cap:** completed rounds add to each activity subtotal and the total forever; 1,000-point intervals are celebrations, never a finish line. Music-backed rounds stay 21–26 seconds and keep the approved excerpts. Nickname entry requires no signup.
+The game uses a single-screen touch layout, detailed illustrated scenes and people, and four replayable challenges: Eli, Joz, Steven and Chamblissnation. Every challenge has the same hit/clean-hit scoring. **No session score cap:** completed rounds add to each activity subtotal and the total forever; 1,000-point intervals are celebrations, never a finish line. Music-backed rounds stay 21–26 seconds and keep the approved excerpts. Nickname entry requires no signup. Chamblissnation’s 25-second round plays Joz’s “Bounce Back,” restarts the excerpt on replay, and stops the music on exit.
 
 The larger opening marquee names Steven Malcolm, Eli Williams and Joz. The right venue wall carries Kingdom Circuit’s logo. Chamblissnation’s supplied products, logo and family message appear in merch; two fans wear the supplied outfits. VIP photos include the full wall emblem and six people under the @thekingdomcircuit banner.
 

@@ -1,4 +1,5 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=shirts-13';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=bounce-16';
+import {merchTrack} from './music-config.mjs?v=bounce-16';
 import {stevenFan,collectedFans} from './crowds.mjs?v=shirts-13';
 import {drawPerson} from './sprites.mjs?v=shirts-13';
 import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=shirts-13';
@@ -10,6 +11,7 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
  let disposed=false,phase='ready',raf=0,elapsed=0,started=0,last=0,px=210,target=210,notes=[],events=[],particles=[],roundId='',seed=1,run=0,ranked=false,combo=0,feedback='',feedbackUntil=0,held=new Set();
  host.className='round';host.dataset.game=game;host.dataset.phase=phase;
  const top=el('div','round-top'),exit=el('button','round-exit','← Leave'),brand=el('div','round-brand'),artist=el('small','',gameNames[game].toUpperCase()),title=el('strong','',titles[game]);brand.append(artist,title);exit.onclick=onExit;
+ if(game==='chamblissnation')brand.append(el('small','',`${merchTrack.artist} · ${merchTrack.title}`));
  const fx=el('button','round-fx',reduced?'FX reduced':'Bass FX on');fx.hidden=game!=='eli';fx.disabled=reduced;fx.setAttribute('aria-pressed',!reduced);top.append(exit,brand,fx);
  const stats=el('div','round-stats'),points=el('b','','0'),time=el('b','',`${roundSeconds[game]}s`),streak=el('b','','0×');
  for(const [label,v] of [['POINTS',points],['TIME',time],['COMBO',streak]]){const group=el('div');group.append(el('small','',label),v);stats.append(group);}
@@ -83,7 +85,7 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
   for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;g.globalAlpha=Math.max(0,p.life);g.fillStyle=p.color;g.fillRect(p.x,p.y,4,4);}g.globalAlpha=1;particles=particles.filter(p=>p.life>0);
  }
  function tick(now){if(disposed)return;const dt=Math.min(.05,(now-last)/1000)||.016;last=now;if(phase==='playing'){
-  elapsed=game==='chamblissnation'?(now-started)/1000:audio.time;
+  elapsed=audio.time;
   if(held.has('ArrowLeft')||held.has('a'))target-=320*dt;if(held.has('ArrowRight')||held.has('d'))target+=320*dt;target=Math.max(42,Math.min(378,target));px+=(target-px)*Math.min(1,dt*24);
   time.textContent=`${Math.max(0,Math.ceil(roundSeconds[game]-elapsed))}s`;progress.value=elapsed;
  }

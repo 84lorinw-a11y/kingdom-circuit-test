@@ -2,7 +2,7 @@
 export const ROUND_MAX=1000, OPPORTUNITIES=20;
 export const gameIds=['eli','joz','steven','chamblissnation'];
 export const gameNames={eli:'Eli',joz:'Joz',steven:'Steven',chamblissnation:'Chamblissnation'};
-export const roundSeconds={eli:26,joz:21,steven:21,chamblissnation:24};
+export const roundSeconds={eli:26,joz:21,steven:21,chamblissnation:25};
 export function roundSchedule(id,seed=1){
  let n=seed>>>0;const random=()=>{n=(Math.imul(1664525,n)+1013904223)>>>0;return n/4294967296;};
  const first=id==='eli'?2.58:2.3,step=id==='eli'?120/104:(roundSeconds[id]-first-1.4)/19;

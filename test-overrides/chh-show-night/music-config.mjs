@@ -13,3 +13,8 @@ export const stageTracks={
  steven:{title:'OUTSIDE',artist:'Steven Malcolm & Marty',src:'/play/assets/music/outside-steven-extended.m4a',durationSeconds:21,sourceUrl:'https://www.youtube.com/shorts/yV5Zl1BFJyQ'},
  joz:{title:'BIRKENSTOCK',artist:'Joz',src:'/play/assets/music/joz-birkenstock-1m32-1m53-louder-v2.m4a',volume:1,durationSeconds:21,sourceUrl:'https://www.youtube.com/watch?v=wYN-YQL7kho'}
 };
+
+// A separate soundtrack for the Chamblissnation merch round.
+export const merchTrack={
+ title:'BOUNCE BACK',artist:'Joz',src:'/play/assets/music/joz-bounce-back-25s.m4a',volume:1,durationSeconds:25,sourceUrl:'https://www.youtube.com/watch?v=6bP67Jo_JWY'
+};
