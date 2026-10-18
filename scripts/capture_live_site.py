@@ -141,15 +141,18 @@ def fetch(url: str, attempts: int = 3) -> tuple[str, str, bytes]:
     raise RuntimeError(f"Unable to capture {url}: {last_error}")
 
 
-def strings_in_json(value: object):
+def strings_in_json(value: object, historical: bool = False):
     if isinstance(value, str):
-        yield value
+        yield value, historical
     elif isinstance(value, list):
         for item in value:
-            yield from strings_in_json(item)
+            yield from strings_in_json(item, historical)
     elif isinstance(value, dict):
-        for item in value.values():
-            yield from strings_in_json(item)
+        for key, item in value.items():
+            # Catalog merge history may name retired URLs, not current links.
+            # Still capture any that exist; HTML links and sitemap entries
+            # independently make the same URL required, even when listed here.
+            yield from strings_in_json(item, historical or key == "legacyEventPaths")
 
 
 def discovered_urls(
@@ -188,11 +191,9 @@ def discovered_urls(
         raw_values.extend(CSS_IMPORT.findall(text))
     elif "json" in content_type:
         try:
-            raw_values.extend(
-                value
-                for value in strings_in_json(json.loads(text))
-                if value.strip().startswith(("http://", "https://") + JSON_LOCAL_PREFIXES)
-            )
+            for value, historical in strings_in_json(json.loads(text)):
+                if value.strip().startswith(("http://", "https://") + JSON_LOCAL_PREFIXES):
+                    (optional_values if historical else raw_values).append(value)
         except json.JSONDecodeError:
             pass
     elif "javascript" in content_type:

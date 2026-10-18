@@ -41,7 +41,10 @@ class FixtureHandler(BaseHTTPRequestHandler):
         "/seo-static.js": ("application/javascript", b""),
         "/seo-enhancements.js": ("application/javascript", b""),
         "/events.json": ("application/json", json.dumps([{"image": "assets/event.webp"}]).encode()),
-        "/supplemental-events.json": ("application/json", b"[]"),
+        "/supplemental-events.json": (
+            "application/json",
+            b'[{"legacyEventPaths":["/event/retired-merge-path/"]}]',
+        ),
         "/config/artists.json": (
             "application/json",
             json.dumps([{"image": "assets/config.webp"}]).encode(),
@@ -87,6 +90,22 @@ class FixtureHandler(BaseHTTPRequestHandler):
 
 
 class LiveCaptureTests(unittest.TestCase):
+    def test_retired_catalog_history_is_metadata_but_live_urls_remain_required(self) -> None:
+        origin = "https://kingdomcircuit.com"
+        payload = json.dumps([{
+            "legacyEventPaths": ["/event/retired/", "/event/current/"],
+            "url": "/event/current/", "image": "assets/event.webp",
+        }]).encode()
+        required, optional = capture_module.discovered_urls(
+            origin + "/supplemental-events.json", "application/json", payload, origin,
+        )
+        self.assertEqual(required, {origin + "/event/current/", origin + "/assets/event.webp"})
+        self.assertEqual(optional, {origin + "/event/retired/"})
+        html_required, _ = capture_module.discovered_urls(
+            origin + "/", "text/html", b'<a href="/event/retired/">Still linked</a>', origin,
+        )
+        self.assertEqual(html_required, {origin + "/event/retired/"})
+
     def test_asset_directory_prefix_is_not_a_javascript_dependency(self) -> None:
         origin = "https://kingdomcircuit.com"
         required, _ = capture_module.discovered_urls(
@@ -116,7 +135,11 @@ class LiveCaptureTests(unittest.TestCase):
                     min_files=15,
                 )
                 self.assertGreaterEqual(result["htmlFiles"], 6)
-                self.assertEqual(result["optionalMissingMetadataFiles"], 1)
+                self.assertEqual(result["optionalMissingMetadataFiles"], 2)
+                self.assertEqual(
+                    (output / "supplemental-events.json").read_bytes(),
+                    FixtureHandler.payloads["/supplemental-events.json"][1],
+                )
                 for relative in (
                     "index.html",
                     "artists/index.html",
@@ -144,6 +167,31 @@ class LiveCaptureTests(unittest.TestCase):
         self.assertIsNone(
             capture_module.canonical_url("/run-status.json", origin + "/", origin)
         )
+
+    def test_history_does_not_excuse_a_broken_visible_link(self) -> None:
+        class BrokenLinkHandler(FixtureHandler):
+            payloads = dict(FixtureHandler.payloads)
+            payloads["/"] = (
+                "text/html",
+                FixtureHandler.payloads["/"][1]
+                + b'<a href="/event/retired-merge-path/">Current listing</a>',
+            )
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), BrokenLinkHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            with tempfile.TemporaryDirectory() as temporary:
+                with self.assertRaises(SystemExit) as failure:
+                    capture_module.capture(
+                        f"http://127.0.0.1:{server.server_port}",
+                        pathlib.Path(temporary) / "site", workers=4,
+                    )
+                self.assertIn("/event/retired-merge-path/", str(failure.exception))
+                self.assertIn("404", str(failure.exception))
+        finally:
+            server.shutdown()
+            server.server_close()
 
 
 if __name__ == "__main__":
