@@ -1,5 +1,5 @@
-import {avatars,playerName} from './avatars.mjs?v=rebuild-11';
-import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=rebuild-11';
+import {avatars,playerName} from './avatars.mjs?v=show-12';
+import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=show-12';
 export const MAX_SCORE=1000; // First celebration milestone, never a total-score ceiling.
 export const initialState=()=>({version:2,name:'',avatar:'red',profileReady:false,beatBest:0,eli:false,photoStyle:{pose:'classic',frame:'gold'},room:'outside',friends:[],merch:null,worship:false,photo:false,entered:false,x:470,y:575,totals:blankTotals(),roundIds:[],rounds:0,sessionId:''});
 export const validPhotoStyle=value=>({pose:['classic','lean'].includes(value?.pose)?value.pose:'classic',frame:['gold','mint','rose'].includes(value?.frame)?value.frame:'gold'});

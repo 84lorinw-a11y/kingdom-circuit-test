@@ -1,6 +1,7 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=rebuild-11';
-import {drawPerson} from './sprites.mjs?v=rebuild-11';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=rebuild-11';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=show-12';
+import {stevenFan,collectedFans} from './crowds.mjs?v=show-12';
+import {drawPerson} from './sprites.mjs?v=show-12';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=show-12';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
 const instructions={eli:'Tap the glowing pad when its letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag your tote. Catch the Chamblissnation drops.'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
@@ -62,12 +63,20 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
     g.fillStyle='#07131ec9';g.fillRect(50,16,320,70);g.fillStyle='#ffcf76';g.font='bold 28px monospace';g.textAlign='center';g.fillText('BIRKENSTOCK',210,46);g.font='12px monospace';g.fillStyle='#f5e8ce';g.fillText('MORE SOLE. LESS STATUS.',210,70);
    }
    for(const n of notes){const y=430-(n.at-t)*170;if(n.done||y<140||y>480)continue;
-    if(game==='joz')sandal(n.x,y);else if(game==='steven')drawPerson(g,n.x,y,`crowd-outside:${n.id}`,{scale:1.1,walking:true,frame:t*8});else shirt(n.x,y,68,n.kind);
+    if(game==='joz')sandal(n.x,y);else if(game==='steven')drawPerson(g,n.x,y,stevenFan(n.id),{scale:1.1,walking:true,frame:t*8});else shirt(n.x,y,68,n.kind);
     if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<52,Math.abs(px-n.x)<23);
    }
    if(game==='joz')for(let i=0;i<7;i++){const at=3.1+i*2.4,y=430-(at-t)*170,x=60+(i*133)%300;if(y>120&&y<480)sandal(x,y,true);if(t>=at&&t-dt<at&&Math.abs(px-x)<40){combo=0;streak.textContent='0×';report('BAGS? LET THEM PASS.','#ff987f');}}
    if(game==='chamblissnation'){g.fillStyle='#e2c197';g.strokeStyle='#c19b65';g.lineWidth=5;g.strokeRect(px-23,454,46,35);g.fillRect(px-42,475,84,65);g.fillStyle='#403323';g.font='bold 7px monospace';g.textAlign='center';g.fillText('@thekingdomcircuit',px,509);}
-   else {if(game==='steven')for(let i=0;i<Math.min(6,roundScore(events).hits);i++)drawPerson(g,px+(i%2?1:-1)*(35+Math.floor(i/2)*15),548+i%2*5,`crowd-outside:${20+i}`,{scale:1.1,walking:true,frame:t*8+i});drawPerson(g,px,540,game==='joz'?'singer':'mc',{scale:2.3,walking:Math.abs(target-px)>2||game==='steven',frame:t*8});}
+   else {
+    if(game==='steven'){
+     const crew=collectedFans(events);
+     // Keep the people actually caught, in a moving crew behind Steven.
+     crew.map((who,i)=>({who,i})).reverse().forEach(({who,i})=>{const row=Math.floor(i/7),slot=i%7,center=Math.max(130,Math.min(290,px)),offset=slot===6?0:(slot%2?1:-1)*(46+Math.floor(slot/2)*28);drawPerson(g,center+offset,535-row*22,who,{scale:1.5-row*.12,walking:Math.abs(target-px)>2,frame:t*8+i});});
+     if(crew.length){g.fillStyle='#0b1928de';g.fillRect(125,88,170,28);g.fillStyle='#ffcf76';g.textAlign='center';g.font='bold 14px monospace';g.fillText(`${crew.length} IN YOUR CREW`,210,107);}
+    }
+    drawPerson(g,px,546,game==='joz'?'singer':'mc',{scale:2.3,walking:Math.abs(target-px)>2||game==='steven',frame:t*8});
+   }
    g.strokeStyle='#7ed9b1';g.lineWidth=2;g.beginPath();g.ellipse(px,550,41,6,0,0,7);g.stroke();
   }
   if(t<feedbackUntil){g.textAlign='center';g.fillStyle='#ffcf76';g.font='bold 20px monospace';g.fillText(feedback,210,game==='eli'?500:230);}

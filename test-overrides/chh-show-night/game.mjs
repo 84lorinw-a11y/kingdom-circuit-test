@@ -1,17 +1,17 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=rebuild-11';
-import {drawPerson,loadPeople} from './sprites.mjs?v=rebuild-11';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=rebuild-11';
-import {createCelebration} from './celebration.mjs?v=rebuild-11';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=rebuild-11';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=rebuild-11';
-import {mountRound} from './rounds.mjs?v=rebuild-11';
-import {createRoundAudio} from './round-audio.mjs?v=rebuild-11';
-import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=rebuild-11';
-import {gameIds,gameNames} from './scoring.mjs?v=rebuild-11';
-import {mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs?v=rebuild-11';
-import {walkable as canWalk,findPath} from './navigation.mjs?v=rebuild-11';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=rebuild-11';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=rebuild-11';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=show-12';
+import {drawPerson,loadPeople} from './sprites.mjs?v=show-12';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=show-12';
+import {createCelebration} from './celebration.mjs?v=show-12';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=show-12';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=show-12';
+import {mountRound} from './rounds.mjs?v=show-12';
+import {createRoundAudio} from './round-audio.mjs?v=show-12';
+import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=show-12';
+import {gameIds,gameNames} from './scoring.mjs?v=show-12';
+import {mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs?v=show-12';
+import {walkable as canWalk,findPath} from './navigation.mjs?v=show-12';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=show-12';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=show-12';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
 const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};document.addEventListener('pointerdown',unlockAudio,{capture:true,passive:true});document.addEventListener('keydown',unlockAudio,{capture:true});
@@ -45,7 +45,7 @@ function hotspots(){
  ...(!state.friends.includes('grace')?[{id:'grace',x:348,y:578,label:'Invite Grace',tag:'GRACE',action:'invite',value:'grace'}]:[]),
  {id:'enter',x:740,y:385,label:'Venue entrance',tag:'THE SHOW',action:'enter'}];
  if(state.room==='show')return [
- {id:'merch',x:105,y:455,label:'Merch',tag:'FAMILY HAUL',action:'merch',done:!!state.merch},
+ {id:'merch',x:105,y:455,label:'Merch',tag:'MERCH',action:'merch',done:!!state.merch},
  {id:'dj',...practiceSpot,label:'Eli',tag:'ELI · B–I–B–L–E',action:'dj',done:!!state.eli},
  ...stageSpots.map(p=>({...p,label:p.id==='joz'?'Joz':'Steven',action:'artist',done:state.totals[p.id]>0})),
  {id:'vip',x:940,y:447,label:'VIP',tag:'VIP →',action:'vip'},
@@ -99,7 +99,7 @@ function openArtistGame(game){
 function openPhotoStyle(){
  const content=openDialog('Make this one yours.','Choose a crew pose and frame. Then we’ll count you in: 3, 2, 1.',[{label:'TAKE THE PHOTO',fn:takePhoto},{label:'Not quite ready',secondary:true}],'VIP PHOTO · YOUR CREW');
  let chosen={...state.photoStyle};
- stopActivity=mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,style:chosen,onChange:value=>{chosen=value;}});
+ stopActivity=mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,backdrop:images.vip,style:chosen,onChange:value=>{chosen=value;}});
  content.querySelector('.dialog-actions button').onclick=()=>{apply('photoStyle',chosen);dialog.close();takePhoto();};
 }
 function openBeatChallenge(){openArtistGame('eli');}
@@ -118,20 +118,26 @@ async function takePhoto(){
  photoBusy=true;route=[];keys.clear();for(const n of ['3','2','1']){$('#countdown').textContent=n;tone('step');await pause(700);}$('#countdown').textContent='';if(!reduceMotion){$('#flash').classList.remove('firing');void $('#flash').offsetWidth;$('#flash').classList.add('firing');}apply('photo');tone('photo');await pause(200);await showPhoto();photoBusy=false;
 }
 async function makePhoto(){
- const c=document.createElement('canvas');c.width=1200;c.height=900;const g=c.getContext('2d');g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,900);g.drawImage(images.vip,350,0,1186,800,20,20,1160,770);
- g.fillStyle='#0b1928';g.fillRect(100,55,880,620);g.strokeStyle='#ffcd6c';g.lineWidth=3;g.strokeRect(100,55,880,620);g.fillStyle='#fff0d8';g.textAlign='center';g.font='bold 37px monospace';g.fillText('@thekingdomcircuit',540,111);g.font='20px monospace';g.fillText('YOUR CREW · VIP',540,151);
- // Keep the complete wall emblem visible beside the close crew portrait.
- g.fillStyle='#0b1928';g.fillRect(990,105,172,236);g.drawImage(images.kcLogo,996,139,160,160);
- drawPhotoLineup(g,{avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:180,y:670,spacing:145,scale:6.4});
- g.fillStyle='#101b2c';g.fillRect(38,692,1124,79);g.textAlign='center';g.fillStyle='#ffc363';g.font='bold 27px monospace';g.fillText('YOUR CREW. YOUR FAITH. YOUR MEMORY.',600,726);g.fillStyle='#e9efed';g.font='16px monospace';g.fillText('KINGDOM CIRCUIT  /  CHH SHOW NIGHT  /  VIP',600,753);
- g.textAlign='left';g.fillStyle='#101b2c';g.font='bold 32px monospace';g.fillText('NIGHT MADE.',42,840);g.font='15px monospace';g.fillText(`JAY + ${(state.name||'YOU').toUpperCase()} + GRACE • BACKSTAGE WITH THE BAND`,42,870);g.textAlign='right';g.font='bold 26px monospace';g.fillText(`${score(state).toLocaleString()} POINTS`,1158,840);g.font='14px monospace';g.fillText('ALL GLORY TO JESUS.',1158,868);
+ const c=document.createElement('canvas');c.width=1200;c.height=900;const g=c.getContext('2d');
+ g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,900);
+ // Photograph the real lounge: its cloth backdrop, red carpet and wall emblem.
+ g.save();g.beginPath();g.rect(20,20,1160,725);g.clip();
+ const zoom=1160/1110;g.translate(20-426*zoom,20);g.scale(zoom,zoom);
+ g.drawImage(images.vip,0,0,1536,1024);
+ drawPhotoLineup(g,{avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:585,y:570,spacing:76,scale:5.15});
+ g.restore();
+ g.fillStyle='#101b2c';g.textAlign='center';
+ const name=`${(state.name||'YOU').toUpperCase()}'S SHOW NIGHT`;
+ g.font=`bold ${Math.min(43,1040/(name.length*.61))}px monospace`;g.fillText(name,600,804);
+ g.font='bold 22px monospace';g.fillText(`${score(state).toLocaleString()} POINTS · BACKSTAGE WITH YOUR CREW`,600,845);
+ g.font='16px monospace';g.fillText('KINGDOM CIRCUIT · ALL GLORY TO JESUS.',600,877);
  return new Promise(resolve=>c.toBlob(resolve,'image/png'));
 }
 async function showPhoto(){
  try{const blob=await makePhoto();if(!blob)throw new Error('Photo unavailable');if(photoURL)URL.revokeObjectURL(photoURL);photoURL=URL.createObjectURL(blob);const content=openDialog('All glory to Jesus.','Your crew, backstage with the band. Keep the memory, then head back out and enjoy the show. All glory to Jesus.',[{label:'KEEP HANGING OUT',secondary:true}],`VIP MEMORY · ${score(state)} SHOW NIGHT XP`);const img=document.createElement('img');img.className='photo-preview';img.src=photoURL;img.alt='Your player and two friends posing with the Steven Malcolm-inspired vocalist, Eli-inspired DJ, and Joz-inspired performer at the VIP backdrop.';content.insertBefore(img,content.lastElementChild);const a=document.createElement('a');a.href=photoURL;a.download='Kingdom-Circuit-CHH-Show-Night-VIP.png';a.textContent='↓ DOWNLOAD PHOTO';const full=document.createElement('a');full.href=photoURL;full.target='_blank';full.rel='noopener';full.className='photo-full';full.textContent='OPEN FULL SIZE';content.lastElementChild.prepend(a,full);}catch{notify('Could not create the photo. Tap Your VIP Photo to try again.');}
 }
-function label(x,y,text,{active=false,color='#ffca6c'}={}){
- ctx.save();ctx.font='bold 16px monospace';const width=ctx.measureText(text).width+20;ctx.fillStyle=active?'#ffca6c':'#08182bea';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.fillRect(x-width/2,y-19,width,25);ctx.strokeRect(x-width/2,y-19,width,25);ctx.fillStyle=active?'#101926':'#fff2d8';ctx.textAlign='center';ctx.fillText(text,x,y-2);ctx.restore();
+function label(x,y,text,{active=false,color='#ffca6c',size=16}={}){
+ ctx.save();ctx.font=`bold ${size}px monospace`;const width=ctx.measureText(text).width+20;ctx.fillStyle=active?'#ffca6c':'#08182bea';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.fillRect(x-width/2,y-size-3,width,size+9);ctx.strokeRect(x-width/2,y-size-3,width,size+9);ctx.fillStyle=active?'#101926':'#fff2d8';ctx.textAlign='center';ctx.fillText(text,x,y-2);ctx.restore();
 }
 function drawBag(x,y){ctx.fillStyle='#0b1625';ctx.fillRect(x+22,y-39,19,26);ctx.fillStyle='#dcaa6a';ctx.fillRect(x+24,y-37,15,22);ctx.strokeStyle='#d9ae73';ctx.lineWidth=3;ctx.strokeRect(x+27,y-43,9,8);ctx.fillStyle='#684825';ctx.save();ctx.translate(x+31.5,y-24);ctx.scale(.12,.3);ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillText('@thekingdomcircuit',0,0);ctx.restore();}
 function render(time){
@@ -145,7 +151,7 @@ function render(time){
  if(state.room==='show'&&!reduceMotion){ctx.save();ctx.globalAlpha=.03+Math.sin(time/800)*.018;ctx.fillStyle='#ffd079';ctx.fillRect(0,0,W,400);ctx.restore();}
  if(state.room==='show'){
   drawVenueBranding();
-  drawPracticeBooth(ctx,time);
+  drawPracticeBooth(ctx,time,images.booth);
   for(const [id,who,x] of [['steven','mc',335],['joz','singer',720]]){const singing=worshipMusic.playing===id;drawPerson(ctx,x,363,who,{scale:2.9,lean:singing&&!reduceMotion?Math.sin(time/240)*.025:0});if(singing)label(x,219,'♪ '+(id==='steven'?'OUTSIDE':'BIRKENSTOCK'),{color:'#7ed9b1'});}
  }
  const target=nearest();
@@ -178,8 +184,8 @@ function render(time){
  ctx.strokeStyle='#ffe7a4';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(heroX,heroY+2,29,8,0,0,Math.PI*2);ctx.stroke();
  const name=(state.name||'YOU').toUpperCase();let nameY=heroY-144;
  // A player standing behind a listening spot should not hide its circle with their name.
- if(state.room==='show'&&hotspots().some(h=>['dj','steven','joz'].includes(h.id)&&Math.abs(heroX-h.x)<name.length*4.8+55&&nameY+6>h.y-18&&nameY-19<h.y+18))nameY=Math.min(H-12,heroY+32);
- label(heroX,nameY,name,{active:true});
+ if(state.room==='show'&&hotspots().some(h=>['dj','steven','joz'].includes(h.id)&&Math.abs(heroX-h.x)<name.length*6.6+55&&nameY+6>h.y-18&&nameY-25<h.y+18))nameY=Math.min(H-12,heroY+32);
+ label(heroX,nameY,name,{active:true,size:22});
  for(const a of actors.filter(a=>a.npc))label(a.x,a.y-146,a.who==='jay'?'JAY +15':'GRACE +15',{active:target?.id===a.who});
 
  for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=190*dt;p.life-=dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,5,5);}ctx.globalAlpha=1;particles=particles.filter(p=>p.life>0);
@@ -228,15 +234,16 @@ async function shareScore(row){
  const c=document.createElement('canvas');c.width=720;c.height=1000;const g=c.getContext('2d');g.fillStyle='#0b1928';g.fillRect(0,0,720,1000);g.drawImage(images.kcLogo,275,40,170,170);g.textAlign='center';g.fillStyle='#ffcb6c';g.font='bold 38px monospace';g.fillText('CHH SHOW NIGHT',360,265);g.fillStyle='#f8efda';g.font='24px monospace';g.fillText(row.nickname,360,320);g.font='bold 88px monospace';g.fillText(row.total.toLocaleString(),360,435);g.font='20px monospace';g.fillText('SESSION POINTS',360,475);gameIds.forEach((id,i)=>{g.textAlign='left';g.fillStyle='#7ed9b1';g.fillText(gameNames[id],65,560+i*60);g.textAlign='right';g.fillStyle='#fff0d6';g.fillText(row[id].toLocaleString(),655,560+i*60);});g.textAlign='center';g.fillStyle='#ffcb6c';g.fillText('BUILT FOR THE FANS. ALL FOR THE KING.',360,870);g.fillStyle='#f8efda';g.fillText('@thekingdomcircuit · TEST PREVIEW',360,920);const blob=await new Promise(r=>c.toBlob(r));if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Kingdom-Circuit-Scorecard.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
 }
 function drawVenueBranding(){
- // Runtime venue signage keeps the supplied logo exact and leaves the VIP marker readable.
- ctx.fillStyle='#091724';ctx.fillRect(901,143,113,193);ctx.drawImage(images.kcLogo,902,166,111,111);ctx.textAlign='center';ctx.font='bold 11px monospace';ctx.fillStyle='#ffce76';ctx.fillText('VIP LOUNGE',958,309);
- ctx.fillStyle='#0a1524';ctx.fillRect(13,95,174,78);if(images.logo)ctx.drawImage(images.logo,19,99,162,47);ctx.font='bold 5.6px monospace';ctx.fillStyle='#fff0d8';ctx.fillText('YOUR PEOPLE MY PEOPLE WE FAMILY',100,158);
- if(images.merch){for(let i=0;i<3;i++)ctx.drawImage(images.merch,images.merch.width/3*i,0,images.merch.width/3,images.merch.height,24+i*53,169,50,58);}
+ // Place the supplied circular logo directly on the brick, with no door/sign panel.
+ ctx.save();ctx.beginPath();ctx.arc(955,226,58,0,Math.PI*2);ctx.clip();ctx.drawImage(images.kcLogo,897,168,116,116);ctx.restore();
+ ctx.fillStyle='#0a1524';ctx.fillRect(13,44,174,70);if(images.logo)ctx.drawImage(images.logo,19,48,162,47);ctx.font='bold 5.6px monospace';ctx.textAlign='center';ctx.fillStyle='#fff0d8';ctx.fillText('YOUR PEOPLE MY PEOPLE WE FAMILY',100,105);
+ if(images.merch){for(let i=0;i<3;i++)ctx.drawImage(images.merch,images.merch.width/3*i,0,images.merch.width/3,images.merch.height,24+i*53,119,50,58);}
+
 }
 dialog.addEventListener('cancel',e=>{if(!state.profileReady)e.preventDefault();});
 dialog.addEventListener('close',()=>{dialog.classList.remove('game-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();canvas.focus({preventScroll:true});});
 async function start(){
- try{await loadPeople();await Promise.all(Object.entries({merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-v8.webp`;})));sync();announceRoom();requestAnimationFrame(render);if(!state.profileReady)openPlayerSetup();}
+ try{await loadPeople();await Promise.all(Object.entries({booth:'dj-booth-v12.webp',merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-${name==='show'?'v12':'v8'}.webp`;})));sync();announceRoom();requestAnimationFrame(render);if(!state.profileReady)openPlayerSetup();}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}
 }
 start();

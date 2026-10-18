@@ -1,0 +1,38 @@
+{
+  "mode": "Built-in image_gen",
+  "encoding": "Lossless WebP; alpha and visible RGB verified identical to generated PNG.",
+  "assets": [
+    {
+      "path": "test-overrides/chh-show-night/assets/fans-front-v12.webp",
+      "selectedGeneratedFile": "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-7c543c48-f5f3-474c-b048-1b8051a6e19b.png",
+      "prompt": "Game sprite atlas on TRANSPARENT background. Exactly 30 UNIQUE young adult Christian hip-hop concert fans in a strict 6 columns by 5 rows equal-cell grid, all full body, front view standing relaxed. Each person completely inside their own cell with ample transparent gutters all sides, complete shoes and heads. Detailed hand-painted illustrated realism, realistic slim/average human proportions, clear faces, contemporary streetwear, fine fabric shading, NOT chibi, not pixel art, not photographs. Demographic order in EVERY ROW: column 1 white woman, column 2 Black man, column 3 brown-skinned Latina woman, column 4 white man, column 5 Black woman or man, column 6 brown-skinned Latino man. Thus exactly ten white people, ten Black people, ten brown-skinned people. Each has distinctive hair and UNIQUE outfit colors/style. Row1 outfits cream denim jacket/black jeans; cobalt hoodie/joggers; burnt orange cropped jacket/cream cargos; forest green overshirt/tan pants; navy pink hoodie/black shorts; mustard tee/blue jeans. Row2 purple varsity/gray jeans; red tee/black cargos; teal tracksuit; black tee/gray cargos; cream hoodie/blue jeans; navy striped polo/tan pants. Row3 blue jacket/white jeans; olive bomber/charcoal pants; wine cardigan/black jeans; rust hoodie/blue jeans; lavender tee/olive pants; cream jersey/navy pants. Row4 green windbreaker/black pants; yellow hoodie/gray pants; pink overshirt/blue jeans; burgundy tee/tan shorts; turquoise jersey/black pants; black jacket/cream jeans. Row5 red plaid shirt/black jeans; blue varsity/tan pants; ivory vest/olive pants; violet sweatshirt/gray pants; coral jacket/navy jeans; gray hoodie/brown cargos. No labels, letters, text, props or scenery. Even scale and aligned baselines. Output high resolution square.",
+      "referencePaths": [],
+      "transparent_background": true
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/show-v12.webp",
+      "selectedGeneratedFile": "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-58014bea-70c2-4bbc-bc62-e642886dd758.png",
+      "prompt": "Edit this exact game background, preserve 1536x1024 framing, stage lighting, cross and JESUS IS KING, speaker locations, stage height, empty floor, realistic illustrated style. On far RIGHT, completely REMOVE the blue doorway, doorframe, ALL right-hand steps, ALL right-hand stair rails. Replace that whole right-hand doorway/steps region with continuous orange brick wall extending down to floor level, and flat venue floor in front. Leave a broad uncluttered brick area above where steps were, ready for a circular logo added by game code. NO doorway, NO stairs on right. Keep left stairs. On far LEFT remove the three hanging shirts and existing blank merch sign to reveal brick, leave hanging rail if desired. Preserve merch vendor exactly with face fully visible and table merchandise/bags. The game will overlay raised banner and shirts separately. All other geometry remains as close to input as possible. No new people, logos or text.",
+      "referencePaths": [
+        "/Users/lorinwilliamson/Documents/Kingdom Circuit Workspaces/oct18-chh-game-test/test-overrides/chh-show-night/assets/show-v8.webp"
+      ],
+      "transparent_background": false
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/dj-booth-v12.webp",
+      "selectedGeneratedFile": "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-f7b5fab3-7488-4a4b-b73c-d751b97dcd31.png",
+      "prompt": "Isolated professional touring hip hop DJ booth game prop on transparent background, wide front view with slightly elevated camera so decks visible, realistic detailed painted illustration matching warm orange brick concert venue. Two pro black DJ media decks with large metallic jog wheels and cyan/amber LEDs, central 4 channel mixer with clear faders, small angled displays, headphones hanging from side, neat audio cables. Equipment sits on rugged black rolling roadcase with metallic reinforced corner protectors, latches and black grille front panel, subtle mint LED strip around front edge and small gold illuminated cross inset on front. Clean complete silhouette, no person, no words, no lettering, no background or floor. Width about twice height. Detailed believable pro equipment not a flat cartoon rectangle. Entire booth fully inside image with generous transparent margin.",
+      "referencePaths": [],
+      "transparent_background": true
+    },
+    {
+      "path": "test-overrides/chh-show-night/assets/fans-back-v12.webp",
+      "selectedGeneratedFile": "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-df17f9f0-f3da-4c33-b621-b9e04a3c1324.png",
+      "prompt": "Create the matching REAR VIEW worship poses for this exact 30-person game sprite atlas. Preserve exactly the same 6 columns x 5 rows, the SAME 30 identities in the SAME cell positions and same skin tones, hairstyle, outfit colors, all clothing and footwear. Each person is viewed FROM BEHIND looking toward a stage, with one or two hands raised in worship, believable slim/average adult proportions. No faces on rear heads. Detailed illustrated style matching input. Every complete body and raised hand must fit inside its own equal grid cell with clear transparent gaps between rows and columns. Make characters slightly smaller in each cell to leave ample padding above hands and below shoes, including bottom row. Transparent background no stage no text. Do not change, duplicate, remove or reorder anyone. Each column-pair appearance must correspond exactly to source people. 30 characters only.",
+      "referencePaths": [
+        "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-7c543c48-f5f3-474c-b048-1b8051a6e19b.png"
+      ],
+      "transparent_background": true
+    }
+  ]
+}

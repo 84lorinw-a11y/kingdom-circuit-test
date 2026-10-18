@@ -15,6 +15,8 @@
 - The user has granted standing authorization to deploy verified changes to this test repository and its test website. Do not ask for repeated test-deployment approval; production deployment still requires separate explicit approval.
 - Before handoff, verify representative desktop and mobile pages, the artists directory, an artist profile, an event page, the submit/correction flow, navigation keyboard behavior, local links, and responsive images.
 
+- Latest October 18 cast revision: use the identical 30-person cast across exterior, main stage and VIP (10 white, 10 Black, 10 brown-skinned illustrated fans). Steven collects these exact people and keeps the caught crew with him. Merch marker says Merch; keep vendor face clear. Right venue wall has only the Kingdom Circuit logo, no door or steps. VIP photo uses the actual lounge backdrop and a prominent player name.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.
