@@ -1,0 +1,10 @@
+{
+  "mode": "Built-in image_gen",
+  "path": "test-overrides/chh-show-night/assets/venue-logo-v14.webp",
+  "selectedGeneratedFile": "/Users/lorinwilliamson/.codex/generated_images/01a14c80-bdd2-7812-b851-82f120d20c30/exec-ef016709-2bbd-4837-a320-2ed8396094dd.png",
+  "referenced_image_paths": [
+    "/Users/lorinwilliamson/Documents/Kingdom Circuit Workspaces/oct18-chh-game-test/test-overrides/chh-show-night/assets/vip-v8.webp"
+  ],
+  "transparent_background": true,
+  "prompt": "Extract the exact circular KINGDOM CIRCUIT wall sign from the upper-right of this VIP-room image into a clean transparent game asset. Reproduce the SAME sign faithfully: matte dark brown-black round disk, thin bright orange-red rim, warm gold-orange highlight on the upper-left edge, condensed tall ivory uppercase KINGDOM above CIRCUIT, same word proportions and subtle warm venue lighting. Preserve its illustrated texture and slight front-facing perspective, no redesign or extra decoration. Complete the tiny lower portion obscured by the water cooler naturally. Remove ALL brick wall, plants, lamp, water cooler, table, and other background; output ONLY the complete circular sign, isolated with transparent pixels outside. Sign fills 90% of a square canvas, centered. The words must read exactly KINGDOM CIRCUIT."
+}
