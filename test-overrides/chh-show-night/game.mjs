@@ -8,7 +8,7 @@ import {mountDjBooth} from './dj-booth.mjs';
 import {mountMerch,mountPhotoStyle,drawPhotoLineup,photoFrames} from './activities.mjs';
 import {walkable as canWalk,findPath} from './navigation.mjs';
 import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=mobile-audio-1';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic=createWorshipMusic($('.arcade'));let atFront=null;
 const storageKey='kc-show-night-v1', W=1024,H=683;
