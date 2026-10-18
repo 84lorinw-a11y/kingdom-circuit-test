@@ -21,6 +21,8 @@
 
 - Latest mobile correction: grass, furniture and crowds must never block walking. Use direct tap/drag paths with only outer room bounds; this supersedes scenery collision routing. The refreshments/break spot shows a brief message without pausing or locking movement. Music and effects share one gesture-unlocked audio context, a visible master On/Off control, bounded loading and an interruption retry state. Preserve approved songs, excerpts, bass effects and scoring.
 
+- Player entry: every page load or refresh opens name/character selection, with an explicit Continue for saved players. A new game clears the nickname and character, requires both choices, and preserves the device’s best score. Never silently reuse KC or a previous player for a fresh session.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.

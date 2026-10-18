@@ -1,4 +1,4 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=vip-18';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=player-21';
 import {drawPerson,loadPeople} from './sprites.mjs?v=vip-18';
 import {crowdActors,crowdCounts} from './crowds.mjs?v=vip-18';
 import {createCelebration} from './celebration.mjs?v=vip-18';
@@ -18,7 +18,7 @@ const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};
 for(const event of ['pointerdown','pointerup','touchend','click','keydown'])document.addEventListener(event,unlockAudio,{capture:true,passive:true});
 const storageKey='kc-show-night-v1', W=1024,H=683;
 let state;try{state=restore(localStorage.getItem(storageKey));}catch{state=initialState();}
-state.sessionId ||= crypto.randomUUID();onlineScores.connect(state).catch(()=>{});
+state.sessionId ||= crypto.randomUUID();let playerEntryPending=true;
 let stopBeat=null,stopActivity=null;
 let keys=new Set(),route=[],autoAction=null,walking=false,frame=0,last=0,camera=0,viewWidth=W,paused=false,raisingUntil=0,photoBusy=false,photoURL=null,toastTimer,introTimer,soundOn=true,particles=[],trail=[],followerPositions=[];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -36,7 +36,7 @@ updateSoundButton();
 function burst(x=state.x,y=state.y-60){if(reduceMotion)return;for(let i=0;i<35;i++)particles.push({x,y,vx:(Math.random()-.5)*180,vy:-70-Math.random()*130,life:1.2,color:['#ffc45b','#ff7053','#79d8ae','#c7a0f4'][i%4]});}
 function sync(){
  $('#player-tag').textContent=state.name?`${state.name.toUpperCase()} · THAT’S YOU`:'FOLLOW YOUR NAME TAG';
- const n=score(state);$('#xp-value').textContent=n.toLocaleString();scoreStore.record(state);$('#session-rounds').textContent=`${state.rounds} ROUNDS`;
+ const n=score(state);$('#xp-value').textContent=n.toLocaleString();if(state.profileReady)scoreStore.record(state);$('#session-rounds').textContent=`${state.rounds} ROUNDS`;
  $('#friends').textContent=`${state.friends.length}/2`;$('#coins').textContent=coins(state);$('#objective').textContent=objective(state);$('#room-name').textContent=`${roomInfo[state.room][0]} / ${roomInfo[state.room][1]}`;
  let activeFound=false;document.querySelectorAll('#checklist li').forEach(li=>{const k=li.dataset.step,done=k==='friends'?state.friends.length===2:!!state[k];li.classList.toggle('done',done);li.classList.toggle('active',!done&&!activeFound);if(!done)activeFound=true;li.querySelector('.step-icon').textContent=done?'✓':String([...li.parentElement.children].indexOf(li)+1).padStart(2,'0');});
  renderDestinations();safeSave();
@@ -108,15 +108,31 @@ function openPhotoStyle(){
  content.querySelector('.dialog-actions button').onclick=()=>{apply('photoStyle',chosen);dialog.close();takePhoto();};
 }
 function openBeatChallenge(){openArtistGame('eli');}
-function openPlayerSetup(){
- const content=openDialog(state.profileReady?'Your player. Your vibe.':'Who’s coming to the show?','Choose your character and the name your crew will know you by.',[],'PLAYER SELECT · CHH SHOW NIGHT');
+function startFreshNight(){
+ if(state.profileReady)scoreStore.record(state);
+ state={...initialState(),sessionId:crypto.randomUUID()};playerEntryPending=true;
+ route=[];autoAction=null;keys.clear();trail=[];followerPositions=[];atFront=null;raisingUntil=0;victoryPending=false;celebration.stop();
+ if(photoURL){URL.revokeObjectURL(photoURL);photoURL=null;}
+ sync();openPlayerSetup({entry:true});
+}
+function openPlayerSetup({entry=false}={}){
+ const returning=state.profileReady;
+ const content=openDialog('Pick your player.',entry&&returning?'Continue your saved night, or start a new game.':'Enter your name. Choose your look.',[],'CHH SHOW NIGHT');
  const form=document.createElement('form');form.className='player-form';
  const nameLabel=document.createElement('label');nameLabel.htmlFor='player-name';nameLabel.textContent='YOUR NAME';
  const input=document.createElement('input');input.id='player-name';input.name='player-name';input.maxLength=18;input.required=true;input.autocomplete='nickname';input.placeholder='Enter your name';input.value=state.name||'';
- let selected=state.avatar||'red';const grid=document.createElement('div');grid.className='avatar-grid';grid.setAttribute('role','group');grid.setAttribute('aria-label','Choose your character');
- avatars.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='avatar-choice';b.dataset.avatar=a.id;b.setAttribute('aria-pressed',a.id===selected);const portrait=document.createElement('canvas');portrait.width=140;portrait.height=180;portrait.setAttribute('aria-hidden','true');const g=portrait.getContext('2d');g.imageSmoothingEnabled=true;drawPerson(g,70,172,a.sprite,{scale:2.7});const label=document.createElement('span');label.textContent=a.label;b.append(portrait,label);b.onclick=()=>{selected=a.id;grid.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',button===b));};grid.append(b);});
- const submit=document.createElement('button');submit.type='submit';submit.className='player-start';submit.textContent=state.profileReady?'SAVE MY PLAYER →':'LET’S MAKE A NIGHT →';
- form.append(nameLabel,input,grid,submit);form.onsubmit=e=>{e.preventDefault();if(!playerName(input.value)){input.setCustomValidity('Enter your name to start.');input.reportValidity();return;}input.setCustomValidity('');apply('profile',{name:input.value,avatar:selected});dialog.close();notify(`Welcome, ${state.name}. Bring your people!`);};input.oninput=()=>input.setCustomValidity('');content.insertBefore(form,content.lastElementChild);if(state.profileReady){const cancel=document.createElement('button');cancel.className='secondary';cancel.textContent='Keep my player';cancel.onclick=()=>dialog.close();content.lastElementChild.append(cancel);}input.focus();
+ let selected=returning?state.avatar:'';
+ const grid=document.createElement('div');grid.className='avatar-grid';grid.setAttribute('role','group');grid.setAttribute('aria-label','Choose your character');
+ const hint=document.createElement('p');hint.className='player-choice-hint';hint.id='player-choice-hint';hint.setAttribute('aria-live','polite');grid.setAttribute('aria-describedby',hint.id);
+ const updateHint=()=>{const choice=avatars.find(a=>a.id===selected);hint.textContent=choice?`${choice.label} selected`:'Tap a character to choose.';};updateHint();
+ avatars.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='avatar-choice';b.dataset.avatar=a.id;b.setAttribute('aria-pressed',a.id===selected);const portrait=document.createElement('canvas');portrait.width=140;portrait.height=180;portrait.setAttribute('aria-hidden','true');const g=portrait.getContext('2d');g.imageSmoothingEnabled=true;drawPerson(g,70,172,a.sprite,{scale:2.7});const label=document.createElement('span');label.textContent=a.label;b.append(portrait,label);b.onclick=()=>{selected=a.id;grid.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',button===b));updateHint();};grid.append(b);});
+ const submit=document.createElement('button');submit.type='submit';submit.className='player-start';submit.textContent=entry&&returning?'CONTINUE MY NIGHT →':returning?'SAVE MY PLAYER →':'START MY NIGHT →';
+ form.append(nameLabel,input,grid,hint,submit);
+ form.onsubmit=e=>{e.preventDefault();if(!playerName(input.value)){input.setCustomValidity('Enter your name to start.');input.reportValidity();return;}input.setCustomValidity('');if(!avatars.some(a=>a.id===selected)){hint.textContent='Choose a character before starting.';grid.querySelector('button').focus();return;}apply('profile',{name:input.value,avatar:selected});playerEntryPending=false;dialog.close();announceRoom();notify(`Welcome, ${state.name}. Bring your people!`);};input.oninput=()=>input.setCustomValidity('');content.insertBefore(form,content.lastElementChild);
+ if(entry&&returning){const fresh=document.createElement('button');fresh.className='secondary';fresh.textContent='NEW PLAYER / NEW GAME';fresh.onclick=startFreshNight;content.lastElementChild.append(fresh);}
+ else if(returning){const cancel=document.createElement('button');cancel.className='secondary';cancel.textContent='Keep my player';cancel.onclick=()=>dialog.close();content.lastElementChild.append(cancel);}
+ // Focus the title so the phone keyboard does not hide the character choices.
+ const heading=content.querySelector('h2');heading.tabIndex=-1;heading.focus({preventScroll:true});
 }
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
 async function takePhoto(){
@@ -227,7 +243,7 @@ function openMenu(){
  {label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
  ...(state.photo?[{label:'VIP PHOTO',fn:showPhoto}]:[]),
  {label:'FIREWORKS',fn:()=>celebration.play()},
- {label:'FRESH SESSION',secondary:true,fn:()=>openDialog('Start a new night?','Your best session stays on this device. This starts a new total and journey.',[{label:'START FRESH',fn:()=>{scoreStore.record(state);state={...initialState(),sessionId:crypto.randomUUID(),name:state.name,avatar:state.avatar,profileReady:true};trail=[];followerPositions=[];atFront=null;onlineScores.connect(state).catch(()=>{});celebration.stop();sync();announceRoom();}},{label:'KEEP THIS NIGHT',secondary:true}])},
+ {label:'NEW GAME',secondary:true,fn:()=>openDialog('Start a new night?','Choose a new name and player. Your best session stays saved.',[{label:'CHOOSE MY PLAYER',fn:startFreshNight},{label:'KEEP THIS NIGHT',secondary:true}])},
  {label:'BACK TO THE SHOW',secondary:true}],'CHH SHOW NIGHT · TEST PREVIEW');
 }
 async function openBoard(){
@@ -266,10 +282,11 @@ function drawVenueBranding(){
  if(images.merch){for(let i=0;i<3;i++)ctx.drawImage(images.merch,images.merch.width/3*i,0,images.merch.width/3,images.merch.height,12+i*60,115,60,69.6);}
 
 }
-dialog.addEventListener('cancel',e=>{if(!state.profileReady)e.preventDefault();});
-dialog.addEventListener('close',()=>{dialog.classList.remove('game-dialog','score-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();canvas.focus({preventScroll:true});});
+dialog.addEventListener('cancel',e=>{if(playerEntryPending||!state.profileReady)e.preventDefault();});
+dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&(playerEntryPending||!state.profileReady)){e.preventDefault();e.stopPropagation();}});
+dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}dialog.classList.remove('game-dialog','score-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();if(!dialog.open)canvas.focus({preventScroll:true});});
 async function start(){
- try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',booth:'dj-booth-v12.webp',merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-${name==='show'?'v12':'v8'}.webp`;})));sync();announceRoom();requestAnimationFrame(render);if(!state.profileReady)openPlayerSetup();}
+ try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',booth:'dj-booth-v12.webp',merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-${name==='show'?'v12':'v8'}.webp`;})));sync();requestAnimationFrame(render);openPlayerSetup({entry:true});}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}
 }
 start();
