@@ -23,6 +23,8 @@
 
 - Player entry: every page load or refresh opens name/character selection, with an explicit Continue for saved players. A new game clears the nickname and character, requires both choices, and preserves the device’s best score. Never silently reuse KC or a previous player for a fresh session.
 
+- Eli mobile polish: use the concert’s detailed DJ booth, a responsive four-lane beat board, larger color-matched pads and live-audio timing. Keep controls stationary while the arena reacts to bass; preserve reduced-motion/FX controls, the approved 26-second excerpt and equal 40 + 10 scoring. Every round result offers instant replay and an obvious return to the show.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.
