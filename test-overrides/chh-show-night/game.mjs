@@ -4,31 +4,35 @@ import {crowdActors,crowdCounts} from './crowds.mjs?v=vip-18';
 import {createCelebration} from './celebration.mjs?v=vip-18';
 import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=vip-18';
 import {avatars,avatarFor,playerName} from './avatars.mjs?v=vip-18';
-import {mountRound} from './rounds.mjs?v=vip-18';
-import {createRoundAudio} from './round-audio.mjs?v=vip-18';
+import {mountRound} from './rounds.mjs?v=mobile-20';
+import {createRoundAudio} from './round-audio.mjs?v=mobile-20';
 import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=vip-18';
 import {gameIds,gameNames} from './scoring.mjs?v=vip-18';
 import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=vip-18';
-import {walkable as canWalk,findPath} from './navigation.mjs?v=vip-18';
+import {walkable as canWalk,findPath,clampPosition} from './navigation.mjs?v=mobile-20';
 import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=vip-18';
 import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=vip-18';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
-const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};document.addEventListener('pointerdown',unlockAudio,{capture:true,passive:true});document.addEventListener('keydown',unlockAudio,{capture:true});
+const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};
+for(const event of ['pointerdown','pointerup','touchend','click','keydown'])document.addEventListener(event,unlockAudio,{capture:true,passive:true});
 const storageKey='kc-show-night-v1', W=1024,H=683;
 let state;try{state=restore(localStorage.getItem(storageKey));}catch{state=initialState();}
 state.sessionId ||= crypto.randomUUID();onlineScores.connect(state).catch(()=>{});
 let stopBeat=null,stopActivity=null;
-let keys=new Set(),route=[],autoAction=null,walking=false,frame=0,last=0,camera=0,viewWidth=W,paused=false,raisingUntil=0,photoBusy=false,photoURL=null,toastTimer,introTimer,soundOn=false,audio=null,particles=[],trail=[],followerPositions=[];
+let keys=new Set(),route=[],autoAction=null,walking=false,frame=0,last=0,camera=0,viewWidth=W,paused=false,raisingUntil=0,photoBusy=false,photoURL=null,toastTimer,introTimer,soundOn=true,particles=[],trail=[],followerPositions=[];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const celebration=createCelebration({reduceMotion});let victoryPending=false;
 const roomInfo={outside:['01','OUTSIDE THE VENUE','BRING YOUR PEOPLE.'],show:['02','THE MAIN STAGE','GOOD MUSIC. GREATER PURPOSE.'],vip:['03','THE VIP LOUNGE','MAKE A MEMORY.']};
 const images={};
 const safeSave=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}};
 function notify(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3600);}
-function tone(kind='up'){
- if(!soundOn)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();audio.resume();const notes=kind==='photo'?[440,554,659,880]:kind==='step'?[180]:[523,659,784];notes.forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+i*.09;o.type='triangle';o.frequency.value=hz;g.gain.setValueAtTime(.045,t);g.gain.exponentialRampToValueAtTime(.001,t+.15);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.16);});}catch{}
-}
+try{soundOn=localStorage.getItem('kc-show-night-sound')!=='off';}catch{}
+roundAudio.setMuted(!soundOn);
+function updateSoundButton(){const button=$('#sound');button.textContent=soundOn?'♪ On':'♪ Off';button.setAttribute('aria-pressed',soundOn);button.setAttribute('aria-label',soundOn?'Sound on. Tap to mute':'Sound off. Tap to enable');button.title=soundOn?'Sound on':'Sound off';}
+function toggleSound(){soundOn=!soundOn;roundAudio.setMuted(!soundOn);updateSoundButton();try{localStorage.setItem('kc-show-night-sound',soundOn?'on':'off');}catch{}if(soundOn)roundAudio.unlock().then(()=>tone()).catch(()=>notify('Tap the sound button again to enable audio.'));notify(soundOn?'Sound on — music plays in the games.':'Sound off');return soundOn;}
+function tone(kind='up'){if(soundOn)roundAudio.effect(kind);}
+updateSoundButton();
 function burst(x=state.x,y=state.y-60){if(reduceMotion)return;for(let i=0;i<35;i++)particles.push({x,y,vx:(Math.random()-.5)*180,vy:-70-Math.random()*130,life:1.2,color:['#ffc45b','#ff7053','#79d8ae','#c7a0f4'][i%4]});}
 function sync(){
  $('#player-tag').textContent=state.name?`${state.name.toUpperCase()} · THAT’S YOU`:'FOLLOW YOUR NAME TAG';
@@ -58,6 +62,7 @@ function hotspots(){
 function renderDestinations(){const wrap=$('#destinations');wrap.replaceChildren();hotspots().forEach(h=>{const b=document.createElement('button');b.textContent=h.label;b.dataset.destination=h.id;b.classList.toggle('done',!!h.done);b.onclick=()=>goTo(h);wrap.append(b);});}
 const walkable=(x,y)=>canWalk(state.room,x,y);
 function goTo(h){if(photoBusy)return;keys.clear();autoAction=h;route=findPath(state.room,state,h);
+ const track=h.action==='dj'?'eli':h.action==='merch'?'chamblissnation':h.action==='artist'?h.id:null;if(track)roundAudio.preload(track).catch(()=>{});
  if(!route.length){autoAction=null;notify('Choose a spot on the open floor.');return;}
  notify(`Walking to ${h.label.toLowerCase().replace(' ✓','')}…`);canvas.focus({preventScroll:true});
 }
@@ -84,7 +89,7 @@ function interact(h=nearest()){
  }else if(h.action==='photo'){
  openPhotoStyle();
  }else if(h.action==='refresh'){
- openDialog('Catch your breath.','Water, snacks, and good company. What a night! Your crew is waiting by the photo backdrop.',[{label:'BACK TO THE NIGHT'}],'VIP LOUNGE');
+ route=[];autoAction=null;keys.clear();tone('step');notify('Refreshed! Keep enjoying the night.');
  }else apply(h.action);
 }
 function activityHost(content){const host=document.createElement('div');content.insertBefore(host,content.lastElementChild);return host;}
@@ -94,7 +99,7 @@ function openArtistGame(game){
  if(dialog.open)return;
  route=[];autoAction=null;keys.clear();
  const content=$('#dialog-content');content.replaceChildren();dialog.classList.add('game-dialog');dialog.showModal();
- stopActivity=mountRound(content,{game,audio:roundAudio,art:images,online:onlineScores,onExit:()=>dialog.close(),onFinish:result=>{apply('round',result);}});
+ stopActivity=mountRound(content,{game,audio:roundAudio,art:images,online:onlineScores,onSoundToggle:toggleSound,onExit:()=>dialog.close(),onFinish:result=>{apply('round',result);}});
 }
 function openPhotoStyle(){
  const content=openDialog('Make this one yours.','Choose a crew pose and frame. Then we’ll count you in: 3, 2, 1.',[{label:'TAKE THE PHOTO',fn:takePhoto},{label:'Not quite ready',secondary:true}],'VIP PHOTO · YOUR CREW');
@@ -185,10 +190,11 @@ function render(time){
 
  for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=190*dt;p.life-=dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,5,5);}ctx.globalAlpha=1;particles=particles.filter(p=>p.life>0);
  if(route.length){const end=route[route.length-1];ctx.strokeStyle='#fff4c4';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(end.x-5,end.y);ctx.lineTo(end.x+5,end.y);ctx.moveTo(end.x,end.y-5);ctx.lineTo(end.x,end.y+5);ctx.stroke();}
- $('#action-label').textContent=target?{artist:'PLAY ARTIST',invite:'INVITE FRIEND',enter:'ENTER SHOW',merch:'GET MERCH',dj:'DJ BOOTH',worship:'HANDS UP',vip:'ENTER VIP',photo:'TAKE PHOTO',outside:'GO OUTSIDE',show:'MAIN STAGE',refresh:'SAY HELLO'}[target.action]:'WALK & INTERACT';
+ $('#action-label').textContent=target?{artist:'PLAY ARTIST',invite:'INVITE FRIEND',enter:'ENTER SHOW',merch:'GET MERCH',dj:'DJ BOOTH',worship:'HANDS UP',vip:'ENTER VIP',photo:'TAKE PHOTO',outside:'GO OUTSIDE',show:'MAIN STAGE',refresh:'TAKE A BREAK'}[target.action]:'WALK & INTERACT';
  requestAnimationFrame(render);
 }
 function update(dt,time){
+ Object.assign(state,clampPosition(state));
  let dx=0,dy=0;const old={x:state.x,y:state.y};if(keys.has('up'))dy--;if(keys.has('down'))dy++;if(keys.has('left'))dx--;if(keys.has('right'))dx++;
  if(dx||dy){route=[];autoAction=null;}else if(route.length){const p=route[0],d=Math.hypot(p.x-state.x,p.y-state.y);if(d<5){state.x=p.x;state.y=p.y;route.shift();if(!route.length&&autoAction){const h=autoAction;autoAction=null;interact(h);}return;}dx=(p.x-state.x)/d;dy=(p.y-state.y)/d;}
  const d=Math.hypot(dx,dy);if(d){dx/=d;dy/=d;const speed=180*dt;if(walkable(state.x+dx*speed,state.y))state.x+=dx*speed;if(walkable(state.x,state.y+dy*speed))state.y+=dy*speed;}
@@ -198,17 +204,26 @@ function update(dt,time){
  state.friends.forEach((_,i)=>{const desired=walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);p.x=Math.max(32,p.x);p.y=Math.min(640,p.y);followerPositions[i]=p;});
  if(route.length&&!walking&&d){route=[];autoAction=null;notify('Try the open floor, or choose a destination below.');}
 }
-canvas.addEventListener('pointerdown',e=>{if(dialog.open||photoBusy)return;e.preventDefault();canvas.focus({preventScroll:true});const r=canvas.getBoundingClientRect(),x=camera+(e.clientX-r.left)/r.width*viewWidth,y=(e.clientY-r.top)/r.height*H;const h=hotspots().find(h=>(h.id==='dj'&&x>420&&x<605&&y>220&&y<370)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));if(h){goTo(h);return;}if(walkable(x,y)){autoAction=null;route=findPath(state.room,state,{x,y});keys.clear();}else notify('Tap the open floor or a destination button to walk there.');});
+let dragPointer=null;
+function pointFromTouch(e){const r=canvas.getBoundingClientRect();return {x:camera+(e.clientX-r.left)/r.width*viewWidth,y:(e.clientY-r.top)/r.height*H};}
+function walkToPoint(point){autoAction=null;route=findPath(state.room,state,point);keys.clear();}
+canvas.addEventListener('pointerdown',e=>{
+ if(dialog.open||photoBusy)return;e.preventDefault();canvas.focus({preventScroll:true});dragPointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);
+ const {x,y}=pointFromTouch(e),h=hotspots().find(h=>(h.id==='dj'&&x>420&&x<605&&y>220&&y<370)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));
+ if(h)goTo(h);else walkToPoint({x,y});
+});
+canvas.addEventListener('pointermove',e=>{if(!dragPointer||e.pointerId!==dragPointer.id||dialog.open||photoBusy)return;if(Math.hypot(e.clientX-dragPointer.x,e.clientY-dragPointer.y)<6)return;walkToPoint(pointFromTouch(e));});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>{dragPointer=null;});
 const keyMap={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
 window.addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,textarea'))return;const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key]){e.preventDefault();keys.add(keyMap[key]);}else if((key==='e'||key===' ')&&!e.repeat&&!e.target.closest('button,a')){e.preventDefault();interactButton();}});
 window.addEventListener('keyup',e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key])keys.delete(keyMap[key]);});
 window.addEventListener('blur',()=>keys.clear());document.addEventListener('visibilitychange',()=>{keys.clear();paused=document.hidden;safeSave();});
 document.querySelectorAll('[data-dir]').forEach(b=>{const release=()=>{keys.delete(b.dataset.dir);b.classList.remove('held');};b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.dir);b.classList.add('held');};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;});
 $('#interact').onclick=interactButton;$('#menu').onclick=openMenu;$('#scoreboard').onclick=openBoard;
-$('#sound').onclick=()=>{soundOn=!soundOn;$('#sound').setAttribute('aria-pressed',soundOn);$('#sound span').textContent=soundOn?'Sound on':'Sound off';tone();};
+$('#sound').onclick=toggleSound;
 $('#player-profile').onclick=()=>openPlayerSetup();
 function openMenu(){
- const content=openDialog('Your night.','Tap the floor to walk or use the quick destinations. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
+ const content=openDialog('Your night.','Tap anywhere or drag to walk. Scenery won’t block you. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
  {label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
  ...(state.photo?[{label:'VIP PHOTO',fn:showPhoto}]:[]),
  {label:'FIREWORKS',fn:()=>celebration.play()},

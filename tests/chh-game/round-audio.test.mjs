@@ -17,3 +17,34 @@ test('Chamblissnation plays Bounce Back, restarts it on replay, and stops on exi
  assert.equal(merchTrack.title,'BOUNCE BACK');assert.equal(merchTrack.durationSeconds,roundSeconds.chamblissnation);
  a.stop();assert.equal(env.stops,2);assert.equal(a.time,0);
 });
+
+test('Unlock is lightweight and only the selected song downloads',async()=>{
+ setup();const requested=[];const a=createRoundAudio({fetchAudio:async src=>{requested.push(src);return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
+ await a.unlock();assert.deepEqual(requested,[]);await a.preload('joz');await a.play('joz');assert.equal(requested.length,1);assert.match(requested[0],/joz-birkenstock/);a.stop();
+});
+test('A stalled mobile resume times out and a later gesture can retry',async()=>{
+ const env=setup();env.context.resume=()=>new Promise(()=>{});const a=createRoundAudio({resumeTimeoutMs:10});
+ await assert.rejects(a.play('eli'),/Tap Start Game/);assert.equal(env.plays,0);
+ env.context.resume=function(){this.state='running';return Promise.resolve();};await a.play('eli');assert.equal(env.plays,1);assert.equal(a.running,true);a.stop();
+});
+test('A slow or failed download releases loading and can be retried',async()=>{
+ const env=setup();let stalled=true;const a=createRoundAudio({loadTimeoutMs:10,fetchAudio:()=>stalled?new Promise(()=>{}):Promise.resolve({ok:true,arrayBuffer:async()=>new ArrayBuffer(8)})});
+ await assert.rejects(a.play('steven'),/too long/);assert.equal(env.plays,0);stalled=false;await a.play('steven');assert.equal(env.plays,1);a.stop();
+});
+test('One master mute controls music and effects, and audio interruptions are visible',async()=>{
+ const env=setup(),gains=[],original=env.context.createGain;env.context.createGain=()=>{const g=original();gains.push(g);return g;};
+ const a=createRoundAudio();a.setMuted(true);await a.play('eli');assert.equal(gains[0].gain.value,0);assert.equal(a.muted,true);
+ a.setMuted(false);assert.equal(gains[0].gain.value,1);assert.equal(a.running,true);env.context.state='interrupted';assert.equal(a.running,false);await a.unlock();assert.equal(a.running,true);assert.equal(env.contexts,1);a.stop();
+});
+test('Supported phones request the media playback audio session',async()=>{
+ const env=setup(),session={type:'auto'};Object.defineProperty(globalThis.navigator,'audioSession',{value:session,configurable:true});
+ const a=createRoundAudio();await a.unlock();assert.equal(session.type,'playback');assert.equal(env.contexts,1);delete globalThis.navigator.audioSession;
+});
+
+test('Sound effects use the same working context and obey master mute',async()=>{
+ const env=setup();let effects=0;
+ env.context.createOscillator=()=>({frequency:{},connect(){},disconnect(){},start(){effects++;},stop(){}});
+ env.context.createGain=()=>({gain:{value:0,setValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){},disconnect(){}});
+ const a=createRoundAudio();await a.unlock();a.effect();assert.equal(effects,3);await a.play('joz');a.effect('step');assert.equal(effects,4);assert.equal(env.contexts,1);
+ a.setMuted(true);a.effect();assert.equal(effects,4);a.stop();
+});

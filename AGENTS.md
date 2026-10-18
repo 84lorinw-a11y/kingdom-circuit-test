@@ -19,6 +19,8 @@
 
 - Latest VIP photo revision: preview and download share a tighter crop around the six-person group beneath the actual VIP banner. Keep Classic and Lean In and add Peace Sign for every selectable player. Jay wears the woodland Chamblissnation “Your People My People We Family” tee in every room and photo pose. This photo crop supersedes the older wide composition including the lounge furniture and side-wall emblem.
 
+- Latest mobile correction: grass, furniture and crowds must never block walking. Use direct tap/drag paths with only outer room bounds; this supersedes scenery collision routing. The refreshments/break spot shows a brief message without pausing or locking movement. Music and effects share one gesture-unlocked audio context, a visible master On/Off control, bounded loading and an interruption retry state. Preserve approved songs, excerpts, bass effects and scoring.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.

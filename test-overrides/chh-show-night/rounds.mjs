@@ -6,13 +6,13 @@ import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=vip-18';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
 const instructions={eli:'Tap the glowing pad when its letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag your tote. Catch the Chamblissnation drops.'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
-export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart=true}){
+export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundToggle,autostart=true}){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- let disposed=false,phase='ready',raf=0,elapsed=0,started=0,last=0,px=210,target=210,notes=[],events=[],particles=[],roundId='',seed=1,run=0,ranked=false,combo=0,feedback='',feedbackUntil=0,held=new Set();
+ let disposed=false,phase='ready',raf=0,elapsed=0,started=0,last=0,px=210,target=210,notes=[],events=[],particles=[],roundId='',seed=1,run=0,ranked=false,combo=0,feedback='',feedbackUntil=0,lastAudioProgress=0,held=new Set();
  host.className='round';host.dataset.game=game;host.dataset.phase=phase;
  const top=el('div','round-top'),exit=el('button','round-exit','← Leave'),brand=el('div','round-brand'),artist=el('small','',gameNames[game].toUpperCase()),title=el('strong','',titles[game]);brand.append(artist,title);exit.onclick=onExit;
  if(game==='chamblissnation')brand.append(el('small','',`${merchTrack.artist} · ${merchTrack.title}`));
- const fx=el('button','round-fx',reduced?'FX reduced':'Bass FX on');fx.hidden=game!=='eli';fx.disabled=reduced;fx.setAttribute('aria-pressed',!reduced);top.append(exit,brand,fx);
+ const fx=el('button','round-fx',reduced?'FX reduced':'Bass FX on');fx.hidden=game!=='eli';fx.disabled=reduced;fx.setAttribute('aria-pressed',!reduced);const sound=el('button','round-sound');function syncSound(){sound.textContent=audio.muted?'♪ Off':'♪ On';sound.setAttribute('aria-pressed',!audio.muted);sound.setAttribute('aria-label',audio.muted?'Sound off. Tap to enable':'Sound on. Tap to mute');}sound.onclick=()=>{if(onSoundToggle)onSoundToggle();else audio.setMuted(!audio.muted);syncSound();};syncSound();top.append(exit,brand,sound,fx);
  const stats=el('div','round-stats'),points=el('b','','0'),time=el('b','',`${roundSeconds[game]}s`),streak=el('b','','0×');
  for(const [label,v] of [['POINTS',points],['TIME',time],['COMBO',streak]]){const group=el('div');group.append(el('small','',label),v);stats.append(group);}
  const arena=el('div','round-arena'),canvas=el('canvas');canvas.width=420;canvas.height=560;canvas.setAttribute('aria-label',instructions[game]);canvas.setAttribute('tabindex','0');arena.append(canvas);const g=canvas.getContext('2d');
@@ -29,17 +29,18 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
  async function begin(){
   const token=++run;phase='loading';host.dataset.phase=phase;start.disabled=true;start.textContent='Loading music…';results.textContent='';
   audio.unlock().catch(()=>{});
-  try{const ticket=await online?.start(game).catch(()=>null);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run||!ready)return;
-   roundId=ticket?.id||crypto.randomUUID();seed=crypto.getRandomValues(new Uint32Array(1))[0];notes=roundSchedule(game,seed);events=[];particles=[];combo=0;px=target=210;elapsed=0;feedback='';detector.reset();points.textContent='0';streak.textContent='0×';phase='playing';host.dataset.phase=phase;overlay.hidden=true;started=performance.now();last=started;canvas.focus({preventScroll:true});
-  }catch{if(disposed||token!==run)return;phase='ready';host.dataset.phase=phase;message.textContent='Tap Start Game to enable the song. If it does not load, check your connection and try again.';start.disabled=false;start.textContent='Start Game';}
+  try{const ticket=await online?.start(game).catch(()=>null);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
+   roundId=ticket?.id||crypto.randomUUID();seed=crypto.getRandomValues(new Uint32Array(1))[0];notes=roundSchedule(game,seed);events=[];particles=[];combo=0;px=target=210;elapsed=0;feedback='';detector.reset();points.textContent='0';streak.textContent='0×';phase='playing';host.dataset.phase=phase;overlay.hidden=true;started=performance.now();last=lastAudioProgress=started;canvas.focus({preventScroll:true});
+  }catch{if(disposed||token!==run)return;retry('Tap Start Game to turn on the music.');}
  }
+ function retry(text){run++;audio.stop();pulse.clear();phase='ready';host.dataset.phase=phase;overlay.hidden=false;headline.textContent='READY WHEN YOU ARE.';message.textContent=text;start.disabled=false;start.textContent='Start Game';held.clear();}
  start.onclick=begin;
  function finish(){if(phase!=='playing')return;for(const note of notes)if(!note.done)settle(note,false);audio.stop();pulse.clear();phase='result';host.dataset.phase=phase;overlay.hidden=false;const result=roundScore(events);headline.textContent=result.total>=800?'THAT’S YOUR SET.':'GOOD NIGHT. GREAT CREW.';message.textContent=`${result.total.toLocaleString()} points added to your session.`;results.textContent=`${result.hits}/20 caught · ${result.perfect} clean · best combo ${result.bestCombo}`;start.disabled=false;start.textContent='Play Again';const resultData={game,id:roundId,seed,events:[...events]};onFinish(resultData);if(online?.enabled&&!ranked)results.textContent+=' · Saved on this device; online board unavailable.';if(ranked)online?.finish(resultData).catch(()=>{if(!disposed)results.textContent+=' · Online save failed; score kept on this device.';});}
  function move(e){if(game==='eli'||phase!=='playing')return;const r=canvas.getBoundingClientRect();const scale=Math.min(r.width/420,r.height/560),left=r.left+(r.width-420*scale)/2;target=Math.max(42,Math.min(378,(e.clientX-left)/scale));}
  canvas.onpointerdown=e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);move(e);};canvas.onpointermove=e=>{if(e.buttons||e.pointerType==='touch')move(e);};
  const keydown=e=>{if(phase!=='playing')return;if(['ArrowLeft','ArrowRight','a','d'].includes(e.key)){e.preventDefault();held.add(e.key);}if(game==='eli'&&!e.repeat){const lane=Number(e.key)-1;if(lane>=0&&lane<4){e.preventDefault();tap(lane);}else if(e.key===' '){e.preventDefault();const n=notes.filter(n=>!n.done).sort((a,b)=>Math.abs(a.at-elapsed)-Math.abs(b.at-elapsed))[0];if(n)tap(n.lane);}}};
  const keyup=e=>held.delete(e.key);document.addEventListener('keydown',keydown);document.addEventListener('keyup',keyup);
- const visibility=()=>{if(document.hidden&&['playing','loading'].includes(phase)){run++;audio.stop();pulse.clear();phase='ready';host.dataset.phase=phase;overlay.hidden=false;headline.textContent='READY WHEN YOU ARE.';message.textContent='Round paused while you were away. Restart for a fair score.';start.disabled=false;start.textContent='Restart Round';held.clear();}};document.addEventListener('visibilitychange',visibility);
+ const visibility=()=>{if(document.hidden&&['playing','loading'].includes(phase))retry('Welcome back. Restart this round with the music.');};document.addEventListener('visibilitychange',visibility);
  function shirt(x,y,size,kind){const img=art.merch;if(!img)return;const w=img.width/3;g.drawImage(img,w*kind,0,w,img.height,x-size/2,y-size/2,size,size*img.height/w);}
  function sandal(x,y,bag=false){const im=art.items;if(!im)return;const w=im.width/2;g.save();g.translate(x,y);g.rotate(reduced?0:Math.sin(y/55)*.12);g.drawImage(im,bag?w:0,0,w,im.height,-30,-30,60,60*im.height/w);g.restore();}
  function scene(t,dt){
@@ -85,10 +86,12 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
   for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;g.globalAlpha=Math.max(0,p.life);g.fillStyle=p.color;g.fillRect(p.x,p.y,4,4);}g.globalAlpha=1;particles=particles.filter(p=>p.life>0);
  }
  function tick(now){if(disposed)return;const dt=Math.min(.05,(now-last)/1000)||.016;last=now;if(phase==='playing'){
-  elapsed=audio.time;
+  const playTime=audio.time;
+  if(audio.running===false||(playTime<=elapsed&&now-lastAudioProgress>2000))retry('The music paused. Tap Start Game to restart.');
+  else {if(playTime>elapsed)lastAudioProgress=now;elapsed=playTime;
   if(held.has('ArrowLeft')||held.has('a'))target-=320*dt;if(held.has('ArrowRight')||held.has('d'))target+=320*dt;target=Math.max(42,Math.min(378,target));px+=(target-px)*Math.min(1,dt*24);
   time.textContent=`${Math.max(0,Math.ceil(roundSeconds[game]-elapsed))}s`;progress.value=elapsed;
- }
+ }}
  scene(elapsed,dt);if(phase==='playing'&&elapsed>=roundSeconds[game])finish();raf=requestAnimationFrame(tick);}
  raf=requestAnimationFrame(tick);if(autostart)begin();
  return()=>{disposed=true;run++;cancelAnimationFrame(raf);audio.stop();pulse.clear();document.removeEventListener('keydown',keydown);document.removeEventListener('keyup',keyup);document.removeEventListener('visibilitychange',visibility);};
