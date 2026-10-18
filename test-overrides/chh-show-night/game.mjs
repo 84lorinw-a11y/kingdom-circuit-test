@@ -216,14 +216,29 @@ function openMenu(){
  {label:'BACK TO THE SHOW',secondary:true}],'CHH SHOW NIGHT · TEST PREVIEW');
 }
 async function openBoard(){
- const content=openDialog('The scoreboards.','Best session • All four games count equally.',[{label:'BACK TO MY NIGHT',secondary:true}],'KINGDOM CIRCUIT');
- const host=activityHost(content);host.className='board';
- const row=scoreStore.record(state);const status=document.createElement('p');status.textContent='Loading scores…';host.append(status);
- const columns=['Nickname',...gameIds.map(id=>gameNames[id]),'Journey','Total'];
- function table(rows){const wrap=document.createElement('div');wrap.className='table-scroll';const t=document.createElement('table'),head=document.createElement('tr');columns.forEach(label=>{const th=document.createElement('th');th.textContent=label;head.append(th);});t.append(head);rows.forEach(r=>{const tr=document.createElement('tr');[r.nickname,...gameIds.map(id=>r[id]),r.journey,r.total].forEach(v=>{const td=document.createElement('td');td.textContent=typeof v==='number'?v.toLocaleString():v;tr.append(td);});t.append(tr);});wrap.append(t);return wrap;}
- host.append(document.createTextNode('CURRENT SESSION'),table([row]));
- try{const board=await(onlineScores.enabled?onlineScores.board():scoreStore.board());if(!host.isConnected)return;status.textContent=board.mode==='device'?'Your best session is saved on this device. The shared online leaderboard is not connected yet.':'Best sessions from the community';host.append(document.createTextNode('BEST SESSION'),table(board.rows));}catch{status.textContent='Online board unavailable. Your session is saved on this device.';}
- const share=document.createElement('button');share.textContent='SHARE SCORECARD';share.onclick=()=>shareScore(row);host.append(share);
+ const content=openDialog('Scoreboard','',[{label:'BACK TO SHOW',secondary:true}],'CHH SHOW NIGHT');
+ dialog.classList.add('score-dialog');
+ const [eyebrow,heading,description,actions]=content.children;
+ const header=document.createElement('header');header.className='score-header';
+ const logo=document.createElement('img');logo.src='/play/assets/kingdom-circuit-instagram.webp';logo.alt='Kingdom Circuit';logo.width=72;logo.height=72;
+ const title=document.createElement('div');title.append(eyebrow,heading);header.append(logo,title);description.remove();
+ const status=document.createElement('p');status.className='score-status';status.setAttribute('role','status');status.textContent='Loading scores…';
+ const host=document.createElement('div');host.className='board';
+ const row=scoreStore.record(state);
+ function scoreCard(r,label){
+  const card=document.createElement('section');card.className='score-card';card.setAttribute('aria-label',label);
+  const top=document.createElement('div');top.className='score-card-top';const identity=document.createElement('div');
+  const caption=document.createElement('h3');caption.textContent=label;const name=document.createElement('p');name.className='score-nickname';name.textContent=r.nickname||'Player';identity.append(caption,name);
+  const total=document.createElement('div');total.className='score-total';const value=document.createElement('strong');value.textContent=r.total.toLocaleString();const unit=document.createElement('span');unit.textContent='POINTS';total.append(value,unit);top.append(identity,total);
+  const games=document.createElement('dl');games.className='score-games';
+  for(const id of gameIds){const item=document.createElement('div'),term=document.createElement('dt'),points=document.createElement('dd');term.textContent=gameNames[id];points.textContent=r[id].toLocaleString();item.append(term,points);games.append(item);}
+  const journey=document.createElement('p');journey.className='score-journey';journey.textContent=`Journey +${r.journey.toLocaleString()}`;card.append(top,games,journey);return card;
+ }
+ host.append(scoreCard(row,'Current session'));
+ const share=document.createElement('button');share.textContent='SHARE SCORECARD';share.onclick=()=>shareScore(row);actions.prepend(share);
+ content.replaceChildren(header,status,host,actions);
+ try{const board=await(onlineScores.enabled?onlineScores.board():scoreStore.board());if(!host.isConnected)return;status.textContent=board.mode==='device'?'Saved on this device':'Community best sessions';board.rows.forEach(r=>host.append(scoreCard(r,board.mode==='device'?'Best session':'Community best')));}
+ catch{if(host.isConnected)status.textContent='Saved on this device · Online scores unavailable';}
 }
 async function shareScore(row){
  const c=document.createElement('canvas');c.width=720;c.height=1000;const g=c.getContext('2d');g.fillStyle='#0b1928';g.fillRect(0,0,720,1000);g.drawImage(images.kcLogo,275,40,170,170);g.textAlign='center';g.fillStyle='#ffcb6c';g.font='bold 38px monospace';g.fillText('CHH SHOW NIGHT',360,265);g.fillStyle='#f8efda';g.font='24px monospace';g.fillText(row.nickname,360,320);g.font='bold 88px monospace';g.fillText(row.total.toLocaleString(),360,435);g.font='20px monospace';g.fillText('SESSION POINTS',360,475);gameIds.forEach((id,i)=>{g.textAlign='left';g.fillStyle='#7ed9b1';g.fillText(gameNames[id],65,560+i*60);g.textAlign='right';g.fillStyle='#fff0d6';g.fillText(row[id].toLocaleString(),655,560+i*60);});g.textAlign='center';g.fillStyle='#ffcb6c';g.fillText('BUILT FOR THE FANS. ALL FOR THE KING.',360,870);g.fillStyle='#f8efda';g.fillText('@thekingdomcircuit · TEST PREVIEW',360,920);const blob=await new Promise(r=>c.toBlob(r));if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Kingdom-Circuit-Scorecard.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
@@ -237,7 +252,7 @@ function drawVenueBranding(){
 
 }
 dialog.addEventListener('cancel',e=>{if(!state.profileReady)e.preventDefault();});
-dialog.addEventListener('close',()=>{dialog.classList.remove('game-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();canvas.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{dialog.classList.remove('game-dialog','score-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();canvas.focus({preventScroll:true});});
 async function start(){
  try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',booth:'dj-booth-v12.webp',merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-${name==='show'?'v12':'v8'}.webp`;})));sync();announceRoom();requestAnimationFrame(render);if(!state.profileReady)openPlayerSetup();}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}
