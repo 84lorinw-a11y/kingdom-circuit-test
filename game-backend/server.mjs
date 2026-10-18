@@ -10,7 +10,7 @@ import {pathToFileURL} from 'node:url';
 import {initialState,act,score,journeyScore} from '../test-overrides/chh-show-night/state.mjs';
 import {gameIds,roundSeconds,validateRound,roundScore} from '../test-overrides/chh-show-night/scoring.mjs';
 const hash=s=>createHash('sha256').update(s).digest('hex');
-export function createScoreServer({database=':memory:',source=resolve('test-overrides/chh-show-night'),origin='http://127.0.0.1:4329',now=()=>Date.now()}={}){
+export function createScoreServer({database=':memory:',source=resolve('test-overrides/chh-show-night'),origin='http://127.0.0.1:4329',allowedOrigins=[origin],now=()=>Date.now()}={}){
  const db=new DatabaseSync(database);db.exec(`PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS players(id TEXT PRIMARY KEY, token TEXT UNIQUE NOT NULL); CREATE TABLE IF NOT EXISTS sessions(id TEXT PRIMARY KEY, player TEXT NOT NULL, state TEXT NOT NULL); CREATE TABLE IF NOT EXISTS rounds(id TEXT PRIMARY KEY, session TEXT NOT NULL, game TEXT NOT NULL, started INTEGER NOT NULL, done INTEGER DEFAULT 0); CREATE TABLE IF NOT EXISTS best(player TEXT PRIMARY KEY, total INTEGER NOT NULL, row TEXT NOT NULL);`);
  const json=(res,status,data)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(data));};
  function row(state){return {nickname:state.name,sessionId:state.sessionId,...state.totals,journey:journeyScore(state),total:score(state),rounds:state.rounds};}
@@ -18,9 +18,18 @@ export function createScoreServer({database=':memory:',source=resolve('test-over
  const server=http.createServer(async(req,res)=>{try{
   const url=new URL(req.url,origin);
   if(url.pathname.startsWith('/play-api/')){
-   if(req.method==='GET'&&url.pathname==='/play-api/scores'){return json(res,200,db.prepare('SELECT row FROM best ORDER BY total DESC LIMIT 100').all().map(r=>JSON.parse(r.row)));}
+   const requestOrigin=req.headers.origin;
+   if(requestOrigin&&!allowedOrigins.includes(requestOrigin))return json(res,403,{error:'Origin not allowed'});
+   if(requestOrigin){res.setHeader('Access-Control-Allow-Origin',requestOrigin);res.setHeader('Vary','Origin');}
+   if(req.method==='OPTIONS'){res.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization');res.setHeader('Access-Control-Max-Age','600');res.writeHead(204);return res.end();}
+   if(req.method==='GET'&&url.pathname==='/play-api/scores'){
+    const offset=Number(url.searchParams.get('offset')||0),limit=Number(url.searchParams.get('limit')||50);
+    if(!Number.isSafeInteger(offset)||offset<0||!Number.isSafeInteger(limit)||limit<1||limit>100)return json(res,400,{error:'Invalid page'});
+    const totalPlayers=db.prepare('SELECT COUNT(*) AS count FROM best').get().count;
+    const rows=db.prepare('SELECT row FROM best ORDER BY total DESC, player ASC LIMIT ? OFFSET ?').all(limit,offset).map((r,i)=>({...JSON.parse(r.row),rank:offset+i+1}));
+    return json(res,200,{mode:'online',rows,totalPlayers,nextOffset:offset+rows.length<totalPlayers?offset+rows.length:null});
+   }
    if(req.method!=='POST')return json(res,405,{error:'Use POST'});
-   if(req.headers.origin&&req.headers.origin!==origin)return json(res,403,{error:'Origin not allowed'});
    if(!req.headers['content-type']?.startsWith('application/json'))return json(res,415,{error:'JSON required'});
    let text='';for await(const chunk of req){text+=chunk;if(text.length>16000)return json(res,413,{error:'Request too large'});}let data;try{data=JSON.parse(text);}catch{return json(res,400,{error:'Invalid JSON'});}
    let token=req.headers.authorization?.replace(/^Bearer /,''),player=token?db.prepare('SELECT id FROM players WHERE token=?').get(hash(token))?.id:null;
@@ -31,7 +40,7 @@ export function createScoreServer({database=':memory:',source=resolve('test-over
     if(existing&&existing.player!==player)return json(res,403,{error:'Session belongs to another player'});
     let state=existing?JSON.parse(existing.state):{...initialState(),sessionId:data.sessionId};state=act(state,'profile',{name:data.nickname,avatar:'red'});
     if(!state.profileReady)return json(res,400,{error:'Nickname required'});
-    if(!existing)db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(state.sessionId,player,JSON.stringify(state));else save(state.sessionId,player,state);
+    if(!existing)db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(state.sessionId,player,JSON.stringify(state));save(state.sessionId,player,state);
     return json(res,200,{token,state});
    }
    if(!player)return json(res,401,{error:'Start a session first'});
@@ -67,5 +76,6 @@ export function createScoreServer({database=':memory:',source=resolve('test-over
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(realpathSync(process.argv[1])).href){
  const port=Number(process.env.PORT||4329),host=process.env.HOST||'127.0.0.1',origin=process.env.PUBLIC_ORIGIN||`http://${host}:${port}`;
- const directory=process.env.SCORE_DATA_DIR||resolve('game-backend/data');await mkdir(directory,{recursive:true});const server=createScoreServer({database:resolve(directory,'scores.sqlite'),origin});server.listen(port,host,()=>console.log(`CHH test + score service: ${origin}/play/`));
+ const allowedOrigins=(process.env.ALLOWED_ORIGINS||origin).split(',').map(s=>s.trim()).filter(Boolean);
+ const directory=process.env.SCORE_DATA_DIR||resolve('game-backend/data');await mkdir(directory,{recursive:true});const server=createScoreServer({database:resolve(directory,'scores.sqlite'),origin,allowedOrigins});server.listen(port,host,()=>console.log(`CHH test + score service: ${origin}/play/`));
 }

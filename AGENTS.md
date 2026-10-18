@@ -25,6 +25,8 @@
 
 - Eli mobile polish: use the concert’s detailed DJ booth, a responsive four-lane beat board, larger color-matched pads and live-audio timing. Keep controls stationary while the arena reacts to bass; preserve reduced-motion/FX controls, the approved 26-second excerpt and equal 40 + 10 scoring. Every round result offers instant replay and an obvious return to the show.
 
+- All-player scoreboard: show ranked rows with Player, Eli, Joz, Steven, Merch, Journey and Total at the end. Retain each player's best complete session and include zero-score entrants. Pagination must allow access to every player, not just a top-100 list. Preserve nickname-only entry and distinguish different names starting new games on a shared phone. Clearly label browser-only scores until a persistent online service is actually connected; never invent past players or import unverified local game scores as online results.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.

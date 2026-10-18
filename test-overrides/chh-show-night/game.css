@@ -88,3 +88,28 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .round-overlay{z-index:3}.round-overlay .round-back{width:min(300px,100%);background:#21374b;color:#e9f3f1;border:1px solid #648190;min-height:46px;font-size:11px}
 .score-bump{animation:score-bump .22s ease-out}@keyframes score-bump{50%{transform:scale(1.18);color:#fff7d6}}
 @media(max-height:600px){.round[data-game=eli] .pad{min-height:64px}.round[data-game=eli] .round-stats b{font-size:20px}.round[data-game=eli] .round-hint{font-size:9px!important}}
+
+.score-dialog{width:min(980px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px}
+.score-dialog #dialog-content{display:flex;flex-direction:column;min-width:0;max-height:calc(100dvh - 72px);gap:14px}
+.score-dialog .score-header,.score-dialog .score-status,.score-dialog .score-current,.score-dialog .dialog-actions,.score-dialog .score-more{flex-shrink:0}
+.score-dialog .board{display:flex;flex-direction:column;min-height:0;flex:1}
+.score-swipe{display:none;margin:0!important;font-size:10px!important;color:#aebfcd;flex-shrink:0}
+.score-dialog .score-current{margin:0;padding:10px 12px;border:1px solid #2f5c58;border-radius:6px;background:#15322f;color:var(--mint);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.score-table-wrap{max-width:100%;overflow:auto;border:1px solid #30465a;border-radius:8px;overscroll-behavior:contain;min-height:120px}
+.score-table{min-width:700px;width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-variant-numeric:tabular-nums}
+.score-table th:first-child{width:36px}.score-table th:nth-child(2){width:150px}.score-table th.score-final{width:100px}
+.score-table caption{text-align:left;padding:12px;font:700 11px ui-monospace,monospace;color:#aebfcd;background:#102031}
+.score-table th,.score-table td{padding:13px 12px;text-align:right;border-top:1px solid #2c4053;white-space:nowrap;font:12px ui-monospace,monospace}
+.score-table tbody td{white-space:normal;overflow-wrap:anywhere}.score-table tr>*:first-child{padding-left:6px;padding-right:6px}
+.score-table thead th{background:#152b3d;color:#ffcb6c;font-size:11px;position:sticky;top:0;z-index:1}
+.score-table tbody th{max-width:180px;min-width:100px;white-space:normal;text-align:left;overflow-wrap:anywhere;color:#f8efda;position:sticky;left:0;z-index:1;background:inherit}
+.score-table th:nth-child(2){text-align:left}
+.score-table thead th:nth-child(2){left:0;z-index:3}
+.score-table tbody tr{background:#0b1928}.score-table tbody tr:nth-child(even){background:#132335}
+.score-table .score-final{position:sticky;right:0;min-width:78px;background:#193448;color:#ffdc94;font-weight:bold;border-left:1px solid #446073}
+.score-table thead .score-final{z-index:2;background:#233d50}
+.score-table-wrap:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.score-more{min-height:46px;width:100%;background:#21374b;color:#e9f3f1;border:1px solid #648190;font-size:11px}
+.score-empty{font-size:13px;color:#aebfcd}
+@media(max-width:480px){.score-dialog{padding:14px}.score-table{min-width:620px}.score-table th,.score-table td{padding:12px 10px}.score-table tr>*:first-child{padding-left:6px;padding-right:6px}.score-table th:first-child{width:36px}.score-table th:nth-child(2){width:100px}.score-table th.score-final{width:84px}.score-table .score-final{min-width:76px}.score-header img{width:48px;height:48px}.score-header h2{font-size:23px}}
+@media(max-width:760px){.score-swipe{display:block}.score-dialog #dialog-content{gap:10px}}
