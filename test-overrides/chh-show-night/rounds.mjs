@@ -1,10 +1,10 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=flow-26';
-import {merchTrack} from './music-config.mjs?v=flow-26';
-import {stevenFan,collectedFans} from './crowds.mjs?v=flow-26';
-import {drawPerson} from './sprites.mjs?v=flow-26';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=flow-26';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=flow-26';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=flow-26';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=scores-27';
+import {merchTrack} from './music-config.mjs?v=scores-27';
+import {stevenFan,collectedFans} from './crowds.mjs?v=scores-27';
+import {drawPerson} from './sprites.mjs?v=scores-27';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=scores-27';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=scores-27';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=scores-27';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
 const instructions={eli:'Tap the matching pad when the letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag the tote left and right. Catch the fast shirts in the middle!'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
@@ -45,7 +45,20 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundTo
  }
  function retry(text){run++;audio.stop();pulse.clear();phase='ready';host.dataset.phase=phase;overlay.hidden=false;headline.textContent='READY WHEN YOU ARE.';message.textContent=text;start.disabled=false;start.textContent='Start Game';back.hidden=true;callout.hidden=true;held.clear();}
  start.onclick=begin;
- function finish(){if(phase!=='playing')return;for(const note of notes)if(!note.done)settle(note,false);audio.stop();pulse.clear();phase='result';host.dataset.phase=phase;overlay.hidden=false;const result=roundScore(events);headline.textContent=game==='eli'?(result.hits===20?'ALL FOR THE KING.':'THAT’S YOUR SET.'):result.total>=800?'THAT’S YOUR SET.':'GOOD NIGHT. GREAT CREW.';message.textContent=`${result.total.toLocaleString()} points added to your session.`;results.textContent=`${result.hits}/20 ${game==='eli'?'beats hit':'caught'} · ${result.perfect} clean · best streak ${result.bestCombo}`;start.disabled=false;start.textContent='Play Again';back.hidden=false;callout.hidden=true;const resultData={game,id:roundId,seed,events:[...events]};onFinish(resultData);if(online?.enabled&&!ranked)results.textContent+=' · Saved on this device; online board unavailable.';if(ranked)online?.finish(resultData).catch(()=>{if(!disposed)results.textContent+=' · Online save failed; score kept on this device.';});}
+ function finish(){
+  if(phase!=='playing')return;for(const note of notes)if(!note.done)settle(note,false);audio.stop();pulse.clear();phase='result';host.dataset.phase=phase;overlay.hidden=false;
+  const result=roundScore(events),completedRun=run;
+  headline.textContent=game==='eli'?(result.hits===20?'ALL FOR THE KING.':'THAT’S YOUR SET.'):result.total>=800?'THAT’S YOUR SET.':'GOOD NIGHT. GREAT CREW.';
+  message.textContent=`${result.total.toLocaleString()} points added to your session.`;
+  const summary=`${result.hits}/20 ${game==='eli'?'beats hit':'caught'} · ${result.perfect} clean · best streak ${result.bestCombo}`;
+  results.textContent=summary;start.disabled=false;start.textContent='Play Again';back.hidden=false;callout.hidden=true;
+  const resultData={game,id:roundId,seed,events:[...events]};onFinish(resultData);
+  if(online?.enabled&&!ranked)results.textContent+=' · Saved on this device; online board unavailable.';
+  if(ranked){
+   results.textContent+=' · Saving to the scoreboard…';
+   online.finish(resultData).then(()=>{if(!disposed&&run===completedRun)results.textContent=summary+' · Saved to the shared scoreboard.';}).catch(()=>{if(!disposed&&run===completedRun)results.textContent=summary+(online.pendingCount?' · Waiting to save. We’ll retry automatically.':' · Online save failed; score kept on this device.');});
+  }
+ }
  function move(e){if(game==='eli'||phase!=='playing')return;const r=canvas.getBoundingClientRect();const scale=Math.min(r.width/420,r.height/560),left=r.left+(r.width-420*scale)/2;target=Math.max(42,Math.min(378,(e.clientX-left)/scale));}
  canvas.onpointerdown=e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);if(game==='eli'){const r=canvas.getBoundingClientRect(),y=(e.clientY-r.top)/r.height*canvas.height;if(y>=beatLayout(canvas.height).laneTop)tap(beatLane(e.clientX,r.left,r.width));}else move(e);};canvas.onpointermove=e=>{if(e.buttons||e.pointerType==='touch')move(e);};
  const keydown=e=>{if(phase!=='playing')return;if(e.target.closest?.('.pad')&&['Enter',' '].includes(e.key))return;if(['ArrowLeft','ArrowRight','a','d'].includes(e.key)){e.preventDefault();held.add(e.key);}if(game==='eli'&&!e.repeat){const lane=Number(e.key)-1;if(lane>=0&&lane<4){e.preventDefault();tap(lane);}else if(e.key===' '){e.preventDefault();const n=notes.filter(n=>!n.done).sort((a,b)=>Math.abs(a.at-elapsed)-Math.abs(b.at-elapsed))[0];if(n)tap(n.lane);}}};

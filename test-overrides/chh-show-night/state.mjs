@@ -1,7 +1,7 @@
-import {avatars,playerName} from './avatars.mjs?v=flow-26';
-import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=flow-26';
-import {roomStops,visitIds} from './journey-guide.mjs?v=flow-26';
-export {journeyObjective as objective} from './journey-guide.mjs?v=flow-26';
+import {avatars,playerName} from './avatars.mjs?v=scores-27';
+import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=scores-27';
+import {roomStops,visitIds} from './journey-guide.mjs?v=scores-27';
+export {journeyObjective as objective} from './journey-guide.mjs?v=scores-27';
 export const MAX_SCORE=1000; // First celebration milestone, never a total-score ceiling.
 export const initialState=()=>({version:2,name:'',avatar:'',profileReady:false,beatBest:0,eli:false,photoStyle:{pose:'classic',frame:'gold'},room:'outside',friends:[],visited:[],merch:null,worship:false,photo:false,entered:false,x:470,y:575,totals:blankTotals(),roundIds:[],rounds:0,sessionId:''});
 export const validPhotoStyle=value=>({pose:['classic','lean','peace'].includes(value?.pose)?value.pose:'classic',frame:['gold','mint','rose'].includes(value?.frame)?value.frame:'gold'});

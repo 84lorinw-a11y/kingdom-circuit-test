@@ -1,21 +1,21 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=flow-26';
-import {drawPerson,loadPeople} from './sprites.mjs?v=flow-26';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=flow-26';
-import {createCelebration} from './celebration.mjs?v=flow-26';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=flow-26';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=flow-26';
-import {mountRound} from './rounds.mjs?v=flow-26';
-import {createRoundAudio} from './round-audio.mjs?v=flow-26';
-import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=flow-26';
-import {createScoreTable} from './scoreboard-view.mjs?v=flow-26';
-import {gameIds,gameNames} from './scoring.mjs?v=flow-26';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=flow-26';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=flow-26';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=flow-26';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=flow-26';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=flow-26';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=flow-26';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=flow-26';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=scores-27';
+import {drawPerson,loadPeople} from './sprites.mjs?v=scores-27';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=scores-27';
+import {createCelebration} from './celebration.mjs?v=scores-27';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=scores-27';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=scores-27';
+import {mountRound} from './rounds.mjs?v=scores-27';
+import {createRoundAudio} from './round-audio.mjs?v=scores-27';
+import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=scores-27';
+import {createScoreTable} from './scoreboard-view.mjs?v=scores-27';
+import {gameIds,gameNames} from './scoring.mjs?v=scores-27';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=scores-27';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=scores-27';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=scores-27';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=scores-27';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=scores-27';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=scores-27';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=scores-27';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
 const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};
@@ -296,6 +296,8 @@ async function openBoard(){
    if(!table){table=createScoreTable(board.mode==='online'?'All players · best session':'Players saved on this device');host.append(table.element);}
    table.append(board.rows);loaded+=board.rows.length;nextOffset=board.nextOffset;
    status.textContent=board.mode==='online'?`${board.totalPlayers.toLocaleString()} players · Highest total first · Showing ${loaded.toLocaleString()}`:'Shared scores are not connected yet. These players are saved only in this browser.';
+   if(onlineScores.pendingCount)status.textContent+=` · ${onlineScores.pendingCount} round(s) waiting to save. We’ll retry automatically.`;
+   if(onlineScores.rejectedCount)status.textContent+=` · ${onlineScores.rejectedCount} earlier round(s) could not be verified and remain on this device.`;
    if(!board.rows.length&&!loaded){const empty=document.createElement('p');empty.className='score-empty';empty.textContent='Be the first to start a night.';host.append(empty);}
    more.hidden=nextOffset===null;more.textContent='SHOW MORE PLAYERS';
   }catch{if(host.isConnected){status.textContent=onlineScores.enabled?'The shared scoreboard could not load. Your score is still saved on this device.':'Shared scores are not connected yet.';more.hidden=false;more.textContent='TRY AGAIN';}}

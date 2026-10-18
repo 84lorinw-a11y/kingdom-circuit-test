@@ -1,5 +1,6 @@
-import {score,journeyScore,act} from './state.mjs?v=flow-26';
-import {gameIds} from './scoring.mjs?v=flow-26';
+import {score,journeyScore,act} from './state.mjs?v=scores-27';
+import {gameIds} from './scoring.mjs?v=scores-27';
+import {createGoogleScores} from './google-scores.mjs?v=scores-27';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
 export function createScoreStore(storage=localStorage){
@@ -15,6 +16,7 @@ export function createScoreStore(storage=localStorage){
 
 // Hosting supplies the API URL; an empty value is explicitly device-only.
 export function createOnlineScores(storage=localStorage,{base=typeof document!=='undefined'?document.querySelector('meta[name="score-service"]')?.content||'':'',fetcher=fetch,timeoutMs=8000}={}){
+ if(/^https:\/\/script\.google\.com\/macros\/s\/[a-zA-Z0-9_-]+\/exec$/.test(base))return createGoogleScores(storage,{base,fetcher,timeoutMs:Math.max(timeoutMs,12000)});
  let tokens={},legacy='';try{tokens=JSON.parse(storage.getItem('kc-score-profiles')||'{}');legacy=storage.getItem('kc-score-token')||'';}catch{}
  let token='',session='',latest=null,queue=Promise.resolve();
  const enqueue=work=>(queue=queue.catch(()=>{}).then(work));
