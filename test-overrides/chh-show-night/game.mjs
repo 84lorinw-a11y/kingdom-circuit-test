@@ -136,8 +136,8 @@ async function makePhoto(){
 async function showPhoto(){
  try{const blob=await makePhoto();if(!blob)throw new Error('Photo unavailable');if(photoURL)URL.revokeObjectURL(photoURL);photoURL=URL.createObjectURL(blob);const content=openDialog('All glory to Jesus.','Your crew, backstage with the band. Keep the memory, then head back out and enjoy the show. All glory to Jesus.',[{label:'KEEP HANGING OUT',secondary:true}],`VIP MEMORY · ${score(state)} SHOW NIGHT XP`);const img=document.createElement('img');img.className='photo-preview';img.src=photoURL;img.alt='Your player and two friends posing with the Steven Malcolm-inspired vocalist, Eli-inspired DJ, and Joz-inspired performer at the VIP backdrop.';content.insertBefore(img,content.lastElementChild);const a=document.createElement('a');a.href=photoURL;a.download='Kingdom-Circuit-CHH-Show-Night-VIP.png';a.textContent='↓ DOWNLOAD PHOTO';const full=document.createElement('a');full.href=photoURL;full.target='_blank';full.rel='noopener';full.className='photo-full';full.textContent='OPEN FULL SIZE';content.lastElementChild.prepend(a,full);}catch{notify('Could not create the photo. Tap Your VIP Photo to try again.');}
 }
-function label(x,y,text,{active=false,color='#ffca6c',size=16}={}){
- ctx.save();ctx.font=`bold ${size}px monospace`;const width=ctx.measureText(text).width+20;ctx.fillStyle=active?'#ffca6c':'#08182bea';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.fillRect(x-width/2,y-size-3,width,size+9);ctx.strokeRect(x-width/2,y-size-3,width,size+9);ctx.fillStyle=active?'#101926':'#fff2d8';ctx.textAlign='center';ctx.fillText(text,x,y-2);ctx.restore();
+function label(x,y,text,{active=false,color='#ffca6c',size=16,scale=1}={}){
+ ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.font=`bold ${size}px monospace`;const width=ctx.measureText(text).width+20;ctx.fillStyle=active?'#ffca6c':'#08182bea';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.fillRect(-width/2,-size-3,width,size+9);ctx.strokeRect(-width/2,-size-3,width,size+9);ctx.fillStyle=active?'#101926':'#fff2d8';ctx.textAlign='center';ctx.fillText(text,0,-2);ctx.restore();
 }
 function drawBag(x,y){ctx.fillStyle='#0b1625';ctx.fillRect(x+22,y-39,19,26);ctx.fillStyle='#dcaa6a';ctx.fillRect(x+24,y-37,15,22);ctx.strokeStyle='#d9ae73';ctx.lineWidth=3;ctx.strokeRect(x+27,y-43,9,8);ctx.fillStyle='#684825';ctx.save();ctx.translate(x+31.5,y-24);ctx.scale(.12,.3);ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillText('@thekingdomcircuit',0,0);ctx.restore();}
 function render(time){
@@ -177,8 +177,8 @@ function render(time){
  if(a.photographer!==undefined)drawCameraFlash(ctx,a,time,reduceMotion);
  if(a.player&&state.merch)drawBag(a.x,a.y);
  });
- // Destination labels stay readable above the crowd.
- for(const h of hotspots())if(h.action!=='invite'){const stage=state.room==='show'&&['dj','steven','joz'].includes(h.id);label(h.x,stage?414:h.y-27,h.tag,{active:target?.id===h.id,color:h.done?'#86e2b1':'#ffca6c'});}
+ // Half-size activity signs reduce clutter; world tap zones and quick buttons stay full size.
+ for(const h of hotspots())if(h.action!=='invite'){const stage=state.room==='show'&&['dj','steven','joz'].includes(h.id);label(h.x,stage?414:h.y-27,h.tag,{active:target?.id===h.id,color:h.done?'#86e2b1':'#ffca6c',scale:state.room==='show'&&(stage||h.id==='merch')?.5:1});}
  // Labels stay above the crowd, so your crew never disappears in a packed room.
  const heroX=pose?480:state.x,heroY=pose?382:state.y;
  ctx.strokeStyle='#ffe7a4';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(heroX,heroY+2,29,8,0,0,Math.PI*2);ctx.stroke();
