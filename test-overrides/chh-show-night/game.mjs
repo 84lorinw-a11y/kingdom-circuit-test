@@ -237,7 +237,8 @@ function drawVenueBranding(){
  // Use the orange-rimmed emblem from the VIP room on the concert wall.
  ctx.drawImage(images.venueLogo,895,166,120,120);
  ctx.fillStyle='#0a1524';ctx.fillRect(13,44,174,70);if(images.logo)ctx.drawImage(images.logo,19,48,162,47);ctx.font='bold 5.6px monospace';ctx.textAlign='center';ctx.fillStyle='#fff0d8';ctx.fillText('YOUR PEOPLE MY PEOPLE WE FAMILY',100,105);
- if(images.merch){for(let i=0;i<3;i++)ctx.drawImage(images.merch,images.merch.width/3*i,0,images.merch.width/3,images.merch.height,24+i*53,119,50,58);}
+ // Enlarge the hanging display 20%, leaving the vendor's head clear below it.
+ if(images.merch){for(let i=0;i<3;i++)ctx.drawImage(images.merch,images.merch.width/3*i,0,images.merch.width/3,images.merch.height,12+i*60,115,60,69.6);}
 
 }
 dialog.addEventListener('cancel',e=>{if(!state.profileReady)e.preventDefault();});
