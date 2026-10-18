@@ -1,5 +1,5 @@
-import {score,journeyScore,act} from './state.mjs?v=vip-18';
-import {gameIds} from './scoring.mjs?v=vip-18';
+import {score,journeyScore,act} from './state.mjs?v=flow-26';
+import {gameIds} from './scoring.mjs?v=flow-26';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
 export function createScoreStore(storage=localStorage){

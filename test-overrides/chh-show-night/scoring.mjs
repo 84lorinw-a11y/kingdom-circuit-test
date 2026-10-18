@@ -6,7 +6,10 @@ export const roundSeconds={eli:26,joz:21,steven:21,chamblissnation:25};
 export function roundSchedule(id,seed=1){
  let n=seed>>>0;const random=()=>{n=(Math.imul(1664525,n)+1013904223)>>>0;return n/4294967296;};
  const first=id==='eli'?2.58:2.3,step=id==='eli'?120/104:(roundSeconds[id]-first-1.4)/19;
- return Array.from({length:20},(_,i)=>({id:i,at:first+i*step,lane:Math.floor(random()*4),x:65+random()*290,kind:i%3}));
+ return Array.from({length:20},(_,i)=>{
+  const lane=Math.floor(random()*4),position=random();
+  return {id:i,at:first+i*step,lane,x:id==='chamblissnation'?(i%2?265:65)+position*90:65+position*290,kind:i%3};
+ });
 }
 export function roundScore(events){
  const seen=new Set();let total=0,hits=0,perfect=0,streak=0,bestCombo=0;

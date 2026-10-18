@@ -29,6 +29,8 @@
 
 - Blue Soul player: preserve the higher navy crew neckline in both the normal/leaning and VIP peace-sign poses. Keep her existing saved character ID and other appearance unchanged.
 
+- Latest mobile flow revision: friend invitations explicitly say Bring Jay/Grace along or Keep exploring / Invite later; a premature venue visit offers a direct walk to missing friends. Unvisited circles and destination buttons gently pulse gold, with a readable Next prompt; visited stops stay steady and VIP remains freely accessible. Persist visits separately from scores, including zero-point rounds. Merch has faster drifting drops and alternating sides with a narrower catch window, retaining 20 opportunities and the identical 40 + 10 scoring rule. The VIP water break lasts six seconds with Jay and Grace sipping water; any movement, destination or Done resting cancels it immediately. This supersedes the old toast-only break. Keep dialog cleanup synchronous and ignore stale native close events so the next view cannot be stopped; cap final movement steps and preserve mobile background/return recovery. Shared-score hosting is tabled at the owner's request.
+
 ## October 13 mobile-first SEO preview
 
 - The owner explicitly approved broad mobile UX/SEO work on TEST ONLY. Preserve the exact published production content as the input, then apply `scripts/mobile_seo_preview.py` after the isolated experiments. Do not reapply the obsolete global redesign.

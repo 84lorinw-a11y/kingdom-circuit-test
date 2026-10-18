@@ -1,11 +1,12 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=vip-18';
-import {merchTrack} from './music-config.mjs?v=vip-18';
-import {stevenFan,collectedFans} from './crowds.mjs?v=vip-18';
-import {drawPerson} from './sprites.mjs?v=blue-25';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=vip-18';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=blue-25';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=flow-26';
+import {merchTrack} from './music-config.mjs?v=flow-26';
+import {stevenFan,collectedFans} from './crowds.mjs?v=flow-26';
+import {drawPerson} from './sprites.mjs?v=flow-26';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=flow-26';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=flow-26';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=flow-26';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
-const instructions={eli:'Tap the matching pad when the letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag your tote. Catch the Chamblissnation drops.'};
+const instructions={eli:'Tap the matching pad when the letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag the tote left and right. Catch the fast shirts in the middle!'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
 export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundToggle,autostart=true}){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -71,9 +72,10 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundTo
    }else{
     g.fillStyle='#07131ec9';g.fillRect(50,16,320,70);g.fillStyle='#ffcf76';g.font='bold 28px monospace';g.textAlign='center';g.fillText('BIRKENSTOCK',210,46);g.font='12px monospace';g.fillStyle='#f5e8ce';g.fillText('MORE SOLE. LESS STATUS.',210,70);
    }
-   for(const n of notes){const y=430-(n.at-t)*170;if(n.done||y<140||y>480)continue;
-    if(game==='joz')sandal(n.x,y);else if(game==='steven')drawPerson(g,n.x,y,stevenFan(n.id),{scale:1.1,walking:true,frame:t*8});else shirt(n.x,y,102,n.kind);
-    if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<52,Math.abs(px-n.x)<23);
+   for(const n of notes){if(n.done)continue;const drop=game==='chamblissnation'?merchDrop(n,t):{x:n.x,y:430-(n.at-t)*170},y=drop.y;
+    if(y>=140&&y<=520){if(game==='joz')sandal(drop.x,y);else if(game==='steven')drawPerson(g,drop.x,y,stevenFan(n.id),{scale:1.1,walking:true,frame:t*8});else {g.save();g.translate(drop.x,y-40);g.rotate(reduced?0:drop.rotation);shirt(0,0,102,n.kind);g.restore();}}
+    // Judge even after a slow phone skips past the visible catch line.
+    if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<(game==='chamblissnation'?merchCatch.hit:52),Math.abs(px-n.x)<(game==='chamblissnation'?merchCatch.clean:23));
    }
    if(game==='joz')for(let i=0;i<7;i++){const at=3.1+i*2.4,y=430-(at-t)*170,x=60+(i*133)%300;if(y>120&&y<480)sandal(x,y,true);if(t>=at&&t-dt<at&&Math.abs(px-x)<40){combo=0;streak.textContent='0×';report('BAGS? LET THEM PASS.','#ff987f');}}
    if(game==='chamblissnation'){g.fillStyle='#e2c197';g.strokeStyle='#c19b65';g.lineWidth=5;g.strokeRect(px-23,454,46,35);g.fillRect(px-42,475,84,65);g.fillStyle='#403323';g.font='bold 7px monospace';g.textAlign='center';g.fillText('@thekingdomcircuit',px,509);}

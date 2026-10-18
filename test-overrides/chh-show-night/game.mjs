@@ -1,18 +1,21 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=player-21';
-import {drawPerson,loadPeople} from './sprites.mjs?v=blue-25';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=vip-18';
-import {createCelebration} from './celebration.mjs?v=vip-18';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=vip-18';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=vip-18';
-import {mountRound} from './rounds.mjs?v=blue-25';
-import {createRoundAudio} from './round-audio.mjs?v=mobile-20';
-import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=board-24';
-import {createScoreTable} from './scoreboard-view.mjs?v=board-24';
-import {gameIds,gameNames} from './scoring.mjs?v=vip-18';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=blue-25';
-import {walkable as canWalk,findPath,clampPosition} from './navigation.mjs?v=floor-22';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=blue-25';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=vip-18';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=flow-26';
+import {drawPerson,loadPeople} from './sprites.mjs?v=flow-26';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=flow-26';
+import {createCelebration} from './celebration.mjs?v=flow-26';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=flow-26';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=flow-26';
+import {mountRound} from './rounds.mjs?v=flow-26';
+import {createRoundAudio} from './round-audio.mjs?v=flow-26';
+import {createScoreStore,createOnlineScores} from './leaderboard.mjs?v=flow-26';
+import {createScoreTable} from './scoreboard-view.mjs?v=flow-26';
+import {gameIds,gameNames} from './scoring.mjs?v=flow-26';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=flow-26';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=flow-26';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=flow-26';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=flow-26';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=flow-26';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=flow-26';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=flow-26';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
 const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};
@@ -20,7 +23,8 @@ for(const event of ['pointerdown','pointerup','touchend','click','keydown'])docu
 const storageKey='kc-show-night-v1', W=1024,H=683;
 let state;try{state=restore(localStorage.getItem(storageKey));}catch{state=initialState();}
 state.sessionId ||= crypto.randomUUID();let playerEntryPending=true;
-let stopBeat=null,stopActivity=null;
+const modal=createDialogLifecycle(dialog,$('#dialog-content'));
+let waterBreak=null,photoRun=0;
 let keys=new Set(),route=[],autoAction=null,walking=false,frame=0,last=0,camera=0,viewWidth=W,paused=false,raisingUntil=0,photoBusy=false,photoURL=null,toastTimer,introTimer,soundOn=true,particles=[],trail=[],followerPositions=[];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const celebration=createCelebration({reduceMotion});let victoryPending=false;
@@ -48,7 +52,7 @@ function hotspots(){
  if(state.room==='outside')return [
  ...(!state.friends.includes('jay')?[{id:'jay',x:210,y:590,label:'Invite Jay',tag:'JAY',action:'invite',value:'jay'}]:[]),
  ...(!state.friends.includes('grace')?[{id:'grace',x:348,y:578,label:'Invite Grace',tag:'GRACE',action:'invite',value:'grace'}]:[]),
- {id:'enter',x:740,y:385,label:'Venue entrance',tag:'THE SHOW',action:'enter'}];
+ {id:'enter',x:740,y:385,label:'Enter show',tag:'THE SHOW',action:'enter'}];
  if(state.room==='show')return [
  {id:'merch',x:105,y:455,label:'Merch',tag:'MERCH',action:'merch',done:!!state.merch},
  {id:'dj',...practiceSpot,label:'Eli',tag:'ELI · B–I–B–L–E',action:'dj',done:!!state.eli},
@@ -56,13 +60,12 @@ function hotspots(){
  {id:'vip',x:940,y:447,label:'VIP',tag:'VIP →',action:'vip'},
  {id:'outside',x:75,y:625,label:'← Outside',tag:'EXIT',action:'outside'}];
  return [
- {id:'photo',x:505,y:442,label:state.photo?'Another VIP photo':'Meet the band',tag:'PHOTO SPOT',action:'photo',done:state.photo},
+ {id:'photo',x:505,y:442,label:state.photo?'Another VIP photo':'VIP photo',tag:'VIP PHOTO',action:'photo',done:state.photo},
  {id:'show',x:105,y:310,label:'← Main stage',tag:'← SHOW',action:'show'},
- {id:'refresh',x:875,y:410,label:'Refreshments',tag:'TAKE A BREATHER',action:'refresh'}];
+ {id:'refresh',x:875,y:410,label:'Take a breather',tag:'TAKE A BREATHER',action:'refresh'}];
 }
-function renderDestinations(){const wrap=$('#destinations');wrap.replaceChildren();hotspots().forEach(h=>{const b=document.createElement('button');b.textContent=h.label;b.dataset.destination=h.id;b.classList.toggle('done',!!h.done);b.onclick=()=>goTo(h);wrap.append(b);});}
-const walkable=(x,y)=>canWalk(state.room,x,y);
-function goTo(h){if(photoBusy)return;keys.clear();autoAction=h;route=findPath(state.room,state,h);
+function renderDestinations(){const wrap=$('#destinations'),next=nextStop(state);wrap.replaceChildren();hotspots().forEach(h=>{const b=document.createElement('button'),visited=hasVisited(state,h.id);b.textContent=h.label;b.dataset.destination=h.id;b.classList.toggle('done',visited);b.classList.toggle('unvisited',!visited);b.classList.toggle('next-stop',next===h.id);b.setAttribute('aria-label',`${h.label}${next===h.id?' — next stop':!visited?' — not visited':''}`);b.onclick=()=>goTo(h);wrap.append(b);});}
+function goTo(h){if(photoBusy||dialog.open)return;endBreak();keys.clear();autoAction=h;route=findPath(state.room,state,h);
  const track=h.action==='dj'?'eli':h.action==='merch'?'chamblissnation':h.action==='artist'?h.id:null;if(track)roundAudio.preload(track).catch(()=>{});
  if(!route.length){autoAction=null;notify('Choose a spot on the open floor.');return;}
  notify(`Walking to ${h.label.toLowerCase().replace(' ✓','')}…`);canvas.focus({preventScroll:true});
@@ -70,15 +73,15 @@ function goTo(h){if(photoBusy)return;keys.clear();autoAction=h;route=findPath(st
 function nearest(limit=83){return hotspots().map(h=>({...h,d:Math.hypot(state.x-h.x,state.y-h.y)})).filter(h=>h.d<limit).sort((a,b)=>a.d-b.d)[0];}
 function interactButton(){if(dialog.open||photoBusy)return;const nearby=nearest();if(nearby)interact(nearby);else{const h=nearest(Infinity);if(h)goTo(h);}}
 function openDialog(title,body,buttons=[],eyebrow='CHH SHOW NIGHT'){
- route=[];autoAction=null;keys.clear();const content=$('#dialog-content');content.replaceChildren();const over=document.createElement('p');over.className='overline';over.textContent=eyebrow;const heading=document.createElement('h2');heading.textContent=title;const text=document.createElement('p');text.textContent=body;content.append(over,heading,text);const actions=document.createElement('div');actions.className='dialog-actions';buttons.forEach(({label,fn,secondary=false})=>{const b=document.createElement('button');b.textContent=label;if(secondary)b.className='secondary';b.onclick=()=>{dialog.close();fn?.();};actions.append(b);});content.append(actions);if(!dialog.open)dialog.showModal();return content;
+ endBreak();route=[];autoAction=null;keys.clear();dragPointer=null;const content=modal.prepare();const over=document.createElement('p');over.className='overline';over.textContent=eyebrow;const heading=document.createElement('h2');heading.textContent=title;const text=document.createElement('p');text.textContent=body;content.append(over,heading,text);const actions=document.createElement('div');actions.className='dialog-actions';buttons.forEach(({label,fn,secondary=false})=>{const b=document.createElement('button');b.textContent=label;if(secondary)b.className='secondary';b.onclick=()=>{modal.close();fn?.();};actions.append(b);});content.append(actions);if(!dialog.open)dialog.showModal();return content;
 }
 function interact(h=nearest()){
  if(dialog.open||photoBusy)return;
  if(!h){notify('Click the A button, or use E / Space near a glowing marker.');return;}
  if(h.action==='invite'){
- const isJay=h.value==='jay';openDialog(isJay?'“You know I’m coming!”':'“A show AND the VIP photo? I’m in!”',isJay?'Jay is ready for a night of music and faith. Bring him along!':'Grace wouldn’t miss it. Everything is better with your people.',[{label:isJay?'INVITE JAY · +15 XP':'INVITE GRACE · +15 XP',fn:()=>{apply('invite',h.value);notify(`${isJay?'Jay':'Grace'} joined your crew! +15 XP`);}},{label:'In a minute',secondary:true}],isJay?'MEET JAY':'MEET GRACE');
+ const name=h.value==='jay'?'Jay':'Grace';openDialog(`Bring ${name} to the show?`,`${name} is ready! Choose “Bring ${name} along” to add them to your crew. Invite both friends, then head inside.`,[{label:`BRING ${name.toUpperCase()} ALONG · +15`,fn:()=>{apply('invite',h.value);notify(`${name} joined you! ${state.friends.length===2?'Next: Enter show.':`Next: Invite ${name==='Jay'?'Grace':'Jay'}.`}`);}},{label:'KEEP EXPLORING — INVITE LATER',secondary:true,fn:()=>notify(`${name} is still waiting. Tap ${name} or their button when you’re ready.`)}],`MEET ${name.toUpperCase()}`);
  }else if(h.action==='enter'){
- if(state.friends.length<2){notify('Bring your people! Invite both Jay and Grace first.');return;}apply('enter');
+ if(state.friends.length<2){const missing=['jay','grace'].filter(id=>!state.friends.includes(id));openDialog('Bring your two friends first.','Tap a friend below. Walk over, then choose Bring them along. Once both join you, Enter show takes you inside.',[...missing.map(id=>({label:`GO TO ${id.toUpperCase()}`,fn:()=>goTo(hotspots().find(h=>h.id===id))})),{label:'BACK TO EXPLORING',secondary:true}],'YOUR NEXT STEP');return;}apply('enter');
  }else if(h.action==='merch'){
  openMerch();
  }else if(h.action==='artist'){
@@ -90,26 +93,34 @@ function interact(h=nearest()){
  }else if(h.action==='photo'){
  openPhotoStyle();
  }else if(h.action==='refresh'){
- route=[];autoAction=null;keys.clear();tone('step');notify('Refreshed! Keep enjoying the night.');
+ startBreak();
  }else apply(h.action);
 }
+function startBreak(){
+ route=[];autoAction=null;keys.clear();dragPointer=null;waterBreak={started:performance.now()};apply('visit','refresh');tone('step');
+ $('#break-status').hidden=false;$('#break-count').textContent='WATER BREAK · 6s';$('#objective').textContent='Your crew is taking a sip. Tap anywhere to leave early.';
+}
+function endBreak(finished=false){if(!waterBreak)return;waterBreak=null;$('#break-status').hidden=true;$('#objective').textContent=objective(state);if(finished)notify('Crew refreshed! Tap Main stage or keep exploring.');}
+$('#end-break').onclick=()=>endBreak(true);
 function activityHost(content){const host=document.createElement('div');content.insertBefore(host,content.lastElementChild);return host;}
 function openMerch(){openArtistGame('chamblissnation');}
 function raiseHands(id){if(!id)return;apply('worship');raisingUntil=performance.now()+10000;atFront=id;}
 function openArtistGame(game){
  if(dialog.open)return;
- route=[];autoAction=null;keys.clear();
- const content=$('#dialog-content');content.replaceChildren();dialog.classList.add('game-dialog');dialog.showModal();
- stopActivity=mountRound(content,{game,audio:roundAudio,art:images,online:onlineScores,onSoundToggle:toggleSound,onExit:()=>dialog.close(),onFinish:result=>{apply('round',result);}});
+ endBreak();route=[];autoAction=null;keys.clear();dragPointer=null;
+ apply('visit',game==='chamblissnation'?'merch':game==='eli'?'dj':game);
+ const content=modal.prepare();dialog.classList.add('game-dialog');dialog.showModal();
+ modal.attach(mountRound(content,{game,audio:roundAudio,art:images,online:onlineScores,onSoundToggle:toggleSound,onExit:()=>modal.close(),onFinish:result=>{apply('round',result);}}));
 }
 function openPhotoStyle(){
- const content=openDialog('Make this one yours.','Choose a crew pose and frame. Then we’ll count you in: 3, 2, 1.',[{label:'TAKE THE PHOTO',fn:takePhoto},{label:'Not quite ready',secondary:true}],'VIP PHOTO · YOUR CREW');
+ const content=openDialog('Make this one yours.','Choose a crew pose and frame. Then we’ll count you in: 3, 2, 1.',[{label:'TAKE THE PHOTO',fn:takePhoto},{label:'BACK TO VIP — NO PHOTO',secondary:true}],'VIP PHOTO · YOUR CREW');
  let chosen={...state.photoStyle};
- stopActivity=mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,backdrop:images.vip,style:chosen,onChange:value=>{chosen=value;}});
- content.querySelector('.dialog-actions button').onclick=()=>{apply('photoStyle',chosen);dialog.close();takePhoto();};
+ modal.attach(mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,backdrop:images.vip,style:chosen,onChange:value=>{chosen=value;}}));
+ content.querySelector('.dialog-actions button').onclick=()=>{apply('photoStyle',chosen);modal.close();takePhoto();};
 }
 function openBeatChallenge(){openArtistGame('eli');}
 function startFreshNight(){
+ endBreak();cancelPhoto();
  if(state.profileReady)scoreStore.record(state);
  state={...initialState(),sessionId:crypto.randomUUID()};playerEntryPending=true;
  route=[];autoAction=null;keys.clear();trail=[];followerPositions=[];atFront=null;raisingUntil=0;victoryPending=false;celebration.stop();
@@ -129,15 +140,19 @@ function openPlayerSetup({entry=false}={}){
  avatars.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='avatar-choice';b.dataset.avatar=a.id;b.setAttribute('aria-pressed',a.id===selected);const portrait=document.createElement('canvas');portrait.width=140;portrait.height=180;portrait.setAttribute('aria-hidden','true');const g=portrait.getContext('2d');g.imageSmoothingEnabled=true;drawPerson(g,70,172,a.sprite,{scale:2.7});const label=document.createElement('span');label.textContent=a.label;b.append(portrait,label);b.onclick=()=>{selected=a.id;grid.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',button===b));updateHint();};grid.append(b);});
  const submit=document.createElement('button');submit.type='submit';submit.className='player-start';submit.textContent=entry&&returning?'CONTINUE MY NIGHT →':returning?'SAVE MY PLAYER →':'START MY NIGHT →';
  form.append(nameLabel,input,grid,hint,submit);
- form.onsubmit=e=>{e.preventDefault();if(!playerName(input.value)){input.setCustomValidity('Enter your name to start.');input.reportValidity();return;}input.setCustomValidity('');if(!avatars.some(a=>a.id===selected)){hint.textContent='Choose a character before starting.';grid.querySelector('button').focus();return;}apply('profile',{name:input.value,avatar:selected});playerEntryPending=false;dialog.close();announceRoom();notify(`Welcome, ${state.name}. Bring your people!`);};input.oninput=()=>input.setCustomValidity('');content.insertBefore(form,content.lastElementChild);
+ form.onsubmit=e=>{e.preventDefault();if(!playerName(input.value)){input.setCustomValidity('Enter your name to start.');input.reportValidity();return;}input.setCustomValidity('');if(!avatars.some(a=>a.id===selected)){hint.textContent='Choose a character before starting.';grid.querySelector('button').focus();return;}apply('profile',{name:input.value,avatar:selected});playerEntryPending=false;modal.close();announceRoom();notify(`Welcome, ${state.name}. Bring your people!`);};input.oninput=()=>input.setCustomValidity('');content.insertBefore(form,content.lastElementChild);
  if(entry&&returning){const fresh=document.createElement('button');fresh.className='secondary';fresh.textContent='NEW PLAYER / NEW GAME';fresh.onclick=startFreshNight;content.lastElementChild.append(fresh);}
- else if(returning){const cancel=document.createElement('button');cancel.className='secondary';cancel.textContent='Keep my player';cancel.onclick=()=>dialog.close();content.lastElementChild.append(cancel);}
+ else if(returning){const cancel=document.createElement('button');cancel.className='secondary';cancel.textContent='Keep my player';cancel.onclick=()=>modal.close();content.lastElementChild.append(cancel);}
  // Focus the title so the phone keyboard does not hide the character choices.
  const heading=content.querySelector('h2');heading.tabIndex=-1;heading.focus({preventScroll:true});
 }
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
+function cancelPhoto(){photoRun++;photoBusy=false;$('#countdown').textContent='';}
 async function takePhoto(){
- photoBusy=true;route=[];keys.clear();for(const n of ['3','2','1']){$('#countdown').textContent=n;tone('step');await pause(700);}$('#countdown').textContent='';if(!reduceMotion){$('#flash').classList.remove('firing');void $('#flash').offsetWidth;$('#flash').classList.add('firing');}apply('photo');tone('photo');await pause(200);await showPhoto();photoBusy=false;
+ const token=++photoRun;photoBusy=true;route=[];autoAction=null;keys.clear();
+ try{for(const n of ['3','2','1']){if(token!==photoRun)return;$('#countdown').textContent=n;tone('step');await pause(700);}if(token!==photoRun)return;
+ $('#countdown').textContent='';if(!reduceMotion){$('#flash').classList.remove('firing');void $('#flash').offsetWidth;$('#flash').classList.add('firing');}apply('photo');tone('photo');await pause(200);if(token===photoRun)await showPhoto(token);
+ }finally{if(token===photoRun){photoBusy=false;$('#countdown').textContent='';}}
 }
 async function makePhoto(){
  const c=document.createElement('canvas');c.width=1200;c.height=1180;const g=c.getContext('2d');
@@ -148,10 +163,10 @@ async function makePhoto(){
  g.font=`bold ${Math.min(52,1040/(name.length*.61))}px monospace`;g.fillText(name,600,1080);
  g.font='bold 22px monospace';g.fillText(`${score(state).toLocaleString()} POINTS · BACKSTAGE WITH YOUR CREW`,600,1124);
  g.font='16px monospace';g.fillText('KINGDOM CIRCUIT · ALL GLORY TO JESUS.',600,1158);
- return new Promise(resolve=>c.toBlob(resolve,'image/png'));
+ return new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('Photo took too long')),6000);c.toBlob(blob=>{clearTimeout(timeout);resolve(blob);},'image/png');});
 }
-async function showPhoto(){
- try{const blob=await makePhoto();if(!blob)throw new Error('Photo unavailable');if(photoURL)URL.revokeObjectURL(photoURL);photoURL=URL.createObjectURL(blob);const content=openDialog('All glory to Jesus.','Your crew, backstage with the band. Keep the memory, then head back out and enjoy the show. All glory to Jesus.',[{label:'KEEP HANGING OUT',secondary:true}],`VIP MEMORY · ${score(state)} SHOW NIGHT XP`);const img=document.createElement('img');img.className='photo-preview';img.src=photoURL;img.alt='Your player and two friends posing with the Steven Malcolm-inspired vocalist, Eli-inspired DJ, and Joz-inspired performer at the VIP backdrop.';content.insertBefore(img,content.lastElementChild);const a=document.createElement('a');a.href=photoURL;a.download='Kingdom-Circuit-CHH-Show-Night-VIP.png';a.textContent='↓ DOWNLOAD PHOTO';const full=document.createElement('a');full.href=photoURL;full.target='_blank';full.rel='noopener';full.className='photo-full';full.textContent='OPEN FULL SIZE';content.lastElementChild.prepend(a,full);}catch{notify('Could not create the photo. Tap Your VIP Photo to try again.');}
+async function showPhoto(token=photoRun){
+ try{const blob=await makePhoto();if(token!==photoRun)return;if(!blob)throw new Error('Photo unavailable');if(photoURL)URL.revokeObjectURL(photoURL);photoURL=URL.createObjectURL(blob);const content=openDialog('All glory to Jesus.','Your crew, backstage with the band. Keep the memory, then head back out and enjoy the show. All glory to Jesus.',[{label:'KEEP HANGING OUT',secondary:true}],`VIP MEMORY · ${score(state)} SHOW NIGHT XP`);const img=document.createElement('img');img.className='photo-preview';img.src=photoURL;img.alt='Your player and two friends posing with the Steven Malcolm-inspired vocalist, Eli-inspired DJ, and Joz-inspired performer at the VIP backdrop.';content.insertBefore(img,content.lastElementChild);const a=document.createElement('a');a.href=photoURL;a.download='Kingdom-Circuit-CHH-Show-Night-VIP.png';a.textContent='↓ DOWNLOAD PHOTO';const full=document.createElement('a');full.href=photoURL;full.target='_blank';full.rel='noopener';full.className='photo-full';full.textContent='OPEN FULL SIZE';content.lastElementChild.prepend(a,full);}catch{notify('Could not create the photo. Tap Your VIP Photo to try again.');}
 }
 function label(x,y,text,{active=false,color='#ffca6c',size=16,scale=1}={}){
  ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.font=`bold ${size}px monospace`;const width=ctx.measureText(text).width+20;ctx.fillStyle=active?'#ffca6c':'#08182bea';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.fillRect(-width/2,-size-3,width,size+9);ctx.strokeRect(-width/2,-size-3,width,size+9);ctx.fillStyle=active?'#101926':'#fff2d8';ctx.textAlign='center';ctx.fillText(text,0,-2);ctx.restore();
@@ -160,7 +175,7 @@ function drawBag(x,y){ctx.fillStyle='#0b1625';ctx.fillRect(x+22,y-39,19,26);ctx.
 function render(time){
  const dt=Math.min((time-last)/1000,.04)||.016;last=time;frame+=dt;
  if(!dialog.open&&!photoBusy&&!paused)update(dt,time);else walking=false;
- const rect=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(rect.width*ratio),ch=Math.round(rect.height*ratio);
+ const rect=canvas.getBoundingClientRect();if(rect.width<1||rect.height<1){requestAnimationFrame(render);return;}const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(rect.width*ratio),ch=Math.round(rect.height*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  viewWidth=H*(rect.width/rect.height);camera=Math.max(0,Math.min(W-viewWidth,state.x-viewWidth/2));if(viewWidth>=W){camera=0;viewWidth=W;}
  ctx.setTransform(canvas.width/viewWidth,0,0,canvas.height/H,-camera*canvas.width/viewWidth,0);ctx.imageSmoothingEnabled=true;
@@ -174,9 +189,11 @@ function render(time){
  const target=nearest();
  if(victoryPending&&!photoBusy){victoryPending=false;celebration.play();}
  for(const h of hotspots()){
- const pulse=reduceMotion?0:Math.sin(time/350)*3,stage=state.room==='show'&&['dj','steven','joz'].includes(h.id);
- ctx.strokeStyle=h.done?'#86e2b1':h.id===target?.id?'#ffce67':'#ffe0a4';ctx.lineWidth=stage?3:2;ctx.setLineDash(stage?[]:[6,4]);ctx.beginPath();ctx.ellipse(h.x,h.y,(stage?40:32)+pulse,stage?15:11,0,0,Math.PI*2);ctx.fillStyle=stage?'#08182b70':'#08182b30';ctx.fill();ctx.stroke();ctx.setLineDash([]);
- if(stage){ctx.fillStyle='#ffce67';ctx.beginPath();ctx.moveTo(h.x-9,h.y-33);ctx.lineTo(h.x+9,h.y-33);ctx.lineTo(h.x,h.y-21);ctx.closePath();ctx.fill();}
+ const unvisited=!hasVisited(state,h.id),stage=state.room==='show'&&['dj','steven','joz'].includes(h.id),wave=reduceMotion?1:(Math.sin(time/900)+1)/2,rx=stage?40:34,ry=stage?15:12;
+ ctx.save();
+ if(unvisited){ctx.globalAlpha=.18+wave*.2;ctx.fillStyle='#ffcb6c';ctx.beginPath();ctx.ellipse(h.x,h.y,rx+7+wave*5,ry+6,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.shadowColor='#ffcb6c';ctx.shadowBlur=reduceMotion?0:9+wave*9;}
+ ctx.strokeStyle=unvisited?'#ffda83':h.id===target?.id?'#fff0c5':'#7ed9b1';ctx.lineWidth=unvisited?3.5:2;ctx.beginPath();ctx.ellipse(h.x,h.y,rx+(unvisited?wave*3:0),ry,0,0,Math.PI*2);ctx.fillStyle=unvisited?'#ffcb6c30':'#08182b50';ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+ if(unvisited){ctx.fillStyle='#ffda83';ctx.beginPath();ctx.moveTo(h.x-7,h.y-34-wave*3);ctx.lineTo(h.x+7,h.y-34-wave*3);ctx.lineTo(h.x,h.y-24-wave*3);ctx.closePath();ctx.fill();}ctx.restore();
  }
  const actors=crowdActors(state.room,time,reduceMotion,state);
  if(state.room==='show')actors.push(...pitPhotographers);
@@ -187,15 +204,18 @@ function render(time){
  }else if(state.room==='vip'){
  [['mc',446],['dj',525],['singer',604]].forEach(([who,x])=>actors.push({x,y:346,who,scale:2.25}));
  }
+ const resting=waterBreak?breakProgress(waterBreak.started,time):null;
+ if(resting?.done)endBreak(true);else if(resting)$('#break-count').textContent=`WATER BREAK · ${resting.remaining}s`;
  const pose=photoBusy,handsHigh=state.room==='show'&&(inFrontRow(state)||time<raisingUntil);actors.push({x:pose?480:state.x,y:pose?382:state.y,who:avatarFor(state).sprite,player:true,hands:handsHigh,back:handsHigh,walking});
- state.friends.forEach((who,i)=>{const p=followerPositions[i]||{x:state.x-50*(i+1),y:state.y+8};actors.push({x:pose?390+i*285:p.x,y:pose?380:p.y,who,walking,hands:handsHigh,back:handsHigh});});
+ state.friends.forEach((who,i)=>{const p=followerPositions[i]||{x:state.x-50*(i+1),y:state.y+8};actors.push({x:pose?390+i*285:p.x,y:pose?380:p.y,who,walking:walking&&!waterBreak,drinking:!!waterBreak,hands:handsHigh,back:handsHigh});});
  actors.sort((a,b)=>a.y-b.y).forEach(a=>{
  drawPerson(ctx,a.x,a.y,a.who,{scale:a.scale||2.25,frame:time/100,walking:a.walking,back:a.back,hands:a.hands,alpha:a.alpha??1,flip:a.flip,lean:a.lean||0});
+ if(a.drinking)drawWaterSip(ctx,a,resting.elapsed,reduceMotion);
  if(a.photographer!==undefined)drawCameraFlash(ctx,a,time,reduceMotion);
  if(a.player&&state.merch)drawBag(a.x,a.y);
  });
  // Half-size activity signs reduce clutter; world tap zones and quick buttons stay full size.
- for(const h of hotspots())if(h.action!=='invite'){const stage=state.room==='show'&&['dj','steven','joz'].includes(h.id);label(h.x,stage?414:h.y-27,h.tag,{active:target?.id===h.id,color:h.done?'#86e2b1':'#ffca6c',scale:state.room==='show'&&(stage||h.id==='merch')?.5:1});}
+ for(const h of hotspots())if(h.action!=='invite'){const stage=state.room==='show'&&['dj','steven','joz'].includes(h.id);label(h.x,stage?414:h.y-27,h.tag,{active:target?.id===h.id,color:hasVisited(state,h.id)?'#86e2b1':'#ffca6c',scale:state.room==='show'&&(stage||h.id==='merch')?.5:1});}
  // Labels stay above the crowd, so your crew never disappears in a packed room.
  const heroX=pose?480:state.x,heroY=pose?382:state.y;
  ctx.strokeStyle='#ffe7a4';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(heroX,heroY+2,29,8,0,0,Math.PI*2);ctx.stroke();
@@ -213,17 +233,22 @@ function render(time){
 function update(dt,time){
  Object.assign(state,clampPosition(state,state.room));
  let dx=0,dy=0;const old={x:state.x,y:state.y};if(keys.has('up'))dy--;if(keys.has('down'))dy++;if(keys.has('left'))dx--;if(keys.has('right'))dx++;
- if(dx||dy){route=[];autoAction=null;}else if(route.length){const p=route[0],d=Math.hypot(p.x-state.x,p.y-state.y);if(d<5){state.x=p.x;state.y=p.y;route.shift();if(!route.length&&autoAction){const h=autoAction;autoAction=null;interact(h);}return;}dx=(p.x-state.x)/d;dy=(p.y-state.y)/d;}
- const d=Math.hypot(dx,dy);if(d){dx/=d;dy/=d;const speed=180*dt;if(walkable(state.x+dx*speed,state.y))state.x+=dx*speed;if(walkable(state.x,state.y+dy*speed))state.y+=dy*speed;}
+ let arrivedAction=null;
+ if(dx||dy){route=[];autoAction=null;const d=Math.hypot(dx,dy);Object.assign(state,clampPosition({x:state.x+dx/d*180*dt,y:state.y+dy/d*180*dt},state.room));}
+ else if(route.length){const step=stepToward(state.room,state,route[0],180*dt);state.x=step.x;state.y=step.y;if(step.arrived){route.shift();if(!route.length){arrivedAction=autoAction;autoAction=null;}}}
  walking=Math.hypot(old.x-state.x,old.y-state.y)>.05;
- const nowAtFront=stageSpotAt(state);if(nowAtFront&&nowAtFront!==atFront&&(!autoAction||autoAction.id===nowAtFront)){raiseHands(nowAtFront);openArtistGame(nowAtFront);}else if(!nowAtFront&&atFront){atFront=null;raisingUntil=0;worshipMusic.leave();}
+ if(arrivedAction){interact(arrivedAction);return;}
+ const nowAtFront=stageSpotAt(state);
+ // A walk past an artist must not interrupt a route or a drag. Intentional taps still auto-start on arrival.
+ if(nowAtFront&&nowAtFront!==atFront&&!route.length&&!dragPointer&&!walking&&!autoAction){raiseHands(nowAtFront);openArtistGame(nowAtFront);}
+ else if(!nowAtFront&&atFront){atFront=null;raisingUntil=0;worshipMusic.leave();}
  if(walking){trail.unshift({x:state.x,y:state.y});if(trail.length>100)trail.pop();}
- state.friends.forEach((_,i)=>{const desired=walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);Object.assign(p,clampPosition(p,state.room));p.y=Math.min(640,p.y);followerPositions[i]=p;});
- if(route.length&&!walking&&d){route=[];autoAction=null;notify('Try the open floor, or choose a destination below.');}
+ state.friends.forEach((_,i)=>{const desired=waterBreak?{x:state.x+(i===0?-64:62),y:state.y+27}:walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);Object.assign(p,clampPosition(p,state.room));p.y=Math.min(640,p.y);followerPositions[i]=p;});
+
 }
 let dragPointer=null;
 function pointFromTouch(e){const r=canvas.getBoundingClientRect();return {x:camera+(e.clientX-r.left)/r.width*viewWidth,y:(e.clientY-r.top)/r.height*H};}
-function walkToPoint(point){autoAction=null;route=findPath(state.room,state,point);keys.clear();}
+function walkToPoint(point){endBreak();autoAction=null;route=findPath(state.room,state,point);keys.clear();}
 canvas.addEventListener('pointerdown',e=>{
  if(dialog.open||photoBusy)return;e.preventDefault();canvas.focus({preventScroll:true});dragPointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);
  const {x,y}=pointFromTouch(e),h=hotspots().find(h=>(h.id==='dj'&&x>420&&x<605&&y>220&&y<370)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));
@@ -232,15 +257,17 @@ canvas.addEventListener('pointerdown',e=>{
 canvas.addEventListener('pointermove',e=>{if(!dragPointer||e.pointerId!==dragPointer.id||dialog.open||photoBusy)return;if(Math.hypot(e.clientX-dragPointer.x,e.clientY-dragPointer.y)<6)return;walkToPoint(pointFromTouch(e));});
 for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>{dragPointer=null;});
 const keyMap={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
-window.addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,textarea'))return;const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key]){e.preventDefault();keys.add(keyMap[key]);}else if((key==='e'||key===' ')&&!e.repeat&&!e.target.closest('button,a')){e.preventDefault();interactButton();}});
+window.addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,textarea'))return;const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key]){e.preventDefault();endBreak();keys.add(keyMap[key]);}else if((key==='e'||key===' ')&&!e.repeat&&!e.target.closest('button,a')){e.preventDefault();interactButton();}});
 window.addEventListener('keyup',e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key])keys.delete(keyMap[key]);});
-window.addEventListener('blur',()=>keys.clear());document.addEventListener('visibilitychange',()=>{keys.clear();paused=document.hidden;safeSave();});
+function resumeWorld(){keys.clear();dragPointer=null;paused=document.hidden;last=0;}
+window.addEventListener('blur',()=>{keys.clear();dragPointer=null;});window.addEventListener('pageshow',resumeWorld);document.addEventListener('visibilitychange',()=>{resumeWorld();safeSave();});
 document.querySelectorAll('[data-dir]').forEach(b=>{const release=()=>{keys.delete(b.dataset.dir);b.classList.remove('held');};b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.dir);b.classList.add('held');};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;});
 $('#interact').onclick=interactButton;$('#menu').onclick=openMenu;$('#scoreboard').onclick=openBoard;
 $('#sound').onclick=toggleSound;
 $('#player-profile').onclick=()=>openPlayerSetup();
 function openMenu(){
- const content=openDialog('Your night.','Tap or drag to walk. The stage and merch table are off limits; the crowd and grass won’t block you. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
+ cancelPhoto();
+ const content=openDialog('Your night.','Follow the gold circles and Next prompt. Tap or drag to walk. The stage and merch table are off limits; the crowd and grass won’t block you. Each game has 20 chances: +40 for a hit, +10 for a clean hit. Replay for more points. Friends +30, hands high +25, VIP photo +25. Desktop: arrows/WASD, E or Space. All glory to Jesus.',[
  {label:'SCOREBOARD',fn:openBoard},{label:'YOUR PLAYER',fn:openPlayerSetup},
  ...(state.photo?[{label:'VIP PHOTO',fn:showPhoto}]:[]),
  {label:'FIREWORKS',fn:()=>celebration.play()},
@@ -289,7 +316,7 @@ function drawVenueBranding(){
 }
 dialog.addEventListener('cancel',e=>{if(playerEntryPending||!state.profileReady)e.preventDefault();});
 dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&(playerEntryPending||!state.profileReady)){e.preventDefault();e.stopPropagation();}});
-dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}dialog.classList.remove('game-dialog','score-dialog');stopBeat?.();stopBeat=null;stopActivity?.();stopActivity=null;keys.clear();if(!dialog.open)canvas.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}if(!modal.onNativeClose())return;keys.clear();dragPointer=null;canvas.focus({preventScroll:true});});
 async function start(){
  try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',booth:'dj-booth-v12.webp',merch:'merch-chamblissnation-v1.webp',logo:'chamblissnation-logo.webp',kcLogo:'kingdom-circuit-instagram.webp',items:'joz-items-v1.webp',jozBg:'joz-game-v1.webp',stevenBg:'steven-game-v1.webp',chamblissnationBg:'merch-game-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name}-${name==='show'?'v12':'v8'}.webp`;})));sync();requestAnimationFrame(render);openPlayerSetup({entry:true});}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}

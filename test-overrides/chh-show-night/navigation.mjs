@@ -12,3 +12,9 @@ export function findPath(room,start,end){
  // Taps above the stage/table lead to the floor in front, without a pathfinding loop.
  return [clampPosition(end,room)];
 }
+// Never overshoot a destination or reject the final step against a room edge.
+export function stepToward(room,start,end,distance){
+ const target=clampPosition(end,room),from=clampPosition(start,room),d=Math.hypot(target.x-from.x,target.y-from.y);
+ const ratio=d?Math.min(1,Math.max(0,distance)/d):1;
+ return {x:from.x+(target.x-from.x)*ratio,y:from.y+(target.y-from.y)*ratio,arrived:ratio===1};
+}

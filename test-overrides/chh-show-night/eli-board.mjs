@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=blue-25';
+import {drawPerson} from './sprites.mjs?v=flow-26';
 
 export const laneColors=['#80e2be','#a9b8ff','#ffc876','#ff9eb5'];
 export function beatLayout(height=560){

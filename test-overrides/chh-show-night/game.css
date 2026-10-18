@@ -113,3 +113,17 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .score-empty{font-size:13px;color:#aebfcd}
 @media(max-width:480px){.score-dialog{padding:14px}.score-table{min-width:620px}.score-table th,.score-table td{padding:12px 10px}.score-table tr>*:first-child{padding-left:6px;padding-right:6px}.score-table th:first-child{width:36px}.score-table th:nth-child(2){width:100px}.score-table th.score-final{width:84px}.score-table .score-final{min-width:76px}.score-header img{width:48px;height:48px}.score-header h2{font-size:23px}}
 @media(max-width:760px){.score-swipe{display:block}.score-dialog #dialog-content{gap:10px}}
+
+/* Clear next stops, readable choices, and an interruptible water break. */
+.destinations button.unvisited{border-color:#dca94d;color:#ffda83;background:#302d27;animation:stop-glow 2.6s ease-in-out infinite}
+.destinations button.next-stop{border:2px solid #ffda83;box-shadow:inset 0 -3px #ffcb6c;font-weight:bold}
+.destinations button.done{color:#a3dec5;border-color:#395b50}
+@keyframes stop-glow{50%{background:#51422a;border-color:#ffe1a2}}
+.objective{height:42px;min-height:42px;flex-basis:42px;display:flex;align-items:center}
+.objective p{white-space:normal;overflow:visible;text-overflow:clip;font:11px/1.35 system-ui,sans-serif;color:#f8e8c8}
+.dialog-actions button{white-space:normal;line-height:1.4}
+.break-status{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:min(350px,calc(100% - 24px));display:flex;align-items:center;gap:10px;padding:14px;background:#0d2836f5;border:1px solid #94dbdf;border-radius:8px;z-index:9;box-shadow:0 4px 20px #0006}
+.break-status strong{display:block;font-size:12px;color:#a6e8ee}.break-status span{display:block;font:12px/1.4 system-ui,sans-serif;color:#e7f5ef;margin-top:5px}
+.break-status button{background:#a6e8ee;color:#0b2430;font:700 10px/1.3 ui-monospace,monospace;padding:10px;min-height:44px;min-width:70px;border-radius:5px}
+@media(prefers-reduced-motion:reduce){.destinations button.unvisited{animation:none}}
+@media(max-height:500px){.objective{display:flex;height:30px;min-height:30px;flex-basis:30px}.objective p{font-size:10px}.break-status{top:6px;padding:8px}}

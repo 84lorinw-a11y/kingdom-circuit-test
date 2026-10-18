@@ -1,4 +1,4 @@
-import {MAX_SCORE} from './state.mjs?v=vip-18';
+import {MAX_SCORE} from './state.mjs?v=flow-26';
 export function createCelebration({reduceMotion=false}={}){
  const layer=document.createElement('div');layer.id='celebration';layer.setAttribute('popover','manual');
  const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');
