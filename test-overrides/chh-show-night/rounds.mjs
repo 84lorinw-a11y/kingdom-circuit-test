@@ -57,7 +57,7 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,autostart
     g.textAlign='center';g.font='bold 23px monospace';g.fillStyle='#fff7e1';g.fillText('BRING YOUR PEOPLE',210,40);
    }else if(game==='chamblissnation'){
     if(art.logo)g.drawImage(art.logo,45,16,330,97);g.fillStyle='#f5ddaf';g.font='bold 10px monospace';g.textAlign='center';g.fillText('YOUR PEOPLE MY PEOPLE WE FAMILY',210,130);
-    
+
    }else{
     g.fillStyle='#07131ec9';g.fillRect(50,16,320,70);g.fillStyle='#ffcf76';g.font='bold 28px monospace';g.textAlign='center';g.fillText('BIRKENSTOCK',210,46);g.font='12px monospace';g.fillStyle='#f5e8ce';g.fillText('MORE SOLE. LESS STATUS.',210,70);
    }
