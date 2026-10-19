@@ -1,23 +1,24 @@
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-02';
-import {apolloCrew,vipCrew,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-02';
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-02';
-import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-02';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-02';
-import {createCelebration} from './celebration.mjs?v=apollo-02';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-02';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-02';
-import {mountRound} from './rounds.mjs?v=apollo-02';
-import {createRoundAudio} from './round-audio.mjs?v=apollo-02';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-02';
-import {createScoreTable} from './scoreboard-view.mjs?v=apollo-02';
-import {gameIds,gameNames} from './scoring.mjs?v=apollo-02';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-02';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-02';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=apollo-02';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=apollo-02';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-02';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-02';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-02';
+import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-03';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-03';
+import {apolloCrew,vipCrew,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-03';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-03';
+import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-03';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-03';
+import {createCelebration} from './celebration.mjs?v=apollo-03';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-03';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-03';
+import {mountRound} from './rounds.mjs?v=apollo-03';
+import {createRoundAudio} from './round-audio.mjs?v=apollo-03';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-03';
+import {createScoreTable} from './scoreboard-view.mjs?v=apollo-03';
+import {gameIds,gameNames} from './scoring.mjs?v=apollo-03';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-03';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-03';
+import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-03';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-03';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-03';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-03';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-03';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores(localStorage,{base:''});let atFront=null;
 let musicWarmed=false;
@@ -60,7 +61,7 @@ function hotspots(){
  {id:'merch',x:105,y:455,label:'Merch',tag:'MERCH',action:'merch',done:!!state.merch},
  {id:'dj',...practiceSpot,label:'Eli',tag:'ELI · B–I–B–L–E',action:'dj',done:!!state.eli},
  ...stageSpots.map(p=>({...p,label:gameNames[p.id],action:'artist',done:state.totals[p.id]>0})),
- {id:'vip',x:940,y:447,label:'VIP',tag:'VIP →',action:'vip'},
+ {id:'vip',x:845,y:465,label:'VIP',tag:'VIP →',action:'vip'},
  {id:'outside',x:75,y:625,label:'← Outside',tag:'EXIT',action:'outside'}];
  return [
  {id:'photo',x:505,y:442,label:state.photo?'Another VIP photo':'VIP photo',tag:'VIP PHOTO',action:'photo',done:state.photo},
@@ -159,14 +160,14 @@ async function takePhoto(){
  }finally{if(token===photoRun){photoBusy=false;$('#countdown').textContent='';}}
 }
 async function makePhoto(){
- const c=document.createElement('canvas');c.width=1200;c.height=1180;const g=c.getContext('2d');
- g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,1180);
- drawVipPhoto(g,{backdrop:images.vip,artwork:images,avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:20,y:20,width:1160,height:1000});
+ const c=document.createElement('canvas');c.width=1600;c.height=1000;const g=c.getContext('2d');
+ g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1600,1000);
+ drawVipPhoto(g,{backdrop:images.vip,artwork:images,avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:20,y:20,width:1560,height:860});
  g.fillStyle='#101b2c';g.textAlign='center';
  const name=`${(state.name||'YOU').toUpperCase()}'S SHOW NIGHT`;
- g.font=`bold ${Math.min(52,1040/(name.length*.61))}px monospace`;g.fillText(name,600,1080);
- g.font='bold 22px monospace';g.fillText(`${score(state).toLocaleString()} POINTS · BACKSTAGE WITH YOUR CREW`,600,1124);
- g.font='16px monospace';g.fillText('KINGDOM CIRCUIT · ALL GLORY TO JESUS.',600,1158);
+ g.font=`bold ${Math.min(52,1460/(name.length*.61))}px monospace`;g.fillText(name,800,925);
+ g.font='bold 22px monospace';g.fillText(`${score(state).toLocaleString()} POINTS · BACKSTAGE WITH YOUR CREW`,800,958);
+ g.font='16px monospace';g.fillText('KINGDOM CIRCUIT · ALL GLORY TO JESUS.',800,986);
  return new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('Photo took too long')),6000);c.toBlob(blob=>{clearTimeout(timeout);resolve(blob);},'image/png');});
 }
 async function showPhoto(token=photoRun){
@@ -201,7 +202,7 @@ function render(time){
  if(unvisited){ctx.fillStyle='#ffda83';ctx.beginPath();ctx.moveTo(h.x-7,h.y-34-wave*3);ctx.lineTo(h.x+7,h.y-34-wave*3);ctx.lineTo(h.x,h.y-24-wave*3);ctx.closePath();ctx.fill();}ctx.restore();
  }
  const actors=crowdActors(state.room,time,reduceMotion,state);
- if(state.room==='show')actors.push(...pitPhotographers);
+ if(state.room==='show')actors.push(...pitPhotographers,producerActor,producerStation);
 
  if(state.room==='outside'){
  if(!state.friends.includes('jay'))actors.push({x:210,y:590,who:'jay',npc:true});
@@ -211,9 +212,10 @@ function render(time){
  }
  const resting=waterBreak?breakProgress(waterBreak.started,time):null;
  if(resting?.done)endBreak(true);else if(resting)$('#break-count').textContent=`WATER BREAK · ${resting.remaining}s`;
- const pose=photoBusy,handsHigh=state.room==='show'&&(inFrontRow(state)||time<raisingUntil);actors.push({x:pose?480:state.x,y:pose?382:state.y,who:avatarFor(state).sprite,player:true,hands:handsHigh,back:handsHigh,walking});
- state.friends.forEach((who,i)=>{const p=followerPositions[i]||{x:state.x-50*(i+1),y:state.y+8};actors.push({x:pose?390+i*285:p.x,y:pose?380:p.y,who,walking:walking&&!waterBreak,drinking:!!waterBreak,hands:handsHigh,back:handsHigh});});
+ const pose=photoBusy,handsHigh=state.room==='show'&&(inFrontRow(state)||time<raisingUntil);actors.push({x:pose?480:state.x,y:pose?535:state.y,who:avatarFor(state).sprite,player:true,hands:handsHigh,back:handsHigh,walking});
+ state.friends.forEach((who,i)=>{const p=followerPositions[i]||{x:state.x-50*(i+1),y:state.y+8};actors.push({x:pose?410+i*145:p.x,y:pose?535:p.y,who,walking:walking&&!waterBreak,drinking:!!waterBreak,hands:handsHigh,back:handsHigh});});
  actors.sort((a,b)=>a.y-b.y).forEach(a=>{
+ if(a.prop==='producer-station'){drawProducerStation(ctx,a);return;}
  drawPerson(ctx,a.x,a.y,a.who,{scale:a.scale||2.25,frame:time/100,walking:a.walking,back:a.back,hands:a.hands,alpha:a.alpha??1,flip:a.flip,lean:a.lean||0});
  if(a.drinking)drawWaterSip(ctx,a,resting.elapsed,reduceMotion);
  if(a.photographer!==undefined)drawCameraFlash(ctx,a,time,reduceMotion);
@@ -222,7 +224,7 @@ function render(time){
  // Half-size activity signs reduce clutter; world tap zones and quick buttons stay full size.
  for(const h of hotspots())if(h.action!=='invite'){const stage=state.room==='show'&&['dj','brenno','marty'].includes(h.id);label(h.x,stage?414:h.y-27,h.tag,{active:target?.id===h.id,color:hasVisited(state,h.id)?'#86e2b1':'#ffca6c',scale:state.room==='show'&&(stage||h.id==='merch')?.5:1});}
  // Labels stay above the crowd, so your crew never disappears in a packed room.
- const heroX=pose?480:state.x,heroY=pose?382:state.y;
+ const heroX=pose?480:state.x,heroY=pose?535:state.y;
  ctx.strokeStyle='#ffe7a4';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(heroX,heroY+2,29,8,0,0,Math.PI*2);ctx.stroke();
  const name=(state.name||'YOU').toUpperCase();let nameY=heroY-144;
  // A player standing behind a listening spot should not hide its circle with their name.
@@ -256,7 +258,7 @@ function pointFromTouch(e){const r=canvas.getBoundingClientRect();return {x:came
 function walkToPoint(point){endBreak();autoAction=null;route=findPath(state.room,state,point);keys.clear();}
 canvas.addEventListener('pointerdown',e=>{
  if(dialog.open||photoBusy)return;e.preventDefault();canvas.focus({preventScroll:true});dragPointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);
- const {x,y}=pointFromTouch(e),h=hotspots().find(h=>(h.id==='dj'&&x>458&&x<622&&y>205&&y<324)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));
+ const {x,y}=pointFromTouch(e),h=hotspots().find(h=>(h.id==='dj'&&isBoothTap({x,y}))||(h.action==='artist'&&stageArtistAt({x,y})===h.id)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));
  if(h)goTo(h);else walkToPoint({x,y});
 });
 canvas.addEventListener('pointermove',e=>{if(!dragPointer||e.pointerId!==dragPointer.id||dialog.open||photoBusy)return;if(Math.hypot(e.clientX-dragPointer.x,e.clientY-dragPointer.y)<6)return;walkToPoint(pointFromTouch(e));});
@@ -342,9 +344,9 @@ function drawVenueBranding(){
  }
 }
 function openCrew(){
- const content=openDialog('The Apollo crew.','Marty leads the stage. Meet all nine artists in VIP.',[{label:'BACK TO THE SHOW',secondary:true}],'APOLLO RECORDS');
+ const content=openDialog('The Apollo crew.','Marty leads up front, Eli is on the decks behind him, and Andrew reviews tracks at the right-side producer station. Meet the whole crew together in VIP.',[{label:'BACK TO THE SHOW',secondary:true}],'APOLLO RECORDS');
  const grid=document.createElement('div');grid.className='apollo-crew-grid';
- for(const person of apolloCrew){const card=document.createElement('figure'),portrait=document.createElement('canvas'),caption=document.createElement('figcaption');portrait.width=180;portrait.height=250;portrait.setAttribute('role','img');portrait.setAttribute('aria-label',person.name);drawPerson(portrait.getContext('2d'),90,240,person.id,{scale:3.8});caption.textContent=person.name;card.append(portrait,caption);grid.append(card);}
+ for(const person of apolloCrew){const card=document.createElement('figure'),portrait=document.createElement('canvas'),caption=document.createElement('figcaption');portrait.width=180;portrait.height=250;portrait.setAttribute('role','img');portrait.setAttribute('aria-label',person.name);drawPerson(portrait.getContext('2d'),90,240,person.id,{scale:3.8});caption.textContent=person.role?`${person.name} · ${person.role}`:person.name;card.append(portrait,caption);grid.append(card);}
  content.insertBefore(grid,content.lastElementChild);
 }
 function openMerchRack(){

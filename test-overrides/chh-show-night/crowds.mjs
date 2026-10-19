@@ -20,11 +20,11 @@ const show=[];
 [[423,536],[206,555],[856,548],[390,620],[614,548],[196,582],
  [610,604],[866,592],[247,627],[335,620],[505,626],[716,635],
  [785,625],[899,659],[170,654],[275,668],[395,653],[459,675],
- [575,638],[647,665],[762,674],[838,646],[944,626],[72,600],
+ [575,638],[647,665],[762,674],[838,646],[965,660],[72,600],
  [340,659],[535,673],[701,668],[925,675],[215,661],[860,675]
 ].forEach(([x,y],i)=>show.push(fan(x,y,i,{scale:2.12+(i%3)*.04,back:true,hands:true})));
 const vip=[];
-// Guests socialize at the room edges, leaving nine distinct artist stations open.
+// Guests socialize at the room edges, leaving the crew’s close VIP photo line and approach lane open.
 for(let row=0;row<5;row++)for(const [col,x] of [45,120,190,835,905,976].entries()){
  const i=row*6+col;vip.push(fan(x,305+row*82+(col%2)*9,i,{scale:2.08+row*.025,flip:col%2===0}));
 }

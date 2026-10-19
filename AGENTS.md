@@ -1,5 +1,11 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 crew placement correction (latest)
+
+- TEST only. Eli’s booth belongs in the center, slightly behind Marty. Marty stays front and center as the lead. Keep their floor game entrances distinct and reachable.
+- Andrew Prim’s official Instagram bio lists Apollo A&R and producer. Keep his approved neutral face, beanie and quilted vest; move him off the performer row to a track-review station on the audience’s right, with a laptop, headphones and notes. Do not count that visual station as a new game.
+- In VIP, all nine crew members stand together in one close meet-and-greet line. The photo preview and download use a single close line including all nine, the player, Jay and Grace. This supersedes the separated VIP stations and the earlier requirement that Andrew perform onstage.
+
 ## October 19 Apollo dark club correction (latest)
 
 - TEST only. Owner rejects the flashy generated banner treatment. Use the owner's actual Apollo red concert poster and heart badge as flat prints, plus restrained code-rendered lettering. Do not invent or regenerate brand marks. Reference Apollo Records and Holy Smoke's official Instagram feeds for the black/red club atmosphere, not Holy Smoke co-branding.

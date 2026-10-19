@@ -1,10 +1,10 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-02';
-import {merchTrack} from './music-config.mjs?v=apollo-02';
-import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-02';
-import {drawPerson} from './sprites.mjs?v=apollo-02';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-02';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-02';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-02';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-03';
+import {merchTrack} from './music-config.mjs?v=apollo-03';
+import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-03';
+import {drawPerson} from './sprites.mjs?v=apollo-03';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-03';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-03';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-03';
 const titles={eli:'B–I–B–L–E',marty:'RECORD RUN',brenno:'CREW RUN',apollo:'NOT 4 SALE'};
 const instructions={eli:'Tap the matching pad when the letter hits the gold line.',marty:'Drag Marty. Catch the records. Let the hype pass.',brenno:'Drag Brenno. Bring people into the crew. Keep the crew together!',apollo:'Drag the tote left and right. Catch the fast shirts in the middle!'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
