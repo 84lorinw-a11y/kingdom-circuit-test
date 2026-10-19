@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 import unittest
 import tempfile
+import json
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url, read_detail, lineup_notice, verify_billing
@@ -10,6 +11,31 @@ from apply_test_redesign import create_history_event_page, history_event_href
 
 
 class MobileCalendarContentTests(unittest.TestCase):
+    def test_community_event_preserves_schema_dates_and_explicit_no_lineup(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            href = '/kingdom-circuit-test/event/community-evening/'
+            path = safe_page(site, href)
+            path.parent.mkdir(parents=True)
+            schema = {'@type': 'Event', 'startDate': '2026-10-31T18:00:00-04:00',
+                      'endDate': '2026-10-31T22:00:00-04:00', 'performer': [],
+                      'description': 'Worship, prayer and fellowship. No performer lineup has been announced.'}
+            page = '<h1>Community evening</h1><p class="artist-line"></p>'
+            for description in (schema['description'], 'Worship, prayer and fellowship.'):
+                schema['description'] = description
+                path.write_text(page + '<script type="application/ld+json">' + json.dumps(schema) + '</script>')
+                event = read_detail(site, href)
+                self.assertEqual(event['date'], '2026-10-31')
+                self.assertEqual(event['endDate'], '2026-10-31')
+                self.assertEqual(event['artists'], [])
+                if 'No performer' in description:
+                    self.assertEqual(event['lineupNotice'], 'No performer lineup has been announced.')
+                    verify_billing(event)
+                else:
+                    self.assertEqual(event['lineupNotice'], '')
+                    with self.assertRaises(AssertionError):
+                        verify_billing(event)
+
     def test_unannounced_lineup_requires_the_explicit_published_notice(self):
         source = '<p data-kc-event-notice>Lineup to be announced. Outdoor Fan Fest starts at 3 PM.</p>'
         notice = lineup_notice(source)

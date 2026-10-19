@@ -50,9 +50,20 @@ def host_label(source):
     return clean_text(match_text(r'<p\b[^>]*class="host-line"[^>]*>(.*?)</p>', source))
 
 
-def lineup_notice(source):
+LINEUP_NOTICE = re.compile(
+    r'\b(?:lineup\s+(?:to be announced|has not yet been announced)'
+    r'|no performer lineup has been announced)\b', re.I)
+
+
+def lineup_notice(source, description=""):
     notice = clean_text(match_text(r'<p\b[^>]*data-kc-event-notice[^>]*>(.*?)</p>', source))
-    return notice if re.search(r'\blineup\s+(?:to be announced|has not yet been announced)\b', notice, re.I) else ''
+    if LINEUP_NOTICE.search(notice):
+        return notice
+    # Community events publish their no-lineup statement in Event schema.
+    # Keep the exact explicit sentence; a missing performer field alone is
+    # never evidence that a lineup has not been announced.
+    return next((sentence.strip() for sentence in re.split(r'(?<=[.!?])\s+', description)
+                 if LINEUP_NOTICE.search(sentence)), '')
 
 
 def verify_billing(event):
@@ -93,7 +104,7 @@ def read_detail(site, href):
     if official and not valid_official_url(site, official):
         raise ValueError("Unexpected official URL")
     schemas = [json.loads(s) for s in re.findall(r'<script type="application/ld\+json">(.*?)</script>', source, re.S)]
-    schema = next((s for s in schemas if s.get("@type") == "MusicEvent"), {})
+    schema = next((s for s in schemas if s.get("@type") in {"MusicEvent", "Event"}), {})
     detail = match_text(r'(<article\b[^>]*class="event-detail"[^>]*>)', source)
     start_date = str(schema.get("startDate") or attribute(detail, "data-date"))[:10]
     end_date = str(schema.get("endDate") or attribute(detail, "data-end-date") or start_date)[:10]
@@ -104,7 +115,7 @@ def read_detail(site, href):
             "dateLabel": field(source, "Date"), "venue": field(source, "Venue"),
             "location": field(source, "Location"), "artists": names, "artistLinks": links,
             "hostLabel": host_label(source),
-            "lineupNotice": lineup_notice(source),
+            "lineupNotice": lineup_notice(source, str(schema.get("description") or "")),
             "official": official, "status": field(source, "Status"),
             "age": field(source, "Age restriction"), "original": attribute(original, "href"),
             **image_fields(image_block)}

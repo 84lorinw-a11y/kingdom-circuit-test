@@ -1,5 +1,16 @@
 # Kingdom Circuit Test
 
+## Development boundary — October 19
+
+All new development stays in TEST; production promotion requires a
+separate owner instruction. The starting point is the current published
+production site and game, converted only for test deployment identity.
+This GitHub Pages site and repository are public. Keep unreleased audio
+and private review assets local/private until a protected review environment
+exists. `noindex` does not restrict access. The original game currently shares
+production's Google score service; use a separate campaign/backend for future
+campaign test scores and never add synthetic players to the live board.
+
 This repository captures the latest successful Kingdom Circuit production
 deployment, then applies approved **test-only** UX/SEO previews at:
 

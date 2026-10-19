@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 development boundary
+
+- The owner directs all new development to TEST. Do not promote changes to production without a separate explicit release instruction.
+- Start from the current published production baseline, preserving its learned game behavior and normal-site layout. Keep test URL, noindex, analytics and deployment safeguards.
+- The existing GitHub Pages TEST and its source repository are public. The earlier password-free authorization covers the existing released CHH game; it does not authorize exposing unreleased songs or private review assets. Keep those local/private until a protected test destination is in place. Do not confuse noindex with access control.
+- TEST currently shares the original game's Google score service with production. Do not add synthetic QA scores or mix future campaign data into that live competition. New campaigns need a separate test campaign/backend before online score testing.
+
 ## October 18 CHH Show Night test game
 
 - The owner explicitly authorized publishing the game without a password on the existing test site. Keep `/play/` as a direct-link, noindex/nofollow test route, absent from ordinary navigation and sitemaps. This does not authorize a production deployment.
