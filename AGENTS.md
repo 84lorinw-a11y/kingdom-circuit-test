@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 Apollo dark club correction (latest)
+
+- TEST only. Owner rejects the flashy generated banner treatment. Use the owner's actual Apollo red concert poster and heart badge as flat prints, plus restrained code-rendered lettering. Do not invent or regenerate brand marks. Reference Apollo Records and Holy Smoke's official Instagram feeds for the black/red club atmosphere, not Holy Smoke co-branding.
+- Dark charcoal venue and VIP, downtown night exterior and alley, no vines/plants. Keep Kingdom Circuit room marks secondary (64 world pixels). The shop uses road cases, mesh display and the three existing Not 4 Sale shirts.
+- Marty leads from center/front; Eli's smaller booth is set back at stage right. All nine approved artists appear onstage, in separated VIP spaces and in the shared VIP photo. Preserve approved faces and outfits.
+- `apollo-crew.mjs` owns each artist's stage and VIP positions. VIP spaces are reserved for later individual games; only the four existing games are playable in this revision. Do not claim nine games exist. Keep routes open and individual future interaction areas separated.
+- Preserve proportional canvas scaling on desktop and the mobile follow camera. Scale raised-arm cutouts uniformly without shrinking bodies; move complete cutouts when walking rather than slicing legs.
+
 ## October 19 Apollo venue revision (latest owner request)
 
 - The owner explicitly requested the Apollo graphics, all nine approved character drafts, downtown exterior, Not 4 Sale posters and merchandise on TEST, never live. This authorizes these reviewed visual assets on the existing TEST destination, superseding older local-only art notes and old cast/clothing requirements below. Unreleased album audio is still not supplied or authorized for public hosting.

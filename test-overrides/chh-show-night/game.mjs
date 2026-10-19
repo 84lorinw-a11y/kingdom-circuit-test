@@ -1,22 +1,23 @@
-import {apolloCrew,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-01';
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-01';
-import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-01';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-01';
-import {createCelebration} from './celebration.mjs?v=apollo-01';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-01';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-01';
-import {mountRound} from './rounds.mjs?v=apollo-01';
-import {createRoundAudio} from './round-audio.mjs?v=apollo-01';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-01';
-import {createScoreTable} from './scoreboard-view.mjs?v=apollo-01';
-import {gameIds,gameNames} from './scoring.mjs?v=apollo-01';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-01';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-01';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=apollo-01';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=apollo-01';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-01';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-01';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-01';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-02';
+import {apolloCrew,vipCrew,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-02';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-02';
+import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-02';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-02';
+import {createCelebration} from './celebration.mjs?v=apollo-02';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-02';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-02';
+import {mountRound} from './rounds.mjs?v=apollo-02';
+import {createRoundAudio} from './round-audio.mjs?v=apollo-02';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-02';
+import {createScoreTable} from './scoreboard-view.mjs?v=apollo-02';
+import {gameIds,gameNames} from './scoring.mjs?v=apollo-02';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-02';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-02';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=apollo-02';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=apollo-02';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-02';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-02';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-02';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores(localStorage,{base:''});let atFront=null;
 let musicWarmed=false;
@@ -117,7 +118,7 @@ function openArtistGame(game){
 function openPhotoStyle(){
  const content=openDialog('Make this one yours.','Choose a crew pose and frame. Then we’ll count you in: 3, 2, 1.',[{label:'TAKE THE PHOTO',fn:takePhoto},{label:'BACK TO VIP — NO PHOTO',secondary:true}],'VIP PHOTO · YOUR CREW');
  let chosen={...state.photoStyle};
- modal.attach(mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,backdrop:images.vip,style:chosen,onChange:value=>{chosen=value;}}));
+ modal.attach(mountPhotoStyle(activityHost(content),{avatar:avatarFor(state).sprite,backdrop:images.vip,artwork:images,style:chosen,onChange:value=>{chosen=value;}}));
  content.querySelector('.dialog-actions button').onclick=()=>{apply('photoStyle',chosen);modal.close();takePhoto();};
 }
 function openBeatChallenge(){openArtistGame('eli');}
@@ -160,7 +161,7 @@ async function takePhoto(){
 async function makePhoto(){
  const c=document.createElement('canvas');c.width=1200;c.height=1180;const g=c.getContext('2d');
  g.fillStyle=photoFrames[state.photoStyle.frame];g.fillRect(0,0,1200,1180);
- drawVipPhoto(g,{backdrop:images.vip,avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:20,y:20,width:1160,height:1000});
+ drawVipPhoto(g,{backdrop:images.vip,artwork:images,avatar:avatarFor(state).sprite,pose:state.photoStyle.pose,x:20,y:20,width:1160,height:1000});
  g.fillStyle='#101b2c';g.textAlign='center';
  const name=`${(state.name||'YOU').toUpperCase()}'S SHOW NIGHT`;
  g.font=`bold ${Math.min(52,1040/(name.length*.61))}px monospace`;g.fillText(name,600,1080);
@@ -169,7 +170,7 @@ async function makePhoto(){
  return new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('Photo took too long')),6000);c.toBlob(blob=>{clearTimeout(timeout);resolve(blob);},'image/png');});
 }
 async function showPhoto(token=photoRun){
- try{const blob=await makePhoto();if(token!==photoRun)return;if(!blob)throw new Error('Photo unavailable');if(photoURL)URL.revokeObjectURL(photoURL);photoURL=URL.createObjectURL(blob);const content=openDialog('All glory to Jesus.','Your crew, backstage with the band. Keep the memory, then head back out and enjoy the show. All glory to Jesus.',[{label:'KEEP HANGING OUT',secondary:true}],`VIP MEMORY · ${score(state)} SHOW NIGHT XP`);const img=document.createElement('img');img.className='photo-preview';img.src=photoURL;img.alt='Your player and two friends posing with the Brenno, Eli Williams, and Marty at the VIP backdrop.';content.insertBefore(img,content.lastElementChild);const a=document.createElement('a');a.href=photoURL;a.download='Kingdom-Circuit-CHH-Show-Night-VIP.png';a.textContent='↓ DOWNLOAD PHOTO';const full=document.createElement('a');full.href=photoURL;full.target='_blank';full.rel='noopener';full.className='photo-full';full.textContent='OPEN FULL SIZE';content.lastElementChild.prepend(a,full);}catch{notify('Could not create the photo. Tap Your VIP Photo to try again.');}
+ try{const blob=await makePhoto();if(token!==photoRun)return;if(!blob)throw new Error('Photo unavailable');if(photoURL)URL.revokeObjectURL(photoURL);photoURL=URL.createObjectURL(blob);const content=openDialog('All glory to Jesus.','Your crew, backstage with the band. Keep the memory, then head back out and enjoy the show. All glory to Jesus.',[{label:'KEEP HANGING OUT',secondary:true}],`VIP MEMORY · ${score(state)} SHOW NIGHT XP`);const img=document.createElement('img');img.className='photo-preview';img.src=photoURL;img.alt='Your player and two friends posing with all nine Apollo artists at the VIP backdrop.';content.insertBefore(img,content.lastElementChild);const a=document.createElement('a');a.href=photoURL;a.download='Kingdom-Circuit-CHH-Show-Night-VIP.png';a.textContent='↓ DOWNLOAD PHOTO';const full=document.createElement('a');full.href=photoURL;full.target='_blank';full.rel='noopener';full.className='photo-full';full.textContent='OPEN FULL SIZE';content.lastElementChild.prepend(a,full);}catch{notify('Could not create the photo. Tap Your VIP Photo to try again.');}
 }
 function label(x,y,text,{active=false,color='#ffca6c',size=16,scale=1}={}){
  ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.font=`bold ${size}px monospace`;const width=ctx.measureText(text).width+20;ctx.fillStyle=active?'#ffca6c':'#08182bea';ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.fillRect(-width/2,-size-3,width,size+9);ctx.strokeRect(-width/2,-size-3,width,size+9);ctx.fillStyle=active?'#101926':'#fff2d8';ctx.textAlign='center';ctx.fillText(text,0,-2);ctx.restore();
@@ -182,8 +183,8 @@ function render(time){
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  viewWidth=H*(rect.width/rect.height);camera=Math.max(0,Math.min(W-viewWidth,state.x-viewWidth/2));if(viewWidth>=W){camera=0;viewWidth=W;}
  ctx.setTransform(canvas.width/viewWidth,0,0,canvas.height/H,-camera*canvas.width/viewWidth,0);ctx.imageSmoothingEnabled=true;
- ctx.clearRect(camera,0,viewWidth,H);ctx.drawImage(images[state.room],0,0,W,H);
- if(state.room==='show'&&!reduceMotion){ctx.save();ctx.globalAlpha=.03+Math.sin(time/800)*.018;ctx.fillStyle='#ffd079';ctx.fillRect(0,0,W,400);ctx.restore();}
+ ctx.clearRect(camera,0,viewWidth,H);ctx.drawImage(images[state.room],0,0,W,H);drawRoomArtwork(ctx,state.room,images);
+ if(state.room==='show'&&!reduceMotion){ctx.save();ctx.globalAlpha=.03+Math.sin(time/800)*.018;ctx.fillStyle='#af3438';ctx.fillRect(0,0,W,400);ctx.restore();}
  if(state.room==='show'){
   drawVenueBranding();
   drawPracticeBooth(ctx,time,images.booth);
@@ -206,7 +207,7 @@ function render(time){
  if(!state.friends.includes('jay'))actors.push({x:210,y:590,who:'jay',npc:true});
  if(!state.friends.includes('grace'))actors.push({x:348,y:578,who:'grace',npc:true});
  }else if(state.room==='vip'){
- [['brenno',446],['eli-williams',525],['marty',604]].forEach(([who,x])=>actors.push({x,y:346,who,scale:2.25}));
+ actors.push(...vipCrew);
  }
  const resting=waterBreak?breakProgress(waterBreak.started,time):null;
  if(resting?.done)endBreak(true);else if(resting)$('#break-count').textContent=`WATER BREAK · ${resting.remaining}s`;
@@ -334,7 +335,6 @@ async function shareScore(row){
  const c=document.createElement('canvas');c.width=720;c.height=1000;const g=c.getContext('2d');g.fillStyle='#0b1928';g.fillRect(0,0,720,1000);g.drawImage(images.kcLogo,275,40,170,170);g.textAlign='center';g.fillStyle='#ffcb6c';g.font='bold 38px monospace';g.fillText('APOLLO RECORDS',360,265);g.fillStyle='#f8efda';g.font='24px monospace';g.fillText(row.nickname,360,320);g.font='bold 88px monospace';g.fillText(row.total.toLocaleString(),360,435);g.font='20px monospace';g.fillText('SESSION POINTS',360,475);gameIds.forEach((id,i)=>{g.textAlign='left';g.fillStyle='#7ed9b1';g.fillText(gameNames[id],65,560+i*60);g.textAlign='right';g.fillStyle='#fff0d6';g.fillText(row[id].toLocaleString(),655,560+i*60);});g.textAlign='center';g.fillStyle='#ffcb6c';g.fillText('BUILT FOR THE FANS. ALL FOR THE KING.',360,870);g.fillStyle='#f8efda';g.fillText('@thekingdomcircuit · TEST PREVIEW',360,920);const blob=await new Promise(r=>c.toBlob(r));if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Kingdom-Circuit-Scorecard.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
 }
 function drawVenueBranding(){
- ctx.drawImage(images.venueLogo,895,166,120,120);
  ctx.fillStyle='#101827';ctx.fillRect(13,48,174,48);ctx.fillStyle='#f5e2bb';ctx.textAlign='center';ctx.font='bold 17px sans-serif';ctx.fillText('APOLLO RECORDS',100,68);ctx.font='bold 10px monospace';ctx.fillText('NOT 4 SALE',100,85);
  if(images.merch)for(let i=0;i<3;i++){
   const x=12+i*60;ctx.strokeStyle='#b89e6a';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x+30,104);ctx.lineTo(x+10,117);ctx.lineTo(x+50,117);ctx.closePath();ctx.stroke();
@@ -342,7 +342,7 @@ function drawVenueBranding(){
  }
 }
 function openCrew(){
- const content=openDialog('The Apollo crew.','All nine, together onstage.',[{label:'BACK TO THE SHOW',secondary:true}],'APOLLO RECORDS');
+ const content=openDialog('The Apollo crew.','Marty leads the stage. Meet all nine artists in VIP.',[{label:'BACK TO THE SHOW',secondary:true}],'APOLLO RECORDS');
  const grid=document.createElement('div');grid.className='apollo-crew-grid';
  for(const person of apolloCrew){const card=document.createElement('figure'),portrait=document.createElement('canvas'),caption=document.createElement('figcaption');portrait.width=180;portrait.height=250;portrait.setAttribute('role','img');portrait.setAttribute('aria-label',person.name);drawPerson(portrait.getContext('2d'),90,240,person.id,{scale:3.8});caption.textContent=person.name;card.append(portrait,caption);grid.append(card);}
  content.insertBefore(grid,content.lastElementChild);
@@ -355,7 +355,7 @@ dialog.addEventListener('cancel',e=>{if(playerEntryPending||!state.profileReady)
 dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&(playerEntryPending||!state.profileReady)){e.preventDefault();e.stopPropagation();}});
 dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}if(!modal.onNativeClose())return;keys.clear();dragPointer=null;canvas.focus({preventScroll:true});});
 async function start(){
- try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',booth:'dj-booth-v12.webp',merch:'merch-apollo-v1.webp',logo:'apollo-badge-v1.png',kcLogo:'kingdom-circuit-instagram.webp',martyBg:'show-apollo-v1.webp',brennoBg:'outside-apollo-v1.webp',apolloBg:'show-apollo-v1.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name==='vip'?'vip-v8':name+'-apollo-v1'}.webp`;})));sync();requestAnimationFrame(render);openPlayerSetup({entry:true});}
+ try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',apolloPoster:'apollo-official-not4sale.png',apolloBadge:'apollo-official-heart.png',booth:'dj-booth-v12.webp',merch:'merch-apollo-v1.webp',logo:'apollo-badge-v1.png',kcLogo:'kingdom-circuit-instagram.webp',martyBg:'show-apollo-v2.webp',brennoBg:'outside-apollo-v2.webp',apolloBg:'show-apollo-v2.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name+'-apollo-v2'}.webp`;})));sync();requestAnimationFrame(render);openPlayerSetup({entry:true});}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}
 }
 start();

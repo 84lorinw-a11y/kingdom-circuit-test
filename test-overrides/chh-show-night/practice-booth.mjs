@@ -1,5 +1,5 @@
-import {drawPerson} from './sprites.mjs?v=apollo-01';
-import {boothLayout} from './apollo-crew.mjs?v=apollo-01';
+import {drawPerson} from './sprites.mjs?v=apollo-02';
+import {boothLayout} from './apollo-crew.mjs?v=apollo-02';
 export const practiceSpot={x:boothLayout.x,y:475};
 export function drawPracticeBooth(ctx,time=0,booth){
  const {x,y,width,height}=boothLayout;

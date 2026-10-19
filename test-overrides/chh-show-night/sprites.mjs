@@ -1,4 +1,4 @@
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-01';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-02';
 // Transparent sprite atlases adapted from the supplied CHH scene references.
 // Trim bounds are calculated once at load; sprites are composited at runtime.
 const heroIds=['player','jay','grace'];
@@ -33,11 +33,13 @@ export function drawPerson(ctx,x,y,who='player',{scale=2.25,frame=0,walking=fals
  const index=woman!==null?woman:sharedFan!==null?sharedFan:branded!==null?branded:photographer!==null?photographer:roomFan?Number(roomFan[1]):isFan?([0,3,5,1,5,4][who%6]):(who==='blonde-fan'?2:heroIds.indexOf(who));
  const cell=blueSoul?(peace?1:0):jay?(peace?2:back||hands?1:0):peaceIndex!==undefined?peaceIndex:solo?0:Math.max(0,index)+(sharedFan===null&&!roomFan&&(back||hands)?woman!==null||branded!==null?2:6:0);
  const src=atlas.cells[cell];if(!src||src.w<1||src.h<1)return;
- const height=scale*57*((sharedFan!==null||woman!==null||jay)&&(back||hands)?1.1:1),width=height*src.w/src.h,bob=walking?Math.abs(Math.sin(frame))*3.5:0;
+ // Raised hands add space above the head; don't shrink the whole body to fit them.
+ // Scale both axes together, preserving the approved artwork's proportions.
+ const poseHeight=(back||hands)?(sharedFan!==null||woman!==null||jay?1.18:branded!==null?1.08:1):1;
+ const height=scale*57*poseHeight,width=height*src.w/src.h,bob=walking?Math.abs(Math.sin(frame))*3.5:0;
  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle='#0710194d';ctx.beginPath();ctx.ellipse(x,y,width*.44,height*.043,0,0,Math.PI*2);ctx.fill();
  ctx.translate(Math.round(x),Math.round(y-bob));if(flip)ctx.scale(-1,1);ctx.rotate(lean+(walking?Math.sin(frame)*.022:0));
- // Small alternating foot offsets and body bob give a readable walking cycle.
- if(walking&&!hands&&!back&&!peace){const split=src.h*.75,upperH=height*.75,legH=height*.25,half=src.w/2;ctx.drawImage(atlas.img,src.x,src.y,src.w,split,-width/2,-height,width,upperH);for(let leg=0;leg<2;leg++){const lift=Math.max(0,Math.sin(frame+(leg?Math.PI:0)))*4;ctx.drawImage(atlas.img,src.x+half*leg,src.y+split,half,src.h-split,-width/2+width/2*leg,-legH-lift,width/2,legH);}}
- else ctx.drawImage(atlas.img,src.x,src.y,src.w,src.h,-width/2,-height,width,height);
+ // Move the complete cutout; slicing the lower quarter made walking legs look cut off.
+ ctx.drawImage(atlas.img,src.x,src.y,src.w,src.h,-width/2,-height,width,height);
  ctx.restore();
 }

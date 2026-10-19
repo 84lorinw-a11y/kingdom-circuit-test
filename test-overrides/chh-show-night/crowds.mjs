@@ -24,8 +24,10 @@ const show=[];
  [340,659],[535,673],[701,668],[925,675],[215,661],[860,675]
 ].forEach(([x,y],i)=>show.push(fan(x,y,i,{scale:2.12+(i%3)*.04,back:true,hands:true})));
 const vip=[];
-[[62,315],[196,320],[264,322],[352,309],[98,435],[183,443],[261,445],[85,553],[173,566],[262,559],[52,635],[149,640],[258,642],[763,360],[829,358],[962,366],[765,475],[835,488],[968,478],[759,579],[835,590],[965,583],[803,648],[925,649]].forEach(([x,y],i)=>vip.push(fan(x,y,i,{scale:y<370?2.08:2.25,flip:i%2===0})));
-vip.push(fan(361,630,24),fan(708,643,25),fan(331,493,26),fan(712,535,27),fan(930,650,28),fan(330,575,29));
+// Guests socialize at the room edges, leaving nine distinct artist stations open.
+for(let row=0;row<5;row++)for(const [col,x] of [45,120,190,835,905,976].entries()){
+ const i=row*6+col;vip.push(fan(x,305+row*82+(col%2)*9,i,{scale:2.08+row*.025,flip:col%2===0}));
+}
 // Identical identities and outfits in every room; the stage uses matching rear poses.
 for(const cast of [outside,show,vip])cast.forEach((a,i)=>{a.who=sharedCast[i].who;a.phase=i*1.71;});
 export const crowdCounts={outside:outside.length,show:show.length,vip:vip.length};

@@ -18,9 +18,9 @@ test('Crowd bodies stay close to player size and the white boy and girl are sele
 });
 
 
-test('Hands-up zone is on the main-stage floor, separate from the center DJ booth',async()=>{
+test('Hands-up zone is on the main-stage floor, separate from the side DJ booth',async()=>{
  const {inFrontRow}=await import('../../test-overrides/chh-show-night/worship.mjs');
- assert.equal(inFrontRow({room:'show',x:335,y:475}),true);
- assert.equal(inFrontRow({room:'show',x:512,y:475}),false);
+ assert.equal(inFrontRow({room:'show',x:420,y:475}),true);
+ assert.equal(inFrontRow({room:'show',x:850,y:475}),false);
  assert.equal(inFrontRow({room:'vip',x:510,y:475}),false);
 });
