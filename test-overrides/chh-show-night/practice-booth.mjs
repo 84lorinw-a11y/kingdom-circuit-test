@@ -1,8 +1,9 @@
-import {drawPerson} from './sprites.mjs?v=totals-31';
-export const practiceSpot={x:512,y:475};
+import {drawPerson} from './sprites.mjs?v=apollo-01';
+import {boothLayout} from './apollo-crew.mjs?v=apollo-01';
+export const practiceSpot={x:boothLayout.x,y:475};
 export function drawPracticeBooth(ctx,time=0,booth){
- const x=512,y=363;
- drawPerson(ctx,x,y,'dj',{scale:2.9});
+ const {x,y,width,height}=boothLayout;
+ drawPerson(ctx,x,y,'eli-williams',{scale:2.1});
  // Detailed decks, mixer, road case and stage lights share the venue's perspective.
- if(booth)ctx.drawImage(booth,x-111,y-100,222,111);
+ if(booth)ctx.drawImage(booth,x-width/2,y-height+8,width,height);
 }

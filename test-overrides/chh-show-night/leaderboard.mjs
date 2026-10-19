@@ -1,6 +1,5 @@
-import {score,journeyScore,act} from './state.mjs?v=totals-31';
-import {gameIds} from './scoring.mjs?v=totals-31';
-import {createGoogleScores} from './google-scores.mjs?v=totals-31';
+import {score,journeyScore,act} from './state.mjs?v=apollo-01';
+import {gameIds} from './scoring.mjs?v=apollo-01';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
 export async function confirmSessionSave(state,online,{localSaved=true}={}){
@@ -14,7 +13,7 @@ export async function confirmSessionSave(state,online,{localSaved=true}={}){
  }catch{return {status:localSaved?'waiting':'unsaved',total,localSaved};}
 }
 export function createScoreStore(storage=localStorage){
- const key='kc-show-night-scores-v2';let data;try{data=JSON.parse(storage.getItem(key))||{};}catch{data={};}
+ const key='kc-apollo-night-scores-v2';let data;try{data=JSON.parse(storage.getItem(key))||{};}catch{data={};}
  data.playerId??=crypto.randomUUID();data.best??=null;data.players??={};
  if(data.best?.nickname)data.players[nameKey(data.best.nickname)]=bestSession(data.players[nameKey(data.best.nickname)],data.best);
  function save(){try{storage.setItem(key,JSON.stringify(data));}catch{}}
@@ -26,15 +25,15 @@ export function createScoreStore(storage=localStorage){
 
 // Hosting supplies the API URL; an empty value is explicitly device-only.
 export function createOnlineScores(storage=localStorage,{base=typeof document!=='undefined'?document.querySelector('meta[name="score-service"]')?.content||'':'',fetcher=fetch,timeoutMs=8000}={}){
- if(/^https:\/\/script\.google\.com\/macros\/s\/[a-zA-Z0-9_-]+\/exec$/.test(base))return createGoogleScores(storage,{base,fetcher,timeoutMs:Math.max(timeoutMs,12000)});
- let tokens={},legacy='';try{tokens=JSON.parse(storage.getItem('kc-score-profiles')||'{}');legacy=storage.getItem('kc-score-token')||'';}catch{}
+ if(/script\.google(?:usercontent)?\.com/.test(base))throw Error('The Apollo campaign cannot use the original competition service');
+ let tokens={},legacy='';try{tokens=JSON.parse(storage.getItem('kc-apollo-score-profiles')||'{}');legacy=storage.getItem('kc-apollo-score-token')||'';}catch{}
  let token='',session='',latest=null,queue=Promise.resolve();
  const enqueue=work=>(queue=queue.catch(()=>{}).then(work));
  async function request(path,body){const control=new AbortController(),timer=setTimeout(()=>control.abort(),timeoutMs);try{const r=await fetcher(base+path,{method:body===undefined?'GET':'POST',headers:body===undefined?{}:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:control.signal});const json=await r.json();if(!r.ok)throw Error(json.error||'Score service unavailable');return json;}finally{clearTimeout(timer);}}
  async function openSession(s){
   const key=nameKey(s.name);token=(s.sessionId===session&&token)||tokens[key]||(!Object.keys(tokens).length?legacy:'');
   const r=await request('/session',{sessionId:s.sessionId,nickname:s.name});token=r.token;session=s.sessionId;tokens[key]=token;legacy='';
-  try{storage.setItem('kc-score-profiles',JSON.stringify(tokens));storage.setItem('kc-score-token',token);}catch{}
+  try{storage.setItem('kc-apollo-score-profiles',JSON.stringify(tokens));storage.setItem('kc-apollo-score-token',token);}catch{}
   // Restore only journey state. Old browser-only game scores are not imported.
   let remote=r.state;
   async function send(action,value){await request('/journey',{sessionId:session,action,value});remote=act(remote,action,value);}

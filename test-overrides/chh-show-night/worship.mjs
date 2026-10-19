@@ -1,8 +1,8 @@
-import {stageTracks} from './music-config.mjs?v=totals-31';
-import {createStagePlayback} from './stage-audio.mjs?v=totals-31';
+import {stageTracks} from './music-config.mjs?v=apollo-01';
+import {createStagePlayback} from './stage-audio.mjs?v=apollo-01';
 export const stageSpots=[
- {id:'steven',x:335,y:475,label:'Steven · OUTSIDE',tag:'STEVEN · OUTSIDE'},
- {id:'joz',x:720,y:475,label:'Joz · BIRKENSTOCK',tag:'JOZ · BIRKENSTOCK'}
+ {id:'brenno',x:367,y:475,label:'Brenno · BRING YOUR PEOPLE',tag:'BRENNO · CREW RUN'},
+ {id:'marty',x:724,y:475,label:'Marty · RECORD RUN',tag:'MARTY · RECORD RUN'}
 ];
 export const stageSpotAt=s=>s.room==='show'&&s.y>=462&&s.y<508?stageSpots.find(p=>Math.abs(s.x-p.x)<54)?.id||null:null;
 export const inFrontRow=s=>!!stageSpotAt(s);

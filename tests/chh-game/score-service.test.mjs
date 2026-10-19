@@ -9,7 +9,7 @@ test('Shared scores enforce ownership, elapsed time, single use, and best comple
  const ticket=(await post('/start',{sessionId:'session-a',game:'eli'})).data;const result={game:'eli',id:ticket.id,events:Array.from({length:20},(_,id)=>({id,hit:true,perfect:true}))};
  assert.equal((await post('/finish',{sessionId:'session-a',result})).status,400);clock+=26000;const finish=await post('/finish',{sessionId:'session-a',result});assert.equal(finish.data.total,1030);assert.equal(finish.data.eli,1000);assert.equal((await post('/finish',{sessionId:'session-a',result})).status,409);
  const intruder=(await post('/session',{sessionId:'session-b',nickname:'Other'},'bad')).data.token;assert.equal((await post('/journey',{sessionId:'session-a',action:'photo'},intruder)).status,404);
- await post('/session',{sessionId:'session-c',nickname:'River'});const {rows:board}=await(await fetch(base+'/scores')).json();assert.equal(board[0].total,1030);assert.equal(board[0].sessionId,'session-a');assert.equal(board[0].joz,0);assert.equal(board[0].token,undefined);
+ await post('/session',{sessionId:'session-c',nickname:'River'});const {rows:board}=await(await fetch(base+'/scores')).json();assert.equal(board[0].total,1030);assert.equal(board[0].sessionId,'session-a');assert.equal(board[0].marty,0);assert.equal(board[0].token,undefined);
 });
 
 test('Every player is listed, including zero-score players and those beyond the first hundred',async t=>{

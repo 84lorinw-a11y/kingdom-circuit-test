@@ -105,3 +105,15 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .score-empty{font-size:13px;color:#aebfcd}
 @media(max-width:380px){.score-dialog{padding:14px}.score-dialog #dialog-content{max-height:calc(100dvh - 58px)}.board .score-table th,.board .score-table td{padding:12px 4px}.board .score-table tbody th{font-size:13px}.board .score-table tbody td{font-size:14px}.score-header h2{font-size:22px}}
 @media(max-height:500px){.score-dialog #dialog-content{gap:6px}.score-header{padding-bottom:6px}.score-header img{height:32px;width:32px}.score-header h2{font-size:20px}}
+
+/* Apollo roster and full-size merchandise inspection. */
+.apollo-crew-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.apollo-crew-grid figure{margin:0;padding:8px;background:#152538;border:1px solid #3c5271;border-radius:12px;text-align:center}
+.apollo-crew-grid canvas{width:100%;height:auto;display:block}
+.apollo-crew-grid figcaption{color:#f4dfb5;font:700 11px system-ui;line-height:1.4;min-height:30px}
+.apollo-merch-rack{display:block;width:100%;height:auto;background:#26374b;border-radius:12px;margin:18px 0}
+@media(max-width:420px){.apollo-crew-grid{gap:6px}.apollo-crew-grid figure{padding:3px}.apollo-crew-grid figcaption{font-size:10px}}
+
+/* Keep approved faces in proportion on wide screens; phones keep the follow camera. */
+.viewport{container-type:size}
+.viewport>canvas{width:min(100%,149.927cqh);margin-inline:auto}

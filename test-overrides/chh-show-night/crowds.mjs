@@ -4,16 +4,16 @@ export const sharedCast=Array.from({length:30},(_,i)=>({
  id:`fan-${i}`,who:i===0?'women:0':i===12?'women:1':i===1?'brand:0':i===4?'brand:1':`fan:${i}`,
  appearance:i===0||i===12?'Black':['white','Black','brown'][i%3]
 }));
-export const stevenFan=id=>sharedCast[((id%sharedCast.length)+sharedCast.length)%sharedCast.length].who;
-export function collectedFans(events){return events.filter(e=>e.hit).map(e=>stevenFan(e.id));}
+export const brennoFan=id=>sharedCast[((id%sharedCast.length)+sharedCast.length)%sharedCast.length].who;
+export function collectedFans(events){return events.filter(e=>e.hit).map(e=>brennoFan(e.id));}
 // Deliberate crowd placement leaves the entrance, shop, stage center, and photo lane readable.
 const fan=(x,y,i,extra={})=>({x,y,who:null,scale:2.15+(i%3)*.05,ambient:true,phase:i*1.71,flip:i%3===0,...extra});
 const outside=[];
-// Friends by the riverside and waiting around the benches.
-[[75,345],[137,350],[245,348],[306,351],[85,490],[153,493],[260,470],[322,472],[58,570],[115,570],[68,642],[136,640],[270,649],[342,647],[408,649]].forEach(([x,y],i)=>outside.push(fan(x,y,i,{scale:y<400?2.08:2.25})));
-// A busy queue on each side of the open entrance.
-[[633,368],[860,371],[648,419],[873,422],[631,475],[878,476],[657,532],[890,532],[659,589],[883,589],[965,602],[961,544],[967,653]].forEach(([x,y],i)=>outside.push(fan(x,y,i+2,{scale:y<430?2.12:2.25})));
-outside.push(fan(459,650,28),fan(946,490,29));
+// Downtown sidewalk: all heads stay below the exterior posters and marquee.
+for(let row=0;row<3;row++)for(let col=0;col<10;col++){
+ const x=55+col*101+(row%2?22:0),y=548+row*61+(col%3)*4;
+ outside.push(fan(Math.min(974,x),y,row*10+col,{scale:2.08+row*.07}));
+}
 const show=[];
 // An uneven crowd across the floor, with a few fans nearer the stage.
 // Positions account for raised arms and bodies, keeping the floor circles clear.

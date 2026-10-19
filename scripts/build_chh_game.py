@@ -20,7 +20,7 @@ def expected_files() -> dict[str, bytes]:
     for name, digest in MANIFEST.items():
         relative = PurePosixPath(name)
         assert not relative.is_absolute() and '..' not in relative.parts
-        assert relative.suffix in TEXT_EXTENSIONS | {'.png', '.webp', '.m4a'}
+        assert relative.suffix in TEXT_EXTENSIONS | {'.png', '.webp', '.m4a', '.wav'}
         source = SOURCE / name
         assert not source.is_symlink(), 'Game sources may not be symlinks'
         data = source.read_bytes()
@@ -47,7 +47,16 @@ def verify(site: Path) -> dict:
     assert 'aria-valuemax="125"' not in page
     scoring = (site / 'play/scoring.mjs').read_text()
     assert 'ROUND_MAX=1000' in scoring and 'OPPORTUNITIES=20' in scoring
-    assert all(name in scoring for name in ('eli', 'joz', 'steven', 'chamblissnation'))
+    assert all(name in scoring for name in ('eli', 'marty', 'brenno', 'apollo'))
+    assert '<meta name="score-service" content="">' in page, 'Apollo TEST must stay off the original competition'
+    assert "connect-src 'self';" in page
+    assert "createOnlineScores(localStorage,{base:''})" in (site / 'play/game.mjs').read_text()
+    crew = (site / 'play/apollo-crew.mjs').read_text()
+    for artist in ('marty', 'brenno', 'ryan-ellis', 'gavin-the-hotrod', 'lj-the-messenger', 'dearis', 'tonyxtrotter', 'eli-williams', 'andrew-prim'):
+        assert f"id:'{artist}'" in crew
+        assert (site / f'play/assets/apollo-{artist}-v1.webp').is_file()
+    for name in expected:
+        assert not any(old in name for old in ('chambliss', 'artist-joz', 'artist-steven', 'music/joz', 'music/outside-steven')), 'Legacy artist media in Apollo build'
     for name in expected:
         path = site / name
         if path.suffix not in TEXT_EXTENSIONS:

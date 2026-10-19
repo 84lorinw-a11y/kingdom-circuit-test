@@ -1,7 +1,7 @@
 // Keep the venue's stage and merch display above one clear audience-floor edge.
-// Grass, crowds and lounge furniture remain decorative and never obstruct routes.
+// Sidewalk crowds and lounge furniture remain decorative and never obstruct routes.
 export const roomBounds={left:32,right:992,top:170,bottom:644};
-const floorTop=room=>room==='show'?444:roomBounds.top;
+const floorTop=room=>room==='show'?444:room==='outside'?435:roomBounds.top;
 export function clampPosition({x,y},room){
  return {x:Math.max(roomBounds.left,Math.min(roomBounds.right,Number.isFinite(x)?x:512)),y:Math.max(floorTop(room),Math.min(roomBounds.bottom,Number.isFinite(y)?y:570))};
 }

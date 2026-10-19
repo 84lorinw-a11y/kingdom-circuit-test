@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
-import {createGoogleScores} from '../../test-overrides/chh-show-night/google-scores.mjs';
+import {createGoogleScores} from '../../game-backend/legacy-google-scores.mjs';
 import {initialState,act} from '../../test-overrides/chh-show-night/state.mjs';
 
 const source=readFileSync(new URL('../../game-backend/apps-script/Code.gs',import.meta.url),'utf8');

@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=totals-31';
+import {drawPerson} from './sprites.mjs?v=apollo-01';
 
 export const laneColors=['#80e2be','#a9b8ff','#ffc876','#ff9eb5'];
 export function beatLayout(height=560){
@@ -22,7 +22,7 @@ export function drawBeatBoard(g,{height,art,time,phase,notes,reduced,combo,bass=
  // Keep the concert's artist and detailed decks in the minigame.
  g.save();g.beginPath();g.rect(0,0,420,laneTop+2);g.clip();
  const glow=g.createRadialGradient(210,laneTop*.5,8,210,laneTop*.5,230);glow.addColorStop(0,'#2b9f814d');glow.addColorStop(1,'#09203100');g.fillStyle=glow;g.fillRect(0,0,420,laneTop);
- const feet=laneTop-35;drawPerson(g,210,feet,'dj',{scale:2.5,lean:reduced?0:Math.sin(time*2)*.018});
+ const feet=laneTop-35;drawPerson(g,210,feet,'eli-williams',{scale:2.5,lean:reduced?0:Math.sin(time*2)*.018});
  if(art.booth)g.drawImage(art.booth,85,laneTop-125,250,125);
  g.restore();
  const track=g.createLinearGradient(0,laneTop,0,l.height);track.addColorStop(0,'#07131fee');track.addColorStop(1,'#102b3bf5');g.fillStyle=track;g.fillRect(0,laneTop,420,l.height-laneTop);

@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 Apollo venue revision (latest owner request)
+
+- The owner explicitly requested the Apollo graphics, all nine approved character drafts, downtown exterior, Not 4 Sale posters and merchandise on TEST, never live. This authorizes these reviewed visual assets on the existing TEST destination, superseding older local-only art notes and old cast/clothing requirements below. Unreleased album audio is still not supplied or authorized for public hosting.
+- Preserve approved character faces/outfits; use Marty v4, Brenno v1, Ryan v3, Gavin v1, LJ v1, De’aris v2, Tony v1, Eli v2 and Andrew v3 from the local approved registry. All nine appear onstage and on the exterior marquee. Remove Joz/Steven and Chamblissnation branding from this edition.
+- Use the three owner-supplied shirt references: Apollo heart badge, red concert crowd, simple lettering; all say Not 4 Sale. Keep the original 20-opportunity scoring mechanics. New artist rounds use clearly labeled original instrumental soundchecks pending album selection.
+- Apollo has separate local save/score keys, empty score-service configuration and self-only connections. Never connect this campaign to the original production Google competition. Keep the legacy Google backend contract unchanged.
+
 ## October 19 development boundary
 
 - The owner directs all new development to TEST. Do not promote changes to production without a separate explicit release instruction.

@@ -1,10 +1,10 @@
-import {drawPerson} from './sprites.mjs?v=totals-31';
+import {drawPerson} from './sprites.mjs?v=apollo-01';
 
 const make=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text)el.textContent=text;return el;};
 const button=(label,fn,cls='')=>{const b=make('button',cls,label);b.type='button';b.onclick=fn;return b;};
 export const photoFrames={gold:'#fff1d7',mint:'#bcebd6',rose:'#efc1c1'};
 export function drawPhotoLineup(g,{avatar='player',pose='classic',x=335,y=610,spacing=107,scale=3.4}={}){
- const lineup=['jay',avatar,'mc','dj','singer','grace'];
+ const lineup=['jay',avatar,'brenno','eli-williams','marty','grace'];
  lineup.forEach((person,i)=>drawPerson(g,x+i*spacing,y,person,{scale,peace:pose==='peace',lean:pose==='lean'?(i<3?.07:-.07):0}));
 }
 // One camera composition for the live preview and the saved memory.

@@ -13,7 +13,7 @@ function fixture({slow=false}={}){
   createGain(){const gain={gain:{value:0},connect(){},disconnect(){}};gains.push(gain);return gain;}
  };
  const player=createStagePlayback({
-  tracks:{steven:{src:'steven.m4a',volume:.8},joz:{src:'joz.m4a',volume:1}},
+  tracks:{brenno:{src:'brenno.m4a',volume:.8},marty:{src:'marty.m4a',volume:1}},
   contextFactory:()=>context,
   fetchAudio:async src=>{requests.push(src);return {ok:true,arrayBuffer:async()=>new ArrayBuffer(1)};},
   onState:(state,id)=>states.push([state,id])
@@ -25,51 +25,51 @@ function fixture({slow=false}={}){
 
 test('A normal movement tap unlocks audio before delayed arrival, without a second Play tap',async()=>{
  const f=fixture();await f.tap();assert.equal(f.sources.length,0);
- await f.player.enter('steven');
- assert.equal(f.player.playing,'steven');assert.equal(f.sources.length,1);assert.equal(f.gains[0].gain.value,.8);
- await f.player.enter('joz');
- assert.equal(f.player.playing,'joz');assert.equal(f.sources[0].stopped,true);assert.equal(f.gains[1].gain.value,1);
- assert.deepEqual(f.requests,['steven.m4a','joz.m4a']);
+ await f.player.enter('brenno');
+ assert.equal(f.player.playing,'brenno');assert.equal(f.sources.length,1);assert.equal(f.gains[0].gain.value,.8);
+ await f.player.enter('marty');
+ assert.equal(f.player.playing,'marty');assert.equal(f.sources[0].stopped,true);assert.equal(f.gains[1].gain.value,1);
+ assert.deepEqual(f.requests,['brenno.m4a','marty.m4a']);
 });
 
 test('Saved arrival before the first gesture starts on the next ordinary movement tap',async()=>{
- const f=fixture();await f.player.enter('steven');assert.equal(f.player.status,'waiting');
+ const f=fixture();await f.player.enter('brenno');assert.equal(f.player.status,'waiting');
  await f.player.unlock();assert.equal(f.player.status,'waiting');assert.equal(f.sources.length,0);
- await f.tap();assert.equal(f.player.playing,'steven');
+ await f.tap();assert.equal(f.player.playing,'brenno');
 });
 
 test('Slow decoding cannot start a song after the player leaves its circle',async()=>{
  const f=fixture({slow:true});await f.tap();
- const arriving=f.player.enter('steven');f.player.leave();f.release();await arriving;
+ const arriving=f.player.enter('brenno');f.player.leave();f.release();await arriving;
  assert.equal(f.sources.length,0);assert.equal(f.player.status,'idle');assert.equal(f.player.wantsPlay,false);
 });
 
 test('Switching circles during loading plays only the latest artist',async()=>{
  const f=fixture({slow:true});await f.tap();
- const steven=f.player.enter('steven'),joz=f.player.enter('joz');f.release();await Promise.all([steven,joz]);
- assert.equal(f.sources.length,1);assert.equal(f.player.playing,'joz');
+ const brenno=f.player.enter('brenno'),marty=f.player.enter('marty');f.release();await Promise.all([brenno,marty]);
+ assert.equal(f.sources.length,1);assert.equal(f.player.playing,'marty');
 });
 
 test('Repeated touch/pointer events never layer duplicate sources',async()=>{
- const f=fixture({slow:true});await f.tap();const arriving=f.player.enter('steven');
+ const f=fixture({slow:true});await f.tap();const arriving=f.player.enter('brenno');
  const taps=[f.tap(),f.tap(),f.tap()];f.release();await Promise.all([arriving,...taps]);
- assert.equal(f.sources.length,1);assert.equal(f.player.playing,'steven');
+ assert.equal(f.sources.length,1);assert.equal(f.player.playing,'brenno');
 });
 
 test('Manual pause survives unrelated taps; resume keeps the current position',async()=>{
- const f=fixture();await f.tap();await f.player.enter('steven');f.context.currentTime=6;
+ const f=fixture();await f.tap();await f.player.enter('brenno');f.context.currentTime=6;
  f.player.pause();await f.tap();assert.equal(f.player.status,'paused');assert.equal(f.sources.length,1);
- await f.player.play();assert.equal(f.sources[1].offset,6);assert.equal(f.player.playing,'steven');
+ await f.player.play();assert.equal(f.sources[1].offset,6);assert.equal(f.player.playing,'brenno');
 });
 
 test('Completed excerpts do not auto-repeat but can be replayed',async()=>{
- const f=fixture();await f.tap();await f.player.enter('joz');f.sources[0].onended();
+ const f=fixture();await f.tap();await f.player.enter('marty');f.sources[0].onended();
  await f.tap();assert.equal(f.player.status,'ended');assert.equal(f.sources.length,1);
- await f.player.play();assert.equal(f.sources[1].offset,0);assert.equal(f.player.playing,'joz');
+ await f.player.play();assert.equal(f.sources[1].offset,0);assert.equal(f.player.playing,'marty');
 });
 
 test('A background pause resumes at the same position after interruption',async()=>{
- const f=fixture();await f.tap();await f.player.enter('steven');f.context.currentTime=3;
+ const f=fixture();await f.tap();await f.player.enter('brenno');f.context.currentTime=3;
  f.player.pause();f.context.state='suspended';await f.player.play();assert.equal(f.player.status,'waiting');
- await f.tap();assert.equal(f.player.playing,'steven');assert.equal(f.sources[1].offset,3);
+ await f.tap();assert.equal(f.player.playing,'brenno');assert.equal(f.sources[1].offset,3);
 });

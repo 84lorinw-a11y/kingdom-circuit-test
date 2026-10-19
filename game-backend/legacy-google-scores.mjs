@@ -1,4 +1,4 @@
-import {act} from './state.mjs?v=totals-31';
+import {act} from '../test-overrides/chh-show-night/state.mjs';
 
 // Apps Script accepts a simple text POST, avoiding unsupported CORS preflight.
 // Tokens stay on this device; the sheet contains only their SHA-256 identifiers.

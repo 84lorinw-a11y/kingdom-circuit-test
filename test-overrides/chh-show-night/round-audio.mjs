@@ -1,4 +1,4 @@
-import {djTrack,stageTracks,merchTrack} from './music-config.mjs?v=totals-31';
+import {djTrack,stageTracks,merchTrack} from './music-config.mjs?v=apollo-01';
 const bounded=(promise,ms,message)=>new Promise((resolve,reject)=>{
  const timer=setTimeout(()=>reject(Error(message)),ms);
  Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});
@@ -6,7 +6,7 @@ const bounded=(promise,ms,message)=>new Promise((resolve,reject)=>{
 // Music and effects share one context, unlocked inside a real tap on mobile.
 export function createRoundAudio({contextFactory=()=>new(window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'}),fetchAudio=(...args)=>fetch(...args),resumeTimeoutMs=1800,loadTimeoutMs=15000}={}){
  let context,source,gain,analyser,limiter,master,generation=0,started=0,active=null,muted=false,primed=false;
- const buffers=new Map(),tracks={eli:djTrack,...stageTracks,chamblissnation:merchTrack};
+ const buffers=new Map(),tracks={eli:djTrack,...stageTracks,apollo:merchTrack};
  function ensureContext(){
   if(!context||context.state==='closed'){
    context=contextFactory();master=context.createGain();master.gain.value=muted?0:1;master.connect(context.destination);primed=false;

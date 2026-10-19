@@ -1,12 +1,13 @@
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-01';
 // Transparent sprite atlases adapted from the supplied CHH scene references.
 // Trim bounds are calculated once at load; sprites are composited at runtime.
-const heroIds=['player','jay','grace','mc','dj','singer'];
-const peaceIds={player:0,'crowd-vip:32':1,'crowd-vip:34':2,1:3,5:4,4:5,grace:6,mc:7,dj:8,singer:9};
+const heroIds=['player','jay','grace'];
+const peaceIds={player:0,'crowd-vip:32':1,'crowd-vip:34':2,1:3,5:4,4:5,grace:6};
  const atlases={};
 // Generated rows have slightly different spacing; cut only through transparent gutters.
 const rowCuts={};
 export async function loadPeople(){
- await Promise.all([['blueSoul',2,1,'blue-soul-v25','png'],['jay',3,1,'jay-chambliss-v18'],['peace',5,2,'vip-peace-v18'],['women',2,2,'fan-women-v13'],['heroes',6,2,'heroes-v3'],['brand',2,2,'brand-fans-v1'],['photographers',2,1,'pit-photographers-v1'],['eli',1,1,'artist-eli-v2'],['steven',1,1,'artist-steven-v1'],['joz',1,1,'artist-joz-v1'],['crowd-vip',6,6,'crowd-vip-v7'],['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file,extension='webp'])=>{
+ await Promise.all([['blueSoul',2,1,'blue-soul-v25','png'],['jay',3,1,'jay-apollo-v1'],['peace',5,2,'vip-peace-v18'],['women',2,2,'fan-women-v13'],['heroes',6,2,'heroes-v3'],['brand',2,2,'apollo-fans-v1'],['photographers',2,1,'pit-photographers-v1'],...apolloCrew.map(p=>[p.id,1,1,p.file]),['crowd-vip',6,6,'crowd-vip-v7'],['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file,extension='webp'])=>{
   const img=new Image();img.src=`/play/assets/${file}.${extension}`;
   await img.decode();const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(img,0,0);const pixels=g.getImageData(0,0,c.width,c.height).data;
   const cells=[];const cw=img.width/cols,ch=img.height/rows;
@@ -26,7 +27,7 @@ export function drawPerson(ctx,x,y,who='player',{scale=2.25,frame=0,walking=fals
  const photographer=typeof who==='string'&&who.startsWith('pit:')?Number(who.split(':')[1]):null;
  const roomFan=typeof who==='string'&&who.startsWith('crowd-')?who.split(':'):null;
  const sharedFan=typeof who==='string'&&who.startsWith('fan:')?Number(who.split(':')[1]):null;
- const isFan=typeof who==='number',solo=who==='dj'?'eli':who==='mc'?'steven':who==='singer'?'joz':null;
+ const isFan=typeof who==='number',solo=apolloCrew.some(p=>p.id===who)?who:null;
  const peaceIndex=peace?peaceIds[who]:undefined,jay=who==='jay',blueSoul=who==='crowd-vip:32';
  const atlas=atlases[blueSoul?'blueSoul':jay?'jay':peaceIndex!==undefined?'peace':woman!==null?'women':sharedFan!==null?(back||hands?'fansBack':'fansFront'):branded!==null?'brand':photographer!==null?'photographers':roomFan?.[0]||solo||'heroes'];if(!atlas)return;
  const index=woman!==null?woman:sharedFan!==null?sharedFan:branded!==null?branded:photographer!==null?photographer:roomFan?Number(roomFan[1]):isFan?([0,3,5,1,5,4][who%6]):(who==='blonde-fan'?2:heroIds.indexOf(who));

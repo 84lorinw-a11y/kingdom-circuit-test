@@ -38,15 +38,15 @@ test('Guidance follows friends, visits and free VIP entry without inventing poin
  let s=initialState();assert.equal(nextStop(s),'jay');assert.match(objective(s),/Bring Jay along/);
  s=act(s,'invite','jay');assert.equal(nextStop(s),'grace');s=act(s,'invite','grace');assert.equal(nextStop(s),'enter');
  s=act(s,'enter');assert.equal(nextStop(s),'merch');const before=score(s);
- for(const id of ['merch','steven','dj','joz'])s=act(s,'visit',id);
- assert.equal(score(s),before);assert.equal(nextStop(s),'vip');assert.ok(hasVisited(restore(JSON.stringify(s)),'joz'));
+ for(const id of ['merch','brenno','dj','marty'])s=act(s,'visit',id);
+ assert.equal(score(s),before);assert.equal(nextStop(s),'vip');assert.ok(hasVisited(restore(JSON.stringify(s)),'marty'));
  s=act(s,'vip');assert.equal(nextStop(s),'photo');s=act(s,'photo');assert.equal(nextStop(s),'refresh');s=act(s,'visit','refresh');assert.equal(nextStop(s),null);
  assert.equal(act(atShow(),'vip').room,'vip');assert.deepEqual(act(initialState(),'visit','merch').visited,[]);
 });
 
 test('A completed zero-score game is still a visited stop',()=>{
- const s=act(atShow(),'round',{game:'joz',id:'zero',events:Array.from({length:20},(_,id)=>({id,hit:false,perfect:false}))});
- assert.equal(s.totals.joz,0);assert.ok(hasVisited(s,'joz'));assert.ok(hasVisited(restore(JSON.stringify(s)),'joz'));
+ const s=act(atShow(),'round',{game:'marty',id:'zero',events:Array.from({length:20},(_,id)=>({id,hit:false,perfect:false}))});
+ assert.equal(s.totals.marty,0);assert.ok(hasVisited(s,'marty'));assert.ok(hasVisited(restore(JSON.stringify(s)),'marty'));
 });
 
 test('Water breaks expire after six seconds, including after returning from a backgrounded tab',()=>{
@@ -55,12 +55,12 @@ test('Water breaks expire after six seconds, including after returning from a ba
 });
 
 test('Merch requires left/right movement, with faster readable drops and the same score budget',()=>{
- const notes=roundSchedule('chamblissnation',26);
+ const notes=roundSchedule('apollo',26);
  for(const [i,n] of notes.entries()){
   const at=merchDrop(n,n.at);assert.equal(at.y,475);assert.equal(at.x,n.x);
   assert.ok(at.x>=65&&at.x<=355);assert.ok(merchDrop(n,n.at-.5).y<390);
   if(i)assert.ok(Math.abs(n.x-notes[i-1].x)>100);
-  assert.ok(n.at<roundSeconds.chamblissnation);
+  assert.ok(n.at<roundSeconds.apollo);
  }
  assert.ok(merchCatch.hit<52);assert.ok(merchCatch.clean<23);
  assert.equal(roundScore(notes.map(n=>({id:n.id,hit:true,perfect:true}))).total,1000);

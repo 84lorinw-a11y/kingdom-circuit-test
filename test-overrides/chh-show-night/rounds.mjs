@@ -1,12 +1,12 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=totals-31';
-import {merchTrack} from './music-config.mjs?v=totals-31';
-import {stevenFan,collectedFans} from './crowds.mjs?v=totals-31';
-import {drawPerson} from './sprites.mjs?v=totals-31';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=totals-31';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=totals-31';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=totals-31';
-const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
-const instructions={eli:'Tap the matching pad when the letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag the tote left and right. Catch the fast shirts in the middle!'};
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-01';
+import {merchTrack} from './music-config.mjs?v=apollo-01';
+import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-01';
+import {drawPerson} from './sprites.mjs?v=apollo-01';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-01';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-01';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-01';
+const titles={eli:'B–I–B–L–E',marty:'RECORD RUN',brenno:'CREW RUN',apollo:'NOT 4 SALE'};
+const instructions={eli:'Tap the matching pad when the letter hits the gold line.',marty:'Drag Marty. Catch the records. Let the hype pass.',brenno:'Drag Brenno. Bring people into the crew. Keep the crew together!',apollo:'Drag the tote left and right. Catch the fast shirts in the middle!'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
 // Download/decode while the score service prepares the verified round. No audio starts early.
 export async function prepareRoundStart(audio,online,game){
@@ -19,7 +19,7 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundTo
  let disposed=false,phase='ready',raf=0,elapsed=0,started=0,last=0,px=210,target=210,notes=[],events=[],particles=[],roundId='',seed=1,run=0,ranked=false,combo=0,feedback='',feedbackUntil=0,lastAudioProgress=0,bassGlow=0,laneFlashes=[0,0,0,0],held=new Set();
  host.className='round';host.dataset.game=game;host.dataset.phase=phase;
  const top=el('div','round-top'),exit=el('button','round-exit','← Leave'),brand=el('div','round-brand'),artist=el('small','',gameNames[game].toUpperCase()),title=el('strong','',titles[game]);brand.append(artist,title);exit.onclick=onExit;
- if(game==='chamblissnation')brand.append(el('small','',`${merchTrack.artist} · ${merchTrack.title}`));
+ if(game!=='eli')brand.append(el('small','','INSTRUMENTAL SOUNDCHECK'));
  const fx=el('button','round-fx',reduced?'FX reduced':'Bass FX on');fx.hidden=game!=='eli';fx.disabled=reduced;fx.setAttribute('aria-pressed',!reduced);const sound=el('button','round-sound');function syncSound(){sound.textContent=audio.muted?'♪ Off':'♪ On';sound.setAttribute('aria-pressed',!audio.muted);sound.setAttribute('aria-label',audio.muted?'Sound off. Tap to enable':'Sound on. Tap to mute');}sound.onclick=()=>{if(onSoundToggle)onSoundToggle();else audio.setMuted(!audio.muted);syncSound();};syncSound();top.append(exit,brand,sound,fx);
  const stats=el('div','round-stats'),points=el('b','','0'),time=el('b','',`${roundSeconds[game]}s`),streak=el('b','','0×');
  for(const [label,v] of [['POINTS',points],['TIME',time],[game==='eli'?'STREAK':'COMBO',streak]]){const group=el('div');group.append(el('small','',label),v);stats.append(group);}
@@ -70,9 +70,14 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundTo
  const keyup=e=>held.delete(e.key);document.addEventListener('keydown',keydown);document.addEventListener('keyup',keyup);
  const visibility=()=>{if(document.hidden&&['playing','loading'].includes(phase))retry('Welcome back. Restart this round with the music.');};document.addEventListener('visibilitychange',visibility);
  function shirt(x,y,size,kind){const img=art.merch;if(!img)return;const w=img.width/3;g.drawImage(img,w*kind,0,w,img.height,x-size/2,y-size/2,size,size*img.height/w);}
- function sandal(x,y,bag=false){const im=art.items;if(!im)return;const w=im.width/2;g.save();g.translate(x,y);g.rotate(reduced?0:Math.sin(y/55)*.12);g.drawImage(im,bag?w:0,0,w,im.height,-30,-30,60,60*im.height/w);g.restore();}
+ function record(x,y,hype=false){
+  g.save();g.translate(x,y);g.rotate(reduced?0:Math.sin(y/55)*.12);
+  if(hype){g.fillStyle='#7c303c';g.fillRect(-28,-23,56,46);g.fillStyle='#fff';g.font='bold 12px monospace';g.textAlign='center';g.fillText('HYPE',0,4);}
+  else{g.fillStyle='#101322';g.beginPath();g.arc(0,0,30,0,Math.PI*2);g.fill();g.strokeStyle='#616a82';g.lineWidth=1;for(const r of [20,25]){g.beginPath();g.arc(0,0,r,0,Math.PI*2);g.stroke();}g.fillStyle='#f3d654';g.beginPath();g.arc(0,0,10,0,Math.PI*2);g.fill();g.fillStyle='#121627';g.font='bold 7px monospace';g.textAlign='center';g.fillText('4',0,3);}
+  g.restore();
+ }
  function scene(t,dt){
-  const bg=g.createLinearGradient(0,0,0,560);bg.addColorStop(0,game==='steven'?'#f0a272':'#13263a');bg.addColorStop(1,'#07131e');g.fillStyle=bg;g.fillRect(0,0,420,560);if(art[game+'Bg']){g.drawImage(art[game+'Bg'],0,0,420,560);g.fillStyle='#07131e33';g.fillRect(0,0,420,560);}
+  const bg=g.createLinearGradient(0,0,0,560);bg.addColorStop(0,game==='brenno'?'#f0a272':'#13263a');bg.addColorStop(1,'#07131e');g.fillStyle=bg;g.fillRect(0,0,420,560);if(art[game+'Bg']){g.drawImage(art[game+'Bg'],0,0,420,560);g.fillStyle='#07131e33';g.fillRect(0,0,420,560);}
   if(game==='eli'){
    bassGlow=Math.max(0,bassGlow-dt*3);
    drawBeatBoard(g,{height:canvas.height,art,time:t,phase,notes,reduced,combo,bass:enabled?bassGlow:0,flashes:laneFlashes});
@@ -82,29 +87,29 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundTo
    callout.hidden=phase!=='playing'||t>=feedbackUntil;
    const a=audio.analyser;if(a&&phase==='playing'){a.getFloatFrequencyData(bins);const hz=audio.sampleRate/a.fftSize;let power=0,count=0;for(let i=Math.ceil(35/hz);i<=Math.floor(170/hz);i++){power+=10**(bins[i]/10);count++;}if(detector.sample(Math.sqrt(power/Math.max(1,count)),t*1000)){pulse.hit();bassGlow=1;host.dataset.bassHits=String(Number(host.dataset.bassHits||0)+1);}}
   }else{
-   if(game==='steven'){
+   if(game==='brenno'){
     g.textAlign='center';g.font='bold 23px monospace';g.fillStyle='#fff7e1';g.fillText('BRING YOUR PEOPLE',210,40);
-   }else if(game==='chamblissnation'){
-    if(art.logo)g.drawImage(art.logo,45,16,330,97);g.fillStyle='#f5ddaf';g.font='bold 10px monospace';g.textAlign='center';g.fillText('YOUR PEOPLE MY PEOPLE WE FAMILY',210,130);
+   }else if(game==='apollo'){
+    if(art.logo)g.drawImage(art.logo,174,14,72,72);g.fillStyle='#f5ddaf';g.font='bold 10px monospace';g.textAlign='center';g.fillText('APOLLO RECORDS · NOT 4 SALE',210,130);
 
    }else{
-    g.fillStyle='#07131ec9';g.fillRect(50,16,320,70);g.fillStyle='#ffcf76';g.font='bold 28px monospace';g.textAlign='center';g.fillText('BIRKENSTOCK',210,46);g.font='12px monospace';g.fillStyle='#f5e8ce';g.fillText('MORE SOLE. LESS STATUS.',210,70);
+    g.fillStyle='#07131ec9';g.fillRect(50,16,320,70);g.fillStyle='#ffcf76';g.font='bold 28px monospace';g.textAlign='center';g.fillText('RECORD RUN',210,46);g.font='12px monospace';g.fillStyle='#f5e8ce';g.fillText('ALL CREW. NO HYPE.',210,70);
    }
-   for(const n of notes){if(n.done)continue;const drop=game==='chamblissnation'?merchDrop(n,t):{x:n.x,y:430-(n.at-t)*170},y=drop.y;
-    if(y>=140&&y<=520){if(game==='joz')sandal(drop.x,y);else if(game==='steven')drawPerson(g,drop.x,y,stevenFan(n.id),{scale:1.1,walking:true,frame:t*8});else {g.save();g.translate(drop.x,y-40);g.rotate(reduced?0:drop.rotation);shirt(0,0,102,n.kind);g.restore();}}
+   for(const n of notes){if(n.done)continue;const drop=game==='apollo'?merchDrop(n,t):{x:n.x,y:430-(n.at-t)*170},y=drop.y;
+    if(y>=140&&y<=520){if(game==='marty')record(drop.x,y);else if(game==='brenno')drawPerson(g,drop.x,y,brennoFan(n.id),{scale:1.1,walking:true,frame:t*8});else {g.save();g.translate(drop.x,y-40);g.rotate(reduced?0:drop.rotation);shirt(0,0,102,n.kind);g.restore();}}
     // Judge even after a slow phone skips past the visible catch line.
-    if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<(game==='chamblissnation'?merchCatch.hit:52),Math.abs(px-n.x)<(game==='chamblissnation'?merchCatch.clean:23));
+    if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<(game==='apollo'?merchCatch.hit:52),Math.abs(px-n.x)<(game==='apollo'?merchCatch.clean:23));
    }
-   if(game==='joz')for(let i=0;i<7;i++){const at=3.1+i*2.4,y=430-(at-t)*170,x=60+(i*133)%300;if(y>120&&y<480)sandal(x,y,true);if(t>=at&&t-dt<at&&Math.abs(px-x)<40){combo=0;streak.textContent='0×';report('BAGS? LET THEM PASS.','#ff987f');}}
-   if(game==='chamblissnation'){g.fillStyle='#e2c197';g.strokeStyle='#c19b65';g.lineWidth=5;g.strokeRect(px-23,454,46,35);g.fillRect(px-42,475,84,65);g.fillStyle='#403323';g.font='bold 7px monospace';g.textAlign='center';g.fillText('@thekingdomcircuit',px,509);}
+   if(game==='marty')for(let i=0;i<7;i++){const at=3.1+i*2.4,y=430-(at-t)*170,x=60+(i*133)%300;if(y>120&&y<480)record(x,y,true);if(t>=at&&t-dt<at&&Math.abs(px-x)<40){combo=0;streak.textContent='0×';report('HYPE? LET IT PASS.','#ff987f');}}
+   if(game==='apollo'){g.fillStyle='#e2c197';g.strokeStyle='#c19b65';g.lineWidth=5;g.strokeRect(px-23,454,46,35);g.fillRect(px-42,475,84,65);g.fillStyle='#403323';g.font='bold 7px monospace';g.textAlign='center';g.fillText('@thekingdomcircuit',px,509);}
    else {
-    if(game==='steven'){
+    if(game==='brenno'){
      const crew=collectedFans(events);
-     // Keep the people actually caught, in a moving crew behind Steven.
+     // Keep the people actually caught, in a moving crew behind Brenno.
      crew.map((who,i)=>({who,i})).reverse().forEach(({who,i})=>{const row=Math.floor(i/7),slot=i%7,center=Math.max(130,Math.min(290,px)),offset=slot===6?0:(slot%2?1:-1)*(46+Math.floor(slot/2)*28);drawPerson(g,center+offset,535-row*22,who,{scale:1.5-row*.12,walking:Math.abs(target-px)>2,frame:t*8+i});});
      if(crew.length){g.fillStyle='#0b1928de';g.fillRect(125,88,170,28);g.fillStyle='#ffcf76';g.textAlign='center';g.font='bold 14px monospace';g.fillText(`${crew.length} IN YOUR CREW`,210,107);}
     }
-    drawPerson(g,px,546,game==='joz'?'singer':'mc',{scale:2.3,walking:Math.abs(target-px)>2||game==='steven',frame:t*8});
+    drawPerson(g,px,546,game==='marty'?'marty':'brenno',{scale:2.3,walking:Math.abs(target-px)>2||game==='brenno',frame:t*8});
    }
    g.strokeStyle='#7ed9b1';g.lineWidth=2;g.beginPath();g.ellipse(px,550,41,6,0,0,7);g.stroke();
   }

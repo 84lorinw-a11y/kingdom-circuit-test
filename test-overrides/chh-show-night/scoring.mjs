@@ -1,14 +1,14 @@
 // The same twenty opportunities and 40 + 10 rule apply to every game.
 export const ROUND_MAX=1000, OPPORTUNITIES=20;
-export const gameIds=['eli','joz','steven','chamblissnation'];
-export const gameNames={eli:'Eli',joz:'Joz',steven:'Steven',chamblissnation:'Chamblissnation'};
-export const roundSeconds={eli:26,joz:21,steven:21,chamblissnation:25};
+export const gameIds=['eli','marty','brenno','apollo'];
+export const gameNames={eli:'Eli',marty:'Marty',brenno:'Brenno',apollo:'Apollo merch'};
+export const roundSeconds={eli:26,marty:21,brenno:21,apollo:25};
 export function roundSchedule(id,seed=1){
  let n=seed>>>0;const random=()=>{n=(Math.imul(1664525,n)+1013904223)>>>0;return n/4294967296;};
  const first=id==='eli'?2.58:2.3,step=id==='eli'?120/104:(roundSeconds[id]-first-1.4)/19;
  return Array.from({length:20},(_,i)=>{
   const lane=Math.floor(random()*4),position=random();
-  return {id:i,at:first+i*step,lane,x:id==='chamblissnation'?(i%2?265:65)+position*90:65+position*290,kind:i%3};
+  return {id:i,at:first+i*step,lane,x:id==='apollo'?(i%2?265:65)+position*90:65+position*290,kind:i%3};
  });
 }
 export function roundScore(events){
