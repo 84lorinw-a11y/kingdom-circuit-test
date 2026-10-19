@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=mobile-29';
+import {drawPerson} from './sprites.mjs?v=totals-31';
 export const practiceSpot={x:512,y:475};
 export function drawPracticeBooth(ctx,time=0,booth){
  const x=512,y=363;

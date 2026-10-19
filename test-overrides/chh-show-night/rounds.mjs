@@ -1,10 +1,10 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=mobile-29';
-import {merchTrack} from './music-config.mjs?v=mobile-29';
-import {stevenFan,collectedFans} from './crowds.mjs?v=mobile-29';
-import {drawPerson} from './sprites.mjs?v=mobile-29';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=mobile-29';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=mobile-29';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=mobile-29';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=totals-31';
+import {merchTrack} from './music-config.mjs?v=totals-31';
+import {stevenFan,collectedFans} from './crowds.mjs?v=totals-31';
+import {drawPerson} from './sprites.mjs?v=totals-31';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=totals-31';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=totals-31';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=totals-31';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
 const instructions={eli:'Tap the matching pad when the letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag the tote left and right. Catch the fast shirts in the middle!'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};

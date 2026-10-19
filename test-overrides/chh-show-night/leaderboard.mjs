@@ -1,6 +1,6 @@
-import {score,journeyScore,act} from './state.mjs?v=mobile-29';
-import {gameIds} from './scoring.mjs?v=mobile-29';
-import {createGoogleScores} from './google-scores.mjs?v=mobile-29';
+import {score,journeyScore,act} from './state.mjs?v=totals-31';
+import {gameIds} from './scoring.mjs?v=totals-31';
+import {createGoogleScores} from './google-scores.mjs?v=totals-31';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
 export async function confirmSessionSave(state,online,{localSaved=true}={}){

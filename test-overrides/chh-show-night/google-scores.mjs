@@ -1,4 +1,4 @@
-import {act} from './state.mjs?v=mobile-29';
+import {act} from './state.mjs?v=totals-31';
 
 // Apps Script accepts a simple text POST, avoiding unsupported CORS preflight.
 // Tokens stay on this device; the sheet contains only their SHA-256 identifiers.

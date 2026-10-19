@@ -1,5 +1,5 @@
-import {stageTracks} from './music-config.mjs?v=mobile-29';
-import {createStagePlayback} from './stage-audio.mjs?v=mobile-29';
+import {stageTracks} from './music-config.mjs?v=totals-31';
+import {createStagePlayback} from './stage-audio.mjs?v=totals-31';
 export const stageSpots=[
  {id:'steven',x:335,y:475,label:'Steven · OUTSIDE',tag:'STEVEN · OUTSIDE'},
  {id:'joz',x:720,y:475,label:'Joz · BIRKENSTOCK',tag:'JOZ · BIRKENSTOCK'}

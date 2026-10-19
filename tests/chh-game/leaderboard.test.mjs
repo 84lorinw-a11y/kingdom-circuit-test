@@ -13,7 +13,7 @@ test('Exit confirmation waits for the shared save and never labels offline point
  assert.equal((await confirmSessionSave(state,{enabled:true,connect:async()=>{throw Error('offline');}})).status,'waiting');
  assert.equal((await confirmSessionSave(state,{enabled:false},{localSaved:false})).status,'unsaved');
 });
-test('The scoreboard puts all four games and journey before the final Total column',()=>{assert.deepEqual(scoreColumns.map(c=>c[0]),['rank','nickname','eli','joz','steven','chamblissnation','journey','total']);});
+test('The public scoreboard shows only player and total',()=>{assert.deepEqual(scoreColumns.map(c=>c[0]),['nickname','total']);});
 test('Device storage preserves every named player, best whole sessions, and a legacy best score',async()=>{
  const storage=memory(),legacy={nickname:'Earlier Fan',sessionId:'old',total:90,eli:0,joz:90,steven:0,chamblissnation:0,journey:0};storage.setItem('kc-show-night-scores-v2',JSON.stringify({playerId:'device-a',best:legacy}));
  const store=createScoreStore(storage);store.record(profile('River','river-1'));store.record(profile('Sky','sky-1'));store.record({...profile('River','river-2'),totals:{eli:100,joz:200,steven:0,chamblissnation:0}});store.record({...profile('River','river-3'),totals:{eli:200,joz:0,steven:0,chamblissnation:0}});
