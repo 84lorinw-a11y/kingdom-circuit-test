@@ -1,13 +1,19 @@
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=save-28';
-import {merchTrack} from './music-config.mjs?v=save-28';
-import {stevenFan,collectedFans} from './crowds.mjs?v=save-28';
-import {drawPerson} from './sprites.mjs?v=save-28';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=save-28';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=save-28';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=save-28';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=mobile-29';
+import {merchTrack} from './music-config.mjs?v=mobile-29';
+import {stevenFan,collectedFans} from './crowds.mjs?v=mobile-29';
+import {drawPerson} from './sprites.mjs?v=mobile-29';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=mobile-29';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=mobile-29';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=mobile-29';
 const titles={eli:'B–I–B–L–E',joz:'SOLE PURPOSE',steven:'WE OUTSIDE',chamblissnation:'FAMILY HAUL'};
 const instructions={eli:'Tap the matching pad when the letter hits the gold line.',joz:'Drag Joz. Catch the sandals. Let the bags pass.',steven:'Drag Steven. Bring people into the crew. We outside!',chamblissnation:'Drag the tote left and right. Catch the fast shirts in the middle!'};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
+// Download/decode while the score service prepares the verified round. No audio starts early.
+export async function prepareRoundStart(audio,online,game){
+ const music=Promise.all([audio.unlock(),audio.preload(game)]);
+ const ticket=Promise.resolve().then(()=>online?.start(game)).catch(()=>null);
+ const [,ready]=await Promise.all([music,ticket]);return ready;
+}
 export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundToggle,autostart=true}){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  let disposed=false,phase='ready',raf=0,elapsed=0,started=0,last=0,px=210,target=210,notes=[],events=[],particles=[],roundId='',seed=1,run=0,ranked=false,combo=0,feedback='',feedbackUntil=0,lastAudioProgress=0,bassGlow=0,laneFlashes=[0,0,0,0],held=new Set();
@@ -37,9 +43,8 @@ export function mountRound(host,{game,audio,art,online,onFinish,onExit,onSoundTo
  }
  function tap(lane){if(phase!=='playing')return;const hit=judgeBeat(notes,lane,audio.time);if(hit)settle(hit.note,true,hit.perfect);else report('WAIT FOR THE GOLD LINE','#ffcf76',lane*105+52.5);}
  async function begin(){
-  const token=++run;phase='loading';host.dataset.phase=phase;start.disabled=true;start.textContent='Loading music…';results.textContent='';back.hidden=true;
-  audio.unlock().catch(()=>{});
-  try{const ticket=await online?.start(game).catch(()=>null);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
+  const token=++run;phase='loading';host.dataset.phase=phase;start.disabled=true;start.textContent='Getting ready…';results.textContent='';back.hidden=true;
+  try{const ticket=await prepareRoundStart(audio,online,game);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
    roundId=ticket?.id||crypto.randomUUID();seed=crypto.getRandomValues(new Uint32Array(1))[0];notes=roundSchedule(game,seed);events=[];particles=[];combo=0;px=target=210;elapsed=0;feedback='';feedbackUntil=0;bassGlow=0;laneFlashes=[0,0,0,0];callout.hidden=true;host.dataset.bassHits='0';detector.reset();points.textContent='0';streak.textContent=game==='eli'?'0':'0×';phase='playing';host.dataset.phase=phase;overlay.hidden=true;started=performance.now();last=lastAudioProgress=started;canvas.focus({preventScroll:true});
   }catch{if(disposed||token!==run)return;retry('Tap Start Game to turn on the music.');}
  }

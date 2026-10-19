@@ -48,3 +48,13 @@ test('Sound effects use the same working context and obey master mute',async()=>
  const a=createRoundAudio();await a.unlock();a.effect();assert.equal(effects,3);await a.play('joz');a.effect('step');assert.equal(effects,4);assert.equal(env.contexts,1);
  a.setMuted(true);a.effect();assert.equal(effects,4);a.stop();
 });
+
+test('Background warmup downloads each approved excerpt once, plays nothing, and instant replay reuses it',async()=>{
+ const env=setup(),requests=[];const a=createRoundAudio({fetchAudio:async src=>{requests.push(src);return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
+ await a.warmup();await a.warmup();assert.equal(new Set(requests).size,4);assert.equal(requests.length,4);assert.equal(env.plays,0);
+ await a.play('eli');await a.play('joz');await a.play('steven');await a.play('chamblissnation');assert.equal(requests.length,4);assert.equal(env.plays,4);a.stop();
+});
+test('One failed warmup song cannot block the others or prevent a later retry',async()=>{
+ setup();let fail=true,requests=0;const a=createRoundAudio({fetchAudio:async src=>{requests++;if(src.includes('birkenstock')&&fail)throw Error('offline');return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
+ const warm=await a.warmup();assert.equal(warm.filter(r=>r.status==='fulfilled').length,3);fail=false;await a.play('joz');assert.equal(requests,5);a.stop();
+});

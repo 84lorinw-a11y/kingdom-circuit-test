@@ -1,24 +1,25 @@
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=save-28';
-import {drawPerson,loadPeople} from './sprites.mjs?v=save-28';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=save-28';
-import {createCelebration} from './celebration.mjs?v=save-28';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=save-28';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=save-28';
-import {mountRound} from './rounds.mjs?v=save-28';
-import {createRoundAudio} from './round-audio.mjs?v=save-28';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=save-28';
-import {createScoreTable} from './scoreboard-view.mjs?v=save-28';
-import {gameIds,gameNames} from './scoring.mjs?v=save-28';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=save-28';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=save-28';
-import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=save-28';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=save-28';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=save-28';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=save-28';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=save-28';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=mobile-29';
+import {drawPerson,loadPeople} from './sprites.mjs?v=mobile-29';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=mobile-29';
+import {createCelebration} from './celebration.mjs?v=mobile-29';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=mobile-29';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=mobile-29';
+import {mountRound} from './rounds.mjs?v=mobile-29';
+import {createRoundAudio} from './round-audio.mjs?v=mobile-29';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=mobile-29';
+import {createScoreTable} from './scoreboard-view.mjs?v=mobile-29';
+import {gameIds,gameNames} from './scoring.mjs?v=mobile-29';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=mobile-29';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=mobile-29';
+import {practiceSpot,drawPracticeBooth} from './practice-booth.mjs?v=mobile-29';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots} from './worship.mjs?v=mobile-29';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=mobile-29';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=mobile-29';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=mobile-29';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const scoreStore=createScoreStore(),onlineScores=createOnlineScores();let atFront=null;
-const unlockAudio=e=>{if(e.isTrusted)roundAudio.unlock().catch(()=>{});};
+let musicWarmed=false;
+const unlockAudio=e=>{if(e.isTrusted){roundAudio.unlock().catch(()=>{});if(!musicWarmed){musicWarmed=true;roundAudio.warmup();}}};
 for(const event of ['pointerdown','pointerup','touchend','click','keydown'])document.addEventListener(event,unlockAudio,{capture:true,passive:true});
 const storageKey='kc-show-night-v1', W=1024,H=683;
 let state;try{state=restore(localStorage.getItem(storageKey));}catch{state=initialState();}
@@ -66,7 +67,7 @@ function hotspots(){
 }
 function renderDestinations(){const wrap=$('#destinations'),next=nextStop(state);wrap.replaceChildren();hotspots().forEach(h=>{const b=document.createElement('button'),visited=hasVisited(state,h.id);b.textContent=h.label;b.dataset.destination=h.id;b.classList.toggle('done',visited);b.classList.toggle('unvisited',!visited);b.classList.toggle('next-stop',next===h.id);b.setAttribute('aria-label',`${h.label}${next===h.id?' — next stop':!visited?' — not visited':''}`);b.onclick=()=>goTo(h);wrap.append(b);});}
 function goTo(h){if(photoBusy||dialog.open)return;endBreak();keys.clear();autoAction=h;route=findPath(state.room,state,h);
- const track=h.action==='dj'?'eli':h.action==='merch'?'chamblissnation':h.action==='artist'?h.id:null;if(track)roundAudio.preload(track).catch(()=>{});
+ const track=h.action==='dj'?'eli':h.action==='merch'?'chamblissnation':h.action==='artist'?h.id:null;if(track){roundAudio.preload(track).catch(()=>{});onlineScores.prepare?.(track).catch(()=>{});}
  if(!route.length){autoAction=null;notify('Choose a spot on the open floor.');return;}
  notify(`Walking to ${h.label.toLowerCase().replace(' ✓','')}…`);canvas.focus({preventScroll:true});
 }
@@ -306,7 +307,7 @@ async function openBoard(){
  const status=document.createElement('p');status.className='score-status';status.setAttribute('role','status');status.textContent='Loading players…';
  const host=document.createElement('div');host.className='board';const row=scoreStore.record(state);
  const current=document.createElement('p');current.className='score-current';current.textContent=`Your current session · ${row.nickname} · ${row.total.toLocaleString()} points`;
- const swipe=document.createElement('p');swipe.className='score-swipe';swipe.textContent='Best session = your highest whole-night total, including replays. Before leaving: ☰ → Save & Exit. Swipe for artist scores →';
+ const swipe=document.createElement('p');swipe.className='score-swipe';swipe.textContent='Best whole night, including replays. Before leaving: ☰ → Save & Exit.';
  const more=document.createElement('button');more.className='score-more';more.textContent='SHOW MORE PLAYERS';more.hidden=true;
  const share=document.createElement('button');share.textContent='SHARE MY SCORE';share.onclick=()=>shareScore(row);actions.prepend(share);
  content.replaceChildren(header,status,current,swipe,host,more,actions);
@@ -317,7 +318,7 @@ async function openBoard(){
    const board=await(onlineScores.enabled?onlineScores.board(offset):scoreStore.board());if(!host.isConnected)return;
    if(!table){table=createScoreTable(board.mode==='online'?'All players · best session':'Players saved on this device');host.append(table.element);}
    table.append(board.rows);loaded+=board.rows.length;nextOffset=board.nextOffset;
-   status.textContent=board.mode==='online'?`${board.totalPlayers.toLocaleString()} players · Highest total first · Showing ${loaded.toLocaleString()}`:'Shared scores are not connected yet. These players are saved only in this browser.';
+   status.textContent=board.mode==='online'?`${board.totalPlayers.toLocaleString()} players · Highest total first${board.totalPlayers>loaded?` · Showing ${loaded.toLocaleString()}`:''}`:'Shared scores are not connected yet. These players are saved only in this browser.';
    if(onlineScores.pendingCount)status.textContent+=` · ${onlineScores.pendingCount} round(s) waiting to save. We’ll retry automatically.`;
    if(onlineScores.rejectedCount)status.textContent+=` · ${onlineScores.rejectedCount} earlier round(s) could not be verified and remain on this device.`;
    if(!board.rows.length&&!loaded){const empty=document.createElement('p');empty.className='score-empty';empty.textContent='Be the first to start a night.';host.append(empty);}

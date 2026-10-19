@@ -1,4 +1,4 @@
-import {act} from './state.mjs?v=save-28';
+import {act} from './state.mjs?v=mobile-29';
 
 // Apps Script accepts a simple text POST, avoiding unsupported CORS preflight.
 // Tokens stay on this device; the sheet contains only their SHA-256 identifiers.
@@ -6,7 +6,7 @@ export function createGoogleScores(storage,{base,fetcher=fetch,timeoutMs=12000,s
  const prefix='kc-google-scores-v1:'+base;
  const read=(key,fallback)=>{try{return JSON.parse(storage.getItem(prefix+key))??fallback;}catch{return fallback;}};
  const write=(key,value)=>{try{storage.setItem(prefix+key,JSON.stringify(value));}catch{}};
- let profiles=read(':profiles',{}),pending=read(':pending',[]),rejected=read(':rejected',[]),latest=null,queue=Promise.resolve(),retryTimer=null;
+ let profiles=read(':profiles',{}),pending=read(':pending',[]),rejected=read(':rejected',[]),latest=null,queue=Promise.resolve(),retryTimer=null,journeyJob=null,prepared=null;
  const enqueue=work=>(queue=queue.catch(()=>{}).then(work));
  const snapshot=()=>structuredClone(latest);
  function identity(state) {
@@ -49,11 +49,32 @@ export function createGoogleScores(storage,{base,fetcher=fetch,timeoutMs=12000,s
   }
  }
  function connectState(state) {return request('/session',{sessionId:state.sessionId,nickname:state.name,journey:journey(state)},identity(state));}
+ function sameSession(a,b){return a?.sessionId===b?.sessionId&&a?.name===b?.name;}
+ function startRound(current,game){
+  // The start request already carries the latest journey; skip redundant queued writes.
+  if(journeyJob&&sameSession(journeyJob.state,current)){journeyJob.skip=true;journeyJob=null;}
+  const roundId=crypto.randomUUID();
+  return enqueue(async()=>{await flush();return request('/start',{sessionId:current.sessionId,nickname:current.name,journey:journey(current),game,roundId},identity(current));});
+ }
  const service={
   enabled:true,base,get pendingCount(){return pending.length;},get rejectedCount(){return rejected.length;},
   connect(state){latest=structuredClone(state);const current=snapshot();return enqueue(async()=>{await flush();return connectState(current);});},
-  journey(action,value){if(!latest)return;latest=act(latest,action,value);const current=snapshot();enqueue(()=>connectState(current)).catch(()=>{});},
-  start(game){if(!latest)return Promise.resolve(null);const current=snapshot(),roundId=crypto.randomUUID();return enqueue(async()=>{await flush();return request('/start',{sessionId:current.sessionId,nickname:current.name,journey:journey(current),game,roundId},identity(current));});},
+  journey(action,value){
+   if(!latest)return;latest=act(latest,action,value);const current=snapshot();
+   if(journeyJob&&sameSession(journeyJob.state,current)){journeyJob.state=current;return;}
+   const job={state:current,skip:false};journeyJob=job;
+   enqueue(async()=>{if(journeyJob===job)journeyJob=null;if(!job.skip)return connectState(job.state);}).catch(()=>{});
+  },
+  prepare(game){
+   if(!latest)return Promise.resolve(null);const current=snapshot();
+   if(prepared?.game===game&&sameSession(prepared.state,current))return prepared.promise;
+   const item={game,state:current,promise:startRound(current,game)};prepared=item;
+   item.promise.catch(()=>{if(prepared===item)prepared=null;});return item.promise;
+  },
+  start(game){
+   if(!latest)return Promise.resolve(null);const current=snapshot(),item=prepared;prepared=null;
+   return item?.game===game&&sameSession(item.state,current)?item.promise:startRound(current,game);
+  },
   finish(result){if(!latest)return Promise.reject(Error('No active score session'));const current=snapshot();if(!pending.some(entry=>entry.result.id===result.id)){pending.push({sessionId:current.sessionId,token:identity(current),result:structuredClone(result)});write(':pending',pending);}return enqueue(flush);},
   board(offset=0){return enqueue(async()=>{try{await flush();}catch{}return request('/scores',{offset,limit:50});});},
   retry(){return enqueue(flush);},

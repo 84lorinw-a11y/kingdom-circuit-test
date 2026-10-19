@@ -93,7 +93,7 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .score-dialog #dialog-content{display:flex;flex-direction:column;min-width:0;max-height:calc(100dvh - 72px);gap:14px}
 .score-dialog .score-header,.score-dialog .score-status,.score-dialog .score-current,.score-dialog .dialog-actions,.score-dialog .score-more{flex-shrink:0}
 .score-dialog .board{display:flex;flex-direction:column;min-height:0;flex:1}
-.score-swipe{display:none;margin:0!important;font-size:10px!important;color:#aebfcd;flex-shrink:0}
+.score-swipe{display:block;margin:0!important;font-size:10px!important;color:#aebfcd;flex-shrink:0}
 .score-dialog .score-current{margin:0;padding:10px 12px;border:1px solid #2f5c58;border-radius:6px;background:#15322f;color:var(--mint);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
 .score-table-wrap{max-width:100%;overflow:auto;border:1px solid #30465a;border-radius:8px;overscroll-behavior:contain;min-height:120px}
 .score-table{min-width:700px;width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-variant-numeric:tabular-nums}
@@ -127,3 +127,27 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .break-status button{background:#a6e8ee;color:#0b2430;font:700 10px/1.3 ui-monospace,monospace;padding:10px;min-height:44px;min-width:70px;border-radius:5px}
 @media(prefers-reduced-motion:reduce){.destinations button.unvisited{animation:none}}
 @media(max-height:500px){.objective{display:flex;height:30px;min-height:30px;flex-basis:30px}.objective p{font-size:10px}.break-status{top:6px;padding:8px}}
+
+/* Every artist stays visible on phones; each ranked table row becomes a score card. */
+@media(max-width:760px){
+ .score-dialog{padding:14px}
+ .score-dialog #dialog-content{max-height:calc(100dvh - 56px);gap:10px}
+ .score-table-wrap{overflow-x:hidden;overflow-y:auto;background:#081725}
+ .score-table{display:block;min-width:0;table-layout:auto}
+ .score-table caption{display:block;padding:10px 12px}
+ .score-table thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .score-table tbody{display:grid;gap:10px;padding:10px}
+ .score-table tbody tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #3b5265;border-radius:8px;overflow:hidden;background:#102334}
+ .score-table tbody tr:nth-child(even){background:#142a3c}
+ .score-table tbody tr>*{position:static!important;min-width:0!important;max-width:none!important;width:auto!important;padding:9px 10px!important;border:0;text-align:left;white-space:normal;overflow-wrap:anywhere}
+ .score-table tbody [data-score=rank]{grid-column:span 1;color:#ffcb6c;font-size:13px;background:#20394b}
+ .score-table tbody [data-score=nickname]{grid-column:span 3;font:bold 15px system-ui,sans-serif;background:#20394b;align-content:center}
+ .score-table tbody td:not([data-score=rank]){grid-column:span 2;font-size:16px;font-weight:bold;border-top:1px solid #2c4356}
+ .score-table tbody td::before{content:attr(data-label);display:block;font:11px system-ui,sans-serif;color:#a9c5d4;margin-bottom:3px}
+ .score-table tbody .score-final{background:#244334;color:#ffdc94;border-left:0}
+ .score-table tbody .score-final::before{color:#bde9d2}
+ .score-dialog .score-current{padding:8px 10px;font-size:11px}
+ .score-dialog .score-status{font-size:12px;margin:0}
+ .score-dialog .dialog-actions{gap:8px}
+ .score-dialog .dialog-actions button{font-size:10px;padding:12px 8px}
+}

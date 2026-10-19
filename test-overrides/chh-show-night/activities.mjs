@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=save-28';
+import {drawPerson} from './sprites.mjs?v=mobile-29';
 
 const make=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text)el.textContent=text;return el;};
 const button=(label,fn,cls='')=>{const b=make('button',cls,label);b.type='button';b.onclick=fn;return b;};

@@ -98,3 +98,33 @@ test('A permanently rejected round stays local without trapping later replays',a
  const next=await client.start('joz');time+=30_000;await client.finish({id:next.id,game:'joz',events:events(true)});
  assert.equal((await client.board()).rows[0].joz,1000);client.dispose();
 });
+
+test('Rapid journey updates coalesce without losing any progress',async()=>{
+ const calls=[],b=backend();let release;
+ const client=createGoogleScores(memory(),{base:'https://script.google.com/macros/s/test/exec',fetcher:async(_,request)=>{
+  const sent=JSON.parse(request.body);calls.push(sent);
+  if(calls.length===1)await new Promise(r=>{release=r;});
+  return {ok:true,json:async()=>b.call(sent.path,sent.body,sent.token)};
+ }});
+ const initial={...current(),friends:[],entered:false,worship:false,photo:false,room:'outside'};
+ const connecting=client.connect(initial);await new Promise(r=>setImmediate(r));
+ client.journey('invite','jay');client.journey('invite','grace');client.journey('enter');release();await connecting;
+ const board=await client.board();assert.equal(board.rows[0].journey,30);
+ assert.equal(calls.filter(c=>c.path==='/session').length,2);assert.deepEqual(calls[1].body.journey.friends,['jay','grace']);assert.equal(calls[1].body.journey.entered,true);client.dispose();
+});
+test('Preparing on the walk reuses one verified ticket; replay gets a fresh ticket',async()=>{
+ const b=backend(),calls=[];const client=createGoogleScores(memory(),{base:'https://script.google.com/macros/s/test/exec',fetcher:async(_,request)=>{const sent=JSON.parse(request.body);calls.push(sent);return {ok:true,json:async()=>b.call(sent.path,sent.body,sent.token)};}});
+ await client.connect(current());const first=client.prepare('eli');assert.equal(first,client.prepare('eli'));
+ const ticket=await first;assert.equal((await client.start('eli')).id,ticket.id);assert.equal(calls.filter(c=>c.path==='/start').length,1);
+ assert.notEqual((await client.start('eli')).id,ticket.id);assert.equal(calls.filter(c=>c.path==='/start').length,2);client.dispose();
+});
+test('A new game or player never consumes another prepared ticket and latest journey is included',async()=>{
+ const b=backend(),calls=[];const client=createGoogleScores(memory(),{base:'https://script.google.com/macros/s/test/exec',fetcher:async(_,request)=>{const sent=JSON.parse(request.body);calls.push(sent);return {ok:true,json:async()=>b.call(sent.path,sent.body,sent.token)};}});
+ await client.connect(current());const old=await client.prepare('eli');const next=await client.start('joz');assert.notEqual(next.id,old.id);assert.equal(calls.at(-1).body.game,'joz');
+ await client.prepare('eli');await client.connect(current('Sky',uuid(2)));const nextPlayer=await client.start('eli');assert.equal(calls.at(-1).body.nickname,'Sky');assert.equal(calls.at(-1).body.sessionId,uuid(2));assert.notEqual(nextPlayer.id,old.id);client.dispose();
+});
+test('Start absorbs an unsent journey update instead of waiting for an extra Google write',async()=>{
+ const b=backend(),calls=[];const client=createGoogleScores(memory(),{base:'https://script.google.com/macros/s/test/exec',fetcher:async(_,request)=>{const sent=JSON.parse(request.body);calls.push(sent);return {ok:true,json:async()=>b.call(sent.path,sent.body,sent.token)};}});
+ await client.connect({...current(),photo:false,worship:false});client.journey('worship');await client.start('eli');
+ assert.deepEqual(calls.map(c=>c.path),['/session','/start']);assert.equal(calls.at(-1).body.journey.worship,true);client.dispose();
+});
