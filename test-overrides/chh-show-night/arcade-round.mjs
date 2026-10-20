@@ -1,8 +1,8 @@
-import {artistGames,createArtistRound} from './artist-arcade.mjs?v=apollo-10';
-import {roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-10';
-import {gameTracks} from './music-config.mjs?v=apollo-10';
-import {drawScoreCard} from './round-records.mjs?v=apollo-10';
-import {drawPerson} from './sprites.mjs?v=apollo-10';
+import {artistGames,createArtistRound} from './artist-arcade.mjs?v=apollo-11';
+import {roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-11';
+import {gameTracks} from './music-config.mjs?v=apollo-11';
+import {drawScoreCard} from './round-records.mjs?v=apollo-11';
+import {drawPerson} from './sprites.mjs?v=apollo-11';
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
 const keyboard={marty:'Keys 1–3 stamp the three rows.',brenno:'Arrow keys steer.','ryan-ellis':'Up and down arrows ride the wave.','gavin-the-hotrod':'Left and right arrows change lanes.','lj-the-messenger':'Space sends an invitation.',dearis:'Arrows choose a card; Enter flips it.',tonyxtrotter:'Left and right arrows move.','andrew-prim':'Keys 1–3 sort the next asset.'};
 export function mountArtistArcade(host,{game,audio,art,records,name,onFinish,onExit,onSoundToggle}){

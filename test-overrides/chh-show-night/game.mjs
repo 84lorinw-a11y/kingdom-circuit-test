@@ -1,33 +1,33 @@
-import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-10';
-import {matchesVipCode} from './vip-access.mjs?v=apollo-10';
-import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-10';
-import {venueTrack} from './music-config.mjs?v=apollo-10';
-import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-10';
-import {artistGames} from './artist-arcade.mjs?v=apollo-10';
-import {mountArtistArcade} from './arcade-round.mjs?v=apollo-10';
-import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-10';
-import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-10';
-import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-10';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-10';
-import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-10';
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-10';
-import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-10';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-10';
-import {createCelebration} from './celebration.mjs?v=apollo-10';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-10';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-10';
-import {mountRound} from './rounds.mjs?v=apollo-10';
-import {createRoundAudio} from './round-audio.mjs?v=apollo-10';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-10';
-import {createScoreTable} from './scoreboard-view.mjs?v=apollo-10';
-import {gameIds,gameNames} from './scoring.mjs?v=apollo-10';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-10';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-10';
-import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-10';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-10';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-10';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-10';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-10';
+import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-11';
+import {matchesVipCode} from './vip-access.mjs?v=apollo-11';
+import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-11';
+import {venueTrack} from './music-config.mjs?v=apollo-11';
+import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-11';
+import {artistGames} from './artist-arcade.mjs?v=apollo-11';
+import {mountArtistArcade} from './arcade-round.mjs?v=apollo-11';
+import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-11';
+import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-11';
+import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-11';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-11';
+import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-11';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-11';
+import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-11';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-11';
+import {createCelebration} from './celebration.mjs?v=apollo-11';
+import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-11';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-11';
+import {mountRound} from './rounds.mjs?v=apollo-11';
+import {createRoundAudio} from './round-audio.mjs?v=apollo-11';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-11';
+import {createScoreTable} from './scoreboard-view.mjs?v=apollo-11';
+import {gameIds,gameNames} from './scoring.mjs?v=apollo-11';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-11';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-11';
+import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-11';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-11';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-11';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-11';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-11';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const roundRecords=createRoundRecords(localStorage);const scoreStore=createScoreStore(),onlineScores=createOnlineScores(localStorage,{base:''});let atFront=null;
 let musicWarmed=false;
@@ -407,7 +407,7 @@ dialog.addEventListener('cancel',e=>{if(playerEntryPending||!state.profileReady)
 dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&(playerEntryPending||!state.profileReady)){e.preventDefault();e.stopPropagation();}});
 dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}if(!modal.onNativeClose())return;keys.clear();dragPointer=null;canvas.focus({preventScroll:true});});
 async function start(){
- try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',apolloPoster:'apollo-official-not4sale.png',apolloBadge:'apollo-official-heart.png',apolloGlobe:'apollo-globe-screen-v1.webp',booth:'dj-booth-v12.webp',merch:'merch-apollo-v1.webp',merchExtras:'merch-extras-v1.webp',andrewBooth:'andrew-booth-v2.webp',roadies:'roadies-v1.webp',logo:'apollo-badge-v1.png',kcLogo:'kingdom-circuit-instagram.webp',martyBg:'show-apollo-v2.webp',brennoBg:'outside-apollo-v3.webp',apolloBg:'show-apollo-v2.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name==='outside'?'outside-apollo-v3':name==='vip'?'vip-apollo-v3':'show-apollo-v2'}.webp`;})));sync();requestAnimationFrame(render);openPlayerSetup({entry:true});}
+ try{await loadPeople();await Promise.all(Object.entries({venueLogo:'venue-logo-v14.webp',apolloPoster:'apollo-official-not4sale.png',apolloGlobe:'apollo-globe-screen-v1.webp',booth:'dj-booth-v12.webp',merch:'merch-apollo-v2.webp',merchExtras:'merch-extras-v1.webp',andrewBooth:'andrew-booth-v2.webp',roadies:'roadies-v1.webp',kcLogo:'kingdom-circuit-instagram.webp',martyBg:'show-apollo-v2.webp',brennoBg:'outside-apollo-v3.webp',apolloBg:'show-apollo-v2.webp'}).map(async([key,file])=>{const image=new Image();image.src=`/play/assets/${file}`;await image.decode();images[key]=image;}));await Promise.all(['outside','show','vip'].map(name=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=reject;img.src=`/play/assets/${name==='outside'?'outside-apollo-v3':name==='vip'?'vip-apollo-v3':'show-apollo-v2'}.webp`;})));sync();requestAnimationFrame(render);openPlayerSetup({entry:true});}
  catch{openDialog('The room didn’t load.','The connection was interrupted. Reload to try again; your saved progress stays on this device.',[{label:'RELOAD',fn:()=>location.reload()}],'CONNECTION CHECK');}
 }
 start();

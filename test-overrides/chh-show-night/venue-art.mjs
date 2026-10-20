@@ -1,4 +1,4 @@
-import {drawStageScreen} from './stage-screen.mjs?v=apollo-10';
+import {drawStageScreen} from './stage-screen.mjs?v=apollo-11';
 // Owner-supplied artwork, composited into the venue.
 function contain(ctx,image,x,y,w,h){
  if(!image)return;const fit=Math.min(w/image.width,h/image.height);
@@ -14,10 +14,10 @@ export function drawRoomArtwork(ctx,room,images,time=0,reduced=false){
   ctx.fillText('APOLLO',558,99);ctx.fillText('RECORDS',558,130);
   ctx.fillStyle='#d77770';ctx.font='bold 11px sans-serif';ctx.fillText('NOT 4 SALE · VIP',558,153);
  }else if(room==='outside'){
-  contain(ctx,images.apolloBadge,202,237,90,94);
-  ctx.fillStyle='#f0e5cf';ctx.font='900 12px sans-serif';
-  ctx.fillText('APOLLO',247,350);ctx.fillText('RECORDS',247,365);
-  ctx.font='bold 8px sans-serif';ctx.fillText('NOT 4 SALE',247,380);
+  ctx.save();ctx.globalCompositeOperation='screen';
+  contain(ctx,images.apolloGlobe,202,250,90,104);
+  ctx.restore();
+  ctx.fillStyle='#f0e5cf';ctx.font='bold 10px sans-serif';ctx.fillText('NOT 4 SALE',247,376);
   contain(ctx,images.apolloPoster,313,233,94,157);
   ctx.fillStyle='#eee5d4';ctx.fillRect(425,234,89,154);
   ctx.fillStyle='#1c1b1b';ctx.font='900 29px sans-serif';

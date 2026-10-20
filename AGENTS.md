@@ -1,5 +1,10 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 Apollo logo replacement (latest owner direction)
+
+- TEST only. Replace the old cartoon child/heart badge everywhere with the approved white Apollo bird-and-globe logo. Use the same bird mark in the header, exterior poster, merchandise and Jay's shirt in every pose. Keep NOT 4 SALE and the separate red concert artwork.
+- Remove the old badge images and superseded shirt/character atlases from the published inventory, not just their visible references. Preserve approved artist faces, outfits, player choices, games and room placements.
+
 ## October 19 stage screen and equal marquee names (latest owner direction)
 
 - TEST only. A large LED screen behind the performers cycles slowly between the supplied Not 4 Sale artwork, NOT 4 SALE lettering and the supplied Apollo globe-and-dove logo. Keep a permanent large APOLLO RECORDS banner above. Use restrained crossfades and a static cover for reduced motion. The red artwork is the current cover placeholder pending owner confirmation; do not invent an album cover.

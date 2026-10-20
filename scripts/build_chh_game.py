@@ -57,6 +57,10 @@ def verify(site: Path) -> dict:
         assert (site / f'play/assets/apollo-{artist}-v1.webp').is_file()
     for name in expected:
         assert not any(old in name for old in ('chambliss', 'artist-joz', 'artist-steven', 'music/joz', 'music/outside-steven')), 'Legacy artist media in Apollo build'
+        assert PurePosixPath(name).name not in {
+            'apollo-badge-v1.png', 'apollo-official-heart.png',
+            'merch-apollo-v1.webp', 'jay-apollo-v1.webp',
+        }, 'Retired cartoon Apollo badge in published inventory'
     for name in expected:
         path = site / name
         if path.suffix not in TEXT_EXTENSIONS:
