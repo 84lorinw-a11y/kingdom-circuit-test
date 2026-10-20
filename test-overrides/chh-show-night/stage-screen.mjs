@@ -6,8 +6,7 @@ export function screenPlacement({width,height,camera=0,viewWidth=1024}){
 }
 export function drawStageScreen(ctx,frame=null){
  const {x,y,width,height}=stageScreen;
- ctx.save();ctx.textAlign='center';ctx.fillStyle='#ede6da';ctx.font='900 30px "Arial Narrow",sans-serif';
- ctx.fillText('APOLLO RECORDS',x+width/2,y-8);
+ ctx.save();ctx.textAlign='center';
  ctx.fillStyle='#090a0b';ctx.fillRect(x-6,y-4,width+12,height+8);
  ctx.strokeStyle='#434449';ctx.lineWidth=2;ctx.strokeRect(x-5,y-3,width+10,height+6);
  const fw=frame?.videoWidth||frame?.naturalWidth,fh=frame?.videoHeight||frame?.naturalHeight;

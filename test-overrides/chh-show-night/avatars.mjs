@@ -1,9 +1,9 @@
 export const avatars=[
  // Keep saved choice IDs so an existing night retains its progress.
  {id:'red',sprite:'ref-player:0',label:'Green cap',color:'#72ad89'},
- {id:'teal',sprite:'ref-player:1',label:'Bowie 83',color:'#cbbd96'},
- {id:'blonde',sprite:'ref-player:2',label:'Striped polo',color:'#5da989'},
- {id:'blue',sprite:'ref-player:3',label:'Graphic tee',color:'#d6b65f'},
+ {id:'teal',sprite:'ref-player:1',label:'Apollo white tee',color:'#cbbd96'},
+ {id:'blonde',sprite:'ref-player:2',label:'Apollo red tee',color:'#ef5252'},
+ {id:'blue',sprite:'ref-player:3',label:'Not 4 Sale tee',color:'#d6b65f'},
  {id:'pink',sprite:'ref-player:4',label:'Pink top',color:'#ed79ad'},
  {id:'sunset',sprite:'ref-player:5',label:'Blue jersey',color:'#6ba3ed'}
 ];

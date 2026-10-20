@@ -1,9 +1,9 @@
-import {vipReturn} from './venue-layout.mjs?v=apollo-13';
-import {matchesVipCode} from './vip-access.mjs?v=apollo-13';
-import {avatars,playerName} from './avatars.mjs?v=apollo-13';
-import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=apollo-13';
-import {roomStops,visitIds} from './journey-guide.mjs?v=apollo-13';
-export {journeyObjective as objective} from './journey-guide.mjs?v=apollo-13';
+import {vipReturn} from './venue-layout.mjs?v=apollo-19';
+import {matchesVipCode} from './vip-access.mjs?v=apollo-19';
+import {avatars,playerName} from './avatars.mjs?v=apollo-19';
+import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=apollo-19';
+import {roomStops,visitIds} from './journey-guide.mjs?v=apollo-19';
+export {journeyObjective as objective} from './journey-guide.mjs?v=apollo-19';
 export const MAX_SCORE=1000; // First celebration milestone, never a total-score ceiling.
 export const initialState=()=>({version:2,vipUnlocked:false,name:'',avatar:'',profileReady:false,beatBest:0,crewDelivered:0,eli:false,photoStyle:{pose:'classic',frame:'gold'},room:'outside',friends:[],visited:[],merch:null,worship:false,photo:false,entered:false,x:470,y:575,totals:blankTotals(),roundIds:[],rounds:0,sessionId:''});
 export const validPhotoStyle=value=>({pose:['classic','lean','peace'].includes(value?.pose)?value.pose:'classic',frame:['gold','mint','rose'].includes(value?.frame)?value.frame:'gold'});

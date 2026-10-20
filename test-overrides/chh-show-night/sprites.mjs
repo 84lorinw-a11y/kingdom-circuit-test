@@ -1,6 +1,6 @@
-import {clubFanPoses,actualFanPoses} from './crowds.mjs?v=apollo-13';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-13';
-import {playerSpritePose} from './avatars.mjs?v=apollo-13';
+import {clubFanPoses,actualFanPoses} from './crowds.mjs?v=apollo-19';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-19';
+import {playerSpritePose} from './avatars.mjs?v=apollo-19';
 // Transparent sprite atlases adapted from the supplied CHH scene references.
 // Trim bounds are calculated once at load; sprites are composited at runtime.
 const heroIds=['player','jay','grace'];
@@ -9,7 +9,7 @@ const peaceIds={player:0,'crowd-vip:32':1,'crowd-vip:34':2,1:3,5:4,4:5,grace:6};
 // Generated rows have slightly different spacing; cut only through transparent gutters.
 const rowCuts={};
 export async function loadPeople(){
- await Promise.all([['blueSoul',2,1,'blue-soul-v25','png'],['jay',3,1,'jay-apollo-v2'],['peace',5,2,'vip-peace-v18'],['women',2,2,'fan-women-v13'],['heroes',6,2,'heroes-v3'],['brand',2,2,'apollo-fans-v1'],['cameraOne',3,1,'camera-operator-one-v1'],['cameraTwo',3,1,'camera-operator-two-v1'],['social',6,5,'fans-social-v1'],['campers',2,1,'campers-v1'],['clubFans',8,4,'club-fans-v1'],['actualFans',4,4,'actual-fans-v1'],['playersA',3,3,'reference-players-a-v1'],['playersB',3,3,'reference-players-b-v1'],...apolloCrew.map(p=>[p.id,1,1,p.file]),['crowd-vip',6,6,'crowd-vip-v7'],['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file,extension='webp'])=>{
+ await Promise.all([['blueSoul',2,1,'blue-soul-v25','png'],['jay',3,1,'jay-apollo-v2'],['peace',5,2,'vip-peace-v18'],['women',2,2,'fan-women-v13'],['heroes',6,2,'heroes-v3'],['brand',2,2,'apollo-fans-v1'],['cameraOne',3,1,'camera-operator-one-v1'],['cameraTwo',3,1,'camera-operator-two-v1'],['social',6,5,'fans-social-v1'],['campers',2,1,'campers-v1'],['clubFans',8,4,'club-fans-v1'],['actualFans',4,4,'actual-fans-v1'],['playersA',3,3,'players-a-eli-v1'],['playersB',3,3,'players-b-eli-v1'],...apolloCrew.map(p=>[p.id,1,1,p.file]),['crowd-vip',6,6,'crowd-vip-v7'],['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file,extension='webp'])=>{
   const img=new Image();img.src=`/play/assets/${file}.${extension}`;
   await img.decode();const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(img,0,0);const pixels=g.getImageData(0,0,c.width,c.height).data;
   const cells=[];const cw=img.width/cols,ch=img.height/rows;

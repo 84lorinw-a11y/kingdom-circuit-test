@@ -1,5 +1,11 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 Eli-supplied artwork (latest owner direction)
+
+- TEST only. Use the supplied blue Apollo Records logo on a proportionate fabric banner above the approved lower silent looping screen. Add the red script, black Apollo wordmark on an off-white shirt, and cream NOT 4 $ALE print as three new tees; keep the original five merchandise items. Include all eight in the drop game.
+- The former Bowie 83, striped polo and graphic tee player choices wear the white Apollo, red Apollo and cream Not 4 Sale prints respectively. Preserve saved IDs, exact original faces, other clothing and all front/back/peace poses. Leave the other three player choices and all nine artists unchanged.
+- Replace only the exterior bird poster and old typographic Not 4 Sale poster with the supplied white Not 4 Sale and white graffiti collage. Keep the middle album/concert artwork and other bird branding. Use the supplied artwork pixels, not regenerated logos; keep full-resolution originals and artwork production files outside the deployed inventory. Optimize the published assets.
+
 ## October 20 mobile stage spacing (latest owner direction)
 
 - TEST only. Remove the floating Marty TODAY link from the game viewport; retain room music and put its listening link in the menu. Move Ryan and Gavin slightly left and De’aris slightly right, keeping their tap targets attached to their positions. Raise Andrew’s circle and put his compact two-line name/play label to his right, with a working label tap target. Center the merch marker on the left stairs while preserving interaction from the safe audience floor. Keep the approved lower silent looping screen and the realistic scenery revision below.

@@ -18,7 +18,7 @@ test('Film and still poster fill the same screen without letterboxing or distort
   assert.equal(sw/sh,w/h);assert.ok(sx>=0&&sy>=0&&sx+sw<=960&&sy+sh<=540);
   assert.deepEqual([x,y,w,h],[323,110,454,200]);
  }
- assert.ok(text.every(([label,,y])=>label==='APOLLO RECORDS'&&y<stageScreen.y));
+ assert.equal(text.length,0,'The film has no text overlay; the supplied logo banner is drawn separately.');
 });
 test('Every exterior artist uses the same font and common fitting transform',()=>{
  const lines=[],scales=[];

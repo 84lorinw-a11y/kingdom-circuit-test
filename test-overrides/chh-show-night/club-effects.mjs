@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=apollo-13';
+import {drawPerson} from './sprites.mjs?v=apollo-19';
 
 function roadCase(g,x,y,w=38,h=30){
  g.fillStyle='#16181c';g.fillRect(x-w/2,y-h,w,h);g.strokeStyle='#a6a8aa';g.lineWidth=2;g.strokeRect(x-w/2,y-h,w,h);g.fillStyle='#7c8185';g.fillRect(x-6,y-h+9,12,3);
