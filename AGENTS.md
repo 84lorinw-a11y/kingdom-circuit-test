@@ -1,5 +1,10 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 roaming camera operators (latest owner direction)
+
+- TEST only. Both reference camera operators face up toward the performers for most of their shooting time, occasionally turn to film the crowd, and take short walks between distinct pit angles. Use matching stage-facing, crowd-facing and walking poses; no generic replacement operators or flashes.
+- Keep paths above the floor game circles and clear of Andrew's booth. Offset their schedules so they do not both film the crowd together. Reduced motion holds both stationary facing the artists.
+
 ## October 20 Apollo logo replacement (latest owner direction)
 
 - TEST only. Replace the old cartoon child/heart badge everywhere with the approved white Apollo bird-and-globe logo. Use the same bird mark in the header, exterior poster, merchandise and Jay's shirt in every pose. Keep NOT 4 SALE and the separate red concert artwork.

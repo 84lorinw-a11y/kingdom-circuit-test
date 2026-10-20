@@ -1,33 +1,33 @@
-import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-11';
-import {matchesVipCode} from './vip-access.mjs?v=apollo-11';
-import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-11';
-import {venueTrack} from './music-config.mjs?v=apollo-11';
-import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-11';
-import {artistGames} from './artist-arcade.mjs?v=apollo-11';
-import {mountArtistArcade} from './arcade-round.mjs?v=apollo-11';
-import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-11';
-import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-11';
-import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-11';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-11';
-import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-11';
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-11';
-import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-11';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-11';
-import {createCelebration} from './celebration.mjs?v=apollo-11';
-import {pitPhotographers,drawCameraFlash} from './pit.mjs?v=apollo-11';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-11';
-import {mountRound} from './rounds.mjs?v=apollo-11';
-import {createRoundAudio} from './round-audio.mjs?v=apollo-11';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-11';
-import {createScoreTable} from './scoreboard-view.mjs?v=apollo-11';
-import {gameIds,gameNames} from './scoring.mjs?v=apollo-11';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-11';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-11';
-import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-11';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-11';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-11';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-11';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-11';
+import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-12';
+import {matchesVipCode} from './vip-access.mjs?v=apollo-12';
+import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-12';
+import {venueTrack} from './music-config.mjs?v=apollo-12';
+import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-12';
+import {artistGames} from './artist-arcade.mjs?v=apollo-12';
+import {mountArtistArcade} from './arcade-round.mjs?v=apollo-12';
+import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-12';
+import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-12';
+import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-12';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-12';
+import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-12';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-12';
+import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-12';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-12';
+import {createCelebration} from './celebration.mjs?v=apollo-12';
+import {cameraActors,drawCameraFlash} from './pit.mjs?v=apollo-12';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-12';
+import {mountRound} from './rounds.mjs?v=apollo-12';
+import {createRoundAudio} from './round-audio.mjs?v=apollo-12';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-12';
+import {createScoreTable} from './scoreboard-view.mjs?v=apollo-12';
+import {gameIds,gameNames} from './scoring.mjs?v=apollo-12';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-12';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-12';
+import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-12';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-12';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-12';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-12';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-12';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const roundRecords=createRoundRecords(localStorage);const scoreStore=createScoreStore(),onlineScores=createOnlineScores(localStorage,{base:''});let atFront=null;
 let musicWarmed=false;
@@ -232,7 +232,7 @@ function render(time){
  if(victoryPending&&!photoBusy){victoryPending=false;celebration.play();}
  for(const h of hotspots())if(h.id!=='andrew-prim')drawHotspot(h,time,target);
  const actors=crowdActors(state.room,time,reduceMotion,state);
- if(state.room==='show')actors.push(...pitPhotographers,producerActor,producerStation);
+ if(state.room==='show')actors.push(...cameraActors(time,reduceMotion),producerActor,producerStation);
 
  if(state.room==='outside'){
  if(!state.friends.includes('jay'))actors.push({x:210,y:590,who:'jay',npc:true});
@@ -246,7 +246,7 @@ function render(time){
  state.friends.forEach((who,i)=>{const p=followerPositions[i]||{x:state.x-50*(i+1),y:state.y+8};actors.push({x:pose?410+i*145:p.x,y:pose?535:p.y,who,walking:walking&&!waterBreak,drinking:!!waterBreak,hands:handsHigh,back:handsHigh});});
  actors.sort((a,b)=>(a.depth??a.y)-(b.depth??b.y)).forEach(a=>{
  if(a.prop==='producer-station'){drawProducerStation(ctx,a,images);drawHotspot(andrewSpot,time,target);return;}
- drawPerson(ctx,a.x,a.y,a.who,{scale:a.scale||2.25,frame:time/100,walking:a.walking,back:a.back,hands:a.hands,alpha:a.alpha??1,flip:a.flip,lean:a.lean||0,outsidePose:a.outsidePose,campPose:a.campPose});
+ drawPerson(ctx,a.x,a.y,a.who,{scale:a.scale||2.25,frame:a.walkFrame??time/100,walking:a.walking,back:a.back,hands:a.hands,alpha:a.alpha??1,flip:a.flip,lean:a.lean||0,outsidePose:a.outsidePose,campPose:a.campPose,cameraPose:a.cameraPose});
  if(a.drinking)drawWaterSip(ctx,a,resting.elapsed,reduceMotion);
  if(a.photographer!==undefined)drawCameraFlash(ctx,a,time,reduceMotion);
  if(a.player&&state.merch)drawBag(a.x,a.y);

@@ -1,4 +1,4 @@
-import {drawStageScreen} from './stage-screen.mjs?v=apollo-11';
+import {drawStageScreen} from './stage-screen.mjs?v=apollo-12';
 // Owner-supplied artwork, composited into the venue.
 function contain(ctx,image,x,y,w,h){
  if(!image)return;const fit=Math.min(w/image.width,h/image.height);
