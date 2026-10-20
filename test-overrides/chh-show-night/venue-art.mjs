@@ -1,15 +1,13 @@
-// Real owner-supplied artwork, composited as flat prints. No generated logos.
+import {drawStageScreen} from './stage-screen.mjs?v=apollo-10';
+// Owner-supplied artwork, composited into the venue.
 function contain(ctx,image,x,y,w,h){
  if(!image)return;const fit=Math.min(w/image.width,h/image.height);
  ctx.drawImage(image,x+(w-image.width*fit)/2,y+(h-image.height*fit)/2,image.width*fit,image.height*fit);
 }
-export function drawRoomArtwork(ctx,room,images){
+export function drawRoomArtwork(ctx,room,images,time=0,reduced=false){
  ctx.save();ctx.textAlign='center';
  if(room==='show'){
-  contain(ctx,images.apolloPoster,315,82,158,200);
-  ctx.fillStyle='#eee8de';ctx.font='900 44px sans-serif';
-  ctx.fillText('APOLLO',630,154);ctx.fillText('RECORDS',630,199);
-  ctx.fillStyle='#d24b48';ctx.font='bold 16px sans-serif';ctx.fillText('NOT 4 SALE',630,236);
+  drawStageScreen(ctx,images,time,reduced);
  }else if(room==='vip'){
   contain(ctx,images.apolloPoster,375,54,91,116);
   ctx.fillStyle='#eee8de';ctx.font='900 27px sans-serif';

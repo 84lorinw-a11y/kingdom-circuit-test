@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 stage screen and equal marquee names (latest owner direction)
+
+- TEST only. A large LED screen behind the performers cycles slowly between the supplied Not 4 Sale artwork, NOT 4 SALE lettering and the supplied Apollo globe-and-dove logo. Keep a permanent large APOLLO RECORDS banner above. Use restrained crossfades and a static cover for reduced motion. The red artwork is the current cover placeholder pending owner confirmation; do not invent an album cover.
+- Replace all six selectable player looks with the owner’s six supplied main subjects: green cap/gray hoodie, Bowie 83 tee, striped polo, black graphic tee, pink top and blue basketball jersey. Preserve saved avatar IDs and night progress; carry the chosen look through world movement, cheering and all VIP photo poses. Do not replace the approved artists or shared fans with these player references.
+- Latest placement correction supersedes the prior left-side VIP request: VIP circle belongs in the far-right open floor below Andrew’s booth (985,582), with a matching right-side return. Merch marker moves closer to the table (105,407); its walk destination remains on the safe floor. Remove Pass the Mic, its prop, activity, menu/guide entry and special crowd reaction.
+- Every artist name on the exterior marquee must have the same type size and width scale. Keep all nine names, existing order and no DJ suffix.
+
 ## October 19 late-night crowd and room revision (latest owner direction)
 
 - TEST only. Andrew’s playable circle belongs on the open rug beside his booth; VIP entry is on the left side. Keep artist faces and all nine games intact.

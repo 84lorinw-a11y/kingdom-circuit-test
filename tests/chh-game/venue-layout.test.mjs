@@ -1,12 +1,18 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {andrewSpot,vipSpot,vipReturn,roomMusicEnabled} from '../../test-overrides/chh-show-night/venue-layout.mjs';
+import {andrewSpot,vipSpot,vipReturn,merchSpot,roomMusicEnabled} from '../../test-overrides/chh-show-night/venue-layout.mjs';
+import {roomStops,stopNames} from '../../test-overrides/chh-show-night/journey-guide.mjs';
 import {crowdActors} from '../../test-overrides/chh-show-night/crowds.mjs';
 import {findPath} from '../../test-overrides/chh-show-night/navigation.mjs';
 import {initialState,act} from '../../test-overrides/chh-show-night/state.mjs';
-test('Andrew on the booth rug and left VIP entry are distinct reachable destinations',()=>{
- assert.ok(andrewSpot.x>850&&andrewSpot.y>490);assert.ok(vipSpot.x<250);assert.ok(Math.hypot(andrewSpot.x-vipSpot.x,andrewSpot.y-vipSpot.y)>500);
+test('Andrew on the booth rug and VIP below its right edge are distinct reachable destinations',()=>{
+ assert.ok(andrewSpot.x>850&&andrewSpot.y>490);assert.ok(vipSpot.x>970&&vipSpot.y>560);assert.ok(Math.hypot(andrewSpot.x-vipSpot.x,andrewSpot.y-vipSpot.y)>100);
  for(const h of [andrewSpot,vipSpot])assert.deepEqual(findPath('show',{x:500,y:570},h).at(-1),{x:h.x,y:h.y});
  const state={...initialState(),entered:true,room:'vip',vipUnlocked:true};const back=act(state,'show');assert.deepEqual({x:back.x,y:back.y},vipReturn);
+});
+test('Merch marker remains within interaction reach of the safe floor and the removed mic is absent',()=>{
+ const destination=findPath('show',{x:500,y:570},merchSpot).at(-1);
+ assert.equal(destination.y,444);assert.ok(Math.hypot(destination.x-merchSpot.x,destination.y-merchSpot.y)<83);
+ assert.ok(!roomStops.show.includes('cypher'));assert.equal(stopNames.cypher,undefined);
 });
 test('Outside has eight standing queue members, two seated campers and talking groups',()=>{
  const cast=crowdActors('outside',0,true,{x:400,y:600});const queue=cast.filter(a=>a.role==='queue'),campers=cast.filter(a=>a.role==='camper');

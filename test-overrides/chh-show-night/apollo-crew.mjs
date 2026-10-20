@@ -27,9 +27,12 @@ export function drawApolloStage(ctx,time,reduced,drawPerson){
 export function drawApolloMarquee(ctx){
  ctx.save();ctx.globalAlpha=.92;
  ctx.textAlign='center';ctx.fillStyle='#7f3028';ctx.font='bold 11px monospace';ctx.fillText('APOLLO RECORDS  /  NOT 4 SALE',655,95);
- ctx.fillStyle='#2d231e';ctx.font='900 23px "Arial Narrow",sans-serif';ctx.fillText('MARTY   /   BRENNO   /   RYAN ELLIS',655,122,500);
- ctx.font='900 18px "Arial Narrow",sans-serif';ctx.fillText('GAVIN THE HOTROD  /  LJ THE MESSENGER  /  DE’ARIS',655,149,500);
- ctx.fillText('TONYXTROTTER  /  ELI WILLIAMS  /  ANDREW PRIM',655,176,500);ctx.restore();
+ const rows=['MARTY  /  BRENNO  /  RYAN ELLIS','GAVIN THE HOTROD  /  LJ THE MESSENGER  /  DE’ARIS','TONYXTROTTER  /  ELI WILLIAMS  /  ANDREW PRIM'];
+ ctx.fillStyle='#2d231e';ctx.font='900 18px "Arial Narrow",sans-serif';
+ // Fit the longest row once. Every name retains the same size and width scale.
+ const fit=Math.min(1,500/Math.max(...rows.map(row=>ctx.measureText(row).width)));
+ ctx.translate(655,0);ctx.scale(fit,1);
+ rows.forEach((row,i)=>ctx.fillText(row,0,122+i*27));ctx.restore();
 }
 const mingleSpots=[[470,421],[365,375],[593,538],[365,550],[681,448],[735,593],[453,588],[601,338],[410,440]];
 export function vipArtists(time=0,reduced=false,photo=false){
