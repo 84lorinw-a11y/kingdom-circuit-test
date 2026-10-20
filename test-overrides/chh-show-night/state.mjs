@@ -1,7 +1,7 @@
-import {avatars,playerName} from './avatars.mjs?v=apollo-03';
-import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=apollo-03';
-import {roomStops,visitIds} from './journey-guide.mjs?v=apollo-03';
-export {journeyObjective as objective} from './journey-guide.mjs?v=apollo-03';
+import {avatars,playerName} from './avatars.mjs?v=apollo-04';
+import {gameIds,blankTotals,roundScore,validateRound} from './scoring.mjs?v=apollo-04';
+import {roomStops,visitIds} from './journey-guide.mjs?v=apollo-04';
+export {journeyObjective as objective} from './journey-guide.mjs?v=apollo-04';
 export const MAX_SCORE=1000; // First celebration milestone, never a total-score ceiling.
 export const initialState=()=>({version:2,name:'',avatar:'',profileReady:false,beatBest:0,eli:false,photoStyle:{pose:'classic',frame:'gold'},room:'outside',friends:[],visited:[],merch:null,worship:false,photo:false,entered:false,x:470,y:575,totals:blankTotals(),roundIds:[],rounds:0,sessionId:''});
 export const validPhotoStyle=value=>({pose:['classic','lean','peace'].includes(value?.pose)?value.pose:'classic',frame:['gold','mint','rose'].includes(value?.frame)?value.frame:'gold'});
@@ -16,7 +16,7 @@ export function act(s,action,value){
  if(action==='photoStyle'&&s.room==='vip')next.photoStyle=validPhotoStyle(value);
  if(action==='profile'&&playerName(value?.name)&&avatars.some(a=>a.id===value?.avatar)){next.name=playerName(value.name);next.avatar=value.avatar;next.profileReady=true;}
  if(action==='round'&&s.room==='show'&&validateRound(value)&&!s.roundIds.includes(value.id)){
-  const points=roundScore(value.events);next.totals[value.game]+=points.total;next.roundIds=[...s.roundIds,value.id];next.rounds=s.rounds+1;
+  const points=roundScore(value.events);next.totals[value.game]=(next.totals[value.game]||0)+points.total;next.roundIds=[...s.roundIds,value.id];next.rounds=s.rounds+1;
   if(value.game==='eli'){next.eli=true;next.beatBest=Math.max(s.beatBest,points.hits);}
   if(value.game==='apollo'&&!s.merch)next.merch='not4sale';
   visit(value.game==='apollo'?'merch':value.game==='eli'?'dj':value.game);

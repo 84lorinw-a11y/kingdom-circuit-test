@@ -7,7 +7,7 @@ export const apolloCrew=[
  {id:'lj-the-messenger',name:'LJ the Messenger',file:'apollo-lj-the-messenger-v1',stageX:725,stageY:350,vipX:664,vipY:390},
  {id:'dearis',name:'De’aris',file:'apollo-dearis-v1',stageX:800,stageY:350,vipX:716,vipY:390},
  {id:'tonyxtrotter',name:'tonyxtrotter',file:'apollo-tonyxtrotter-v1',stageX:345,stageY:350,vipX:404,vipY:390},
- {id:'eli-williams',name:'Eli Williams (DJ)',file:'apollo-eli-williams-v1',stageX:570,stageY:326,vipX:560,vipY:390},
+ {id:'eli-williams',name:'Eli Williams',file:'apollo-eli-williams-v1',stageX:570,stageY:326,vipX:560,vipY:390},
  {id:'andrew-prim',name:'Andrew Prim',role:'Producer / A&R',file:'apollo-andrew-prim-v1',stageX:910,stageY:472,vipX:300,vipY:390}
 ];
 export const frontCrew=apolloCrew.filter(person=>!['eli-williams','andrew-prim'].includes(person.id));
@@ -27,10 +27,10 @@ export function drawApolloStage(ctx,time,reduced,drawPerson){
 export function drawApolloMarquee(ctx){
  // Text stays sharp and correctly spelled at every device resolution.
  ctx.save();ctx.textAlign='center';ctx.fillStyle='#181920';
- ctx.font='900 25px sans-serif';ctx.fillText('APOLLO RECORDS',654,108,450);
- ctx.font='bold 11.7px sans-serif';
- ctx.fillText('MARTY  ·  BRENNO  ·  RYAN ELLIS',654,133,465);
- ctx.fillText('GAVIN THE HOTROD  ·  LJ THE MESSENGER  ·  DE’ARIS',654,151,465);
- ctx.fillText('TONYXTROTTER  ·  ELI WILLIAMS (DJ)  ·  ANDREW PRIM',654,169,465);
+ ctx.font='900 21px sans-serif';ctx.fillText('APOLLO RECORDS',654,102,450);
+ ctx.font='900 16px sans-serif';
+ ctx.fillText('MARTY  ·  BRENNO  ·  RYAN ELLIS',654,129,490);
+ ctx.fillText('GAVIN THE HOTROD  ·  LJ THE MESSENGER  ·  DE’ARIS',654,153,490);
+ ctx.fillText('TONYXTROTTER  ·  ELI WILLIAMS  ·  ANDREW PRIM',654,177,490);
  ctx.restore();
 }

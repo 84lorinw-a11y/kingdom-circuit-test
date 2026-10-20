@@ -1,9 +1,9 @@
-import {stageTracks} from './music-config.mjs?v=apollo-03';
-import {createStagePlayback} from './stage-audio.mjs?v=apollo-03';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-03';
+import {stageTracks} from './music-config.mjs?v=apollo-04';
+import {createStagePlayback} from './stage-audio.mjs?v=apollo-04';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-04';
 export const stageSpots=[
  {id:'brenno',x:420,y:475,label:'Brenno · BRING YOUR PEOPLE',tag:'BRENNO · CREW RUN'},
- {id:'marty',x:550,y:475,label:'Marty · RECORD RUN',tag:'MARTY · RECORD RUN'}
+ {id:'marty',x:550,y:475,label:'Marty · NOT 4 SALE',tag:'MARTY · NOT 4 SALE'}
 ];
 export function stageArtistAt({x,y}){
  return stageSpots.find(spot=>{const person=apolloCrew.find(p=>p.id===spot.id);return Math.abs(x-person.stageX)<30&&y>person.stageY-145&&y<person.stageY;})?.id||null;

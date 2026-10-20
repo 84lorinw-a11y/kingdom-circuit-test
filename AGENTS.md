@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 all-artist games and venue cleanup (latest)
+
+- TEST only. The owner asked for first playable games for every artist and will refine them later. This supersedes the earlier four-game limit and Andrew's visual-only station: all nine artists now have games, plus Apollo merch. Keep all approved character artwork and stage/VIP placements.
+- Marty: Not 4 Sale, rejecting buyers trying to purchase Apollo. Brenno: Crew Run. Eli: existing DJ game. Ryan: Find the Harmony. Gavin: Hotrod Run. LJ: Deliver the Message. De’aris: Find Your Light. Tony: Verse Builder (original word puzzles, not artist lyrics). Andrew: Build the Beat, repeating five four-pad patterns. Every game retains 20 opportunities, 40 + 10 scoring, maximum 1,000. Preserve existing device saves; keep the original production competition/backend isolated.
+- All games are available through the portrait selector and the All games destination. The six new artist sprites also open their games from the stage / producer corner. VIP remains a close photo line; opening a game from VIP or the outside menu returns an admitted player to the main stage.
+- Exterior: larger crew names and no “(DJ)” suffix for Eli; clean stray background marks and fake wall posters, preserve the real supplied Apollo prints. Add a small alley load-in scene. Add a restrained low stage smoke machine; keep faces and game entrances clear, honor reduced motion.
+- New artist rounds use clearly labeled original instrumental soundchecks. No unreleased album audio is bundled or authorized for public hosting.
+
 ## October 19 crew placement correction (latest)
 
 - TEST only. Eli’s booth belongs in the center, slightly behind Marty. Marty stays front and center as the lead. Keep their floor game entrances distinct and reachable.

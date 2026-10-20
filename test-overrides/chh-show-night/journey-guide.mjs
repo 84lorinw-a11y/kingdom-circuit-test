@@ -1,6 +1,6 @@
 export const roomStops={outside:['jay','grace','enter'],show:['merch','brenno','dj','marty','vip','outside'],vip:['photo','refresh','show']};
 export const stopNames={jay:'Invite Jay',grace:'Invite Grace',enter:'Enter the show',merch:'Merch',brenno:'Brenno',dj:'Eli',marty:'Marty',vip:'VIP',outside:'Outside',photo:'VIP photo',refresh:'Take a breather',show:'Main stage'};
-export const visitIds=[...new Set(Object.values(roomStops).flat())];
+export const visitIds=[...new Set(Object.values(roomStops).flat()),'ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim'];
 export function hasVisited(s,id){
  if(s.visited?.includes(id))return true;
  if(id==='jay'||id==='grace')return s.friends.includes(id);
