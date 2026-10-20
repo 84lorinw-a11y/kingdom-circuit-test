@@ -1,5 +1,9 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 merch lettering cleanup (latest owner direction)
+
+- TEST only. Remove the APOLLO RECORDS / NOT 4 SALE wall lettering above the merchandise rack. Preserve the hanging merchandise, vendor, table, marker and merch game. The owner only asked for an opinion about keeping the booth; that was not an instruction to remove it. Keep the permanent Apollo Records banner over the stage screen.
+
 ## October 20 stage videos (latest owner direction)
 
 - TEST only. The stage screen loops the three supplied public YouTube Shorts in order: `igVFE1_Dl1A`, `a0lIU4jiL6M`, `XyZJtJ3t0Vc`. This supersedes the stage artwork slideshow. Retain the permanent APOLLO RECORDS banner and all other approved branding, people and games.
