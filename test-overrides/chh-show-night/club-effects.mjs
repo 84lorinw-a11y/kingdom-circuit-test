@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=apollo-07';
+import {drawPerson} from './sprites.mjs?v=apollo-08';
 
 function roadCase(g,x,y,w=38,h=30){
  g.fillStyle='#16181c';g.fillRect(x-w/2,y-h,w,h);g.strokeStyle='#a6a8aa';g.lineWidth=2;g.strokeRect(x-w/2,y-h,w,h);g.fillStyle='#7c8185';g.fillRect(x-6,y-h+9,12,3);
@@ -19,6 +19,20 @@ export function drawStageSmoke(g,time,reduced){
  for(let i=0;i<9;i++){
   const age=reduced?i/9:((time/13000+i/9)%1),x=270+age*535,y=348+Math.sin(age*7+i)*5,r=30+age*55;
   const fog=g.createRadialGradient(x,y,0,x,y,r);fog.addColorStop(0,`rgba(203,205,211,${.37*(1-age)})`);fog.addColorStop(1,'rgba(203,205,211,0)');g.fillStyle=fog;g.beginPath();g.ellipse(x,y,r,r*.40,0,0,7);g.fill();
+ }
+ g.restore();
+}
+export function drawStageLights(g,time,reduced){
+ // Slow, faint cones from the existing fixtures. No strobes or new fixtures.
+ g.save();g.beginPath();g.rect(205,66,620,310);g.clip();
+ for(const [x,phase] of [[335,0],[714,2.4]]){
+  const aim=x+(reduced?0:Math.sin(time/11000+phase)*65);
+  const light=g.createLinearGradient(x,70,aim,365);
+  light.addColorStop(0,'rgba(246,227,202,.10)');
+  light.addColorStop(.7,'rgba(246,227,202,.035)');
+  light.addColorStop(1,'rgba(246,227,202,0)');
+  g.fillStyle=light;g.beginPath();g.moveTo(x-3,70);g.lineTo(x+3,70);
+  g.lineTo(aim+65,365);g.lineTo(aim-65,365);g.closePath();g.fill();
  }
  g.restore();
 }

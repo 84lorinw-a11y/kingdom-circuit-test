@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 final venue audit (latest owner direction)
+
+- TEST only. Owner asked to turn Andrew's booth around, remove the horizontal bar crossing the merch seller, audit the experience and apply tasteful improvements. Keep the approved people, outfits, Apollo prints and existing games.
+- Andrew uses the reverse-view flight-case booth with rear monitor housings and cabling. The original prop atlas remains for Pass the Mic. Keep the vendor unobstructed; cap remains at far right and tote stays removed.
+- Keep lighting slow and faint with no strobes; honor reduced motion. Compact floating labels, natural sidewalk conversation groups and a loose entrance queue replace billboard-sized tags and rigid crowd rows. VIP artists and guests stand on the open floor, clear of the lounge furniture.
+- The optional Next guide covers all nine artists, the cypher and VIP listening corner. It never locks access or awards points just for visits. Walk/tap remains primary; the game chooser stays in the menu.
+
 ## October 19 evening visual polish and VIP entry (latest owner direction)
 
 - TEST only. Remove the tote from the rack, merchandise selection and drop game; keep three tees, hoodie and cap. Hang the cap at the far right with the vendor's face unobscured.

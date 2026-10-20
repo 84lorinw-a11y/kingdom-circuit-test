@@ -39,8 +39,10 @@ test('Guidance follows friends, visits and free VIP entry without inventing poin
  s=act(s,'invite','jay');assert.equal(nextStop(s),'grace');s=act(s,'invite','grace');assert.equal(nextStop(s),'enter');
  s=act(s,'enter');assert.equal(nextStop(s),'merch');const before=score(s);
  for(const id of ['merch','brenno','dj','marty'])s=act(s,'visit',id);
- assert.equal(score(s),before);assert.equal(nextStop(s),'vip');assert.ok(hasVisited(restore(JSON.stringify(s)),'marty'));
- s=act(act(s,'unlockVip','NOT4SALE'),'vip');assert.equal(nextStop(s),'photo');s=act(s,'photo');assert.equal(nextStop(s),'refresh');s=act(s,'visit','refresh');assert.equal(nextStop(s),null);
+ assert.equal(score(s),before);assert.equal(nextStop(s),'ryan-ellis');assert.match(objective(s),/Tap the artist/);assert.ok(hasVisited(restore(JSON.stringify(s)),'marty'));
+ for(const id of ['ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim','cypher']){assert.equal(nextStop(s),id);s=act(s,'visit',id);}
+ assert.equal(nextStop(s),'vip');assert.equal(score(s),before);
+ s=act(act(s,'unlockVip','NOT4SALE'),'vip');assert.equal(nextStop(s),'photo');s=act(s,'photo');assert.equal(nextStop(s),'refresh');s=act(s,'visit','refresh');assert.equal(nextStop(s),'listen');s=act(s,'visit','listen');assert.equal(nextStop(restore(JSON.stringify(s))),null);
  assert.equal(act(act(atShow(),'unlockVip','NOT4SALE'),'vip').room,'vip');assert.deepEqual(act(initialState(),'visit','merch').visited,[]);
 });
 

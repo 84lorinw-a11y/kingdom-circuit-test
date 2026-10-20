@@ -9,11 +9,13 @@ export function collectedFans(events){return events.filter(e=>e.hit).map(e=>bren
 // Deliberate crowd placement leaves the entrance, shop, stage center, and photo lane readable.
 const fan=(x,y,i,extra={})=>({x,y,who:null,scale:2.15+(i%3)*.05,ambient:true,phase:i*1.71,flip:i%3===0,...extra});
 const outside=[];
-// Downtown sidewalk: all heads stay below the exterior posters and marquee.
-for(let row=0;row<3;row++)for(let col=0;col<10;col++){
- const x=55+col*101+(row%2?22:0),y=548+row*61+(col%3)*4;
- outside.push(fan(Math.min(974,x),y,row*10+col,{scale:2.08+row*.07}));
-}
+// Conversation groups and a loose queue leave the doors and load-in readable.
+[[62,548],[139,587],[70,642],[214,568],[269,633],[198,666],
+ [326,547],[387,597],[328,661],[451,563],[500,631],[438,671],
+ [566,552],[586,631],[646,670],[782,501],[838,529],[888,564],
+ [943,595],[973,652],[768,615],[820,665],[699,581],[702,638],
+ [857,609],[954,525],[886,670],[520,588],[230,515],[138,524]
+].forEach(([x,y],i)=>outside.push(fan(x,y,i,{scale:2.08+(i%3)*.05})));
 const show=[];
 // An uneven crowd across the floor, with a few fans nearer the stage.
 // Positions account for raised arms and bodies, keeping the floor circles clear.
@@ -27,9 +29,11 @@ Object.assign(show[9],{x:48,y:574,scale:2.1,back:false,hands:false});
 Object.assign(show[20],{x:165,y:578,scale:2.1,back:false,hands:false});
 const vip=[];
 // Small conversation clusters, with an open photo line and snack counter.
-const vipSpots=[[220,355],[355,376],[640,352],[475,462],[752,467],[250,550],[358,554],[557,560],[625,601],[799,617],
- [53,320],[115,355],[55,420],[130,440],[56,500],[139,528],[56,596],[145,626],[248,658],[372,660],
- [487,667],[620,666],[745,660],[854,659],[940,652],[969,555],[900,543],[969,482],[905,599],[845,582]];
+// Keep everyone on the floor, clear of the couch, coffee table and serving table.
+const vipSpots=[[50,292],[130,298],[310,292],[385,318],[460,310],[540,329],[680,326],[755,329],[820,350],[975,361],
+ [350,478],[420,490],[535,475],[600,455],[775,475],[900,480],[975,471],
+ [350,585],[395,645],[465,630],[545,598],[600,665],[675,623],[795,650],[860,592],[920,645],[975,568],
+ [60,670],[145,655],[245,670]];
 vipSpots.forEach(([x,y],i)=>vip.push(fan(x,y,i,{scale:2.08,flip:i%2===0})));
 // Identical identities and outfits in every room; the stage uses matching rear poses.
 for(const cast of [outside,show,vip])cast.forEach((a,i)=>{a.who=sharedCast[i].who;a.phase=i*1.71;});

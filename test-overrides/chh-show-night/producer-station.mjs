@@ -1,7 +1,7 @@
-// Angled flight-case booth; Andrew's approved cutout is drawn behind the console.
+// Reverse three-quarter booth view; retain the approved Andrew cutout.
 export const producerStation={x:922,y:535,prop:'producer-station'};
 export function drawProducerStation(g,{x,y}=producerStation,art={}){
- if(!art.venueProps)return;
- const img=art.venueProps;g.save();g.drawImage(img,0,0,1110,img.height,x-122,y-191,228,210);
- g.restore();
+ if(!art.andrewBooth)return;
+ const img=art.andrewBooth;
+ g.drawImage(img,x-122,y-150,220,220*img.height/img.width);
 }

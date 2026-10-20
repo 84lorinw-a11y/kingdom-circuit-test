@@ -1,6 +1,6 @@
-import {drawPerson} from './sprites.mjs?v=apollo-07';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-07';
-import {brennoFan} from './crowds.mjs?v=apollo-07';
+import {drawPerson} from './sprites.mjs?v=apollo-08';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-08';
+import {brennoFan} from './crowds.mjs?v=apollo-08';
 export const artistGames={
  marty:{title:'APOLLO IS NOT FOR SALE',instruction:'Tap buyout offers to stamp them away; let your crew and new music through.',gesture:'TAP OFFERS',seconds:40,result:'STILL INDEPENDENT',unit:'good calls'},
  brenno:{title:'BRING YOUR PEOPLE',instruction:'Swipe to steer your growing crew around barriers and bring them through the doors.',gesture:'SWIPE TO TURN',seconds:45,result:'YOUR PEOPLE MADE IT',unit:'friends collected'},

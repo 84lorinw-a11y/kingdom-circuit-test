@@ -31,7 +31,7 @@ export function drawApolloMarquee(ctx){
  ctx.font='900 18px "Arial Narrow",sans-serif';ctx.fillText('GAVIN THE HOTROD  /  LJ THE MESSENGER  /  DE’ARIS',655,149,500);
  ctx.fillText('TONYXTROTTER  /  ELI WILLIAMS  /  ANDREW PRIM',655,176,500);ctx.restore();
 }
-const mingleSpots=[[470,421],[298,359],[593,538],[305,532],[681,448],[735,593],[453,588],[601,338],[211,445]];
+const mingleSpots=[[470,421],[365,375],[593,538],[365,550],[681,448],[735,593],[453,588],[601,338],[410,440]];
 export function vipArtists(time=0,reduced=false,photo=false){
  if(photo)return vipCrew.map(p=>({...p}));
  return apolloCrew.map((p,i)=>{const [x,y]=mingleSpots[i];return {who:p.id,x:x+(reduced?0:Math.sin(time/9000+i)*9),y:y+(reduced?0:Math.sin(time/11000+i)*5),scale:2.3,artist:true,lean:reduced?0:Math.sin(time/1800+i)*.012};});
