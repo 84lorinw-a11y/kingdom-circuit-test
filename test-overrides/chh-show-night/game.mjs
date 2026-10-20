@@ -1,33 +1,34 @@
-import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-12';
-import {matchesVipCode} from './vip-access.mjs?v=apollo-12';
-import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-12';
-import {venueTrack} from './music-config.mjs?v=apollo-12';
-import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-12';
-import {artistGames} from './artist-arcade.mjs?v=apollo-12';
-import {mountArtistArcade} from './arcade-round.mjs?v=apollo-12';
-import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-12';
-import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-12';
-import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-12';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-12';
-import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-12';
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-12';
-import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-12';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-12';
-import {createCelebration} from './celebration.mjs?v=apollo-12';
-import {cameraActors,drawCameraFlash} from './pit.mjs?v=apollo-12';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-12';
-import {mountRound} from './rounds.mjs?v=apollo-12';
-import {createRoundAudio} from './round-audio.mjs?v=apollo-12';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-12';
-import {createScoreTable} from './scoreboard-view.mjs?v=apollo-12';
-import {gameIds,gameNames} from './scoring.mjs?v=apollo-12';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-12';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-12';
-import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-12';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-12';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-12';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-12';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-12';
+import {createStageVideos} from './stage-videos.mjs?v=apollo-13';
+import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-13';
+import {matchesVipCode} from './vip-access.mjs?v=apollo-13';
+import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-13';
+import {venueTrack} from './music-config.mjs?v=apollo-13';
+import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-13';
+import {artistGames} from './artist-arcade.mjs?v=apollo-13';
+import {mountArtistArcade} from './arcade-round.mjs?v=apollo-13';
+import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-13';
+import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-13';
+import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-13';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-13';
+import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-13';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-13';
+import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-13';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-13';
+import {createCelebration} from './celebration.mjs?v=apollo-13';
+import {cameraActors,drawCameraFlash} from './pit.mjs?v=apollo-13';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-13';
+import {mountRound} from './rounds.mjs?v=apollo-13';
+import {createRoundAudio} from './round-audio.mjs?v=apollo-13';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-13';
+import {createScoreTable} from './scoreboard-view.mjs?v=apollo-13';
+import {gameIds,gameNames} from './scoring.mjs?v=apollo-13';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-13';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-13';
+import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-13';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-13';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-13';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-13';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-13';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const roundRecords=createRoundRecords(localStorage);const scoreStore=createScoreStore(),onlineScores=createOnlineScores(localStorage,{base:''});let atFront=null;
 let musicWarmed=false;
@@ -40,6 +41,7 @@ const modal=createDialogLifecycle(dialog,$('#dialog-content'));
 let waterBreak=null,photoRun=0;
 let keys=new Set(),route=[],autoAction=null,walking=false,frame=0,last=0,camera=0,viewWidth=W,paused=false,raisingUntil=0,photoBusy=false,photoURL=null,toastTimer,introTimer,soundOn=true,particles=[],trail=[],followerPositions=[];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const stageVideos=createStageVideos({root:$('#stage-video'),tools:$('#stage-video-tools'),reduced:reduceMotion});
 const celebration=createCelebration({reduceMotion});let victoryPending=false;
 const roomInfo={outside:['01','OUTSIDE THE VENUE','BRING YOUR PEOPLE.'],show:['02','THE MAIN STAGE','GOOD MUSIC. GREATER PURPOSE.'],vip:['03','THE VIP LOUNGE','MAKE A MEMORY.']};
 const images={};
@@ -48,7 +50,7 @@ function notify(message){$('#toast').textContent=message;$('#toast').classList.a
 try{soundOn=localStorage.getItem('kc-apollo-night-sound')!=='off';}catch{}
 roundAudio.setMuted(!soundOn);
 function updateSoundButton(){const button=$('#sound');button.textContent=soundOn?'♪ On':'♪ Off';button.setAttribute('aria-pressed',soundOn);button.setAttribute('aria-label',soundOn?'Sound on. Tap to mute':'Sound off. Tap to enable');button.title=soundOn?'Sound on':'Sound off';}
-function toggleSound(){soundOn=!soundOn;roundAudio.setMuted(!soundOn);updateSoundButton();try{localStorage.setItem('kc-apollo-night-sound',soundOn?'on':'off');}catch{}if(soundOn)roundAudio.unlock().then(()=>tone()).catch(()=>notify('Tap the sound button again to enable audio.'));notify(soundOn?'Sound on — Marty in the main room, artist music in the games.':'Sound off');return soundOn;}
+function toggleSound(){soundOn=!soundOn;if(!soundOn)stageVideos.mute();roundAudio.setMuted(!soundOn);updateSoundButton();try{localStorage.setItem('kc-apollo-night-sound',soundOn?'on':'off');}catch{}if(soundOn)roundAudio.unlock().then(()=>tone()).catch(()=>notify('Tap the sound button again to enable audio.'));notify(soundOn?'Sound on — Marty in the main room, artist music in the games.':'Sound off');return soundOn;}
 function tone(kind='up'){if(soundOn)roundAudio.effect(kind);}
 updateSoundButton();
 $('#venue-music').href=venueTrack.listenUrl;
@@ -206,7 +208,7 @@ function drawHotspot(h,time,target){
 }
 function syncRoomMusic(){
  const enabled=roomMusicEnabled({room:state.room,profileReady:state.profileReady,entryPending:playerEntryPending,dialogOpen:dialog.open,hidden:document.hidden,soundOn});
- roundAudio.setAmbience(enabled);
+ roundAudio.setAmbience(enabled&&!stageVideos.audible);
  $('#venue-music').hidden=!enabled||!roundAudio.ambiencePlaying;
 }
 function render(time){
@@ -216,6 +218,7 @@ function render(time){
  const rect=canvas.getBoundingClientRect();if(rect.width<1||rect.height<1){requestAnimationFrame(render);return;}const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(rect.width*ratio),ch=Math.round(rect.height*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  viewWidth=H*(rect.width/rect.height);camera=Math.max(0,Math.min(W-viewWidth,state.x-viewWidth/2));if(viewWidth>=W){camera=0;viewWidth=W;}
+ stageVideos.update({room:state.room,ready:state.profileReady&&!playerEntryPending,blocked:dialog.open||photoBusy||paused||$('#room-intro').classList.contains('visible'),hidden:document.hidden,width:rect.width,height:rect.height,offsetLeft:canvas.offsetLeft,camera,viewWidth});
  ctx.setTransform(canvas.width/viewWidth,0,0,canvas.height/H,-camera*canvas.width/viewWidth,0);ctx.imageSmoothingEnabled=true;
  ctx.clearRect(camera,0,viewWidth,H);ctx.drawImage(images[state.room],0,0,W,H);drawRoomArtwork(ctx,state.room,images,time,reduceMotion);
  if(state.room==='show'&&!reduceMotion){ctx.save();ctx.globalAlpha=.03+Math.sin(time/800)*.018;ctx.fillStyle='#af3438';ctx.fillRect(0,0,W,400);ctx.restore();}
@@ -297,7 +300,7 @@ for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.add
 const keyMap={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
 window.addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,textarea'))return;const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key]){e.preventDefault();endBreak();keys.add(keyMap[key]);}else if((key==='e'||key===' ')&&!e.repeat&&!e.target.closest('button,a')){e.preventDefault();interactButton();}});
 window.addEventListener('keyup',e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key])keys.delete(keyMap[key]);});
-function resumeWorld(){keys.clear();dragPointer=null;paused=document.hidden;last=0;syncRoomMusic();}
+function resumeWorld(){if(document.hidden)stageVideos.suspend();keys.clear();dragPointer=null;paused=document.hidden;last=0;syncRoomMusic();}
 window.addEventListener('blur',()=>{keys.clear();dragPointer=null;});window.addEventListener('pageshow',resumeWorld);document.addEventListener('visibilitychange',()=>{resumeWorld();safeSave();});
 document.querySelectorAll('[data-dir]').forEach(b=>{const release=()=>{keys.delete(b.dataset.dir);b.classList.remove('held');};b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.dir);b.classList.add('held');};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;});
 $('#interact').onclick=interactButton;$('#menu').onclick=openMenu;$('#scoreboard').onclick=openBoard;

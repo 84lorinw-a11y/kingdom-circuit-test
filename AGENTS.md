@@ -1,5 +1,10 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 stage videos (latest owner direction)
+
+- TEST only. The stage screen loops the three supplied public YouTube Shorts in order: `igVFE1_Dl1A`, `a0lIU4jiL6M`, `XyZJtJ3t0Vc`. This supersedes the stage artwork slideshow. Retain the permanent APOLLO RECORDS banner and all other approved branding, people and games.
+- Use one privacy-enhanced YouTube embed with native controls and no artist or artwork covering the player. Keep the videos muted alongside Marty’s room music by default. Pause when offscreen, in dialogs/games, outside the main stage or in a hidden tab; reduced motion requires Play screen. Load the player only on entering the stage. Preserve self-only score connections, noindex and all production isolation.
+
 ## October 20 roaming camera operators (latest owner direction)
 
 - TEST only. Both reference camera operators face up toward the performers for most of their shooting time, occasionally turn to film the crowd, and take short walks between distinct pit angles. Use matching stage-facing, crowd-facing and walking poses; no generic replacement operators or flashes.

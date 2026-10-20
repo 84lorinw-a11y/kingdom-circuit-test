@@ -145,3 +145,18 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 
 /* The six supplied player choices form two equal rows. */
 .avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* One YouTube player follows the canvas camera; no artwork covers its controls. */
+.stage-video{position:absolute;z-index:2;background:#070809;transform-origin:top left;width:454px;height:200px}
+.stage-video iframe{display:block;width:100%;height:100%;border:0}
+.stage-video-tools{position:absolute;z-index:3;right:9px;top:43px;display:flex;align-items:center;gap:6px;max-width:calc(100% - 18px);padding:5px 7px;background:#09111ee8;border:1px solid #49505b;border-radius:3px;font-size:9px}
+.stage-video-tools button,.stage-video-tools a{font-size:9px;color:#e8dfce;background:transparent;padding:5px;min-height:28px;text-decoration:none;white-space:nowrap}
+.stage-video-tools button:hover,.stage-video-tools a:hover{color:#ffc45b}
+.stage-video-tools span{max-width:130px;font-size:8px;color:#aab4c3}
+.stage-video[hidden],.stage-video-tools[hidden]{display:none}
+@media(max-width:600px){.stage-video-tools{top:auto;bottom:60px;right:8px}.stage-video-tools span{max-width:90px}}
+
+/* Notifications stay on the audience floor, away from the screen. */
+.toast{top:auto;bottom:112px}
+
+@media(max-width:600px){.venue-music{top:auto;bottom:104px;right:8px}}

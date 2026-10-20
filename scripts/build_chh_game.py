@@ -50,6 +50,8 @@ def verify(site: Path) -> dict:
     assert all(name in scoring for name in ('eli', 'marty', 'brenno', 'apollo'))
     assert '<meta name="score-service" content="">' in page, 'Apollo TEST must stay off the original competition'
     assert "connect-src 'self';" in page
+    assert "script-src 'self' https://www.youtube.com;" in page
+    assert "frame-src https://www.youtube-nocookie.com;" in page
     assert "createOnlineScores(localStorage,{base:''})" in (site / 'play/game.mjs').read_text()
     crew = (site / 'play/apollo-crew.mjs').read_text()
     for artist in ('marty', 'brenno', 'ryan-ellis', 'gavin-the-hotrod', 'lj-the-messenger', 'dearis', 'tonyxtrotter', 'eli-williams', 'andrew-prim'):

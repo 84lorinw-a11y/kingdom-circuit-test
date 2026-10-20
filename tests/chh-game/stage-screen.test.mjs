@@ -1,14 +1,13 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {screenFrame,screenSlides} from '../../test-overrides/chh-show-night/stage-screen.mjs';
+import {screenPlacement,stageScreen} from '../../test-overrides/chh-show-night/stage-screen.mjs';
 import {drawApolloMarquee} from '../../test-overrides/chh-show-night/apollo-crew.mjs';
-test('Stage screen holds each visual and crossfades slowly through all three',()=>{
- assert.deepEqual(screenSlides,['cover','not-for-sale','apollo-logo']);
- assert.deepEqual(screenFrame(8000),{current:0,next:1,mix:0});
- assert.deepEqual(screenFrame(9200),{current:0,next:1,mix:.5});
- assert.deepEqual(screenFrame(10000),{current:1,next:2,mix:0});
- assert.deepEqual(screenFrame(20000),{current:2,next:0,mix:0});
- assert.deepEqual(screenFrame(30000),{current:0,next:1,mix:0});
- for(const time of [0,9200,19200,29200])assert.deepEqual(screenFrame(time,true),{current:0,next:0,mix:0});
+test('Stage video follows the world camera and stays above the artists',()=>{
+ assert.ok(stageScreen.y+stageScreen.height<=225);
+ assert.deepEqual(screenPlacement({width:1024,height:683}),{left:323,top:25,width:454,height:200});
+ const phone=screenPlacement({width:375,height:683,camera:300,viewWidth:375});
+ assert.deepEqual(phone,{left:23,top:25,width:454,height:200});
+ const half=screenPlacement({width:512,height:341.5});
+ assert.deepEqual(half,{left:161.5,top:12.5,width:227,height:100});
 });
 test('Every exterior artist uses the same font and common fitting transform',()=>{
  const lines=[],scales=[];
