@@ -1,4 +1,4 @@
-import {createStageVideos} from './stage-videos.mjs?v=apollo-13';
+import {createStageVideos} from './stage-videos.mjs?v=apollo-15';
 import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-13';
 import {matchesVipCode} from './vip-access.mjs?v=apollo-13';
 import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-13';
@@ -13,7 +13,7 @@ import {drawRoomArtwork} from './venue-art.mjs?v=apollo-13';
 import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-13';
 import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-13';
 import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-13';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-13';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-15';
 import {createCelebration} from './celebration.mjs?v=apollo-13';
 import {cameraActors,drawCameraFlash} from './pit.mjs?v=apollo-13';
 import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-13';
@@ -208,7 +208,7 @@ function drawHotspot(h,time,target){
 }
 function syncRoomMusic(){
  const enabled=roomMusicEnabled({room:state.room,profileReady:state.profileReady,entryPending:playerEntryPending,dialogOpen:dialog.open,hidden:document.hidden,soundOn});
- roundAudio.setAmbience(enabled&&!stageVideos.audible);
+ roundAudio.setAmbience(enabled);
  $('#venue-music').hidden=!enabled||!roundAudio.ambiencePlaying;
 }
 function render(time){
@@ -314,6 +314,11 @@ function openMenu(){
  {label:'FIREWORKS',fn:()=>celebration.play()},
  {label:'NEW GAME',secondary:true,fn:requestFreshNight},
  {label:'BACK TO THE SHOW',secondary:true}],'APOLLO RECORDS · TEST PREVIEW');
+ if(state.room==='show'){
+  const section=document.createElement('section'),heading=document.createElement('h3'),hint=document.createElement('p');
+  heading.textContent='Stage screen';hint.textContent='Muted video loop. Changes apply when you return to the show.';
+  const controls=stageVideos.controls;controls.hidden=false;section.append(heading,hint,controls);content.insertBefore(section,content.lastElementChild);
+ }
 }
 function requestFreshNight(){
  openDialog('Start a new night?','A session is one night, including every replay. Your highest whole-night total stays on the board. Save this night before starting over.',[{label:'SAVE POINTS & START NEW NIGHT',fn:()=>saveBeforeExit({newNight:true})},{label:'KEEP THIS NIGHT',secondary:true}],'KEEP YOUR POINTS');

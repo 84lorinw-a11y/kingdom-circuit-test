@@ -47,6 +47,5 @@ vipSpots.forEach(([x,y],i)=>vip.push(fan(x,y,i,{scale:2.08,flip:i%2===0})));
 for(const cast of [outside,show,vip])cast.forEach((a,i)=>{a.who=sharedCast[i].who;a.phase=i*1.71;});
 export const crowdCounts={outside:outside.length,show:show.length,vip:vip.length};
 export function crowdActors(room,time,reduceMotion,player){const newcomers=room==='show'?Array.from({length:Math.min(10,Math.ceil((player.crewDelivered||0)/2))},(_,i)=>({...fan(282+(i%5)*120,548+Math.floor(i/5)*63,i,{scale:2.1,back:true,hands:true}),who:brennoFan(20+i)})):[];return [...({outside,show,vip}[room]||[]),...newcomers].map(a=>{
- const overlap=a.y>player.y-8&&a.y<player.y+105&&Math.abs(a.x-player.x)<65;
- const animated=!reduceMotion&&a.role!=='camper';return{...a,y:a.y+(animated?Math.sin(time/420+a.phase)*1.7:0),lean:animated?Math.sin(time/650+a.phase)*.018:0,alpha:overlap?.35:1};
+ const animated=!reduceMotion&&a.role!=='camper';return{...a,y:a.y+(animated?Math.sin(time/420+a.phase)*1.7:0),lean:animated?Math.sin(time/650+a.phase)*.018:0,alpha:1};
 });}

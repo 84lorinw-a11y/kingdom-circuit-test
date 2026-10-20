@@ -1,5 +1,11 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 clean video display, clip order and solid people (latest owner direction)
+
+- TEST only. Play the team video (`a0lIU4jiL6M`), then the girls (`igVFE1_Dl1A`), then the other clip (`XyZJtJ3t0Vc`), looping in that order. Use supported YouTube parameters to hide player controls, fullscreen button and annotations. Move the custom Pause/Next/link controls into the game menu. Keep the stage banner, artists, muted default, room/game/hidden-tab suspension and reduced-motion manual start.
+- Videos are permanently muted at zero volume, including after native unmute or clip changes. Room/game music remains separate. Remove the crowd overlap fade in every room so people remain fully opaque; keep the player label/ring visible above the crowd.
+- YouTube still controls startup/paused titles, branding and related UI; do not claim it is fully branding-free or crop/mask its interface. Completely clean direct playback needs original video files from the owner. Do not download/rehost streams to bypass the embedded-player limitations.
+
 ## October 20 merch lettering cleanup (latest owner direction)
 
 - TEST only. Remove the APOLLO RECORDS / NOT 4 SALE wall lettering above the merchandise rack. Preserve the hanging merchandise, vendor, table, marker and merch game. The owner only asked for an opinion about keeping the booth; that was not an instruction to remove it. Keep the permanent Apollo Records banner over the stage screen.
