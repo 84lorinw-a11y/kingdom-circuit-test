@@ -1,5 +1,19 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 eight arcade games (latest owner direction)
+
+- TEST only. Replace the eight non-Eli artist prototypes with APOLLO IS NOT FOR SALE (tap buyout offers, allow crew/music), Bring Your People (Snake and delivery), Soundwave Surfer (vertical dragging), HotRod to the Show (three-lane driving), Special Delivery (paper planes), Find the Lost Files (memory pairs), The Art of Getting Up (platform jumping), Release Day Rush (conveyor sorting). Marty golf was explicitly superseded by the headquarters buyout game. Eli and merch mechanics stay unchanged.
+- One canvas gesture, 30–45-second artist rounds, music continues through mistakes, replay, individual device leaderboards and downloadable score cards. Never invent actual artist benchmark scores. Existing backend competition remains isolated. Use released Marty previews until approved album audio/artwork is supplied.
+- Owner questioned the immediate game selector. Keep walking/tapping artists as the main experience, with All artist games in the menu as an optional shortcut; do not add a mandatory opening selector or permanent nine-button bar. Brenno deliveries add audience members to the main stage. Preserve the venue, booth, merchandise, roadies, cypher, snacks and mingling work from the revision below.
+
+## October 19 club games and mingling revision (latest)
+
+- TEST only. All nine artist games must have visible launch buttons, including on phones. Eli’s BIBLE game/audio stays unchanged. Only merch uses catch/drop gameplay: Brenno now finds fans, Marty rejects buyout proposals at a stationary meeting table, and Gavin follows route decisions. Keep the other six distinct activities, twenty chances, 40 + 10 scoring, saves and production isolation. Allow up to 45 seconds for reading/matching rounds.
+- Keep approved character art. Move Marty slightly left, Eli forward, both side trios forward and Gavin/Tony left. Andrew works in a larger front-of-house mixing booth on the right. VIP artists mingle among guests until photo time, then gather in the existing close line; exported photos still include all nine. This supersedes the prior permanent VIP line.
+- Bottom-left cypher has original call-and-response lines. Replace breather activity with a snack tray: popcorn, pretzel, fruit cup, water, lemonade, soda, no alcohol. Add Not 4 Sale hoodie, cap and tote to the three shirts and merch game. Add realistic roadie load-in cutouts and restrained marquee typography. Preserve low smoke.
+- Owner requested current released Marty songs as temporary game music except Eli. Use clearly labeled short released previews with official listening links; six local preview excerpts serve the non-Eli slots. No unreleased audio. Preload only Eli initially, load the selected Marty preview on demand.
+
+
 ## October 19 all-artist games and venue cleanup (latest)
 
 - TEST only. The owner asked for first playable games for every artist and will refine them later. This supersedes the earlier four-game limit and Andrew's visual-only station: all nine artists now have games, plus Apollo merch. Keep all approved character artwork and stage/VIP placements.

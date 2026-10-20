@@ -1,4 +1,4 @@
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-04';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-06';
 // Transparent sprite atlases adapted from the supplied CHH scene references.
 // Trim bounds are calculated once at load; sprites are composited at runtime.
 const heroIds=['player','jay','grace'];

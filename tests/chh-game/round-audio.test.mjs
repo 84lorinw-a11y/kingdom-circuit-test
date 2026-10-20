@@ -5,7 +5,7 @@ import {roundSeconds} from '../../test-overrides/chh-show-night/scoring.mjs';
 const setup=()=>{let contexts=0,plays=0,stops=0;const context={state:'suspended',currentTime:0,destination:{},sampleRate:48000,resume(){this.state='running';return Promise.resolve();},decodeAudioData:async()=>({duration:30}),createBufferSource:()=>({connect(){},disconnect(){},start(){plays++;},stop(){stops++;}}),createGain:()=>({gain:{value:0},connect(){},disconnect(){}}),createDynamicsCompressor:()=>({threshold:{},knee:{},ratio:{},attack:{},release:{},connect(){},disconnect(){}}),createAnalyser:()=>({connect(){},disconnect(){}})};globalThis.window={AudioContext:class{constructor(){contexts++;return context;}}};globalThis.fetch=async()=>({ok:true,arrayBuffer:async()=>new ArrayBuffer(8)});return {context,get contexts(){return contexts;},get plays(){return plays;},get stops(){return stops;}};};
 test('Song replay reuses an unlocked context, resets time and stops the previous clip',async()=>{const env=setup(),a=createRoundAudio();await a.unlock();await a.play('eli');env.context.currentTime=7;assert.equal(a.time,7);await a.play('eli');assert.equal(a.time,0);assert.equal(env.contexts,1);assert.equal(env.plays,2);assert.equal(env.stops,1);a.stop();assert.equal(a.time,0);assert.equal(env.stops,2);});
 test('Leaving while a recording decodes prevents stale audio starting',async()=>{const env=setup();let resolves=[];env.context.decodeAudioData=()=>new Promise(r=>{resolves.push(r);});const a=createRoundAudio();const pending=a.play('eli');await new Promise(r=>setImmediate(r));a.stop();resolves.forEach(resolve=>resolve({duration:30}));await pending;assert.equal(env.plays,0);});
-test('Apollo plays the instrumental soundcheck, restarts it on replay, and stops on exit',async()=>{
+test('Apollo plays the released Marty preview, restarts it on replay, and stops on exit',async()=>{
  const env=setup(),requests=[],decoded=[];
  globalThis.fetch=async src=>{requests.push(src);return {ok:true,arrayBuffer:async()=>src};};
  env.context.decodeAudioData=async src=>({src,duration:25});
@@ -14,13 +14,13 @@ test('Apollo plays the instrumental soundcheck, restarts it on replay, and stops
  const a=createRoundAudio();await a.play('apollo');env.context.currentTime=8;assert.equal(a.time,8);
  await a.play('apollo');assert.equal(a.time,0);assert.equal(env.stops,1);
  assert.deepEqual(decoded,[merchTrack.src,merchTrack.src]);assert.equal(requests.filter(src=>src===merchTrack.src).length,1);
- assert.equal(merchTrack.title,'Soundcheck · Merch Drop');assert.equal(merchTrack.durationSeconds,roundSeconds.apollo);
+ assert.equal(merchTrack.title,'WOW');assert.equal(merchTrack.loop,true);
  a.stop();assert.equal(env.stops,2);assert.equal(a.time,0);
 });
 
 test('Unlock is lightweight and only the selected song downloads',async()=>{
  setup();const requested=[];const a=createRoundAudio({fetchAudio:async src=>{requested.push(src);return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
- await a.unlock();assert.deepEqual(requested,[]);await a.preload('marty');await a.play('marty');assert.equal(requested.length,1);assert.match(requested[0],/apollo-record-soundcheck/);a.stop();
+ await a.unlock();assert.deepEqual(requested,[]);await a.preload('marty');await a.play('marty');assert.equal(requested.length,1);assert.match(requested[0],/marty-cult-classic-preview/);a.stop();
 });
 test('A stalled mobile resume times out and a later gesture can retry',async()=>{
  const env=setup();env.context.resume=()=>new Promise(()=>{});const a=createRoundAudio({resumeTimeoutMs:10});
@@ -49,12 +49,12 @@ test('Sound effects use the same working context and obey master mute',async()=>
  a.setMuted(true);a.effect();assert.equal(effects,4);a.stop();
 });
 
-test('Background warmup downloads each approved excerpt once, plays nothing, and instant replay reuses it',async()=>{
+test('Warmup loads only Eli; other previews download on demand and replay reuses them',async()=>{
  const env=setup(),requests=[];const a=createRoundAudio({fetchAudio:async src=>{requests.push(src);return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
- await a.warmup();await a.warmup();assert.equal(new Set(requests).size,4);assert.equal(requests.length,4);assert.equal(env.plays,0);
+ await a.warmup();await a.warmup();assert.equal(new Set(requests).size,1);assert.equal(requests.length,1);assert.equal(env.plays,0);
  await a.play('eli');await a.play('marty');await a.play('brenno');await a.play('apollo');assert.equal(requests.length,4);assert.equal(env.plays,4);a.stop();
 });
-test('One failed warmup song cannot block the others or prevent a later retry',async()=>{
- setup();let fail=true,requests=0;const a=createRoundAudio({fetchAudio:async src=>{requests++;if(src.includes('apollo-record-soundcheck')&&fail)throw Error('offline');return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
- const warm=await a.warmup();assert.equal(warm.filter(r=>r.status==='fulfilled').length,3);fail=false;await a.play('marty');assert.equal(requests,5);a.stop();
+test('Failed lightweight warmup does not block an on-demand song or retry',async()=>{
+ setup();let fail=true,requests=0;const a=createRoundAudio({fetchAudio:async src=>{requests++;if(src.includes('eli-bible')&&fail)throw Error('offline');return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
+ const warm=await a.warmup();assert.equal(warm.filter(r=>r.status==='rejected').length,1);await a.play('marty');assert.equal(requests,2);fail=false;await a.play('eli');assert.equal(requests,3);a.stop();
 });

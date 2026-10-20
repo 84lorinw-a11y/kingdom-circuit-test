@@ -1,4 +1,4 @@
-import {djTrack,stageTracks,merchTrack,crewTracks} from './music-config.mjs?v=apollo-04';
+import {djTrack,stageTracks,merchTrack,crewTracks} from './music-config.mjs?v=apollo-06';
 const bounded=(promise,ms,message)=>new Promise((resolve,reject)=>{
  const timer=setTimeout(()=>reject(Error(message)),ms);
  Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});
@@ -45,7 +45,7 @@ export function createRoundAudio({contextFactory=()=>new(window.AudioContext||wi
    notes.forEach((hz,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.09;o.type='triangle';o.frequency.value=hz;g.gain.setValueAtTime(.045,t);g.gain.exponentialRampToValueAtTime(.001,t+.15);o.connect(g);g.connect(master);o.onended=()=>{o.disconnect();g.disconnect();};o.start(t);o.stop(t+.16);});
   }catch{}
  }
- return {unlock,stop,effect,preload:buffer,warmup:()=>Promise.allSettled(['eli','marty','brenno','apollo'].map(buffer)),
+ return {unlock,stop,effect,preload:buffer,warmup:()=>Promise.allSettled(['eli'].map(buffer)),
   setMuted(value){muted=!!value;if(master)master.gain.value=muted?0:1;return muted;},
   get muted(){return muted;},get running(){return !!active&&context?.state==='running';},
   async play(id){

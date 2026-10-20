@@ -22,8 +22,10 @@ class GameDeploymentTests(unittest.TestCase):
         self.assertEqual((self.site / 'index.html').read_text(), self.home)
         self.assertFalse((self.site / 'play/gate.html').exists())
         self.assertFalse((self.site / 'play/.env').exists())
-        for name in ('eli-bible-original.m4a', 'apollo-crew-soundcheck.wav',
-                     'apollo-record-soundcheck.wav', 'apollo-merch-soundcheck.wav'):
+        for name in ('eli-bible-original.m4a', 'marty-ned-flanders-preview.m4a',
+                     'marty-cult-classic-preview.m4a', 'marty-wow-preview.m4a',
+                     'marty-today-preview.m4a', 'marty-father-love-preview.m4a',
+                     'marty-everything-is-fine-preview.m4a'):
             self.assertGreater((self.site / 'play/assets/music' / name).stat().st_size, 100000)
         self.assertIn(game.BASE + 'game.mjs', (self.site / 'play/index.html').read_text())
         self.assertNotIn('/api/', (self.site / 'play/game.mjs').read_text())

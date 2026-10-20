@@ -1,18 +1,14 @@
-import {drawPerson} from './sprites.mjs?v=apollo-04';
+import {drawPerson} from './sprites.mjs?v=apollo-06';
 
 function roadCase(g,x,y,w=38,h=30){
  g.fillStyle='#16181c';g.fillRect(x-w/2,y-h,w,h);g.strokeStyle='#a6a8aa';g.lineWidth=2;g.strokeRect(x-w/2,y-h,w,h);g.fillStyle='#7c8185';g.fillRect(x-6,y-h+9,12,3);
  g.fillStyle='#08090b';g.beginPath();g.arc(x-w/2+6,y+3,4,0,7);g.arc(x+w/2-6,y+3,4,0,7);g.fill();
 }
-export function drawAlleyLoadIn(g,time,reduced){
- g.save();
- // Small figures deepen into the existing alley, leaving the front sidewalk open.
- const progress=reduced?.45:(Math.sin(time/4800)+1)/2,y=370+progress*43,x=90+progress*15;
- drawPerson(g,58,390,'fan:16',{scale:1.25,flip:true});
- drawPerson(g,x-17,y,'fan:5',{scale:1.1+progress*.2,walking:!reduced,frame:time/160});roadCase(g,x+7,y+7,29+progress*6,24);
- roadCase(g,139,424,36,32);roadCase(g,139,390,31,25);
- g.fillStyle='#141719';g.fillRect(52,312,87,20);g.fillStyle='#d1c5ad';g.textAlign='center';g.font='bold 10px monospace';g.fillText('LOAD IN →',95,326);
- g.restore();
+export function drawAlleyLoadIn(g,time,reduced,art){
+ g.save();const dx=reduced?0:Math.sin(time/9000)*3;
+ roadCase(g,143,419,31,28);roadCase(g,143,388,29,25);
+ if(art.roadies)g.drawImage(art.roadies,0,0,art.roadies.width,art.roadies.height,12+dx,315,146,97);
+ g.fillStyle='#141719';g.fillRect(52,294,87,20);g.fillStyle='#d1c5ad';g.textAlign='center';g.font='bold 10px monospace';g.fillText('LOAD IN →',95,308);g.restore();
 }
 export function drawStageSmoke(g,time,reduced){
  g.save();

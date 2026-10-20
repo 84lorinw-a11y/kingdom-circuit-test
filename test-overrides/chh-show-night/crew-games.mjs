@@ -1,7 +1,9 @@
-import {drawPerson} from './sprites.mjs?v=apollo-04';
+import {brennoFan} from './crowds.mjs?v=apollo-06';
+import {drawPerson} from './sprites.mjs?v=apollo-06';
 
 export const crewGames={
- 'gavin-the-hotrod':{title:'HOTROD RUN',instruction:'Steer into the open lane before each roadblock. Drag or use ← →.',mode:'drive',labels:['← LEFT','CENTER','RIGHT →'],result:'roadblocks cleared'},
+ brenno:{title:'FIND YOUR PEOPLE',instruction:'Find the fan in Brenno’s invite. Tap their numbered portrait below. Twenty fans to bring into the crew.',mode:'find',labels:['1','2','3','4','5','6'],result:'fans found'},
+ 'gavin-the-hotrod':{title:'HOTROD ROUTE',instruction:'Read each route clue and choose the right turn to reach the show. Keys 1–3 work too.',mode:'route',labels:['← LEFT','STRAIGHT ↑','RIGHT →'],result:'turns navigated'},
  'ryan-ellis':{title:'FIND THE HARMONY',instruction:'Slide your note into the gold target before the countdown ends. Drag or use ← →.',mode:'slider',result:'notes matched'},
  'lj-the-messenger':{title:'DELIVER THE MESSAGE',instruction:'Read the envelope. Tap its destination before time runs out. Keys 1–3 work too.',mode:'choice',labels:['CREW','STUDIO','STAGE'],result:'messages delivered'},
  dearis:{title:'FIND YOUR LIGHT',instruction:'Follow De’aris with the spotlight. Keep him centered when the countdown ends. Drag or use ← →.',mode:'spotlight',result:'shots lit'},
@@ -19,6 +21,8 @@ export function currentPrompt(notes,time,game){
 }
 export function wordOptions(note){const phrase=phrases[Math.floor(note.id/4)],shift=(Math.floor(note.id/4)+1)%4;return phrase.map((_,i)=>phrase[(i+shift)%4]);}
 export function correctChoice(game,note){
+ if(game==='brenno')return note.id%6;
+ if(game==='gavin-the-hotrod')return roadLane(note);
  if(game==='lj-the-messenger')return note.kind;
  if(game==='andrew-prim')return note.lane;
  if(game==='tonyxtrotter')return wordOptions(note).indexOf(phrases[Math.floor(note.id/4)][note.id%4]);
@@ -44,16 +48,19 @@ export function drawCrewGame(g,{game,notes,time,px,phase,reduced=false,events=[]
  const cfg=crewGames[game],prompt=currentPrompt(notes,time,game),note=prompt?.note;
  g.fillStyle='#111216';g.fillRect(0,0,420,560);
  text(g,cfg.title,210,33,26);text(g,`${events.length} / 20`,210,58,12,'#bdb7ad');
- if(cfg.mode==='drive'){
-  g.fillStyle='#22242a';g.fillRect(12,80,396,480);
-  for(let lane=1;lane<3;lane++){g.strokeStyle='#d5c8a766';g.lineWidth=3;g.setLineDash([28,25]);g.lineDashOffset=reduced?0:-time*100;g.beginPath();g.moveTo(lane*140,80);g.lineTo(lane*140,560);g.stroke();}g.setLineDash([]);
-  for(const n of notes){if(n.done)continue;const y=450-(n.at-time)*175;if(y<100||y>500)continue;
-   for(let lane=0;lane<3;lane++)if(lane!==roadLane(n)){panel(g,lane*140+13,y-14,114,28,'#bd773d');g.strokeStyle='#2d2926';g.lineWidth=10;g.beginPath();g.moveTo(lane*140+25,y+13);g.lineTo(lane*140+51,y-13);g.moveTo(lane*140+75,y+13);g.lineTo(lane*140+101,y-13);g.stroke();}
-   text(g,'OPEN',laneCenter(roadLane(n)),y+5,14,'#ade1c9');
-  }
-  car(g,px,455);drawPerson(g,384,95,game,{scale:1.05});return;
- }
- if(cfg.mode==='spotlight'){
+ if(cfg.mode==='find'){
+  drawPerson(g,84,214,'brenno',{scale:2.2});panel(g,149,83,232,139,'#2d3433');text(g,'FIND THIS FAN',265,107,13,'#cce0c7');
+  if(note)drawPerson(g,265,217,brennoFan(note.id),{scale:1.7});
+  for(let i=0;i<6;i++){const x=78+(i%3)*132,y=350+Math.floor(i/3)*130;panel(g,x-54,y-112,108,118,'#25292b');
+   const fanId=note?(note.id+(i-note.id%6+6)%6)%30:i;
+   drawPerson(g,x,y-6,brennoFan(fanId),{scale:1.65});text(g,String(i+1),x-39,y-89,17,'#eac492');}
+ }else if(cfg.mode==='route'){
+  const turns=['LEFT','STRAIGHT','RIGHT'],turn=note?roadLane(note):1;
+  drawPerson(g,62,217,game,{scale:2.1});panel(g,129,86,268,113,'#203b32');text(g,'NEXT TURN',263,111,12,'#aec6af');text(g,turns[turn],263,151,29);text(g,`STOP ${(note?.id??19)+1} / 20 · APOLLO SHOW`,263,180,11);
+  g.fillStyle='#262b2c';g.fillRect(24,242,372,239);g.strokeStyle='#4a5051';g.lineWidth=48;g.beginPath();g.moveTo(210,470);g.lineTo(210,317);g.moveTo(55,317);g.lineTo(365,317);g.moveTo(210,317);g.lineTo(210,255);g.stroke();
+  g.strokeStyle='#b5b19c';g.lineWidth=2;g.setLineDash([8,8]);g.beginPath();g.moveTo(210,470);g.lineTo(210,255);g.moveTo(55,317);g.lineTo(365,317);g.stroke();g.setLineDash([]);
+  car(g,210,409);text(g,'←',57,323,25);text(g,'↑',210,276,25);text(g,'→',362,323,25);
+ }else if(cfg.mode==='spotlight'){
   g.fillStyle='#211d26';g.fillRect(0,105,420,390);g.fillStyle='#382d30';g.fillRect(0,470,420,25);
   const x=note?spotlightX(note,time):210;
   g.fillStyle='#f9e7bb1c';g.beginPath();g.moveTo(px,100);g.lineTo(px-80,481);g.lineTo(px+80,481);g.closePath();g.fill();
