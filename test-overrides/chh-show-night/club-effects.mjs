@@ -25,7 +25,7 @@ export function drawStageSmoke(g,time,reduced){
 export function drawStageLights(g,time,reduced){
  // Slow, faint cones from the existing fixtures. No strobes or new fixtures.
  g.save();g.beginPath();g.rect(205,66,620,310);g.clip();
- for(const [x,phase] of [[335,0],[714,2.4]]){
+ for(const [x,phase] of [[294,0],[682,2.4]]){
   const aim=x+(reduced?0:Math.sin(time/11000+phase)*65);
   const light=g.createLinearGradient(x,70,aim,365);
   light.addColorStop(0,'rgba(246,227,202,.10)');

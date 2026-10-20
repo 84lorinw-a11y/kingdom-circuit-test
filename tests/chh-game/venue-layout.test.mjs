@@ -5,7 +5,7 @@ import {crowdActors} from '../../test-overrides/chh-show-night/crowds.mjs';
 import {findPath} from '../../test-overrides/chh-show-night/navigation.mjs';
 import {initialState,act} from '../../test-overrides/chh-show-night/state.mjs';
 test('Andrew on the booth rug and VIP below its right edge are distinct reachable destinations',()=>{
- assert.ok(andrewSpot.x>850&&andrewSpot.y>490);assert.ok(vipSpot.x>970&&vipSpot.y>560);assert.ok(Math.hypot(andrewSpot.x-vipSpot.x,andrewSpot.y-vipSpot.y)>100);
+ assert.ok(andrewSpot.x>850&&andrewSpot.y>=444);assert.ok(vipSpot.x>970&&vipSpot.y>560);assert.ok(Math.hypot(andrewSpot.x-vipSpot.x,andrewSpot.y-vipSpot.y)>100);
  for(const h of [andrewSpot,vipSpot])assert.deepEqual(findPath('show',{x:500,y:570},h).at(-1),{x:h.x,y:h.y});
  const state={...initialState(),entered:true,room:'vip',vipUnlocked:true};const back=act(state,'show');assert.deepEqual({x:back.x,y:back.y},vipReturn);
 });

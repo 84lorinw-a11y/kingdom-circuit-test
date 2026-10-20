@@ -1,5 +1,14 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 mobile stage spacing (latest owner direction)
+
+- TEST only. Remove the floating Marty TODAY link from the game viewport; retain room music and put its listening link in the menu. Move Ryan and Gavin slightly left and De’aris slightly right, keeping their tap targets attached to their positions. Raise Andrew’s circle and put his compact two-line name/play label to his right, with a working label tap target. Center the merch marker on the left stairs while preserving interaction from the safe audience floor. Keep the approved lower silent looping screen and the realistic scenery revision below.
+
+## October 20 venue material redesign (latest owner direction)
+
+- TEST only. Owner approved the more realistic 7th St Entry-inspired exterior, main stage and VIP scenery. Use the three `*-entry-v1.webp` backgrounds, with plainer dark walls, dry concrete sidewalk/floors, functional doors and practical club lighting. These are reference-inspired generated environments, not photographs or an exact replica of 7th St Entry. The specific Holy Smoke concert reference remains unspecified.
+- Preserve the approved lower video screen, silent full-clip loop, all artists/fans/player looks, games, merchandise and room interactions. Fit the existing equal-size marquee names to the new letterboard and align faint light cones to the new stage fixtures. Keep all original reference photos and provenance outside the deployed inventory; retire the three replaced backgrounds.
+
 ## October 20 lower stage screen (latest owner direction)
 
 - TEST only. Lower the screen to just above the rear stage floor, preserving its dimensions and the banner directly above. Composite the silent looping video into the world before the DJ booth and performers, so they remain fully visible in front. This supersedes the raised screen above their heads. Keep all playback and audio safeguards.

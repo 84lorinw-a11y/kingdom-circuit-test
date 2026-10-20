@@ -2,10 +2,10 @@
 export const apolloCrew=[
  {id:'marty',name:'Marty',file:'apollo-marty-v1',stageX:515,stageY:382,vipX:508,vipY:390},
  {id:'brenno',name:'Brenno',file:'apollo-brenno-v1',stageX:410,stageY:367,vipX:456,vipY:390},
- {id:'ryan-ellis',name:'Ryan Ellis',file:'apollo-ryan-ellis-v1',stageX:650,stageY:367,vipX:612,vipY:390},
- {id:'gavin-the-hotrod',name:'Gavin the HotRod',file:'apollo-gavin-the-hotrod-v1',stageX:250,stageY:367,vipX:352,vipY:390},
+ {id:'ryan-ellis',name:'Ryan Ellis',file:'apollo-ryan-ellis-v1',stageX:630,stageY:367,vipX:612,vipY:390},
+ {id:'gavin-the-hotrod',name:'Gavin the HotRod',file:'apollo-gavin-the-hotrod-v1',stageX:230,stageY:367,vipX:352,vipY:390},
  {id:'lj-the-messenger',name:'LJ the Messenger',file:'apollo-lj-the-messenger-v1',stageX:725,stageY:367,vipX:664,vipY:390},
- {id:'dearis',name:'De’aris',file:'apollo-dearis-v1',stageX:800,stageY:367,vipX:716,vipY:390},
+ {id:'dearis',name:'De’aris',file:'apollo-dearis-v1',stageX:825,stageY:367,vipX:716,vipY:390},
  {id:'tonyxtrotter',name:'tonyxtrotter',file:'apollo-tonyxtrotter-v1',stageX:330,stageY:367,vipX:404,vipY:390},
  {id:'eli-williams',name:'Eli Williams',file:'apollo-eli-williams-v1',stageX:570,stageY:345,vipX:560,vipY:390},
  {id:'andrew-prim',name:'Andrew Prim',file:'apollo-andrew-prim-v1',stageX:925,stageY:473,vipX:300,vipY:390}
@@ -26,13 +26,13 @@ export function drawApolloStage(ctx,time,reduced,drawPerson){
 }
 export function drawApolloMarquee(ctx){
  ctx.save();ctx.globalAlpha=.92;
- ctx.textAlign='center';ctx.fillStyle='#7f3028';ctx.font='bold 11px monospace';ctx.fillText('APOLLO RECORDS  /  NOT 4 SALE',655,95);
+ ctx.textAlign='center';ctx.fillStyle='#7f3028';ctx.font='bold 11px monospace';ctx.fillText('APOLLO RECORDS  /  NOT 4 SALE',655,84);
  const rows=['MARTY  /  BRENNO  /  RYAN ELLIS','GAVIN THE HOTROD  /  LJ THE MESSENGER  /  DE’ARIS','TONYXTROTTER  /  ELI WILLIAMS  /  ANDREW PRIM'];
  ctx.fillStyle='#2d231e';ctx.font='900 18px "Arial Narrow",sans-serif';
  // Fit the longest row once. Every name retains the same size and width scale.
  const fit=Math.min(1,500/Math.max(...rows.map(row=>ctx.measureText(row).width)));
  ctx.translate(655,0);ctx.scale(fit,1);
- rows.forEach((row,i)=>ctx.fillText(row,0,122+i*27));ctx.restore();
+ rows.forEach((row,i)=>ctx.fillText(row,0,112+i*26));ctx.restore();
 }
 const mingleSpots=[[470,421],[365,375],[593,538],[365,550],[681,448],[735,593],[453,588],[601,338],[410,440]];
 export function vipArtists(time=0,reduced=false,photo=false){
