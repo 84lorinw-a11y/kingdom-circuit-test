@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=apollo-06';
+import {drawPerson} from './sprites.mjs?v=apollo-07';
 // Stationary deal table: reject ownership offers, leave genuine support alone.
 export const offerLane=note=>Math.max(0,Math.min(2,Math.floor((note.x-42)/112)));
 export const offerX=lane=>70+lane*140;

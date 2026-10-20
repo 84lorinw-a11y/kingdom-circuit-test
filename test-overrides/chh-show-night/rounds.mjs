@@ -1,16 +1,16 @@
-import {mountRoundResultTools} from './round-records.mjs?v=apollo-06';
-import {crewGames,currentPrompt,wordOptions,judgeChoice,judgePosition,drawCrewGame,laneCenter,phrases} from './crew-games.mjs?v=apollo-06';
-import {judgeOffer,offerLane,offerX,drawOfferBoard} from './marty-offers.mjs?v=apollo-06';
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-06';
-import {drawMerchItem} from './merch-items.mjs?v=apollo-06';
-import {gameTracks,merchTrack} from './music-config.mjs?v=apollo-06';
-import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-06';
-import {drawPerson} from './sprites.mjs?v=apollo-06';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-06';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-06';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-06';
+import {mountRoundResultTools} from './round-records.mjs?v=apollo-07';
+import {crewGames,currentPrompt,wordOptions,judgeChoice,judgePosition,drawCrewGame,laneCenter,phrases} from './crew-games.mjs?v=apollo-07';
+import {judgeOffer,offerLane,offerX,drawOfferBoard} from './marty-offers.mjs?v=apollo-07';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-07';
+import {drawMerchItem} from './merch-items.mjs?v=apollo-07';
+import {gameTracks,merchTrack} from './music-config.mjs?v=apollo-07';
+import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-07';
+import {drawPerson} from './sprites.mjs?v=apollo-07';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-07';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-07';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-07';
 const titles={eli:'B–I–B–L–E',marty:'NOT 4 SALE',brenno:'CREW RUN',apollo:'NOT 4 SALE',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.title]))};
-const instructions={eli:'Tap the matching pad when the letter hits the gold line.',marty:'Three proposals at the table. Reject the one trying to buy Apollo; keep the crew independent. Keys 1–3 work too.',brenno:'Drag Brenno. Bring people into the crew. Keep the crew together!',apollo:'Drag the tote left and right. Catch the shirts, hoodie, cap and tote in the middle!',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.instruction]))};
+const instructions={eli:'Tap the matching pad when the letter hits the gold line.',marty:'Three proposals at the table. Reject the one trying to buy Apollo; keep the crew independent. Keys 1–3 work too.',brenno:'Drag Brenno. Bring people into the crew. Keep the crew together!',apollo:'Drag the tote left and right. Catch the shirts, hoodie and cap in the middle!',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.instruction]))};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
 // Download/decode while the score service prepares the verified round. No audio starts early.
 export async function prepareRoundStart(audio,online,game){

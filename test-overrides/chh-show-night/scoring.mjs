@@ -1,3 +1,4 @@
+import {merchItems} from './merch-items.mjs?v=apollo-07';
 // The same twenty opportunities and 40 + 10 rule apply to every game.
 export const ROUND_MAX=1000, OPPORTUNITIES=20;
 export const gameIds=['eli','marty','brenno','ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim','apollo'];
@@ -8,7 +9,7 @@ export function roundSchedule(id,seed=1){
  const first=id==='eli'?2.58:id==='apollo'?2.3:3.3,step=id==='eli'?120/104:(roundSeconds[id]-first-1.4)/19;
  return Array.from({length:20},(_,i)=>{
   const lane=Math.floor(random()*4),position=random();
-  return {id:i,at:first+i*step,lane,x:id==='apollo'?(i%2?265:65)+position*90:65+position*290,kind:i%(id==='apollo'?6:3)};
+  return {id:i,at:first+i*step,lane,x:id==='apollo'?(i%2?265:65)+position*90:65+position*290,kind:i%(id==='apollo'?merchItems.length:3)};
  });
 }
 export function roundScore(events){

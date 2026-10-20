@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 evening visual polish and VIP entry (latest owner direction)
+
+- TEST only. Remove the tote from the rack, merchandise selection and drop game; keep three tees, hoodie and cap. Hang the cap at the far right with the vendor's face unobscured.
+- Keep Andrew's name only, with no producer/A&R role label. Replace the flat console with a detailed angled flight-case sound booth facing toward the stage; preserve his approved character. Raise Eli's console slightly, preserve his game/audio.
+- Use the exterior's actual cream marquee, not an opaque black rectangle. Merch lettering sits on the existing brick, with no fake black header. Use the detailed wired mic asset for Pass the Mic. Increase only low stage smoke, preserving reduced motion and clear faces.
+- VIP keeps its open photo floor and mingling crew. Use the existing draped refreshment table with realistic iced nonalcoholic drinks, lemonade and snacks; no separate flat illustrated food counter. Add cozy seating details and a listening corner with released previews. VIP entry uses the game code NOT4SALE, saved for the current night, with clear wrong-code feedback. This is a game mechanic, NOT access control for hosted files or unreleased music. Owner was asked for a different preferred code while work continued.
+- Owner explicitly chose walk-to-artists as primary discovery with the optional All artist games menu chooser.
+
 ## October 19 eight arcade games (latest owner direction)
 
 - TEST only. Replace the eight non-Eli artist prototypes with APOLLO IS NOT FOR SALE (tap buyout offers, allow crew/music), Bring Your People (Snake and delivery), Soundwave Surfer (vertical dragging), HotRod to the Show (three-lane driving), Special Delivery (paper planes), Find the Lost Files (memory pairs), The Art of Getting Up (platform jumping), Release Day Rush (conveyor sorting). Marty golf was explicitly superseded by the headquarters buyout game. Eli and merch mechanics stay unchanged.

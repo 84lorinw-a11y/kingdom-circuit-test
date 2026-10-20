@@ -1,5 +1,5 @@
-import {brennoFan} from './crowds.mjs?v=apollo-06';
-import {drawPerson} from './sprites.mjs?v=apollo-06';
+import {brennoFan} from './crowds.mjs?v=apollo-07';
+import {drawPerson} from './sprites.mjs?v=apollo-07';
 
 export const crewGames={
  brenno:{title:'FIND YOUR PEOPLE',instruction:'Find the fan in Brenno’s invite. Tap their numbered portrait below. Twenty fans to bring into the crew.',mode:'find',labels:['1','2','3','4','5','6'],result:'fans found'},
