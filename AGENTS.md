@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 19 late-night crowd and room revision (latest owner direction)
+
+- TEST only. Andrew’s playable circle belongs on the open rug beside his booth; VIP entry is on the left side. Keep artist faces and all nine games intact.
+- Main-stage exploration has a quiet looping released Marty TODAY preview, sharing the gesture-unlocked audio context. Pause it in other rooms, dialogs/games, hidden tabs and mute; resume its position afterward. Never overlap it with game songs or introduce unreleased audio.
+- Outside: twenty fans in conversations, eight standing in the entrance queue and two seated in folding camp chairs at its head, with blankets/bags. Keep door and load-in clear. Use side-facing social poses.
+- Owner supplied two real camera operators and eight fan references (five-person group, tan LOVE LIKE JESUS shirt, pink overalls, green cap and scarf). Use their reference-based cutouts, preserving recognizable outfits and likenesses across rooms. Add dark contemporary concert streetwear and varied stage-facing phone/cheering poses. Camera rigs face toward the performers; video operators do not emit flash bursts.
+
 ## October 19 final venue audit (latest owner direction)
 
 - TEST only. Owner asked to turn Andrew's booth around, remove the horizontal bar crossing the merch seller, audit the experience and apply tasteful improvements. Keep the approved people, outfits, Apollo prints and existing games.

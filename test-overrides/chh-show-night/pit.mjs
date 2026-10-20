@@ -1,10 +1,10 @@
 // Turn both camera operators inward toward the artists; feet stay above the listening circles.
 export const pitPhotographers=[
- {x:263,y:444,who:'pit:0',scale:2.2,photographer:0,flip:true},
- {x:800,y:444,who:'pit:1',scale:2.2,photographer:1,flip:true}
+ {x:263,y:444,who:'pit:0',scale:2.2,photographer:0,video:true,flip:false},
+ {x:800,y:444,who:'pit:1',scale:2.2,photographer:1,video:true,flip:false}
 ];
 export function drawCameraFlash(ctx,person,time,reduceMotion){
- if(reduceMotion)return;
+ if(reduceMotion||person.video)return;
  const phase=(time+person.photographer*1900)%4300;
  if(phase>100)return;
  const x=person.x+(person.photographer?27:-29)*(person.flip?-1:1),y=person.y-119;

@@ -1,6 +1,6 @@
-import {stageTracks} from './music-config.mjs?v=apollo-08';
-import {createStagePlayback} from './stage-audio.mjs?v=apollo-08';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-08';
+import {stageTracks} from './music-config.mjs?v=apollo-09';
+import {createStagePlayback} from './stage-audio.mjs?v=apollo-09';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-09';
 export const stageSpots=[
  {id:'brenno',x:410,y:475,label:'Brenno · BRING YOUR PEOPLE',tag:'BRENNO · BRING YOUR PEOPLE'},
  {id:'marty',x:515,y:475,label:'Marty · NOT 4 SALE',tag:'MARTY · NOT 4 SALE'}

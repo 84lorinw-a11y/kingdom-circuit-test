@@ -58,3 +58,28 @@ test('Failed lightweight warmup does not block an on-demand song or retry',async
  setup();let fail=true,requests=0;const a=createRoundAudio({fetchAudio:async src=>{requests++;if(src.includes('eli-bible')&&fail)throw Error('offline');return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};}});
  const warm=await a.warmup();assert.equal(warm.filter(r=>r.status==='rejected').length,1);await a.play('marty');assert.equal(requests,2);fail=false;await a.play('eli');assert.equal(requests,3);a.stop();
 });
+
+test('Room music waits for a gesture, loops quietly and resumes at its saved position',async()=>{
+ const env=setup(),starts=[],gains=[],create=env.context.createBufferSource,makeGain=env.context.createGain;
+ env.context.createBufferSource=()=>{const s=create(),start=s.start;s.start=(...args)=>{starts.push({args,loop:s.loop});start();};return s;};
+ env.context.createGain=()=>{const g=makeGain();gains.push(g);return g;};
+ const a=createRoundAudio();a.setAmbience(true);assert.equal(env.contexts,0);assert.equal(env.plays,0);
+ await a.unlock();await new Promise(r=>setImmediate(r));assert.equal(a.ambiencePlaying,true);assert.equal(env.contexts,1);assert.equal(env.plays,1);assert.equal(starts[0].loop,true);assert.equal(gains[1].gain.value,.24);
+ env.context.currentTime=9;a.setAmbience(false);assert.equal(a.ambiencePlaying,false);assert.equal(env.stops,1);
+ a.setAmbience(true);await new Promise(r=>setImmediate(r));assert.equal(starts[1].args[1],9);assert.equal(a.time,0);
+ for(let i=0;i<60;i++)a.setAmbience(true);assert.equal(env.plays,2);a.setAmbience(false);
+});
+test('Artist rounds stop room music, then the room can resume without a second context',async()=>{
+ const env=setup(),a=createRoundAudio();await a.unlock();a.setAmbience(true);await new Promise(r=>setImmediate(r));assert.equal(a.ambiencePlaying,true);
+ await a.play('eli');assert.equal(a.running,true);assert.equal(a.ambiencePlaying,false);assert.equal(env.stops,1);
+ a.stop();a.setAmbience(true);await new Promise(r=>setImmediate(r));assert.equal(a.ambiencePlaying,true);assert.equal(a.running,false);assert.equal(env.contexts,1);a.setAmbience(false);
+});
+test('Muted or exited rooms cannot start a stale pending preview',async()=>{
+ const env=setup();let finish;env.context.decodeAudioData=()=>new Promise(resolve=>{finish=resolve;});
+ const a=createRoundAudio();await a.unlock();a.setAmbience(true);await new Promise(r=>setImmediate(r));a.setMuted(true);finish({duration:30});await new Promise(r=>setImmediate(r));assert.equal(env.plays,0);
+ a.setMuted(false);await new Promise(r=>setImmediate(r));assert.equal(env.plays,1);a.setAmbience(false);assert.equal(a.ambiencePlaying,false);
+});
+test('Leaving the room while its preview downloads prevents later playback',async()=>{
+ const env=setup();let finish;env.context.decodeAudioData=()=>new Promise(resolve=>{finish=resolve;});
+ const a=createRoundAudio();await a.unlock();a.setAmbience(true);await new Promise(r=>setImmediate(r));a.setAmbience(false);finish({duration:30});await new Promise(r=>setImmediate(r));assert.equal(env.plays,0);assert.equal(a.ambiencePlaying,false);
+});
