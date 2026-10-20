@@ -1,4 +1,4 @@
-import {createStageVideos} from './stage-videos.mjs?v=apollo-15';
+import {createStageVideos} from './stage-videos.mjs?v=apollo-16';
 import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-13';
 import {matchesVipCode} from './vip-access.mjs?v=apollo-13';
 import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-13';
@@ -9,7 +9,7 @@ import {mountArtistArcade} from './arcade-round.mjs?v=apollo-13';
 import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-13';
 import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-13';
 import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-13';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-13';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-16';
 import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-13';
 import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-13';
 import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-13';

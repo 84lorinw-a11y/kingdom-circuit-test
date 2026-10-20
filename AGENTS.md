@@ -1,5 +1,11 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 owner-uploaded silent stage film (latest owner direction)
+
+- TEST only. Replace the three YouTube embeds with the owner's supplied 49-second landscape recording. Serve a local H.264 MP4 exported with zero audio tracks; loop the entire clip, muted and volume zero. The separate room/game music remains unchanged. Keep the large Apollo Records banner and full-bleed screen above the artists.
+- No YouTube player, external scripts/frames, captions, branding, or sign-in dependency. Keep only Pause/Play in the menu. Use the film's still frame during loading, reduced-motion manual start and playback failure. Pause in dialogs/games, other rooms, hidden tabs and when most of the screen is offscreen; preserve explicit manual pause.
+- Preserve the owner's original upload outside the published inventory. Publish only the optimized silent MP4 and poster under assets/video, pinned by the manifest. Verify the actual MP4 has no audio track and that playback loops, including on mobile. Restore script-src self and frame-src none in CSP.
+
 ## October 20 clean video display, clip order and solid people (latest owner direction)
 
 - TEST only. Play the team video (`a0lIU4jiL6M`), then the girls (`igVFE1_Dl1A`), then the other clip (`XyZJtJ3t0Vc`), looping in that order. Use supported YouTube parameters to hide player controls, fullscreen button and annotations. Move the custom Pause/Next/link controls into the game menu. Keep the stage banner, artists, muted default, room/game/hidden-tab suspension and reduced-motion manual start.

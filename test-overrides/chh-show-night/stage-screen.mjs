@@ -11,6 +11,6 @@ export function drawStageScreen(ctx){
  ctx.fillStyle='#090a0b';ctx.fillRect(x-6,y-4,width+12,height+8);
  ctx.strokeStyle='#434449';ctx.lineWidth=2;ctx.strokeRect(x-5,y-3,width+10,height+6);
  ctx.fillStyle='#ede6da';ctx.font='bold 16px sans-serif';ctx.fillText('APOLLO FILMS',550,115);
- ctx.fillStyle='#a5a6aa';ctx.font='12px sans-serif';ctx.fillText('Three films. One crew.',550,138);
+ ctx.fillStyle='#a5a6aa';ctx.font='12px sans-serif';ctx.fillText('NOT 4 SALE',550,138);
  ctx.restore();
 }

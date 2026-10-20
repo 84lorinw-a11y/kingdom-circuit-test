@@ -1,139 +1,95 @@
-import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-13';
+import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-16';
 
-export const stageVideos=Object.freeze([
- {id:'a0lIU4jiL6M',title:'NOT 4 $ALE — Apollo Records'},
- {id:'igVFE1_Dl1A',title:'We just hit 100k'},
- {id:'XyZJtJ3t0Vc',title:'no coworker music allowed'},
-]);
-// Shorts can wrap internally without emitting ENDED. Detect that completed loop via the public API.
-export const didVideoWrap=(previous,current,duration)=>Number.isFinite(duration)&&duration>1&&previous>=duration-.8&&current<1&&previous-current>1;
-export const nextVideoIndex=index=>(index+1)%stageVideos.length;
+// Owner-supplied draft recording, exported without an audio stream.
+export const stageFilm={
+ src:'/play/assets/video/apollo-stage-draft-v1.mp4',
+ poster:'/play/assets/video/apollo-stage-draft-v1.jpg',
+};
 export const stageCanPlay=({room,ready,blocked,hidden,visible=0,reduced=false,requested=false,paused=false})=>
  room==='show'&&ready&&!blocked&&!hidden&&visible>=.5&&!paused&&(!reduced||requested);
-export function stageEmbedUrl(index,origin){
- const params=new URLSearchParams({enablejsapi:'1',playsinline:'1',controls:'0',disablekb:'1',fs:'0',iv_load_policy:'3',rel:'0',origin});
- return `https://www.youtube-nocookie.com/embed/${stageVideos[index].id}?${params}`;
-}
-let apiPromise;
-export function loadYouTubeAPI(){
- if(window.YT?.Player)return Promise.resolve(window.YT);
- if(apiPromise)return apiPromise;
- apiPromise=new Promise((resolve,reject)=>{
-  const script=document.createElement('script');let timer;
-  const previous=window.onYouTubeIframeAPIReady;
-  const fail=()=>{clearTimeout(timer);script.remove();apiPromise=null;window.onYouTubeIframeAPIReady=previous;reject(new Error('YouTube did not load'));};
-  window.onYouTubeIframeAPIReady=()=>{clearTimeout(timer);previous?.();resolve(window.YT);};
-  script.src='https://www.youtube.com/iframe_api';script.onerror=fail;
-  timer=setTimeout(fail,15000);document.head.append(script);
- });
- return apiPromise;
-}
 
-// A single muted player with supported controls disabled. YouTube branding remains unmodified.
-export function createStageVideos({root,tools,reduced=false,loadAPI=loadYouTubeAPI,now=()=>performance.now()}){
- const play=tools.querySelector('#stage-video-toggle'),next=tools.querySelector('#stage-video-next');
- const status=tools.querySelector('#stage-video-status'),link=tools.querySelector('#stage-video-link');
- let context={},visible=0,screenFraction=1,index=0,player,ready=false,loading=false,paused=false,requested=false;
- let previousTime=0,nextSample=0;
- let geometry='',starting=false,lastLabel='',lastCommand=null,failed=new Set(),blockedAutoplay=false,loadFailed=false;
+export function createStageVideos({root,tools,reduced=false}){
+ const play=tools.querySelector('#stage-video-toggle'),status=tools.querySelector('#stage-video-status');
+ let context={},visible=0,screenFraction=1,video,paused=false,requested=false;
+ let geometry='',lastLabel='',lastCommand=null,playAttempt=0,blockedAutoplay=false,failed=false;
+ function allowed(){return stageCanPlay({...context,visible:Math.min(visible,screenFraction),reduced,requested,paused:paused||blockedAutoplay||failed});}
+ function silence(){
+  if(!video)return;
+  if(!video.muted)video.muted=true;
+  if(video.volume!==0)video.volume=0;
+ }
  function label(){
-  const key=[index,paused,blockedAutoplay,loadFailed,requested,reduced].join(':');if(key===lastLabel)return;lastLabel=key;
-  link.href=`https://www.youtube.com/shorts/${stageVideos[index].id}`;
-  link.setAttribute('aria-label',`Watch ${stageVideos[index].title} on YouTube`);
-  const stopped=paused||blockedAutoplay||loadFailed||(!requested&&reduced);
-  play.textContent=stopped?'Play screen':'Pause screen';play.setAttribute('aria-pressed',String(!stopped));
-  status.textContent=loadFailed?'Video unavailable':blockedAutoplay?'Tap Play screen':`${index+1} / 3`;
-  next.disabled=loadFailed;
+  const key=[paused,blockedAutoplay,failed,requested,reduced].join(':');if(key===lastLabel)return;lastLabel=key;
+  const stopped=paused||blockedAutoplay||failed||(!requested&&reduced);
+  play.textContent=failed?'Retry video':stopped?'Play screen':'Pause screen';
+  play.setAttribute('aria-pressed',String(!stopped));
+  status.textContent=failed?'Video unavailable':blockedAutoplay?'Tap Play screen':'Silent loop';
  }
- function allowed(){return stageCanPlay({...context,visible:Math.min(visible,screenFraction),reduced,requested,paused:paused||blockedAutoplay||loadFailed});}
- function silence(){if(!ready)return;if(!player.isMuted())player.mute();if(player.getVolume()!==0)player.setVolume(0);}
  function command(){
-  label();if(!ready)return;
-  const wanted=allowed()?'play':'pause';if(wanted===lastCommand)return;
-  lastCommand=wanted;
-  if(wanted==='play'){starting=true;silence();player.playVideo();}else player.pauseVideo();
- }
- function select(newIndex){
-  index=newIndex;previousTime=0;blockedAutoplay=false;lastCommand=null;label();
-  if(!ready)return;
+  label();if(!video)return;
   silence();
-  if(allowed()){starting=true;player.loadVideoById(stageVideos[index].id);}
-  else player.cueVideoById(stageVideos[index].id);
-  command();
+  const wanted=allowed()?'play':'pause';if(wanted===lastCommand)return;
+  lastCommand=wanted;const attempt=++playAttempt;
+  if(wanted==='pause'){video.pause();return;}
+  Promise.resolve(video.play()).then(()=>{
+   // A pending play can finish after a room change or while the menu is open.
+   if(!allowed()){video.pause();lastCommand='pause';}
+  }).catch(error=>{
+   if(attempt!==playAttempt||!allowed())return;
+   lastCommand=null;
+   if(error.name==='NotAllowedError'){blockedAutoplay=true;label();}
+   else if(error.name==='AbortError'){paused=true;label();}
+   else unavailable();
+  });
  }
  function unavailable(){
-  failed.add(index);
-  if(failed.size===stageVideos.length){loadFailed=true;command();return;}
-  let nextIndex=nextVideoIndex(index);while(failed.has(nextIndex))nextIndex=nextVideoIndex(nextIndex);
-  select(nextIndex);
+  failed=true;video.hidden=true;command();
  }
- async function ensurePlayer(){
-  if(player||loading||loadFailed)return;loading=true;
-  try{
-   const YT=await loadAPI();
-   const iframe=document.createElement('iframe');iframe.title='Apollo stage films';
-   iframe.src=stageEmbedUrl(index,location.origin);
-   iframe.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';
-   iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;
-   root.replaceChildren(iframe);
-   player=new YT.Player(iframe,{events:{
-    onReady(){ready=true;loading=false;silence();command();},
-    onStateChange(event){
-     if(event.data===0){failed.delete(index);select(nextVideoIndex(index));}
-     // Native player pause remains a user choice; room pauses do not overwrite it.
-     if(event.data===2&&!starting&&lastCommand==='play'&&allowed()){paused=true;lastCommand='pause';label();}
-     if(event.data===1){
-      starting=false;silence();
-      if(!stageCanPlay({...context,visible:Math.min(visible,screenFraction),reduced:false})){lastCommand=null;command();}
-      else{paused=false;requested=true;blockedAutoplay=false;lastCommand='play';label();}
-     }
-    },
-    onAutoplayBlocked(){blockedAutoplay=true;lastCommand=null;label();},
-    onError:unavailable,
-   }});
-  }catch{loading=false;loadFailed=true;label();}
+ function ensureVideo(){
+  if(video)return;
+  const poster=document.createElement('img');
+  poster.src=stageFilm.poster;poster.alt='';poster.draggable=false;
+  video=document.createElement('video');
+  video.src=stageFilm.src;video.poster=stageFilm.poster;
+  video.preload='none';video.loop=true;video.defaultMuted=true;video.muted=true;video.volume=0;
+  video.playsInline=true;video.controls=false;video.disablePictureInPicture=true;
+  video.setAttribute('muted','');video.setAttribute('playsinline','');
+  video.setAttribute('aria-hidden','true');video.tabIndex=-1;
+  video.addEventListener('volumechange',silence);
+  video.addEventListener('play',()=>{silence();if(!allowed())video.pause();});
+  video.addEventListener('error',unavailable);
+  root.replaceChildren(poster,video);
  }
  const observer=new IntersectionObserver(entries=>{visible=entries[0]?.intersectionRatio||0;command();},{threshold:[0,.5,1]});
  observer.observe(root);
  play.onclick=()=>{
-  if(loadFailed){loadFailed=false;failed.clear();paused=false;blockedAutoplay=false;requested=true;if(player)select(index);else ensurePlayer();command();return;}
-  if(paused||blockedAutoplay||(!requested&&reduced)){
-   paused=false;blockedAutoplay=false;requested=true;
-  }else paused=true;
-  lastCommand=null;command();
+  if(failed){failed=false;video.hidden=false;video.load();paused=false;requested=true;}
+  else if(paused||blockedAutoplay||(!requested&&reduced)){paused=false;requested=true;}
+  else paused=true;
+  blockedAutoplay=false;lastCommand=null;command();
  };
- next.onclick=()=>{failed.clear();select(nextVideoIndex(index));};
  document.addEventListener('visibilitychange',()=>{context.hidden=document.hidden;command();});
  window.addEventListener('pagehide',()=>{context.hidden=true;command();});
  label();
  return {
   update(value){
    context={...value};
-   const shown=value.room==='show'&&value.ready&&!value.blocked;
+   const shown=value.room==='show'&&value.ready&&!value.blocked&&!value.hidden;
    root.hidden=!shown;
    if(shown){
     const box=screenPlacement(value);
-    // Fit the player inside the visible part of the wall on a phone, so controls never get cut off.
-    const left=Math.max(0,box.left),right=Math.min(value.width,box.left+box.width),displayWidth=Math.max(0,right-left);
-    screenFraction=displayWidth/box.width;
-    root.hidden=displayWidth<200;
-    if(root.hidden)screenFraction=0;
-    const key=[left,box.top,displayWidth,box.height,value.offsetLeft].join(':');
+    const visibleWidth=Math.max(0,Math.min(value.width,box.left+box.width)-Math.max(0,box.left));
+    screenFraction=visibleWidth/box.width;root.hidden=visibleWidth<=0;
+    // Keep the picture fixed to the wall as the phone camera pans past it.
+    const key=[box.left,box.top,box.width,box.height,value.offsetLeft].join(':');
     if(key!==geometry){
-     geometry=key;root.style.left=`${left+(value.offsetLeft||0)}px`;root.style.width=`${displayWidth/(box.width/stageScreen.width)}px`;root.style.top=`${box.top}px`;
+     geometry=key;root.style.left=`${box.left+(value.offsetLeft||0)}px`;root.style.top=`${box.top}px`;
+     root.style.width=`${stageScreen.width}px`;
      root.style.transform=`scale(${box.width/stageScreen.width},${box.height/stageScreen.height})`;
     }
-    ensurePlayer();
+    if(visibleWidth>0)ensureVideo();
    }
-   silence();command();
-   const time=now();
-   if(ready&&allowed()&&!starting&&player.getPlayerState()===1&&time>=nextSample){
-    nextSample=time+250;
-    const current=player.getCurrentTime(),duration=player.getDuration();
-    status.title=`${stageVideos[index].title} · ${Math.floor(current)} / ${Math.floor(duration)} seconds`;
-    if(didVideoWrap(previousTime,current,duration)){failed.delete(index);select(nextVideoIndex(index));}
-    else previousTime=current;
-   }
+   command();
   },
   get controls(){return tools;},
   suspend(){context.hidden=true;command();},

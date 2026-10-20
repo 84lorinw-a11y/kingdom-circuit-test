@@ -20,7 +20,7 @@ def expected_files() -> dict[str, bytes]:
     for name, digest in MANIFEST.items():
         relative = PurePosixPath(name)
         assert not relative.is_absolute() and '..' not in relative.parts
-        assert relative.suffix in TEXT_EXTENSIONS | {'.png', '.webp', '.m4a', '.wav'}
+        assert relative.suffix in TEXT_EXTENSIONS | {'.png', '.jpg', '.webp', '.m4a', '.wav', '.mp4'}
         source = SOURCE / name
         assert not source.is_symlink(), 'Game sources may not be symlinks'
         data = source.read_bytes()
@@ -50,8 +50,10 @@ def verify(site: Path) -> dict:
     assert all(name in scoring for name in ('eli', 'marty', 'brenno', 'apollo'))
     assert '<meta name="score-service" content="">' in page, 'Apollo TEST must stay off the original competition'
     assert "connect-src 'self';" in page
-    assert "script-src 'self' https://www.youtube.com;" in page
-    assert "frame-src https://www.youtube-nocookie.com;" in page
+    assert "script-src 'self';" in page
+    assert "frame-src 'none';" in page
+    assert 'youtube' not in page.lower()
+    assert (site / 'play/assets/video/apollo-stage-draft-v1.mp4').is_file()
     assert "createOnlineScores(localStorage,{base:''})" in (site / 'play/game.mjs').read_text()
     crew = (site / 'play/apollo-crew.mjs').read_text()
     for artist in ('marty', 'brenno', 'ryan-ellis', 'gavin-the-hotrod', 'lj-the-messenger', 'dearis', 'tonyxtrotter', 'eli-williams', 'andrew-prim'):

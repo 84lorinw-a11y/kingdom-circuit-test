@@ -30,6 +30,34 @@ class GameDeploymentTests(unittest.TestCase):
         self.assertIn(game.BASE + 'game.mjs', (self.site / 'play/index.html').read_text())
         self.assertNotIn('/api/', (self.site / 'play/game.mjs').read_text())
 
+    def test_stage_video_has_only_picture_and_is_ready_for_streaming(self):
+        data = (game.SOURCE / 'assets/video/apollo-stage-draft-v1.mp4').read_bytes()
+        def boxes(data):
+            offset = 0
+            while offset < len(data):
+                size = int.from_bytes(data[offset:offset+4], 'big')
+                kind = data[offset+4:offset+8]
+                header = 8
+                if size == 1:
+                    size = int.from_bytes(data[offset+8:offset+16], 'big'); header = 16
+                if size == 0: size = len(data) - offset
+                self.assertGreaterEqual(size, header)
+                self.assertLessEqual(offset + size, len(data))
+                yield kind, data[offset+header:offset+size]
+                offset += size
+        top = list(boxes(data)); kinds = [kind for kind, _ in top]
+        self.assertLess(kinds.index(b'moov'), kinds.index(b'mdat'))
+        handlers = []
+        for kind, moov in top:
+            if kind != b'moov': continue
+            for kind, trak in boxes(moov):
+                if kind != b'trak': continue
+                for kind, mdia in boxes(trak):
+                    if kind != b'mdia': continue
+                    for kind, hdlr in boxes(mdia):
+                        if kind == b'hdlr': handlers.append(hdlr[8:12])
+        self.assertEqual(handlers, [b'vide'], 'The stage MP4 must contain no audio track')
+
     def test_rejects_production_and_existing_route(self):
         (self.site / 'CNAME').write_text('kingdomcircuit.com')
         with self.assertRaises(AssertionError): game.build(self.site)
