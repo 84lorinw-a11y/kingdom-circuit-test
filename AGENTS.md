@@ -1,5 +1,10 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 lighter video and stage prop realism (latest owner direction)
+
+- TEST only. Use the smaller 800x450, 30 fps H.264 stage clip (3.72 MB); preserve the full 49.1-second loop, zero audio tracks, existing poster and all playback suspension/manual controls. Retire the superseded 8.64 MB video from the published inventory.
+- Replace the rigid banner rectangle with the transparent fabric banner asset, retaining Eli's exact supplied blue logo proportionately above the screen. Use the detailed compact haze-machine prop on the stage floor between Tony and Brenno. Keep the smoke faint, softly feathered, low and behind the performers; reduced motion holds it static. Preserve people, games, navigation and other artwork.
+
 ## October 20 Eli-supplied artwork (latest owner direction)
 
 - TEST only. Use the supplied blue Apollo Records logo on a proportionate fabric banner above the approved lower silent looping screen. Add the red script, black Apollo wordmark on an off-white shirt, and cream NOT 4 $ALE print as three new tees; keep the original five merchandise items. Include all eight in the drop game.

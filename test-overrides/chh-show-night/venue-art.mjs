@@ -1,4 +1,4 @@
-import {drawStageScreen} from './stage-screen.mjs?v=apollo-19';
+import {drawStageScreen} from './stage-screen.mjs?v=apollo-20';
 // Owner-supplied artwork, composited into the venue.
 function contain(ctx,image,x,y,w,h){
  if(!image)return;const fit=Math.min(w/image.width,h/image.height);
@@ -8,16 +8,11 @@ export function drawRoomArtwork(ctx,room,images,time=0,reduced=false,stageFrame=
  ctx.save();ctx.textAlign='center';
  if(room==='show'){
   drawStageScreen(ctx,stageFrame);
-  // The supplied two-line mark keeps its proportions on a small rigged fabric banner.
-  const fabric=ctx.createLinearGradient(426,0,674,0);
-  fabric.addColorStop(0,'#131416');fabric.addColorStop(.28,'#242527');fabric.addColorStop(.55,'#101113');fabric.addColorStop(.84,'#202123');fabric.addColorStop(1,'#121315');
-  ctx.fillStyle=fabric;ctx.fillRect(426,17,248,87);
-  ctx.strokeStyle='#454446';ctx.lineWidth=.6;ctx.strokeRect(428,19,244,83);
-  for(const x of [432,668]){
-   ctx.strokeStyle='#9b9993';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,8);ctx.lineTo(x,23);ctx.stroke();
-   ctx.beginPath();ctx.arc(x,23,1.7,0,Math.PI*2);ctx.stroke();
-  }
-  contain(ctx,images.eliBanner,440,24,220,75);
+  // Real cloth and hems replace the rigid sign. Keep Eli's supplied logo intact.
+  if(images.bannerCloth)ctx.drawImage(images.bannerCloth,406,10,288,96);
+  ctx.save();ctx.globalAlpha=.94;
+  contain(ctx,images.eliBanner,440,29,220,67);
+  ctx.restore();
  }else if(room==='vip'){
   contain(ctx,images.apolloPoster,375,54,91,116);
   ctx.fillStyle='#eee8de';ctx.font='900 27px sans-serif';

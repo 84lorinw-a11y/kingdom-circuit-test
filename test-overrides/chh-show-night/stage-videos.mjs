@@ -1,8 +1,8 @@
-import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-19';
+import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-20';
 
 // Owner-supplied draft recording, exported without an audio stream.
 export const stageFilm={
- src:'/play/assets/video/apollo-stage-draft-v1.mp4',
+ src:'/play/assets/video/apollo-stage-draft-v2.mp4',
  poster:'/play/assets/video/apollo-stage-draft-v1.jpg',
 };
 export const stageCanPlay=({room,ready,blocked,hidden,visible=0,reduced=false,requested=false,paused=false})=>

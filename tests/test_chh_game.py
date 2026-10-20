@@ -31,7 +31,8 @@ class GameDeploymentTests(unittest.TestCase):
         self.assertNotIn('/api/', (self.site / 'play/game.mjs').read_text())
 
     def test_stage_video_has_only_picture_and_is_ready_for_streaming(self):
-        data = (game.SOURCE / 'assets/video/apollo-stage-draft-v1.mp4').read_bytes()
+        data = (game.SOURCE / 'assets/video/apollo-stage-draft-v2.mp4').read_bytes()
+        self.assertLess(len(data), 4_000_000, 'Keep the entire silent stage loop below 4 MB')
         def boxes(data):
             offset = 0
             while offset < len(data):

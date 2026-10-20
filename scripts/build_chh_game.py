@@ -53,7 +53,7 @@ def verify(site: Path) -> dict:
     assert "script-src 'self';" in page
     assert "frame-src 'none';" in page
     assert 'youtube' not in page.lower()
-    assert (site / 'play/assets/video/apollo-stage-draft-v1.mp4').is_file()
+    assert (site / 'play/assets/video/apollo-stage-draft-v2.mp4').is_file()
     assert "createOnlineScores(localStorage,{base:''})" in (site / 'play/game.mjs').read_text()
     crew = (site / 'play/apollo-crew.mjs').read_text()
     for artist in ('marty', 'brenno', 'ryan-ellis', 'gavin-the-hotrod', 'lj-the-messenger', 'dearis', 'tonyxtrotter', 'eli-williams', 'andrew-prim'):

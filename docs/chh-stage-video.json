@@ -2,10 +2,12 @@
   "source": "Owner-uploaded copy_C7377B8C-E8B5-4A69-9E21-369691F32C0B.mov",
   "sourceSha256": "4cdbdc5500926664a40a7d9782bff91155cc27cd0361ad7638a5e616d6c1f262",
   "originalStoredOutsidePublicInventory": "/Users/lorinwilliamson/Documents/Kingdom Circuit Audits/2026-10-20/uploaded-stage-video/original-upload.mov",
-  "output": "assets/video/apollo-stage-draft-v1.mp4",
-  "encoding": "H.264 Main, 960x540, 30 fps, 1.4 Mbps target, fast-start MP4",
+  "output": "assets/video/apollo-stage-draft-v2.mp4",
+  "encoding": "H.264 High, 800x450, 30 fps, 600 kbps target, fast-start MP4",
   "audio": "No audio track exported",
   "durationSeconds": 49.1,
   "playback": "Silent full-clip loop; poster plus menu Play for reduced motion",
-  "scope": "Owner-authorized TEST draft only"
+  "scope": "Owner-authorized TEST draft only",
+  "bytes": 3722407,
+  "previousBytes": 8635006
 }
