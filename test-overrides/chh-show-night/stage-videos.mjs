@@ -1,4 +1,4 @@
-import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-16';
+import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-17';
 
 // Owner-supplied draft recording, exported without an audio stream.
 export const stageFilm={
@@ -10,7 +10,7 @@ export const stageCanPlay=({room,ready,blocked,hidden,visible=0,reduced=false,re
 
 export function createStageVideos({root,tools,reduced=false}){
  const play=tools.querySelector('#stage-video-toggle'),status=tools.querySelector('#stage-video-status');
- let context={},visible=0,screenFraction=1,video,paused=false,requested=false;
+ let context={},visible=0,screenFraction=1,video,poster,paused=false,requested=false;
  let geometry='',lastLabel='',lastCommand=null,playAttempt=0,blockedAutoplay=false,failed=false;
  function allowed(){return stageCanPlay({...context,visible:Math.min(visible,screenFraction),reduced,requested,paused:paused||blockedAutoplay||failed});}
  function silence(){
@@ -47,7 +47,7 @@ export function createStageVideos({root,tools,reduced=false}){
  }
  function ensureVideo(){
   if(video)return;
-  const poster=document.createElement('img');
+  poster=document.createElement('img');
   poster.src=stageFilm.poster;poster.alt='';poster.draggable=false;
   video=document.createElement('video');
   video.src=stageFilm.src;video.poster=stageFilm.poster;
@@ -90,6 +90,10 @@ export function createStageVideos({root,tools,reduced=false}){
     if(visibleWidth>0)ensureVideo();
    }
    command();
+  },
+  get frame(){
+   if(video?.readyState>=2&&!failed)return video;
+   return poster?.complete&&poster.naturalWidth?poster:null;
   },
   get controls(){return tools;},
   suspend(){context.hidden=true;command();},

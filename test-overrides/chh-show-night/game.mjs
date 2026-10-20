@@ -1,4 +1,4 @@
-import {createStageVideos} from './stage-videos.mjs?v=apollo-16';
+import {createStageVideos} from './stage-videos.mjs?v=apollo-17';
 import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-13';
 import {matchesVipCode} from './vip-access.mjs?v=apollo-13';
 import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-13';
@@ -9,7 +9,7 @@ import {mountArtistArcade} from './arcade-round.mjs?v=apollo-13';
 import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-13';
 import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-13';
 import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-13';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-16';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-17';
 import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-13';
 import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-13';
 import {drawPerson,loadPeople} from './sprites.mjs?v=apollo-13';
@@ -220,7 +220,7 @@ function render(time){
  viewWidth=H*(rect.width/rect.height);camera=Math.max(0,Math.min(W-viewWidth,state.x-viewWidth/2));if(viewWidth>=W){camera=0;viewWidth=W;}
  stageVideos.update({room:state.room,ready:state.profileReady&&!playerEntryPending,blocked:dialog.open||photoBusy||paused||$('#room-intro').classList.contains('visible'),hidden:document.hidden,width:rect.width,height:rect.height,offsetLeft:canvas.offsetLeft,camera,viewWidth});
  ctx.setTransform(canvas.width/viewWidth,0,0,canvas.height/H,-camera*canvas.width/viewWidth,0);ctx.imageSmoothingEnabled=true;
- ctx.clearRect(camera,0,viewWidth,H);ctx.drawImage(images[state.room],0,0,W,H);drawRoomArtwork(ctx,state.room,images,time,reduceMotion);
+ ctx.clearRect(camera,0,viewWidth,H);ctx.drawImage(images[state.room],0,0,W,H);drawRoomArtwork(ctx,state.room,images,time,reduceMotion,stageVideos.frame);
  if(state.room==='show'&&!reduceMotion){ctx.save();ctx.globalAlpha=.03+Math.sin(time/800)*.018;ctx.fillStyle='#af3438';ctx.fillRect(0,0,W,400);ctx.restore();}
  if(state.room==='show'){
   drawStageLights(ctx,time,reduceMotion);

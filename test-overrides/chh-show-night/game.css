@@ -147,7 +147,9 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 
 /* The stage stays clear; video settings live in the game menu. */
-.stage-video{position:absolute;z-index:2;background:#070809;transform-origin:top left;width:454px;height:200px;pointer-events:none;overflow:hidden}
+/* The decoded picture is drawn into the world behind the artists. Keep its
+   geometry for visibility checks without painting a second layer over them. */
+.stage-video{position:absolute;opacity:0;transform-origin:top left;width:454px;height:200px;pointer-events:none;overflow:hidden}
 .stage-video video,.stage-video img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 32%;border:0}
 .stage-video video[hidden]{display:none}
 .stage-video-tools{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:12px 0;font-size:12px}

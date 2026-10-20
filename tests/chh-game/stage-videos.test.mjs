@@ -75,6 +75,13 @@ test('Load errors leave a still image and retry only when requested',async t=>{
  h.buttons['#stage-video-toggle'].onclick();await settle();assert.equal(h.video.hidden,false);assert.equal(h.video.paused,false);
  assert.ok(h.video.commands.includes('load'));
 });
+test('The scene gets a decoded video frame or the loaded poster while waiting or recovering',async t=>{
+ const h=harness(t);assert.equal(h.controller.frame,null);await h.enter();
+ const poster=h.root.children[0];poster.complete=true;poster.naturalWidth=960;
+ assert.equal(h.controller.frame,poster);
+ h.video.readyState=2;assert.equal(h.controller.frame,h.video);
+ h.video.events.error();assert.equal(h.controller.frame,poster);
+});
 test('A play promise resolving after leaving the stage cannot restart playback',async t=>{
  let resolve;const h=harness(t,{playResult:()=>new Promise(r=>resolve=r)});await h.enter();
  h.controller.update({...active,room:'vip'});h.video.paused=false;resolve();await settle();assert.equal(h.video.paused,true);

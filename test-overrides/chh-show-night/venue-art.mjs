@@ -1,13 +1,13 @@
-import {drawStageScreen} from './stage-screen.mjs?v=apollo-16';
+import {drawStageScreen} from './stage-screen.mjs?v=apollo-17';
 // Owner-supplied artwork, composited into the venue.
 function contain(ctx,image,x,y,w,h){
  if(!image)return;const fit=Math.min(w/image.width,h/image.height);
  ctx.drawImage(image,x+(w-image.width*fit)/2,y+(h-image.height*fit)/2,image.width*fit,image.height*fit);
 }
-export function drawRoomArtwork(ctx,room,images,time=0,reduced=false){
+export function drawRoomArtwork(ctx,room,images,time=0,reduced=false,stageFrame=null){
  ctx.save();ctx.textAlign='center';
  if(room==='show'){
-  drawStageScreen(ctx,images,time,reduced);
+  drawStageScreen(ctx,stageFrame);
  }else if(room==='vip'){
   contain(ctx,images.apolloPoster,375,54,91,116);
   ctx.fillStyle='#eee8de';ctx.font='900 27px sans-serif';

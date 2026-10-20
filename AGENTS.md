@@ -1,5 +1,9 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 lower stage screen (latest owner direction)
+
+- TEST only. Lower the screen to just above the rear stage floor, preserving its dimensions and the banner directly above. Composite the silent looping video into the world before the DJ booth and performers, so they remain fully visible in front. This supersedes the raised screen above their heads. Keep all playback and audio safeguards.
+
 ## October 20 owner-uploaded silent stage film (latest owner direction)
 
 - TEST only. Replace the three YouTube embeds with the owner's supplied 49-second landscape recording. Serve a local H.264 MP4 exported with zero audio tracks; loop the entire clip, muted and volume zero. The separate room/game music remains unchanged. Keep the large Apollo Records banner and full-bleed screen above the artists.
