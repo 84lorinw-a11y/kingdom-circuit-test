@@ -8,7 +8,10 @@ new artwork, Worker, database, DNS change or paid subscription is required by
 this package. Eli's game and every approved media byte are unchanged.
 
 Flow
-GitHub main -> Cloudflare Git build -> Cloudflare static files -> player's browser
+Work and save to GitHub main -> deliberate batch publication when requested ->
+Cloudflare static files -> player's browser
+Automatic GitHub-to-Cloudflare publishing is paused at the owner's request.
+The current Cloudflare game stays live while source changes continue in GitHub.
 
 Connected and deployed October 21, 2026
 Player link: https://apollo-game-draft.pages.dev/play/
@@ -20,7 +23,7 @@ Framework preset: None
 Root directory: repository root (blank)
 Build command: python3 scripts/build_cloudflare_game.py .cloudflare-dist
 Build output directory: .cloudflare-dist
-Automatic production-branch builds: enabled
+Automatic production-branch builds: disabled (owner-requested pause, October 21)
 Automatic preview-branch builds: disabled
 Build watch paths (include only; no excludes):
   test-overrides/chh-show-night/*
@@ -82,8 +85,13 @@ python3 scripts/build_cloudflare_game.py /path/to/an/empty/output-folder
 python3 scripts/build_cloudflare_game.py /path/to/output-folder --check
 
 The GitHub workflow "Verify Cloudflare game package" checks this package.
-Cloudflare's own Git integration builds and deploys matching changes on main.
+Cloudflare's Git connection is retained, but automatic deployments are disabled.
+Do not re-enable them during routine work. Publish only a reviewed batch when the
+owner requests it, and preserve the paused setting afterward unless instructed
+otherwise. The previous automatic deployment above is historical verification.
 The GitHub validation workflow does not itself upload files to Cloudflare.
+GitHub Actions and the separate test-site mirror workflow are unchanged by this
+Cloudflare setting; that mirror can still fetch the public show website.
 
 Before a wider release (the owner has tested the draft link on their phone)
 - Confirm HTTPS, root -> /play/, real missing-file 404s, and correct media types.

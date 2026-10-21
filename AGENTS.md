@@ -1,5 +1,11 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 Cloudflare automatic publishing paused (latest owner direction)
+
+- Owner requested pausing GitHub-to-Cloudflare automatic publishing while frequent edits continue. Cloudflare Pages project `apollo-game-draft` now shows automatic production-branch deployments Disabled; automatic preview-branch deployments remain disabled.
+- Continue saving and pushing verified TEST changes to GitHub under the standing authorization. Publishing a new Cloudflare batch is a separate owner-requested step; do not automatically re-enable deployments during routine edits. The currently published `apollo-23` game remains available.
+- Preserve the Git connection, build settings and watch paths. This pause does not change GitHub Actions or the separate scheduled/test-site mirror workflow, and does not affect the production show site's repository or DNS.
+
 ## October 21 VIP touch correction
 
 - Owner reported the yellow action button covering the VIP entrance and unintended artist-game openings around VIP. Keep the compact 44px action control in the objective row below the scene, never over a floor marker.
@@ -12,7 +18,7 @@
 - `scripts/build_cloudflare_game.py` packages the manifest-approved game for a separate Cloudflare Pages draft project. It preserves the existing GitHub TEST build and production site, and creates no account, DNS record or billing commitment.
 - Cloudflare output uses `/play/` and a content-derived media directory for immutable caching. Every approved media byte and device-only score behavior must remain unchanged. Keep exact inventory verification, noindex, empty score-service and no server/secret files in the artifact.
 - Owner explicitly approved the Cloudflare Workers and Pages GitHub app for ONLY `84lorinw-a11y/kingdom-circuit-test`. The separate Pages project `apollo-game-draft` is deployed at `https://apollo-game-draft.pages.dev/play/` from `main`. Do not expand its repository access or change the production show site's repository, DNS or nameservers.
-- Build command: `python3 scripts/build_cloudflare_game.py .cloudflare-dist`; output `.cloudflare-dist`; repository root; no framework. Automatic production-branch deployments are enabled; automatic preview-branch deployments are disabled. Include watch paths: `test-overrides/chh-show-night/*`, `test-overrides/chh-show-night-manifest.json`, `scripts/build_chh_game.py`, `scripts/build_cloudflare_game.py`.
+- Build command: `python3 scripts/build_cloudflare_game.py .cloudflare-dist`; output `.cloudflare-dist`; repository root; no framework. Automatic production-branch and preview-branch deployments are disabled under the latest owner direction above. Include watch paths: `test-overrides/chh-show-night/*`, `test-overrides/chh-show-night-manifest.json`, `scripts/build_chh_game.py`, `scripts/build_cloudflare_game.py`.
 - Initial deployment `c30742d5-5f81-48a0-9c23-dfc7c4f5fe42` from `c51f65468765b6aee1d7dd20f5b64a6cbfdb13b3` succeeded. Owner played it on their phone and reported everything worked, better than GitHub hosting. Agent browser artwork loading timed out on its connection; three downloaded live images matched approved bytes exactly. The live show-site homepage remained HTTP 200 and byte-identical before/after setup. Do not claim comprehensive live HTTP verification or 100K-player capacity.
 - Automatic Git-triggered deployment was verified with VIP fix commit `2bb401c164dcdb85d2bfd14e646e94a48a912517`: Cloudflare deployment `3d451400-f264-47a0-bfc5-f5bc5ba22847` succeeded, and the public HTML served runtime `apollo-23` with the action button below the scene. GitHub reported webhook delays during setup, but this push arrived. No paid plan, DNS change, shared score backend or load test was performed. Keep source in this GitHub repository and use the Cloudflare draft link for player traffic.
 
