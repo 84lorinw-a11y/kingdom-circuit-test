@@ -15,6 +15,8 @@ on:
       - "scripts/build_mobile_show_test.py"
       - "scripts/build_artist_intake_mockup.py"
       - "scripts/build_chh_game.py"
+      - "scripts/build_cloudflare_game.py"
+      - "scripts/game_test_publish.py"
       - "scripts/finalize_artist_details.py"
       - "test-overrides/**"
       - "game-backend/**"
@@ -23,6 +25,15 @@ on:
     - cron: "0 8 * * *"
       timezone: "America/Chicago"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Full website refresh, or game update using the last verified website'
+        type: choice
+        required: true
+        default: full-refresh
+        options:
+          - full-refresh
+          - game-only
 
 permissions:
   actions: read
@@ -32,7 +43,7 @@ permissions:
 
 concurrency:
   group: kingdom-circuit-live-mirror
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   LIVE_REPO: 84lorinw-a11y/kingdom-circuit
@@ -40,12 +51,64 @@ env:
 
 jobs:
   build:
+    if: github.repository == '84lorinw-a11y/kingdom-circuit-test' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout test harness
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Choose full refresh or game-only publishing
+        id: publishing
+        run: python scripts/game_test_publish.py route
+
+      - name: Find the last successfully published website snapshot
+        if: steps.publishing.outputs.mode == 'game-only'
+        id: last_publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/game_test_publish.py find
+
+      - name: Read the last publication's website reference
+        if: steps.publishing.outputs.mode == 'game-only'
+        uses: actions/download-artifact@v4
+        with:
+          name: verified-website-reference
+          run-id: ${{ steps.last_publication.outputs.published_run }}
+          github-token: ${{ github.token }}
+          path: _website_reference
+
+      - name: Resolve the exact website snapshot to reuse
+        if: steps.publishing.outputs.mode == 'game-only'
+        id: snapshot
+        run: python scripts/game_test_publish.py read-reference
+
+      - name: Restore the verified website archive from GitHub cache
+        if: steps.publishing.outputs.mode == 'game-only'
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ steps.snapshot.outputs.cache_key }}
+          path: _website_snapshot/website.zip
+          fail-on-cache-miss: true
+
+      - name: Restore the verified website without accessing production
+        if: steps.publishing.outputs.mode == 'game-only'
+        env:
+          SNAPSHOT_RUN: ${{ steps.snapshot.outputs.run_id }}
+          SNAPSHOT_SHA: ${{ steps.snapshot.outputs.sha }}
+          SNAPSHOT_KEY: ${{ steps.snapshot.outputs.cache_key }}
+        run: >-
+          python scripts/game_test_publish.py restore
+          --source-run "$SNAPSHOT_RUN" --source-commit "$SNAPSHOT_SHA" --source-key "$SNAPSHOT_KEY"
 
       - name: Resolve the currently deployed live revision
+        if: steps.publishing.outputs.mode == 'full-refresh'
         id: live_deployment
         shell: bash
         env:
@@ -68,11 +131,6 @@ jobs:
           echo "run_id=$LIVE_RUN_ID" >> "$GITHUB_OUTPUT"
           echo "Capturing successful live deployment $LIVE_RUN_ID at $LIVE_SHA"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Set up Node for game score-service tests
         uses: actions/setup-node@v4
         with:
@@ -82,6 +140,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python -m py_compile scripts/game_test_publish.py
           python -m py_compile scripts/capture_live_site.py
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/verify_live_baseline.py
@@ -107,6 +166,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Capture the exact published live site
+        if: steps.publishing.outputs.mode == 'full-refresh'
         shell: bash
         run: |
           set -euo pipefail
@@ -117,6 +177,7 @@ jobs:
             --min-files 900
 
       - name: Convert only the deployment identity for test
+        if: steps.publishing.outputs.mode == 'full-refresh'
         shell: bash
         run: |
           set -euo pipefail
@@ -149,15 +210,19 @@ jobs:
           grep -q "\"liveDeploymentRunId\": \"$LIVE_RUN_ID\"" _site/test-live-mirror-manifest.json
 
       - name: Preserve the separate show layout experiments
+        if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/build_mobile_show_test.py _site --isolated
 
       - name: Build and verify artist intake mockup
+        if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/build_artist_intake_mockup.py _site
 
       - name: Apply the approved test-only mobile SEO preview
+        if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/mobile_seo_preview.py _site _live_site
 
       - name: Build the approved national discovery preview
+        if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/national_discovery_preview.py _site _live_site
 
       - name: Verify the final deployment artifact
@@ -165,6 +230,55 @@ jobs:
           python scripts/build_chh_game.py _site
           python scripts/finalize_artist_details.py _site --check
           python scripts/verify_live_baseline.py _live_site _site
+
+      - name: Verify game-only publishing preserved every website file
+        if: steps.publishing.outputs.mode == 'game-only'
+        run: python scripts/game_test_publish.py check
+
+      - name: Seal the verified website for future game updates
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        run: python scripts/game_test_publish.py seal
+
+      - name: Save the reusable website snapshot
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        uses: actions/cache/save@v4
+        with:
+          key: verified-test-website-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: _website_snapshot/website.zip
+
+      - name: Confirm the new snapshot is available
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        uses: actions/cache/restore@v4
+        with:
+          key: verified-test-website-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: _website_snapshot/website.zip
+          lookup-only: true
+          fail-on-cache-miss: true
+
+      - name: Pin this publication to its verified website snapshot
+        run: python scripts/game_test_publish.py write-reference
+
+      - name: Save the small website reference for the next publication
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-website-reference
+          path: _website_reference/reference.json
+          if-no-files-found: error
+          retention-days: 7
+          overwrite: true
+
+      - name: Record publishing mode
+        env:
+          PUBLISH_MODE: ${{ steps.publishing.outputs.mode }}
+          SNAPSHOT_RUN: ${{ steps.snapshot.outputs.run_id }}
+        run: |
+          echo "### GitHub test publishing: $PUBLISH_MODE" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$PUBLISH_MODE" = game-only ]; then
+            echo "Reused verified website from run $SNAPSHOT_RUN. No live-site capture. Website hashes unchanged." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Completed a full live-site refresh and saved a verified snapshot for game updates." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "Cloudflare publishing settings and the production repository are unchanged." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

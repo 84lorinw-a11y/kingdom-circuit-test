@@ -4,3 +4,6 @@ _live/
 _seo_source/
 _site/
 .cloudflare-dist/
+_live_site/
+_website_snapshot/
+_website_reference/

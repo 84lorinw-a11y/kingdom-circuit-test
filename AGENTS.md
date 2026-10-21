@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 game publishing reuses the verified website
+
+- Game-only pushes use the last successfully published website snapshot, rebuild only `/play/`, rerun the full baseline gate, and verify that all non-game website bytes remain unchanged. Do not manually dispatch a full mirror for routine game edits.
+- The existing daily 8 a.m. America/Chicago refresh and manual **Mirror Live Site to Test → full-refresh** still capture the live website. Mixed website/game changes also take the full-refresh path. Manual `game-only` is available for retrying a game publication.
+- `scripts/game_test_publish.py` stores deduplicated live/test website data in GitHub Actions cache, excludes old game files, and pins each successful publication to that exact snapshot with a small reference artifact. Never fall back to an older website or silently crawl production if a reference/cache is missing, corrupt, or incompatible. Run one explicit full refresh to recover.
+- Generated snapshots/reference files stay out of Git and the Pages artifact. Keep all existing test identity, noindex, analytics, content-parity and game-manifest protections. Cloudflare automatic publishing stays paused; production is untouched.
+- This change is publishing infrastructure only. Do not copy unpublished layout previews into game source or alter pictures, layout, music or gameplay as part of it.
+
 ## October 21 merchandise reduction and staged loading (latest owner direction)
 
 - GitHub TEST only; Cloudflare automatic publishing remains paused. Remove the Apollo bird tee, original Not 4 Sale tee, Not 4 Sale hoodie and cap from the booth, catalog and drop game. Keep the concert tee and Eli's red script, white Apollo logo and cream Not 4 $ale tees, including current player outfits.
