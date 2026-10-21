@@ -3,3 +3,4 @@ __pycache__/
 _live/
 _seo_source/
 _site/
+.cloudflare-dist/

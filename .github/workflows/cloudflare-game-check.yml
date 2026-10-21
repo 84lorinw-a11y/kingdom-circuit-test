@@ -1,0 +1,28 @@
+name: Verify Cloudflare game package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_cloudflare_game.py'
+      - 'scripts/build_chh_game.py'
+      - 'test-overrides/chh-show-night/**'
+      - 'test-overrides/chh-show-night-manifest.json'
+      - 'tests/test_cloudflare_game.py'
+      - '.github/workflows/cloudflare-game-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m unittest discover -s tests -p 'test_cloudflare_game.py'
+      - run: python3 scripts/build_cloudflare_game.py .cloudflare-dist
+      - run: python3 scripts/build_cloudflare_game.py .cloudflare-dist --check

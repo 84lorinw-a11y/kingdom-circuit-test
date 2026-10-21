@@ -1,0 +1,83 @@
+APOLLO DRAFT — CLOUDFLARE PAGES SETUP
+Prepared October 21, 2026. Target: reviewable draft by Thursday, October 22 lunch (Central).
+
+What is ready
+The game stays in the existing GitHub TEST repository. A separate static build
+packages only the manifest-approved game for Cloudflare Pages. No game rewrite,
+new artwork, Worker, database, DNS change or paid subscription is required by
+this package. Eli's game and every approved media byte are unchanged.
+
+Flow
+GitHub main -> Cloudflare Git build -> Cloudflare static files -> player's browser
+
+Account connection (not completed yet)
+1. Sign in to Cloudflare. Open Workers & Pages and create a Pages project using
+   Git integration. If asked, connect only the kingdom-circuit-test repository.
+2. Repository: 84lorinw-a11y/kingdom-circuit-test
+3. Production branch in THIS DRAFT PROJECT: main
+4. Framework preset: None
+5. Root directory: repository root (leave blank)
+6. Build command: python3 scripts/build_cloudflare_game.py .cloudflare-dist
+7. Build output directory: .cloudflare-dist
+8. Suggested project name: apollo-game-draft (availability not checked).
+9. Deploy to its assigned pages.dev hostname and verify /play/ before sharing.
+
+The Cloudflare UI calls its primary branch "production"; this is a separate
+Apollo draft project, not the existing kingdomcircuit.com production site.
+There is no need to change that site's nameservers or DNS to test this.
+
+What the build does
+- Runs the existing manifest/inventory/approved-art/game-isolation verifier.
+- Rewrites the GitHub Pages prefix to /play/ for the new hostname.
+- Gives media a content-derived directory name so it can be cached for a year
+  without serving stale artwork when a media file changes.
+- Revalidates small HTML, CSS and JS files so fixes arrive on returning visits.
+- Preserves the silent video, device-only score service and all ten games.
+- Adds root redirect, real 404 page, noindex/robots rules and response headers.
+- Rejects unexpected files and files over Cloudflare's 25 MiB per-file limit.
+- Includes no credentials, source reports, source repository, or server code.
+
+Local verification
+python3 -m unittest discover -s tests -p 'test_cloudflare_game.py'
+python3 scripts/build_cloudflare_game.py /path/to/an/empty/output-folder
+python3 scripts/build_cloudflare_game.py /path/to/output-folder --check
+
+The GitHub workflow "Verify Cloudflare game package" checks this package.
+It does not create a Cloudflare project or deploy without account connection.
+
+Before sharing the Cloudflare URL
+- Confirm HTTPS, root -> /play/, real missing-file 404s, and correct media types.
+- Confirm media Cache-Control includes immutable, and HTML/JS revalidate.
+- Play on a physical iPhone and Android device; check touch and audio gestures.
+- Check silent video looping, score persistence and a fresh-player full journey.
+- Keep the GitHub TEST URL available as a fallback.
+
+Current limits and next work
+The complete package is about 22.14 MB; its largest file is the 3.72 MB silent
+video. Packaging alone does not reduce the 11.55 MB of images loaded at entry.
+Next: show character selection first, load the exterior next, and defer stage
+and VIP assets until needed. Do not claim a faster first load until measured.
+
+Browser saves are scoped to the hostname. A player's GitHub TEST save will not
+automatically appear on a new pages.dev/custom-domain URL. Scores are local to
+that device; Cloudflare static hosting does not create a shared leaderboard.
+
+Cloudflare account capacity and a 100K-player traffic spike have not been tested.
+No billing plan, spend commitment, domain transfer or new global score backend
+has been authorized/configured by this package. Review those separately before
+a large public launch. Future larger media can use R2 with a cached custom domain;
+do not use the rate-limited r2.dev endpoint for a production media launch.
+
+Thursday lunch scope
+- Working Cloudflare draft URL connected to the existing GitHub source.
+- Smaller initial load, measured on a simulated slow mobile connection.
+- Eli unchanged; choose 2-3 other simple games for polish first.
+- Reuse current assets; add feedback/combos/motion with code rather than videos.
+- Finish with actual-phone checks and a complete saved-game playthrough.
+
+Official references checked October 21, 2026
+https://developers.cloudflare.com/pages/get-started/git-integration/
+https://developers.cloudflare.com/pages/framework-guides/deploy-anything/
+https://developers.cloudflare.com/pages/platform/limits/
+https://developers.cloudflare.com/pages/configuration/headers/
+https://developers.cloudflare.com/r2/buckets/public-buckets/

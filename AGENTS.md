@@ -1,5 +1,12 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 Cloudflare draft preparation
+
+- Owner requested starting Cloudflare hosting while retaining GitHub, with a reviewable draft targeted for October 22 lunch Central. Keep Eli's game unchanged; other game styles remain proposals until selected.
+- `scripts/build_cloudflare_game.py` packages the manifest-approved game for a separate Cloudflare Pages draft project. It preserves the existing GitHub TEST build and production site, and creates no account, DNS record or billing commitment.
+- Cloudflare output uses `/play/` and a content-derived media directory for immutable caching. Every approved media byte and device-only score behavior must remain unchanged. Keep exact inventory verification, noindex, empty score-service and no server/secret files in the artifact.
+- Keep source in this GitHub repository. Account sign-in and Git-provider connection are required before the Cloudflare deployment can go live. Local packaging success is not a deployed URL or evidence of 100K-player capacity.
+
 ## October 20 full game audit
 
 - TEST only. Every artist and merch round requires venue admission, then an explicit Start Game tap. Keep the artist chooser and physical discovery paths. Completed rounds bank once; leaving or interrupting a round never awards partial points.
