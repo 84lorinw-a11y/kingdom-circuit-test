@@ -42,6 +42,26 @@ class RoutingTests(unittest.TestCase):
             self.assertIn('--no-renames', diff.call_args.args[0])
             self.assertEqual(publish.publish_mode('push', event, paths), 'full-refresh')
 
+    def test_recipe_allows_game_changes_but_requires_refresh_for_website_edits(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            paths = {'scripts/live_mirror_v2.py': 'website recipe',
+                     'scripts/build_chh_game.py': 'game recipe',
+                     'test-overrides/chh-show-night/game.mjs': 'game source',
+                     'test-overrides/chh-show-night-manifest.json': 'game hashes',
+                     publish.WORKFLOW: 'workflow recipe'}
+            for relative, text in paths.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text)
+            before = publish.recipe(root)
+            (root / 'test-overrides/chh-show-night/game.mjs').write_text('updated game')
+            (root / 'scripts/build_chh_game.py').write_text('updated game publisher')
+            (root / 'test-overrides/chh-show-night-manifest.json').write_text('new approved hashes')
+            self.assertEqual(publish.recipe(root), before)
+            (root / 'scripts/live_mirror_v2.py').write_text('changed website recipe')
+            self.assertNotEqual(publish.recipe(root), before)
+
 
 class SnapshotTests(unittest.TestCase):
     def setUp(self):
@@ -155,6 +175,29 @@ class SnapshotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unsafe'):
             self.restore()
         self.assertFalse((self.root / 'escaped').exists())
+
+    def test_repeated_game_releases_keep_the_original_website_reference(self):
+        target = self.root / 'reference.json'
+        with patch.object(publish, 'REFERENCE', target), \
+             patch.dict(publish.os.environ, {'GITHUB_RUN_ID': '999', 'GITHUB_RUN_ATTEMPT': '10'}):
+            with self.assertRaisesRegex(ValueError, 'full-refresh'):
+                publish.reference()
+            saved = publish.reference(self.archive)
+            self.assertEqual(saved['run_id'], '123')
+            self.assertEqual(saved['sha'], 'a' * 40)
+            self.assertEqual(publish.reference(), saved)
+            self.assertEqual(publish.reference(self.archive), saved)
+            invalid = dict(saved, cache_key='unrelated-cache')
+            target.write_text(json.dumps(invalid))
+            with self.assertRaisesRegex(ValueError, 'Invalid website reference'):
+                publish.reference()
+
+    def test_partial_cache_match_cannot_substitute_another_attempt(self):
+        with self.assertRaisesRegex(ValueError, 'different workflow attempt'):
+            publish.restore(self.archive, self.root / 'x', self.root / 'y',
+                            source_run='123', source_commit='a' * 40,
+                            source_key=publish.CACHE_PREFIX + '123-999')
+        self.assertFalse((self.root / 'x').exists())
 
 
 class PublicationSelectionTests(unittest.TestCase):
