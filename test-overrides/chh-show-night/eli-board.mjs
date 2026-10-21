@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=apollo-23';
+import {drawPerson} from './sprites.mjs?v=apollo-24';
 
 export const laneColors=['#80e2be','#a9b8ff','#ffc876','#ff9eb5'];
 export function beatLayout(height=560){

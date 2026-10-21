@@ -101,10 +101,18 @@ Before a wider release (the owner has tested the draft link on their phone)
 - Keep the GitHub TEST URL available as a fallback.
 
 Current limits and next work
-The complete package is about 22.14 MB; its largest file is the 3.72 MB silent
-video. Packaging alone does not reduce the 11.55 MB of images loaded at entry.
-Next: show character selection first, load the exterior next, and defer stage
-and VIP assets until needed. Do not claim a faster first load until measured.
+The currently published Cloudflare package remains about 22.14 MB (apollo-23).
+Automatic publishing is paused. The newer GitHub TEST revision uses staged
+loading and removes four retired merchandise items; it is not yet on Cloudflare.
+Local HTTP body measurements: 1,036,352 bytes to character selection and
+4,783,450 bytes total to the entrance. The former startup requested 11,553,102
+image bytes plus 249,396 HTML/CSS/JS bytes (11,802,498 total). These measurements
+use an uncached local server without transfer compression, not a mobile speed
+or launch-capacity guarantee. The image/audio/video quality is unchanged.
+Stage and VIP assets load on demand, saved sessions resume their own room, and
+failed room loads can retry or leave the player in the previous complete room.
+No music/video downloads occur during selection or the fresh outside entrance.
+The silent video remains 3.72 MB and loads only for stage playback.
 
 Browser saves are scoped to the hostname. A player's GitHub TEST save will not
 automatically appear on a new pages.dev/custom-domain URL. Scores are local to

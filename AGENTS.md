@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 merchandise reduction and staged loading (latest owner direction)
+
+- GitHub TEST only; Cloudflare automatic publishing remains paused. Remove the Apollo bird tee, original Not 4 Sale tee, Not 4 Sale hoodie and cap from the booth, catalog and drop game. Keep the concert tee and Eli's red script, white Apollo logo and cream Not 4 $ale tees, including current player outfits.
+- Use the existing approved artwork cells. Retire `merch-extras-v1.webp` from loading and the published inventory; the concert tee still uses its cell in `merch-apollo-v2.webp`. All remaining media bytes, music, video, games and scoring stay unchanged.
+- Owner subsequently approved staged startup loading. Load both current player atlases for selection, then the chosen/saved room's complete assets. Keep room changes gated until every required image/person is decoded, with retry and cancel that preserve the previous room and saved progress. Reuse successful downloads/decodes across rooms and retry only failed assets. Never allow invisible characters while a room is loading.
+- Keep music/video on demand; do not download Eli's music on the first generic tap. The stage video remains silent and looping. Artist portraits, merch inspection, scoreboard branding and VIP photo assets load when requested. Preserve Eli gameplay, all current people and every remaining media byte.
+- Moving merchandise outside, widening the stage and revising artist games remain discussion topics. Do not implement those layout/gameplay changes until selected.
+
 ## October 21 Cloudflare automatic publishing paused (latest owner direction)
 
 - Owner requested pausing GitHub-to-Cloudflare automatic publishing while frequent edits continue. Cloudflare Pages project `apollo-game-draft` now shows automatic production-branch deployments Disabled; automatic preview-branch deployments remain disabled.

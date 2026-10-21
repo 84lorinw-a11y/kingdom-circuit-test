@@ -128,7 +128,7 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .round-situation{margin:0!important;background:#18191d;color:#e3c59c!important;text-align:center;padding:6px;font:700 11px/1.3 system-ui,sans-serif!important;min-height:25px;flex-shrink:0}
 .round .round-song{display:block;background:none;padding:3px 0 0;color:#bcb4a7;font:10px/1.25 system-ui,sans-serif;font-weight:400;text-decoration:underline;max-width:270px}
 .round[data-game=brenno] .round-pads{display:grid;grid-template-columns:repeat(6,1fr)}
-.merch-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.merch-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
 .merch-products figure{margin:0;padding:8px;background:#252427;border:1px solid #57504b;text-align:center}
 .merch-products canvas{height:110px;object-fit:contain;image-rendering:auto}
 .merch-products figcaption{font:700 11px/1.4 system-ui,sans-serif;margin-top:8px}
