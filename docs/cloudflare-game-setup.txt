@@ -41,10 +41,25 @@ The agent's browser loaded HTML/JS but artwork downloads timed out on its
 connection. Three downloaded live images matched approved source bytes exactly.
 CLI HTTPS connections to pages.dev also timed out; full live-file, response-header
 and range-request verification is still pending. Do not present those as passed.
-GitHub reported webhook delivery delays during setup. Automatic deployment is
-configured, but a subsequent game-changing push has not yet verified that trigger.
+GitHub reported webhook delivery delays during setup. A subsequent game-changing
+push did arrive and automatically deployed successfully (details below).
 The existing kingdomcircuit.com homepage stayed HTTP 200 and byte-identical
 before and after deployment. No changes were made to its repository or DNS.
+
+VIP touch update deployed October 21, 2026, 16:31 UTC
+Source commit: 2bb401c164dcdb85d2bfd14e646e94a48a912517
+Deployment: 3d451400-f264-47a0-bfc5-f5bc5ba22847
+GitHub automatically triggered Cloudflare; no manual upload was needed.
+The public page served runtime apollo-23 with the action button below the scene.
+The verified package is 98 files / 22,138,469 bytes, just 2,309 bytes larger.
+All 49 media files remain byte-identical and use the same cached media namespace.
+Changes: smaller action button below the world, tap-versus-drag handling, explicit
+VIP artist Play/Stay choices, and no game opening merely from stopping nearby.
+Local browser checks passed for passcode entry, circle/button re-entry, dragging
+over a VIP artist, staying in VIP, deliberate game selection and listening corner.
+All 146 game tests and 125 Python checks passed; both GitHub verification and
+mirror workflows succeeded. A fresh owner phone check of this touch fix is still
+useful; the owner's earlier successful phone test was the first deployment.
 
 The Cloudflare UI calls its primary branch "production"; this is a separate
 Apollo draft project, not the existing kingdomcircuit.com production site.
