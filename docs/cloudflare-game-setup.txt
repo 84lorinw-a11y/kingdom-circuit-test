@@ -10,17 +10,41 @@ this package. Eli's game and every approved media byte are unchanged.
 Flow
 GitHub main -> Cloudflare Git build -> Cloudflare static files -> player's browser
 
-Account connection (not completed yet)
-1. Sign in to Cloudflare. Open Workers & Pages and create a Pages project using
-   Git integration. If asked, connect only the kingdom-circuit-test repository.
-2. Repository: 84lorinw-a11y/kingdom-circuit-test
-3. Production branch in THIS DRAFT PROJECT: main
-4. Framework preset: None
-5. Root directory: repository root (leave blank)
-6. Build command: python3 scripts/build_cloudflare_game.py .cloudflare-dist
-7. Build output directory: .cloudflare-dist
-8. Suggested project name: apollo-game-draft (availability not checked).
-9. Deploy to its assigned pages.dev hostname and verify /play/ before sharing.
+Connected and deployed October 21, 2026
+Player link: https://apollo-game-draft.pages.dev/play/
+Project: apollo-game-draft
+Repository: 84lorinw-a11y/kingdom-circuit-test
+The owner approved the GitHub app for this repository only.
+Production branch in THIS DRAFT PROJECT: main
+Framework preset: None
+Root directory: repository root (blank)
+Build command: python3 scripts/build_cloudflare_game.py .cloudflare-dist
+Build output directory: .cloudflare-dist
+Automatic production-branch builds: enabled
+Automatic preview-branch builds: disabled
+Build watch paths (include only; no excludes):
+  test-overrides/chh-show-night/*
+  test-overrides/chh-show-night-manifest.json
+  scripts/build_chh_game.py
+  scripts/build_cloudflare_game.py
+
+Initial deployment: c30742d5-5f81-48a0-9c23-dfc7c4f5fe42
+Initial source commit: c51f65468765b6aee1d7dd20f5b64a6cbfdb13b3
+Cloudflare reported success: 95 uploaded files, one redirect and 49 valid
+header rules. The local package has 97 files including the two rule files.
+Owner played the Cloudflare link on their phone and reported everything worked
+and felt better than the GitHub version. This is a draft phone check, not a
+100K-player load test or evidence of every device/browser working.
+
+Verification limits
+The agent's browser loaded HTML/JS but artwork downloads timed out on its
+connection. Three downloaded live images matched approved source bytes exactly.
+CLI HTTPS connections to pages.dev also timed out; full live-file, response-header
+and range-request verification is still pending. Do not present those as passed.
+GitHub reported webhook delivery delays during setup. Automatic deployment is
+configured, but a subsequent game-changing push has not yet verified that trigger.
+The existing kingdomcircuit.com homepage stayed HTTP 200 and byte-identical
+before and after deployment. No changes were made to its repository or DNS.
 
 The Cloudflare UI calls its primary branch "production"; this is a separate
 Apollo draft project, not the existing kingdomcircuit.com production site.
@@ -43,12 +67,13 @@ python3 scripts/build_cloudflare_game.py /path/to/an/empty/output-folder
 python3 scripts/build_cloudflare_game.py /path/to/output-folder --check
 
 The GitHub workflow "Verify Cloudflare game package" checks this package.
-It does not create a Cloudflare project or deploy without account connection.
+Cloudflare's own Git integration builds and deploys matching changes on main.
+The GitHub validation workflow does not itself upload files to Cloudflare.
 
-Before sharing the Cloudflare URL
+Before a wider release (the owner has tested the draft link on their phone)
 - Confirm HTTPS, root -> /play/, real missing-file 404s, and correct media types.
 - Confirm media Cache-Control includes immutable, and HTML/JS revalidate.
-- Play on a physical iPhone and Android device; check touch and audio gestures.
+- Complete explicit iPhone and Android checks for touch and audio gestures.
 - Check silent video looping, score persistence and a fresh-player full journey.
 - Keep the GitHub TEST URL available as a fallback.
 
@@ -63,8 +88,8 @@ automatically appear on a new pages.dev/custom-domain URL. Scores are local to
 that device; Cloudflare static hosting does not create a shared leaderboard.
 
 Cloudflare account capacity and a 100K-player traffic spike have not been tested.
-No billing plan, spend commitment, domain transfer or new global score backend
-has been authorized/configured by this package. Review those separately before
+No paid billing plan, spend commitment, domain transfer or new global score backend
+has been authorized/configured. Review those separately before
 a large public launch. Future larger media can use R2 with a cached custom domain;
 do not use the rate-limited r2.dev endpoint for a production media launch.
 

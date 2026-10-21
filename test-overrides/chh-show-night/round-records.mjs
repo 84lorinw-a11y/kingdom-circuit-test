@@ -1,4 +1,4 @@
-import {gameIds,roundScore,validateRound} from './scoring.mjs?v=apollo-22';
+import {gameIds,roundScore,validateRound} from './scoring.mjs?v=apollo-23';
 // Only add an artist benchmark after the artist has actually played this version.
 export const artistBenchmarks=Object.freeze({});
 export function createRoundRecords(storage){

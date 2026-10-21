@@ -1,36 +1,37 @@
-import {loadImage} from './asset-loader.mjs?v=apollo-22';
-import {musicRetryMessage} from './audio-errors.mjs?v=apollo-22';
-import {createStageVideos} from './stage-videos.mjs?v=apollo-22';
-import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-22';
-import {matchesVipCode} from './vip-access.mjs?v=apollo-22';
-import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-22';
-import {venueTrack} from './music-config.mjs?v=apollo-22';
-import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-22';
-import {artistGames} from './artist-arcade.mjs?v=apollo-22';
-import {mountArtistArcade} from './arcade-round.mjs?v=apollo-22';
-import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-22';
-import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-22';
-import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-22';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-22';
-import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-22';
-import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-22';
-import {drawPerson,loadPeople,peopleAssetCount} from './sprites.mjs?v=apollo-22';
-import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-22';
-import {createCelebration} from './celebration.mjs?v=apollo-22';
-import {cameraActors,drawCameraFlash} from './pit.mjs?v=apollo-22';
-import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-22';
-import {mountRound} from './rounds.mjs?v=apollo-22';
-import {createRoundAudio} from './round-audio.mjs?v=apollo-22';
-import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-22';
-import {createScoreTable} from './scoreboard-view.mjs?v=apollo-22';
-import {gameIds,gameNames} from './scoring.mjs?v=apollo-22';
-import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-22';
-import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-22';
-import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-22';
-import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-22';
-import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-22';
-import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-22';
-import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-22';
+import {createWorldGesture} from './world-input.mjs?v=apollo-23';
+import {loadImage} from './asset-loader.mjs?v=apollo-23';
+import {musicRetryMessage} from './audio-errors.mjs?v=apollo-23';
+import {createStageVideos} from './stage-videos.mjs?v=apollo-23';
+import {andrewSpot,vipSpot,merchSpot,roomMusicEnabled} from './venue-layout.mjs?v=apollo-23';
+import {matchesVipCode} from './vip-access.mjs?v=apollo-23';
+import {merchItems,drawMerchItem} from './merch-items.mjs?v=apollo-23';
+import {venueTrack} from './music-config.mjs?v=apollo-23';
+import {snacks,drinks,drawSnackBar} from './venue-social.mjs?v=apollo-23';
+import {artistGames} from './artist-arcade.mjs?v=apollo-23';
+import {mountArtistArcade} from './arcade-round.mjs?v=apollo-23';
+import {createRoundRecords,artistBenchmarks} from './round-records.mjs?v=apollo-23';
+import {drawAlleyLoadIn,drawStageSmoke,drawStageLights} from './club-effects.mjs?v=apollo-23';
+import {producerStation,drawProducerStation} from './producer-station.mjs?v=apollo-23';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-23';
+import {apolloCrew,vipArtists,producerActor,drawApolloMarquee,drawApolloStage} from './apollo-crew.mjs?v=apollo-23';
+import {MAX_SCORE,initialState,score,coins,objective,pointsToGo,act,restore} from './state.mjs?v=apollo-23';
+import {drawPerson,loadPeople,peopleAssetCount} from './sprites.mjs?v=apollo-23';
+import {crowdActors,crowdCounts} from './crowds.mjs?v=apollo-23';
+import {createCelebration} from './celebration.mjs?v=apollo-23';
+import {cameraActors,drawCameraFlash} from './pit.mjs?v=apollo-23';
+import {avatars,avatarFor,playerName} from './avatars.mjs?v=apollo-23';
+import {mountRound} from './rounds.mjs?v=apollo-23';
+import {createRoundAudio} from './round-audio.mjs?v=apollo-23';
+import {createScoreStore,createOnlineScores,confirmSessionSave} from './leaderboard.mjs?v=apollo-23';
+import {createScoreTable} from './scoreboard-view.mjs?v=apollo-23';
+import {gameIds,gameNames} from './scoring.mjs?v=apollo-23';
+import {mountPhotoStyle,drawVipPhoto,photoFrames} from './activities.mjs?v=apollo-23';
+import {findPath,clampPosition,stepToward} from './navigation.mjs?v=apollo-23';
+import {practiceSpot,drawPracticeBooth,isBoothTap} from './practice-booth.mjs?v=apollo-23';
+import {createWorshipMusic,inFrontRow,stageSpotAt,stageSpots,stageArtistAt} from './worship.mjs?v=apollo-23';
+import {hasVisited,nextStop} from './journey-guide.mjs?v=apollo-23';
+import {createDialogLifecycle} from './dialog-lifecycle.mjs?v=apollo-23';
+import {breakProgress,drawWaterSip} from './water-break.mjs?v=apollo-23';
 const $=s=>document.querySelector(s), canvas=$('#world'),ctx=canvas.getContext('2d'),dialog=$('#dialog');
 const worshipMusic={leave(){},get playing(){return null;}};const roundAudio=createRoundAudio();const roundRecords=createRoundRecords(localStorage);const scoreStore=createScoreStore(),onlineScores=createOnlineScores(localStorage,{base:''});let atFront=null;
 let musicWarmed=false;
@@ -47,6 +48,7 @@ const stageVideos=createStageVideos({root:$('#stage-video'),tools:$('#stage-vide
 const celebration=createCelebration({reduceMotion});let victoryPending=false;
 const roomInfo={outside:['01','OUTSIDE THE VENUE','BRING YOUR PEOPLE.'],show:['02','THE MAIN STAGE','GOOD MUSIC. GREATER PURPOSE.'],vip:['03','THE VIP LOUNGE','MAKE A MEMORY.']};
 const images={};
+const worldPointer=createWorldGesture({onTap:tapWorldPoint,onWalk:walkToPoint});
 const safeSave=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));return true;}catch{return false;}};
 function notify(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3600);}
 try{soundOn=localStorage.getItem('kc-apollo-night-sound')!=='off';}catch{}
@@ -63,7 +65,7 @@ function sync(){
  let activeFound=false;document.querySelectorAll('#checklist li').forEach(li=>{const k=li.dataset.step,done=k==='friends'?state.friends.length===2:!!state[k];li.classList.toggle('done',done);li.classList.toggle('active',!done&&!activeFound);if(!done)activeFound=true;li.querySelector('.step-icon').textContent=done?'✓':String([...li.parentElement.children].indexOf(li)+1).padStart(2,'0');});
  renderDestinations();safeSave();
 }
-function apply(action,value){if(['invite','enter','worship','vip','photo','show','outside'].includes(action))onlineScores.journey(action,value);const oldRoom=state.room,oldScore=score(state);state=act(state,action,value);if(state.room!==oldRoom){worshipMusic.leave();atFront=null;raisingUntil=0;route=[];autoAction=null;trail=[];followerPositions=[];announceRoom();}if(action==='profile')onlineScores.connect(state).catch(()=>{});if(score(state)>oldScore){tone();burst();}if(Math.floor(oldScore/MAX_SCORE)<Math.floor(score(state)/MAX_SCORE))victoryPending=true;sync();}
+function apply(action,value){if(['invite','enter','worship','vip','photo','show','outside'].includes(action))onlineScores.journey(action,value);const oldRoom=state.room,oldScore=score(state);state=act(state,action,value);if(state.room!==oldRoom){worshipMusic.leave();atFront=null;raisingUntil=0;route=[];autoAction=null;keys.clear();worldPointer.cancel();trail=[];followerPositions=[];announceRoom();}if(action==='profile')onlineScores.connect(state).catch(()=>{});if(score(state)>oldScore){tone();burst();}if(Math.floor(oldScore/MAX_SCORE)<Math.floor(score(state)/MAX_SCORE))victoryPending=true;sync();}
 function announceRoom(){const info=roomInfo[state.room];$('#room-intro small').textContent=`CHAPTER ${info[0]}`;$('#room-intro strong').textContent=info[2];$('#room-intro').classList.add('visible');clearTimeout(introTimer);introTimer=setTimeout(()=>$('#room-intro').classList.remove('visible'),1500);}
 function hotspots(){
  if(state.room==='outside')return [
@@ -96,7 +98,7 @@ function goTo(h){if(photoBusy||dialog.open)return;endBreak();keys.clear();autoAc
 function nearest(limit=83){return hotspots().map(h=>({...h,d:Math.hypot(state.x-h.x,state.y-h.y)})).filter(h=>h.d<limit).sort((a,b)=>a.d-b.d)[0];}
 function interactButton(){if(dialog.open||photoBusy)return;const nearby=nearest();if(nearby)interact(nearby);else{const h=nearest(Infinity);if(h)goTo(h);}}
 function openDialog(title,body,buttons=[],eyebrow='APOLLO RECORDS'){
- endBreak();route=[];autoAction=null;keys.clear();dragPointer=null;const content=modal.prepare();const over=document.createElement('p');over.className='overline';over.textContent=eyebrow;const heading=document.createElement('h2');heading.textContent=title;const text=document.createElement('p');text.textContent=body;content.append(over,heading,text);const actions=document.createElement('div');actions.className='dialog-actions';buttons.forEach(({label,fn,secondary=false})=>{const b=document.createElement('button');b.textContent=label;if(secondary)b.className='secondary';b.onclick=()=>{modal.close();fn?.();};actions.append(b);});content.append(actions);if(!dialog.open)dialog.showModal();return content;
+ endBreak();route=[];autoAction=null;keys.clear();worldPointer.cancel();const content=modal.prepare();const over=document.createElement('p');over.className='overline';over.textContent=eyebrow;const heading=document.createElement('h2');heading.textContent=title;const text=document.createElement('p');text.textContent=body;content.append(over,heading,text);const actions=document.createElement('div');actions.className='dialog-actions';buttons.forEach(({label,fn,secondary=false})=>{const b=document.createElement('button');b.textContent=label;if(secondary)b.className='secondary';b.onclick=()=>{modal.close();fn?.();};actions.append(b);});content.append(actions);if(!dialog.open)dialog.showModal();return content;
 }
 function interact(h=nearest()){
  if(dialog.open||photoBusy)return;
@@ -122,7 +124,7 @@ function interact(h=nearest()){
  }else apply(h.action);
 }
 function startBreak(){
- route=[];autoAction=null;keys.clear();dragPointer=null;waterBreak={started:performance.now()};apply('visit','refresh');tone('step');
+ route=[];autoAction=null;keys.clear();worldPointer.cancel();waterBreak={started:performance.now()};apply('visit','refresh');tone('step');
  $('#break-status').hidden=false;$('#break-count').textContent='WATER BREAK · 6s';$('#objective').textContent='Your crew is taking a sip. Tap anywhere to leave early.';
 }
 function endBreak(finished=false){if(!waterBreak)return;waterBreak=null;$('#break-status').hidden=true;$('#objective').textContent=objective(state);if(finished)notify('Crew refreshed! Tap Main stage or keep exploring.');}
@@ -136,7 +138,7 @@ function openArtistGame(game){
   const next=!state.friends.includes('jay')?'jay':!state.friends.includes('grace')?'grace':'enter';
   openDialog('Bring your crew inside first.','Invite Jay and Grace, then enter the show to play and bank your points.',[{label:next==='enter'?'ENTER THE SHOW':`FIND ${next.toUpperCase()}`,fn:()=>goTo(hotspots().find(h=>h.id===next))},{label:'KEEP EXPLORING',secondary:true}],'YOUR NEXT STEP');return;
  }
- endBreak();route=[];autoAction=null;keys.clear();dragPointer=null;
+ endBreak();route=[];autoAction=null;keys.clear();worldPointer.cancel();
  if(state.room!=='show')apply('show');
  apply('visit',game==='apollo'?'merch':game==='eli'?'dj':game);
  const content=modal.prepare();dialog.classList.add('game-dialog');dialog.showModal();
@@ -284,28 +286,47 @@ function update(dt,time){
  walking=Math.hypot(old.x-state.x,old.y-state.y)>.05;
  if(arrivedAction){interact(arrivedAction);return;}
  const nowAtFront=stageSpotAt(state);
- // A walk past an artist must not interrupt a route or a drag. Intentional taps still auto-start on arrival.
- if(nowAtFront&&nowAtFront!==atFront&&!route.length&&!dragPointer&&!walking&&!autoAction){raiseHands(nowAtFront);openArtistGame(nowAtFront);}
+ // Free walking may raise hands, but only an explicit artist/marker tap opens a game.
+ if(nowAtFront&&nowAtFront!==atFront&&!route.length&&!worldPointer.active&&!walking&&!autoAction){raiseHands(nowAtFront);}
  else if(!nowAtFront&&atFront){atFront=null;raisingUntil=0;worshipMusic.leave();}
  if(walking){trail.unshift({x:state.x,y:state.y});if(trail.length>100)trail.pop();}
  state.friends.forEach((_,i)=>{const desired=waterBreak?{x:state.x+(i===0?-64:62),y:state.y+27}:walking?(trail[Math.min(trail.length-1,19+22*i)]||{x:state.x-40*(i+1),y:state.y+10}):{x:state.x-45*(i+1),y:Math.min(640,state.y+15+i*3)};const p=followerPositions[i]||{...desired};p.x+=(desired.x-p.x)*Math.min(1,dt*5);p.y+=(desired.y-p.y)*Math.min(1,dt*5);Object.assign(p,clampPosition(p,state.room));p.y=Math.min(640,p.y);followerPositions[i]=p;});
 
 }
-let dragPointer=null;
 function pointFromTouch(e){const r=canvas.getBoundingClientRect();return {x:camera+(e.clientX-r.left)/r.width*viewWidth,y:(e.clientY-r.top)/r.height*H};}
 function walkToPoint(point){endBreak();autoAction=null;route=findPath(state.room,state,point);keys.clear();}
-canvas.addEventListener('pointerdown',e=>{
- if(dialog.open||photoBusy)return;e.preventDefault();canvas.focus({preventScroll:true});dragPointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);
- const {x,y}=pointFromTouch(e);if(state.room==='vip'){const artist=vipArtists(performance.now(),reduceMotion).find(a=>Math.abs(x-a.x)<27&&y>a.y-135&&y<a.y);if(artist){openArtistGame(artist.who==='eli-williams'?'eli':artist.who);return;}}if(state.room==='show'){const person=apolloCrew.find(p=>!['marty','brenno','eli-williams'].includes(p.id)&&Math.abs(x-p.stageX)<28&&y>p.stageY-135&&y<p.stageY);if(person){openArtistGame(person.id);return;}}const h=hotspots().find(h=>(h.labelX!==undefined&&Math.abs(x-h.labelX)<38&&y>h.labelY-27&&y<h.labelY+7)||(h.id==='dj'&&isBoothTap({x,y}))||(h.action==='artist'&&stageArtistAt({x,y})===h.id)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));
+function openVipArtist(who){
+ const artist=apolloCrew.find(p=>p.id===who),game=who==='eli-williams'?'eli':who,title=artistGames[game]?.title||'B–I–B–L–E';
+ openDialog(`Hang with ${artist.name}.`,`Stay in the lounge, or head to the stage to play ${title}.`,[{label:`PLAY ${title}`,fn:()=>openArtistGame(game)},{label:'STAY IN VIP',secondary:true}],'VIP · MEET THE CREW');
+}
+function tapWorldPoint({x,y}){
+ if(dialog.open||photoBusy)return;
+ // Keep the actual lounge circles/signs reachable even beside a crew member.
+ if(state.room==='vip'){
+  const spot=hotspots().find(h=>Math.abs(x-h.x)<56&&y>h.y-48&&y<h.y+25);
+  if(spot){goTo(spot);return;}
+  const artist=vipArtists(performance.now(),reduceMotion).find(a=>Math.abs(x-a.x)<27&&y>a.y-135&&y<a.y);
+  if(artist){openVipArtist(artist.who);return;}
+ }
+ if(state.room==='show'){
+  const person=apolloCrew.find(p=>!['marty','brenno','eli-williams'].includes(p.id)&&Math.abs(x-p.stageX)<28&&y>p.stageY-135&&y<p.stageY);
+  if(person){openArtistGame(person.id);return;}
+ }
+ const h=state.room!=='vip'&&hotspots().find(h=>(h.labelX!==undefined&&Math.abs(x-h.labelX)<38&&y>h.labelY-27&&y<h.labelY+7)||(h.id==='dj'&&isBoothTap({x,y}))||(h.action==='artist'&&stageArtistAt({x,y})===h.id)||(Math.abs(x-h.x)<56&&y>h.y-155&&y<h.y+25));
  if(h)goTo(h);else walkToPoint({x,y});
+}
+canvas.addEventListener('pointerdown',e=>{
+ if(dialog.open||photoBusy||!worldPointer.down(e,state.room))return;
+ e.preventDefault();canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);
 });
-canvas.addEventListener('pointermove',e=>{if(!dragPointer||e.pointerId!==dragPointer.id||dialog.open||photoBusy)return;if(Math.hypot(e.clientX-dragPointer.x,e.clientY-dragPointer.y)<6)return;walkToPoint(pointFromTouch(e));});
-for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>{dragPointer=null;});
+canvas.addEventListener('pointermove',e=>{if(dialog.open||photoBusy){worldPointer.cancel();return;}worldPointer.move(e,pointFromTouch(e),state.room);});
+canvas.addEventListener('pointerup',e=>{if(dialog.open||photoBusy){worldPointer.cancel();return;}worldPointer.up(e,pointFromTouch(e),state.room);});
+for(const event of ['pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>worldPointer.cancel());
 const keyMap={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
 window.addEventListener('keydown',e=>{if(dialog.open||e.target.matches('input,textarea'))return;const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key]){e.preventDefault();endBreak();keys.add(keyMap[key]);}else if((key==='e'||key===' ')&&!e.repeat&&!e.target.closest('button,a')){e.preventDefault();interactButton();}});
 window.addEventListener('keyup',e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyMap[key])keys.delete(keyMap[key]);});
-function resumeWorld(){if(document.hidden)stageVideos.suspend();keys.clear();dragPointer=null;paused=document.hidden;last=0;syncRoomMusic();}
-window.addEventListener('blur',()=>{keys.clear();dragPointer=null;});window.addEventListener('pageshow',resumeWorld);document.addEventListener('visibilitychange',()=>{resumeWorld();safeSave();});
+function resumeWorld(){if(document.hidden)stageVideos.suspend();keys.clear();worldPointer.cancel();paused=document.hidden;last=0;syncRoomMusic();}
+window.addEventListener('blur',()=>{keys.clear();worldPointer.cancel();});window.addEventListener('pageshow',resumeWorld);document.addEventListener('visibilitychange',()=>{resumeWorld();safeSave();});
 document.querySelectorAll('[data-dir]').forEach(b=>{const release=()=>{keys.delete(b.dataset.dir);b.classList.remove('held');};b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.dir);b.classList.add('held');};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;});
 $('#interact').onclick=interactButton;$('#menu').onclick=openMenu;$('#scoreboard').onclick=openBoard;
 $('#sound').onclick=toggleSound;
@@ -329,7 +350,7 @@ function requestFreshNight(){
  openDialog('Start a new night?','A session is one night, including every replay. Your highest whole-night total stays on the board. Save this night before starting over.',[{label:'SAVE POINTS & START NEW NIGHT',fn:()=>saveBeforeExit({newNight:true})},{label:'KEEP THIS NIGHT',secondary:true}],'KEEP YOUR POINTS');
 }
 async function saveBeforeExit({newNight=false}={}){
- endBreak();cancelPhoto();roundAudio.stop();route=[];autoAction=null;keys.clear();dragPointer=null;
+ endBreak();cancelPhoto();roundAudio.stop();route=[];autoAction=null;keys.clear();worldPointer.cancel();
  scoreStore.record(state);const snapshot=structuredClone(state),localSaved=safeSave();
  openDialog('Saving your points…',onlineScores.enabled?'Keep this page open while we confirm your score on the shared board.':'Saving this Apollo night on your device.',[{label:'KEEP PLAYING',secondary:true}],'SAVE & EXIT');
  let active=true;modal.attach(()=>{active=false;});
@@ -425,7 +446,7 @@ function openSnacks(){
 }
 dialog.addEventListener('cancel',e=>{if(playerEntryPending||!state.profileReady)e.preventDefault();});
 dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&(playerEntryPending||!state.profileReady)){e.preventDefault();e.stopPropagation();}});
-dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}if(!modal.onNativeClose())return;keys.clear();dragPointer=null;canvas.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{if(playerEntryPending&&!dialog.open&&dialog.querySelector('.player-form')){dialog.showModal();return;}if(!modal.onNativeClose())return;keys.clear();worldPointer.cancel();canvas.focus({preventScroll:true});});
 async function start(){
  const files={venueLogo:'venue-logo-v15.webp',apolloPoster:'apollo-official-not4sale.webp',eliBanner:'eli-apollo-blue-v1.webp',bannerCloth:'stage-banner-cloth-v1.webp',hazer:'stage-hazer-v1.webp',eliNot4Sale:'eli-not4sale-white-v1.webp',eliCollage:'eli-collage-v1.webp',booth:'dj-booth-v13.webp',merch:'merch-apollo-v2.webp',merchExtras:'merch-extras-v1.webp',merchEli:'merch-eli-v1.webp',andrewBooth:'andrew-booth-v2.webp',roadies:'roadies-v1.webp',kcLogo:'kingdom-circuit-instagram.webp',martyBg:'show-entry-v1.webp',brennoBg:'outside-entry-v1.webp',apolloBg:'show-entry-v1.webp',outside:'outside-entry-v1.webp',show:'show-entry-v1.webp',vip:'vip-entry-v1.webp'};
  const total=peopleAssetCount+Object.keys(files).length,cache=new Map();let loaded=0,loadingFailed=false;

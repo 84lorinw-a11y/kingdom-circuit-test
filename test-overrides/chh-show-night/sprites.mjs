@@ -1,7 +1,7 @@
-import {loadImage} from './asset-loader.mjs?v=apollo-22';
-import {clubFanPoses,actualFanPoses} from './crowds.mjs?v=apollo-22';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-22';
-import {playerSpritePose} from './avatars.mjs?v=apollo-22';
+import {loadImage} from './asset-loader.mjs?v=apollo-23';
+import {clubFanPoses,actualFanPoses} from './crowds.mjs?v=apollo-23';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-23';
+import {playerSpritePose} from './avatars.mjs?v=apollo-23';
 // Transparent sprite atlases adapted from the supplied CHH scene references.
 // Trim bounds are calculated once at load; sprites are composited at runtime.
 const heroIds=['player','jay','grace'];

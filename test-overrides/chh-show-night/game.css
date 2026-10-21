@@ -175,3 +175,9 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 .loading-room progress{width:min(260px,100%);height:7px;accent-color:#ffcb6c}
 .loading-room[hidden]{display:none}
 .round-local-board .score-card-save{color:#102033;font-weight:800}
+
+/* Keep the thumb action below the scene so doors and floor markers stay clear. */
+.objective{height:54px;min-height:54px;flex-basis:54px;padding:4px 8px;gap:8px}
+.objective p{flex:1;min-width:0}
+.objective .touch-action{position:static;flex:0 0 auto;margin:0;padding:7px 9px;min-height:44px;max-width:126px;font-size:9px;line-height:1.25;border-width:1px;border-radius:4px}
+@media(max-height:500px){.objective{height:50px;min-height:50px;flex-basis:50px;padding-block:2px}.objective p{font-size:9px}}

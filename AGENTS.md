@@ -1,11 +1,20 @@
 # Kingdom Circuit test-site instructions
 
-## October 21 Cloudflare draft preparation
+## October 21 VIP touch correction
+
+- Owner reported the yellow action button covering the VIP entrance and unintended artist-game openings around VIP. Keep the compact 44px action control in the objective row below the scene, never over a floor marker.
+- A canvas activity requires a completed tap; dragging from a person or marker only walks. Cancel pending gestures on room changes, dialogs, blur and backgrounding. Merely stopping near a stage circle may raise hands but must not open a game; deliberate circle/artist taps and the action button remain available.
+- In VIP, tapping a crew member opens a lounge card with explicit Play and Stay in VIP choices. Only choosing Play returns to the stage and opens that game's Start Game screen. Lounge circles/signs take precedence over nearby crew cutouts. Preserve all artwork, music, video, scoring and Eli gameplay.
+
+## October 21 Cloudflare draft deployment
 
 - Owner requested starting Cloudflare hosting while retaining GitHub, with a reviewable draft targeted for October 22 lunch Central. Keep Eli's game unchanged; other game styles remain proposals until selected.
 - `scripts/build_cloudflare_game.py` packages the manifest-approved game for a separate Cloudflare Pages draft project. It preserves the existing GitHub TEST build and production site, and creates no account, DNS record or billing commitment.
 - Cloudflare output uses `/play/` and a content-derived media directory for immutable caching. Every approved media byte and device-only score behavior must remain unchanged. Keep exact inventory verification, noindex, empty score-service and no server/secret files in the artifact.
-- Keep source in this GitHub repository. Account sign-in and Git-provider connection are required before the Cloudflare deployment can go live. Local packaging success is not a deployed URL or evidence of 100K-player capacity.
+- Owner explicitly approved the Cloudflare Workers and Pages GitHub app for ONLY `84lorinw-a11y/kingdom-circuit-test`. The separate Pages project `apollo-game-draft` is deployed at `https://apollo-game-draft.pages.dev/play/` from `main`. Do not expand its repository access or change the production show site's repository, DNS or nameservers.
+- Build command: `python3 scripts/build_cloudflare_game.py .cloudflare-dist`; output `.cloudflare-dist`; repository root; no framework. Automatic production-branch deployments are enabled; automatic preview-branch deployments are disabled. Include watch paths: `test-overrides/chh-show-night/*`, `test-overrides/chh-show-night-manifest.json`, `scripts/build_chh_game.py`, `scripts/build_cloudflare_game.py`.
+- Initial deployment `c30742d5-5f81-48a0-9c23-dfc7c4f5fe42` from `c51f65468765b6aee1d7dd20f5b64a6cbfdb13b3` succeeded. Owner played it on their phone and reported everything worked, better than GitHub hosting. Agent browser artwork loading timed out on its connection; three downloaded live images matched approved bytes exactly. The live show-site homepage remained HTTP 200 and byte-identical before/after setup. Do not claim comprehensive live HTTP verification or 100K-player capacity.
+- Future Git-triggered deployment verification remains pending: GitHub reported webhook delivery delays during setup. No paid plan, DNS change, shared score backend or load test was performed. Keep source in this GitHub repository and use the Cloudflare draft link for player traffic.
 
 ## October 20 full game audit
 
