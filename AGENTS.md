@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 approved arcade and venue release
+
+- Owner approved publishing the accumulated mobile preview to GitHub TEST after a complete audit and auditing the published result again. This supersedes earlier hold-only notes for these selected game/layout changes. Keep Cloudflare automatic builds paused and production untouched.
+- Use the approved 10% closer camera, night exterior, wider stage without a physical merchandise booth, uniformly small artist rings, spaced performers, and released FACE LIFT room preview. The four retained tees and Merch Drop remain accessible from the menu.
+- VIP people are walk-only: no artist game launches or lounge cards on incidental taps. Keep seated Marty, Green Room Sessions beside his couch, smaller listening/VIP circles, photo marker by the banner and Show marker by the door. No refreshment activity or snacks label.
+- All ten games have the approved lightweight visual upgrade, loaded on request. Gavin varies passes across lanes without adjacent repeats; Brenno SEND IT has twenty timed dives and three lives; Ryan dodges red speakers. Preserve explicit Start Game, bounded scoring, single awards, replay, interruptions, saves and the unchanged silent stage film.
+- Publish only the real entry flow with the established Apollo save key. Local preview auto-admission, forced profiles, unlocked VIP, query overrides and parent-window review controls must never ship. Keep the exact manifest and normal GitHub test website-snapshot reuse gates.
+
 ## October 21 game publishing reuses the verified website
 
 - Game-only pushes use the last successfully published website snapshot, rebuild only `/play/`, rerun the full baseline gate, and verify that all non-game website bytes remain unchanged. Do not manually dispatch a full mirror for routine game edits.

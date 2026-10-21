@@ -1,14 +1,15 @@
-import {stageTracks} from './music-config.mjs?v=apollo-24';
-import {createStagePlayback} from './stage-audio.mjs?v=apollo-24';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-24';
+import {stageTracks} from './music-config.mjs?v=apollo-25';
+import {createStagePlayback} from './stage-audio.mjs?v=apollo-25';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-25';
 export const stageSpots=[
- {id:'brenno',x:410,y:475,label:'Brenno · BRING YOUR PEOPLE',tag:'BRENNO · BRING YOUR PEOPLE'},
- {id:'marty',x:515,y:475,label:'Marty · NOT 4 SALE',tag:'MARTY · NOT 4 SALE'}
+ {id:'brenno',x:360,y:449,label:'Brenno',tag:'BRENNO · PLAY',hideLabel:true},
+ {id:'marty',x:465,y:449,label:'Marty',tag:'MARTY · PLAY',hideLabel:true},
+ ...apolloCrew.filter(p=>['gavin-the-hotrod','tonyxtrotter','ryan-ellis','lj-the-messenger','dearis'].includes(p.id)).map(p=>({id:p.id,x:p.stageX,y:449,label:p.name,tag:p.name,hideLabel:true}))
 ];
 export function stageArtistAt({x,y}){
  return stageSpots.find(spot=>{const person=apolloCrew.find(p=>p.id===spot.id);return Math.abs(x-person.stageX)<30&&y>person.stageY-145&&y<person.stageY;})?.id||null;
 }
-export const stageSpotAt=s=>s.room==='show'&&s.y>=462&&s.y<508?stageSpots.find(p=>Math.abs(s.x-p.x)<54)?.id||null:null;
+export const stageSpotAt=s=>s.room==='show'&&s.y>=462&&s.y<508?stageSpots.filter(p=>Math.abs(s.x-p.x)<34).sort((a,b)=>Math.abs(s.x-a.x)-Math.abs(s.x-b.x))[0]?.id||null:null;
 export const inFrontRow=s=>!!stageSpotAt(s);
 // Both listening spots are free movement zones, never a minigame or a movement lock.
 export function createWorshipMusic(host){

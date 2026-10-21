@@ -9,9 +9,9 @@ test('Andrew on the booth rug and VIP below its right edge are distinct reachabl
  for(const h of [andrewSpot,vipSpot])assert.deepEqual(findPath('show',{x:500,y:570},h).at(-1),{x:h.x,y:h.y});
  const state={...initialState(),entered:true,room:'vip',vipUnlocked:true};const back=act(state,'show');assert.deepEqual({x:back.x,y:back.y},vipReturn);
 });
-test('Merch marker remains within interaction reach of the safe floor and the removed mic is absent',()=>{
+test('Retired merch and mic stops stay out of the floor guide; VIP marker remains compact',()=>{
  const destination=findPath('show',{x:500,y:570},merchSpot).at(-1);
- assert.equal(destination.y,444);assert.ok(Math.hypot(destination.x-merchSpot.x,destination.y-merchSpot.y)<83);
+ assert.equal(destination.y,625);assert.ok(!roomStops.show.includes('merch'));assert.equal(vipSpot.radius,18);assert.ok(Math.hypot(destination.x-merchSpot.x,destination.y-merchSpot.y)<83);
  assert.ok(!roomStops.show.includes('cypher'));assert.equal(stopNames.cypher,undefined);
 });
 test('Outside has eight standing queue members, two seated campers and talking groups',()=>{

@@ -1,11 +1,11 @@
 // Both operators work the front pit, keeping feet and shadows above the game circles.
 export const pitPhotographers=[
- {x:263,y:444,who:'pit:0',scale:2.2,photographer:0,video:true,flip:false},
- {x:800,y:444,who:'pit:1',scale:2.2,photographer:1,video:true,flip:false}
+ {x:263,y:414,who:'pit:0',scale:2.2,photographer:0,video:true,flip:false},
+ {x:800,y:414,who:'pit:1',scale:2.2,photographer:1,video:true,flip:false}
 ];
 const cameraRoutes=[
- [[263,444],[320,438],[235,442]],
- [[800,444],[748,438],[820,442]]
+ [[263,414],[320,408],[235,412]],
+ [[800,414],[748,408],[820,412]]
 ];
 const cycle=60000;
 const smooth=t=>t*t*(3-2*t);

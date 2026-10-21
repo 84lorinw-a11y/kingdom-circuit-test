@@ -21,7 +21,7 @@ test('Concurrent room requests share downloads and decoded background aliases',a
  const record=async key=>{counts.set(key,(counts.get(key)||0)+1);await Promise.resolve();return {key};};
  const assets=createStagedAssets({images,loadImage:record,loadPeople:async({names})=>Promise.all(names.map(record))});
  await Promise.all([assets.load('show'),assets.load('vip'),assets.load('artists')]);
- assert.ok([...counts.values()].every(count=>count===1));assert.equal(images.show,images.apolloBg);assert.equal(images.show,images.martyBg);
+ assert.ok([...counts.values()].every(count=>count===1));assert.ok(images.show);assert.ok(![...counts.keys()].some(k=>/outdoor-merch|show-entry|outside-entry/.test(k)),'retired scene aliases do not download');
  assert.equal(assets.ready('show'),true);assert.equal(assets.ready('vip'),true);assert.equal(assets.ready('outside'),false);
 });
 
@@ -52,6 +52,7 @@ test('Each room alone loads every visible person, follower, camera and photo pos
    }
    if(['show','vip'].includes(room))for(const person of apolloCrew)cases.push([person.id,{}]);
    if(room==='show')for(const who of ['pit:0','pit:1'])for(let cameraPose=0;cameraPose<3;cameraPose++)cases.push([who,{cameraPose}]);
+   if(room==='vip')cases.push(['marty-seated',{}]);
    if(room==='vip')for(const who of [...avatars.map(a=>a.sprite),'jay','grace',...apolloCrew.map(a=>a.id)])cases.push([who,{peace:true}]);
    for(const [who,pose]of cases){const before=draws;drawPerson(g,100,300,who,pose);assert.equal(draws-before,1,`${room}: ${who} invisible in ${JSON.stringify(pose)}`);}
    for(const key of venueAssetGroups[room].images)assert.ok(existsSync(new URL('../../test-overrides/chh-show-night/assets/'+venueImageFiles[key],import.meta.url)),key);

@@ -1,5 +1,5 @@
-import {score,journeyScore,act} from './state.mjs?v=apollo-24';
-import {gameIds} from './scoring.mjs?v=apollo-24';
+import {score,journeyScore,act} from './state.mjs?v=apollo-25';
+import {gameIds} from './scoring.mjs?v=apollo-25';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
 export async function confirmSessionSave(state,online,{localSaved=true}={}){

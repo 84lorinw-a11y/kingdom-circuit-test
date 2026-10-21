@@ -1,14 +1,31 @@
-import {merchItems} from './merch-items.mjs?v=apollo-24';
+import {merchItems} from './merch-items.mjs?v=apollo-25';
 // The same twenty opportunities and 40 + 10 rule apply to every game.
 export const ROUND_MAX=1000, OPPORTUNITIES=20;
 export const gameIds=['eli','marty','brenno','ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim','apollo'];
 export const gameNames={eli:'Eli',marty:'Marty',brenno:'Brenno','ryan-ellis':'Ryan Ellis','gavin-the-hotrod':'Gavin','lj-the-messenger':'LJ',dearis:'De’aris',tonyxtrotter:'tonyxtrotter','andrew-prim':'Andrew Prim',apollo:'Apollo merch'};
-export const roundSeconds={eli:26,marty:40,brenno:45,apollo:25,'ryan-ellis':40,'gavin-the-hotrod':40,'lj-the-messenger':45,dearis:45,tonyxtrotter:45,'andrew-prim':40};
+export const roundSeconds={eli:26,marty:40,brenno:40,apollo:25,'ryan-ellis':40,'gavin-the-hotrod':40,'lj-the-messenger':45,dearis:45,tonyxtrotter:45,'andrew-prim':40};
 export function roundSchedule(id,seed=1){
  let n=seed>>>0;const random=()=>{n=(Math.imul(1664525,n)+1013904223)>>>0;return n/4294967296;};
  const first=id==='eli'?2.58:id==='apollo'?2.3:3.3,step=id==='eli'?120/104:(roundSeconds[id]-first-1.4)/19;
+ const laneUses=[0,0,0];let lastLane=-1;
  return Array.from({length:20},(_,i)=>{
-  const lane=Math.floor(random()*4),position=random();
+  const roll=random(),position=random();let lane=Math.floor(roll*4);
+  if(id==='gavin-the-hotrod'){
+   // Change lanes every pass and spread pickups evenly across all three lanes.
+   // Choosing among the least-used alternatives avoids a predictable rotation.
+   const available=[0,1,2].filter(value=>value!==lastLane),fewest=Math.min(...available.map(value=>laneUses[value]));
+   const choices=available.filter(value=>laneUses[value]===fewest);
+   lane=choices[Math.floor(roll*choices.length)];laneUses[lane]++;lastLane=lane;
+  }
+  if(id==='brenno'){
+   // Teach a center catch first, then make gentle, varied moves through the
+   // crowd. Consecutive targets are at most one easy swipe apart.
+   if(i===0)lane=1;
+   else if(lastLane===1)lane=roll<.5?0:2;
+   else lane=1;
+   lastLane=lane;
+   return {id:i,at:first+i*step,lane,x:112+lane*98,kind:0};
+  }
   return {id:i,at:first+i*step,lane,x:id==='apollo'?(i%2?265:65)+position*90:65+position*290,kind:i%(id==='apollo'?merchItems.length:3)};
  });
 }

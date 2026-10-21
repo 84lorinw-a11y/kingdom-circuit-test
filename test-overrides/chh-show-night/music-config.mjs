@@ -62,6 +62,6 @@ const previews={
 export const stageTracks={marty:previews['cult-classic'],brenno:previews['ned-flanders']};
 export const merchTrack=previews['wow'];
 // Quiet, full-speed released preview for the main room. No unreleased audio.
-export const venueTrack={...previews['today'],volume:.24};
+export const venueTrack={title:'FACE LIFT',artist:'MARTY & Eluzai',src:'/play/assets/music/marty-face-lift-preview.m4a',listenUrl:'https://music.apple.com/us/album/face-lift/6785959438?i=6785959446&uo=4',loop:true,preview:true,volume:.24};
 export const crewTracks={'ryan-ellis':previews['today'],'gavin-the-hotrod':previews['wow'],'lj-the-messenger':previews['cult-classic'],dearis:previews['father-love'],tonyxtrotter:previews['everything-is-fine'],'andrew-prim':previews['cult-classic']};
 export const gameTracks={eli:djTrack,...stageTracks,...crewTracks,apollo:merchTrack};

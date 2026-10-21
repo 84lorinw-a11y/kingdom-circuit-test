@@ -1,12 +1,12 @@
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-24';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-25';
 
-export const venueImageFiles={venueLogo:'venue-logo-v15.webp',apolloPoster:'apollo-official-not4sale.webp',eliBanner:'eli-apollo-blue-v1.webp',bannerCloth:'stage-banner-cloth-v1.webp',hazer:'stage-hazer-v1.webp',eliNot4Sale:'eli-not4sale-white-v1.webp',eliCollage:'eli-collage-v1.webp',booth:'dj-booth-v13.webp',merch:'merch-apollo-v2.webp',merchEli:'merch-eli-v1.webp',andrewBooth:'andrew-booth-v2.webp',roadies:'roadies-v1.webp',kcLogo:'kingdom-circuit-instagram.webp',martyBg:'show-entry-v1.webp',brennoBg:'outside-entry-v1.webp',apolloBg:'show-entry-v1.webp',outside:'outside-entry-v1.webp',show:'show-entry-v1.webp',vip:'vip-entry-v1.webp'};
+export const venueImageFiles={venueLogo:'venue-logo-v15.webp',apolloPoster:'apollo-official-not4sale.webp',eliBanner:'eli-apollo-blue-v1.webp',bannerCloth:'stage-banner-cloth-v1.webp',hazer:'stage-hazer-v1.webp',eliNot4Sale:'eli-not4sale-white-v1.webp',eliCollage:'eli-collage-v1.webp',booth:'dj-booth-v13.webp',merch:'merch-apollo-v2.webp',merchEli:'merch-eli-v1.webp',andrewBooth:'andrew-booth-v2.webp',roadies:'roadies-v1.webp',kcLogo:'kingdom-circuit-instagram.webp',outside:'outside-night-draft-v1.webp',show:'show-wide-draft-v1.webp',vip:'vip-entry-v1.webp'};
 const players=['playersA','playersB'],friends=['jay','heroes'],fans=['actualFans','clubFans'],artists=apolloCrew.map(p=>p.id);
 export const venueAssetGroups={
  players:{people:players,images:[]},
  outside:{people:[...players,...friends,...fans,'social','campers'],images:['outside','venueLogo','apolloPoster','eliNot4Sale','eliCollage','roadies']},
- show:{people:[...players,...friends,...fans,...artists,'fansFront','fansBack','cameraOne','cameraTwo'],images:['show','venueLogo','apolloPoster','eliBanner','bannerCloth','hazer','booth','andrewBooth','merch','merchEli','apolloBg','martyBg','brennoBg','outside']},
- vip:{people:[...players,...friends,...fans,...artists,'fansFront','peace'],images:['vip','venueLogo','apolloPoster']},
+ show:{people:[...players,...friends,...fans,...artists,'fansFront','fansBack','cameraOne','cameraTwo'],images:['show','venueLogo','apolloPoster','eliBanner','bannerCloth','hazer','booth','andrewBooth','merch','merchEli','outside']},
+ vip:{people:[...players,...friends,...fans,...artists,'fansFront','social','marty-seated','peace'],images:['vip','venueLogo','apolloPoster']},
  artists:{people:artists,images:[]},
  merch:{people:[],images:['merch','merchEli']},
  scores:{people:[],images:['kcLogo']},

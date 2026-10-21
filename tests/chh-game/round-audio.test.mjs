@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createRoundAudio} from '../../test-overrides/chh-show-night/round-audio.mjs';
-import {merchTrack} from '../../test-overrides/chh-show-night/music-config.mjs';
+import {merchTrack,venueTrack} from '../../test-overrides/chh-show-night/music-config.mjs';
 import {roundSeconds} from '../../test-overrides/chh-show-night/scoring.mjs';
 const setup=()=>{let contexts=0,plays=0,stops=0;const context={state:'suspended',currentTime:0,destination:{},sampleRate:48000,resume(){this.state='running';return Promise.resolve();},decodeAudioData:async()=>({duration:30}),createBufferSource:()=>({connect(){},disconnect(){},start(){plays++;},stop(){stops++;}}),createGain:()=>({gain:{value:0},connect(){},disconnect(){}}),createDynamicsCompressor:()=>({threshold:{},knee:{},ratio:{},attack:{},release:{},connect(){},disconnect(){}}),createAnalyser:()=>({connect(){},disconnect(){}})};globalThis.window={AudioContext:class{constructor(){contexts++;return context;}}};globalThis.fetch=async()=>({ok:true,arrayBuffer:async()=>new ArrayBuffer(8)});return {context,get contexts(){return contexts;},get plays(){return plays;},get stops(){return stops;}};};
 test('Song replay reuses an unlocked context, resets time and stops the previous clip',async()=>{const env=setup(),a=createRoundAudio();await a.unlock();await a.play('eli');env.context.currentTime=7;assert.equal(a.time,7);await a.play('eli');assert.equal(a.time,0);assert.equal(env.contexts,1);assert.equal(env.plays,2);assert.equal(env.stops,1);a.stop();assert.equal(a.time,0);assert.equal(env.stops,2);});
@@ -68,6 +68,17 @@ test('Room music waits for a gesture, loops quietly and resumes at its saved pos
  env.context.currentTime=9;a.setAmbience(false);assert.equal(a.ambiencePlaying,false);assert.equal(env.stops,1);
  a.setAmbience(true);await new Promise(r=>setImmediate(r));assert.equal(starts[1].args[1],9);assert.equal(a.time,0);
  for(let i=0;i<60;i++)a.setAmbience(true);assert.equal(env.plays,2);a.setAmbience(false);
+});
+test('The concert loads FACE LIFT on demand once and keeps minigame tracks separate',async()=>{
+ const env=setup(),requests=[],sources=[];
+ env.context.createBufferSource=()=>{const s={connect(){},disconnect(){},start(){sources.push(this);},stop(){}};return s;};
+ const a=createRoundAudio({fetchAudio:async src=>{requests.push(src);return {ok:true,arrayBuffer:async()=>src};}});
+ env.context.decodeAudioData=async src=>({src,duration:30});
+ await a.unlock();assert.deepEqual(requests,[]);a.setAmbience(true);await new Promise(r=>setImmediate(r));
+ assert.equal(venueTrack.title,'FACE LIFT');assert.equal(venueTrack.preview,true);assert.equal(venueTrack.generated,undefined);
+ assert.equal(sources[0].buffer.src,'/play/assets/music/marty-face-lift-preview.m4a');assert.equal(sources[0].loop,true);
+ a.setAmbience(false);a.setAmbience(true);await new Promise(r=>setImmediate(r));assert.equal(requests.length,1);
+ await a.play('gavin-the-hotrod');assert.match(sources.at(-1).buffer.src,/marty-wow-preview/);assert.equal(a.ambiencePlaying,false);a.stop();
 });
 test('Artist rounds stop room music, then the room can resume without a second context',async()=>{
  const env=setup(),a=createRoundAudio();await a.unlock();a.setAmbience(true);await new Promise(r=>setImmediate(r));assert.equal(a.ambiencePlaying,true);

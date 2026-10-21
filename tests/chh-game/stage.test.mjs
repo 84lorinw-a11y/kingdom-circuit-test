@@ -5,8 +5,8 @@ import {practiceSpot} from '../../test-overrides/chh-show-night/practice-booth.m
 import {crowdActors,crowdCounts,sharedCast,brennoFan,collectedFans} from '../../test-overrides/chh-show-night/crowds.mjs';
 
 test('Each artist triggers only in front of their own stage position; Eli remains separate',()=>{
- assert.equal(stageSpotAt({room:'show',x:420,y:475}),'brenno');
- assert.equal(stageSpotAt({room:'show',x:550,y:475}),'marty');
+ assert.equal(stageSpotAt({room:'show',x:360,y:475}),'brenno');
+ assert.equal(stageSpotAt({room:'show',x:465,y:475}),'marty');
  assert.equal(stageSpotAt({room:'show',...practiceSpot}),null);
  assert.equal(stageSpotAt({room:'show',x:367,y:540}),null);
  assert.equal(stageSpotAt({room:'vip',x:367,y:475}),null);

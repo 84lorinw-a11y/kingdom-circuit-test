@@ -17,14 +17,14 @@ test('The nine-person crew has one producer, a centered DJ and seven front perfo
  assert.ok(drawn.slice(0,-1).every(p=>p.y<drawn.at(-1).y));
  assert.ok(drawn.every(p=>p.id!=='eli-williams'&&p.y>boothLayout.y+8));
  for(const spot of stageSpots)assert.equal(spot.x,apolloCrew.find(p=>p.id===spot.id).stageX);
- assert.ok(Math.abs(boothLayout.x-apolloCrew.find(p=>p.id==='marty').stageX)<=65,'Eli stays centered immediately behind Marty');
- assert.ok(Math.abs(practiceSpot.x-boothLayout.x)>100,'Eli’s entrance must not trigger Marty’s round');
+ assert.ok(Math.abs(boothLayout.x-apolloCrew.find(p=>p.id==='marty').stageX)<=75,'Eli stays centered behind the separated lead artists');
+ assert.ok(practiceSpot.x===boothLayout.x,'Eli’s entrance sits directly in front of his booth');
  assert.deepEqual([...drawn.map(p=>p.id),producerActor.who,'eli-williams'].sort(),apolloCrew.map(p=>p.id).sort());
  assert.ok(producerActor.x>850&&producerActor.y>=444,'Andrew stands beside the stage on the audience floor');
  assert.ok(isBoothTap({x:boothLayout.x,y:boothLayout.y-115}));
- assert.ok(!isBoothTap({x:515,y:250}),'Marty’s body must not trigger the DJ game');
- assert.equal(stageArtistAt({x:515,y:250}),'marty');
- assert.equal(stageArtistAt({x:570,y:211}),null);
+ assert.ok(!isBoothTap({x:465,y:250}),'Marty’s body must not trigger the DJ game');
+ assert.equal(stageArtistAt({x:465,y:250}),'marty');
+ assert.equal(stageArtistAt({x:585,y:211}),null);
  assert.ok(!isBoothTap({x:850,y:230}),'The old side booth is no longer a DJ target');
  assert.ok(boothLayout.width<222&&boothLayout.y<363);
 });
@@ -70,4 +70,4 @@ test('Apollo cannot read or overwrite the original competition or call it during
  assert.throws(()=>createOnlineScores(storage,{base:'https://script.google.com/macros/s/original/exec'}),/cannot use the original competition/);
 });
 
-test('VIP mingles until picture time and all nine are retained',()=>{const party=vipArtists(1000,true),line=vipArtists(1000,true,true);assert.equal(party.length,9);assert.ok(new Set(party.map(p=>p.y)).size>5);assert.deepEqual(party.map(p=>p.who).sort(),line.map(p=>p.who).sort());assert.equal(new Set(line.map(p=>p.y)).size,1);assert.deepEqual(vipArtists(999999,true),party);});
+test('VIP mingles until picture time and all nine are retained',()=>{const party=vipArtists(1000,true),line=vipArtists(1000,true,true);assert.equal(party.length,9);assert.ok(new Set(party.map(p=>p.y)).size>5);assert.deepEqual(party.map(p=>p.who==='marty-seated'?'marty':p.who).sort(),line.map(p=>p.who).sort());assert.equal(new Set(line.map(p=>p.y)).size,1);assert.deepEqual(vipArtists(999999,true),party);});

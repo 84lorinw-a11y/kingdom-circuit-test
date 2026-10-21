@@ -1,7 +1,7 @@
-import {drawPerson} from './sprites.mjs?v=apollo-24';
-import {apolloCrew,boothLayout} from './apollo-crew.mjs?v=apollo-24';
+import {drawPerson} from './sprites.mjs?v=apollo-25';
+import {apolloCrew,boothLayout} from './apollo-crew.mjs?v=apollo-25';
 // Keep Eli's floor entrance clear of Marty's while the booth sits behind the lead.
-export const practiceSpot={x:700,y:475};
+export const practiceSpot={x:boothLayout.x,y:449};
 export function isBoothTap({x,y}){
  const lead=apolloCrew.find(person=>person.id==='marty');
  if(Math.abs(x-lead.stageX)<30&&y>lead.stageY-145&&y<lead.stageY)return false;

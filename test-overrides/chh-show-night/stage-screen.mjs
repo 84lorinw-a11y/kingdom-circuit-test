@@ -1,8 +1,8 @@
 // The screen rests just above the rear stage floor; performers draw in front.
-export const stageScreen={x:323,y:110,width:454,height:200};
-export function screenPlacement({width,height,camera=0,viewWidth=1024}){
- const sx=width/viewWidth,sy=height/683;
- return {left:(stageScreen.x-camera)*sx,top:stageScreen.y*sy,width:stageScreen.width*sx,height:stageScreen.height*sy};
+export const stageScreen={x:283,y:110,width:454,height:200};
+export function screenPlacement({width,height,camera=0,viewWidth=1024,cameraY=0,viewHeight=683}){
+ const sx=width/viewWidth,sy=height/viewHeight;
+ return {left:(stageScreen.x-camera)*sx,top:(stageScreen.y-cameraY)*sy,width:stageScreen.width*sx,height:stageScreen.height*sy};
 }
 export function drawStageScreen(ctx,frame=null){
  const {x,y,width,height}=stageScreen;

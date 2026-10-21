@@ -89,7 +89,7 @@ test('A play promise resolving after leaving the stage cannot restart playback',
 test('Phone camera preserves picture scale and suspends playback beyond the wall',async t=>{
  const h=harness(t);await h.enter();
  h.controller.update({...active,width:375,viewWidth:375,camera:300});
- assert.equal(h.root.style.left,'23px');assert.equal(h.root.style.width,'454px');assert.equal(h.video.paused,false);
+ assert.equal(h.root.style.left,'-17px');assert.equal(h.root.style.width,'454px');assert.equal(h.video.paused,false);
  h.controller.update({...active,width:375,viewWidth:375,camera:0});assert.equal(h.video.paused,true);
  h.controller.update({...active,width:375,viewWidth:375,camera:900});assert.equal(h.root.hidden,true);
 });

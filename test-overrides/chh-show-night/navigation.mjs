@@ -3,7 +3,7 @@
 export const roomBounds={left:32,right:992,top:170,bottom:644};
 const floorTop=room=>room==='show'?444:room==='outside'?435:roomBounds.top;
 export function clampPosition({x,y},room){
- return {x:Math.max(roomBounds.left,Math.min(roomBounds.right,Number.isFinite(x)?x:512)),y:Math.max(floorTop(room),Math.min(roomBounds.bottom,Number.isFinite(y)?y:570))};
+ const p={x:Math.max(roomBounds.left,Math.min(roomBounds.right,Number.isFinite(x)?x:512)),y:Math.max(floorTop(room),Math.min(roomBounds.bottom,Number.isFinite(y)?y:570))};return p;
 }
 export function walkable(room,x,y){
  return Number.isFinite(x)&&Number.isFinite(y)&&x>=roomBounds.left&&x<=roomBounds.right&&y>=floorTop(room)&&y<=roomBounds.bottom;

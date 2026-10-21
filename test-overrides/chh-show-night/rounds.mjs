@@ -1,16 +1,18 @@
-import {mountRoundResultTools} from './round-records.mjs?v=apollo-24';
-import {crewGames,currentPrompt,wordOptions,judgeChoice,judgePosition,drawCrewGame,laneCenter,phrases} from './crew-games.mjs?v=apollo-24';
-import {judgeOffer,offerLane,offerX,drawOfferBoard} from './marty-offers.mjs?v=apollo-24';
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-24';
-import {drawMerchItem} from './merch-items.mjs?v=apollo-24';
-import {gameTracks,merchTrack} from './music-config.mjs?v=apollo-24';
-import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-24';
-import {drawPerson} from './sprites.mjs?v=apollo-24';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-24';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-24';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-24';
-import {musicRetryMessage} from './audio-errors.mjs?v=apollo-24';
-const titles={eli:'B–I–B–L–E',marty:'NOT 4 SALE',brenno:'CREW RUN',apollo:'NOT 4 SALE',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.title]))};
+import {loadArcadeArt} from './arcade-art.mjs?v=apollo-25';
+import {drawMerchScene} from './arcade-scenes.mjs?v=apollo-25';
+import {mountRoundResultTools} from './round-records.mjs?v=apollo-25';
+import {crewGames,currentPrompt,wordOptions,judgeChoice,judgePosition,drawCrewGame,laneCenter,phrases} from './crew-games.mjs?v=apollo-25';
+import {judgeOffer,offerLane,offerX,drawOfferBoard} from './marty-offers.mjs?v=apollo-25';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-25';
+import {drawMerchItem} from './merch-items.mjs?v=apollo-25';
+import {gameTracks,merchTrack} from './music-config.mjs?v=apollo-25';
+import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-25';
+import {drawPerson} from './sprites.mjs?v=apollo-25';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-25';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-25';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-25';
+import {musicRetryMessage} from './audio-errors.mjs?v=apollo-25';
+const titles={eli:'B–I–B–L–E',marty:'NOT 4 SALE',brenno:'CREW RUN',apollo:'MERCH DROP',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.title]))};
 const instructions={eli:'Tap the matching pad when the letter hits the gold line.',marty:'Three proposals at the table. Reject the one trying to buy Apollo; keep the crew independent. Keys 1–3 work too.',brenno:'Drag Brenno. Bring people into the crew. Keep the crew together!',apollo:'Drag the tote left and right. Catch all four tees in the middle!',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.instruction]))};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
 // Download/decode while the score service prepares the verified round. No audio starts early.
@@ -56,11 +58,13 @@ export function mountRound(host,{game,audio,art,online,records,name,onFinish,onE
   else tap(index);
  }
  function tap(lane){if(phase!=='playing')return;const hit=judgeBeat(notes,lane,audio.time);if(hit)settle(hit.note,true,hit.perfect);else report('WAIT FOR THE GOLD LINE','#ffcf76',lane*105+52.5);}
+ function prepareArt(){return loadArcadeArt(game,art).catch(()=>{throw Object.assign(Error('The game artwork needs another moment. Tap Start Game to try again.'),{artwork:true});});}
+ prepareArt().catch(error=>{if(!disposed&&phase==='ready')message.textContent=error.message;});
  async function begin(){
   resultTools?.hide();const token=++run;phase='loading';host.dataset.phase=phase;start.disabled=true;start.textContent='Getting ready…';results.textContent='';back.hidden=true;
-  try{const ticket=await prepareRoundStart(audio,online,game);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
+  try{const [ticket]=await Promise.all([prepareRoundStart(audio,online,game),prepareArt()]);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
    roundId=ticket?.id||crypto.randomUUID();seed=crypto.getRandomValues(new Uint32Array(1))[0];notes=roundSchedule(game,seed);events=[];particles=[];combo=0;px=target=210;selectedLane=1;held.clear();elapsed=0;feedback='';feedbackUntil=0;bassGlow=0;laneFlashes=[0,0,0,0];callout.hidden=true;host.dataset.bassHits='0';detector.reset();points.textContent='0';streak.textContent=game==='eli'?'0':'0×';phase='playing';host.dataset.phase=phase;overlay.hidden=true;started=performance.now();last=lastAudioProgress=started;canvas.focus({preventScroll:true});
-  }catch(error){if(disposed||token!==run)return;retry(musicRetryMessage(error));}
+  }catch(error){if(disposed||token!==run)return;retry(error.artwork?error.message:musicRetryMessage(error));}
  }
  function retry(text){run++;audio.stop();pulse.clear();phase='ready';host.dataset.phase=phase;overlay.hidden=false;headline.textContent='READY WHEN YOU ARE.';message.textContent=text;start.disabled=false;start.textContent='Start Game';back.hidden=true;callout.hidden=true;held.clear();}
  start.onclick=begin;
@@ -103,14 +107,9 @@ export function mountRound(host,{game,audio,art,online,records,name,onFinish,onE
    const current=currentPrompt(notes,t,game);if(config.mode==='words'&&current){wordOptions(current.note).forEach((word,i)=>{pads.children[i].querySelector('.pad-letter').textContent=word;pads.children[i].setAttribute('aria-label',word);});}
    for(const pad of pads.children)pad.disabled=phase!=='playing'||(['choice','words','memory','route','find'].includes(config.mode)&&!current?.ready);
   }else{
-   if(art.logo)g.drawImage(art.logo,174,14,72,72);g.fillStyle='#f5ddaf';g.font='bold 10px monospace';g.textAlign='center';g.fillText('APOLLO RECORDS · NOT 4 SALE',210,130);
-   for(const n of notes){if(n.done)continue;const drop=merchDrop(n,t),y=drop.y;
-    if(y>=140&&y<=520){{g.save();g.translate(drop.x,y-40);g.rotate(reduced?0:drop.rotation);shirt(0,0,102,n.kind);g.restore();}}
-    // Judge even after a slow phone skips past the visible catch line.
-    if(phase==='playing'&&t>=n.at)settle(n,Math.abs(px-n.x)<(game==='apollo'?merchCatch.hit:52),Math.abs(px-n.x)<(game==='apollo'?merchCatch.clean:23));
-   }
-   if(game==='apollo'){g.fillStyle='#e2c197';g.strokeStyle='#c19b65';g.lineWidth=5;g.strokeRect(px-23,454,46,35);g.fillRect(px-42,475,84,65);g.fillStyle='#403323';g.font='bold 7px monospace';g.textAlign='center';g.fillText('@thekingdomcircuit',px,509);}
-   g.strokeStyle='#7ed9b1';g.lineWidth=2;g.beginPath();g.ellipse(px,550,41,6,0,0,7);g.stroke();
+   drawMerchScene(g,{art,time:t,px,notes,reduced,dropFor:merchDrop});
+   // Resolve at the real catch line even when a slow frame skips the animation.
+   if(phase==='playing')for(const n of notes)if(!n.done&&t>=n.at)settle(n,Math.abs(px-n.x)<merchCatch.hit,Math.abs(px-n.x)<merchCatch.clean);
   }
   if(!isMarty&&!config&&game!=='eli'&&t<feedbackUntil){g.textAlign='center';g.fillStyle='#ffcf76';g.font='bold 20px monospace';g.fillText(feedback,210,game==='eli'?500:230);}
   if(isMarty||config){

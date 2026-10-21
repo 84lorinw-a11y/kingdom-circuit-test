@@ -54,7 +54,10 @@ def verify(site: Path) -> dict:
     assert "frame-src 'none';" in page
     assert 'youtube' not in page.lower()
     assert (site / 'play/assets/video/apollo-stage-draft-v2.mp4').is_file()
-    assert "createOnlineScores(localStorage,{base:''})" in (site / 'play/game.mjs').read_text()
+    runtime = (site / 'play/game.mjs').read_text()
+    assert "createOnlineScores(localStorage,{base:''})" in runtime
+    assert "kc-apollo-night-v1" in runtime and "openPlayerSetup({entry:true})" in runtime
+    assert not any(marker in runtime for marker in ('kc-apollo-zoom-preview', 'previewParams', 'preview-ready', 'preview-game', 'preview-position')), 'Local review bypass in release'
     crew = (site / 'play/apollo-crew.mjs').read_text()
     for artist in ('marty', 'brenno', 'ryan-ellis', 'gavin-the-hotrod', 'lj-the-messenger', 'dearis', 'tonyxtrotter', 'eli-williams', 'andrew-prim'):
         assert f"id:'{artist}'" in crew

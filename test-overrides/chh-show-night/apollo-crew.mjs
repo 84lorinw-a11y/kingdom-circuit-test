@@ -1,13 +1,13 @@
 // Owner-approved artwork, preserved without regenerating faces or outfits.
 export const apolloCrew=[
- {id:'marty',name:'Marty',file:'apollo-marty-v1',stageX:515,stageY:382,vipX:508,vipY:390},
- {id:'brenno',name:'Brenno',file:'apollo-brenno-v1',stageX:410,stageY:367,vipX:456,vipY:390},
- {id:'ryan-ellis',name:'Ryan Ellis',file:'apollo-ryan-ellis-v1',stageX:630,stageY:367,vipX:612,vipY:390},
- {id:'gavin-the-hotrod',name:'Gavin the HotRod',file:'apollo-gavin-the-hotrod-v1',stageX:230,stageY:367,vipX:352,vipY:390},
- {id:'lj-the-messenger',name:'LJ the Messenger',file:'apollo-lj-the-messenger-v1',stageX:725,stageY:367,vipX:664,vipY:390},
- {id:'dearis',name:'De’aris',file:'apollo-dearis-v1',stageX:825,stageY:367,vipX:716,vipY:390},
- {id:'tonyxtrotter',name:'tonyxtrotter',file:'apollo-tonyxtrotter-v1',stageX:330,stageY:367,vipX:404,vipY:390},
- {id:'eli-williams',name:'Eli Williams',file:'apollo-eli-williams-v1',stageX:570,stageY:345,vipX:560,vipY:390},
+ {id:'marty',name:'Marty',file:'apollo-marty-v1',stageX:465,stageY:382,vipX:508,vipY:390},
+ {id:'brenno',name:'Brenno',file:'apollo-brenno-v1',stageX:360,stageY:367,vipX:456,vipY:390},
+ {id:'ryan-ellis',name:'Ryan Ellis',file:'apollo-ryan-ellis-v1',stageX:640,stageY:367,vipX:612,vipY:390},
+ {id:'gavin-the-hotrod',name:'Gavin the HotRod',file:'apollo-gavin-the-hotrod-v1',stageX:110,stageY:367,vipX:352,vipY:390},
+ {id:'lj-the-messenger',name:'LJ the Messenger',file:'apollo-lj-the-messenger-v1',stageX:735,stageY:367,vipX:664,vipY:390},
+ {id:'dearis',name:'De’aris',file:'apollo-dearis-v1',stageX:860,stageY:367,vipX:716,vipY:390},
+ {id:'tonyxtrotter',name:'tonyxtrotter',file:'apollo-tonyxtrotter-v1',stageX:245,stageY:367,vipX:404,vipY:390},
+ {id:'eli-williams',name:'Eli Williams',file:'apollo-eli-williams-v1',stageX:535,stageY:345,vipX:560,vipY:390},
  {id:'andrew-prim',name:'Andrew Prim',file:'apollo-andrew-prim-v1',stageX:925,stageY:473,vipX:300,vipY:390}
 ];
 export const frontCrew=apolloCrew.filter(person=>!['eli-williams','andrew-prim'].includes(person.id));
@@ -37,5 +37,5 @@ export function drawApolloMarquee(ctx){
 const mingleSpots=[[470,421],[365,375],[593,538],[365,550],[681,448],[735,593],[453,588],[601,338],[410,440]];
 export function vipArtists(time=0,reduced=false,photo=false){
  if(photo)return vipCrew.map(p=>({...p}));
- return apolloCrew.map((p,i)=>{const [x,y]=mingleSpots[i];return {who:p.id,x:x+(reduced?0:Math.sin(time/9000+i)*9),y:y+(reduced?0:Math.sin(time/11000+i)*5),scale:2.3,artist:true,lean:reduced?0:Math.sin(time/1800+i)*.012};});
+ return apolloCrew.map((p,i)=>{if(p.id==='marty')return {who:'marty-seated',x:159,y:406,scale:1.92,artist:true};const [x,y]=mingleSpots[i];return {who:p.id,x:x+(reduced?0:Math.sin(time/9000+i)*9),y:y+(reduced?0:Math.sin(time/11000+i)*5),scale:2.3,artist:true,lean:reduced?0:Math.sin(time/1800+i)*.012};});
 }

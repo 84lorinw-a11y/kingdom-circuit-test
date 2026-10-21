@@ -1,4 +1,4 @@
-import {drawPerson} from './sprites.mjs?v=apollo-24';
+import {panel,label,glow} from './arcade-drawing.mjs?v=apollo-25';
 
 export const laneColors=['#80e2be','#a9b8ff','#ffc876','#ff9eb5'];
 export function beatLayout(height=560){
@@ -17,35 +17,32 @@ export function streakLabel(combo){return combo>=20?'20 IN A ROW · ALL FOR THE 
 
 export function drawBeatBoard(g,{height,art,time,phase,notes,reduced,combo,bass=0,flashes=[]}){
  const l=beatLayout(height),{laneTop,hitY}=l;
- g.fillStyle='#07131f';g.fillRect(0,0,420,l.height);
- if(art.show){g.drawImage(art.show,300,0,930,850,0,0,420,l.height);g.fillStyle='#07131edb';g.fillRect(0,0,420,l.height);}
- // Keep the concert's artist and detailed decks in the minigame.
- g.save();g.beginPath();g.rect(0,0,420,laneTop+2);g.clip();
- const glow=g.createRadialGradient(210,laneTop*.5,8,210,laneTop*.5,230);glow.addColorStop(0,'#2b9f814d');glow.addColorStop(1,'#09203100');g.fillStyle=glow;g.fillRect(0,0,420,laneTop);
- const feet=laneTop-35;drawPerson(g,210,feet,'eli-williams',{scale:2.5,lean:reduced?0:Math.sin(time*2)*.018});
- if(art.booth)g.drawImage(art.booth,85,laneTop-125,250,125);
- g.restore();
- const track=g.createLinearGradient(0,laneTop,0,l.height);track.addColorStop(0,'#07131fee');track.addColorStop(1,'#102b3bf5');g.fillStyle=track;g.fillRect(0,laneTop,420,l.height-laneTop);
- for(let lane=0;lane<4;lane++){
-  const x=lane*105,color=laneColors[lane];
-  g.fillStyle=lane%2?'#ffffff05':'#ffffff0a';g.fillRect(x+3,laneTop,99,l.height-laneTop);
-  g.strokeStyle='#9bc4d824';g.lineWidth=1;g.beginPath();g.moveTo(x+1,laneTop);g.lineTo(x+1,l.height);g.stroke();
-  // Touch targets and falling notes share the same four lane centers.
-  g.fillStyle='#07131f';g.fillRect(x+13,hitY-22,79,44);g.strokeStyle=color;g.lineWidth=2;g.strokeRect(x+13,hitY-22,79,44);
-  g.fillStyle=color;g.font='bold 14px monospace';g.textAlign='center';g.fillText(String(lane+1),x+52.5,hitY+5);
-  const life=Math.max(0,(flashes[lane]||0)-time);
-  if(life){g.fillStyle=color;g.globalAlpha=Math.min(.5,life*1.8);g.fillRect(x+3,laneTop,99,l.height-laneTop);g.globalAlpha=1;}
+ g.save();g.fillStyle='#08121a';g.fillRect(0,0,420,l.height);
+ if(art.arcade_eli){const im=art.arcade_eli,cut=im.height*.35;
+  g.drawImage(im,0,0,im.width,cut,0,0,420,laneTop);
+  g.drawImage(im,0,cut,im.width,im.height-cut,0,laneTop,420,l.height-laneTop);
  }
- if(!reduced){g.strokeStyle='#7ed9b11b';g.lineWidth=1;for(let n=0;n<5;n++){const y=laneTop+((time*55+n*80)%(hitY-laneTop));g.beginPath();g.moveTo(4,y);g.lineTo(416,y);g.stroke();}}
- g.fillStyle='#ffcb6c28';g.fillRect(0,hitY-13,420,26);g.shadowColor='#ffcb6c';g.shadowBlur=reduced?0:10+bass*10;g.fillStyle='#ffe3a0';g.fillRect(0,hitY-3,420,6);g.shadowBlur=0;
+ if(art.eliBanner){const w=85,h=w*art.eliBanner.height/art.eliBanner.width;g.save();g.translate(83,laneTop*.235);g.rotate(.11);g.drawImage(art.eliBanner,-w/2,-h/2,w,h);g.restore();}
+ const track=g.createLinearGradient(0,laneTop,0,l.height);track.addColorStop(0,'#05121a77');track.addColorStop(1,'#081822c4');g.fillStyle=track;g.fillRect(0,laneTop,420,l.height-laneTop);
+ for(let lane=0;lane<4;lane++){
+  const x=lane*105,color=laneColors[lane],life=Math.max(0,(flashes[lane]||0)-time);
+  panel(g,x+5,laneTop+8,95,l.height-laneTop-14,8,lane%2?'#08151e44':'#18303c44',color+'35');
+  g.strokeStyle=color+'77';g.lineWidth=1;g.beginPath();g.moveTo(x+11,laneTop+15);g.lineTo(x+11,l.height-12);g.stroke();
+  panel(g,x+14,hitY-22,77,44,7,'#102c38',color);
+  label(g,String(lane+1),x+52.5,hitY+6,16,color);
+  if(life){g.save();g.globalAlpha=Math.min(.4,life*1.5);g.fillStyle=color;g.fillRect(x+6,laneTop+8,93,l.height-laneTop-16);g.restore();glow(g,x+52.5,hitY,46,color+'88');}
+ }
+ if(!reduced)for(let i=0;i<7;i++){const y=laneTop+((time*45+i*64)%(hitY-laneTop));g.strokeStyle='#b8e3cc12';g.lineWidth=1;g.beginPath();g.moveTo(9,y);g.lineTo(411,y);g.stroke();}
+ g.shadowColor='#ffce72';g.shadowBlur=reduced?0:10+bass*8;g.fillStyle='#ffe2a2';g.fillRect(4,hitY-2,412,4);g.shadowBlur=0;
  for(const n of notes){
   if(n.done)continue;const y=beatY(l,n.at,time);if(y<laneTop-28||y>l.height+28)continue;
-  const ready=Math.abs(n.at-time)<.32,x=n.lane*105+52.5,color=ready?'#ffdb8e':laneColors[n.lane];
-  g.fillStyle='#020a14';g.fillRect(x-38,y-25,76,58);g.shadowColor=color;g.shadowBlur=reduced?0:ready?18:5;g.fillStyle=color;g.fillRect(x-38,y-28,76,52);g.shadowBlur=0;
-  g.fillStyle='#ffffff60';g.fillRect(x-34,y-24,68,3);g.fillStyle='#0b1b2b';g.font='900 34px monospace';g.textAlign='center';g.fillText('BIBLE'[n.id%5],x,y+11);
+  const ready=Math.abs(n.at-time)<.32,x=n.lane*105+52.5,color=ready?'#ffdc8e':laneColors[n.lane];
+  const cap=g.createLinearGradient(0,y-28,0,y+28);cap.addColorStop(0,'#edf7ea');cap.addColorStop(.08,color);cap.addColorStop(.88,color);cap.addColorStop(1,'#536d76');
+  g.save();g.shadowColor=ready?color:'#000';g.shadowBlur=reduced?0:ready?16:6;g.shadowOffsetY=4;panel(g,x-38,y-28,76,56,8,cap,'#edfff5b0');g.restore();
+  panel(g,x-31,y-21,62,40,5,'#00000009','#19344044');label(g,'BIBLE'[n.id%5],x,y+12,33,'#102734');
  }
- // Small, persistent cue stays outside the falling-note lanes.
- g.fillStyle='#091724ed';g.fillRect(0,laneTop-26,420,26);g.font='bold 11px monospace';g.textAlign='center';g.fillStyle=combo>=5?'#ffdb8e':'#b7d6d5';g.fillText(streakLabel(combo),210,laneTop-9);
- if(phase==='playing'&&time<1.35){g.fillStyle='#07131fdc';g.fillRect(70,hitY-125,280,64);g.fillStyle='#ffdb8e';g.font='bold 24px monospace';g.fillText('GET READY',210,hitY-96);g.font='12px monospace';g.fillStyle='#e9f5ec';g.fillText('TAP WHEN THE LETTER HITS THE LINE',210,hitY-76);}
- return l;
+ // Feedback strip stays above the note lanes; the DJ remains visible.
+ panel(g,89,laneTop-24,242,24,4,'#09222be8','#b0c2a855');label(g,streakLabel(combo),210,laneTop-8,10,combo>=5?'#ffe3a0':'#c5e4de');
+ if(phase==='playing'&&time<1.35){panel(g,61,hitY-124,298,61,8,'#09202eef','#d8c58b');label(g,'GET READY',210,hitY-97,22);label(g,'TAP WHEN THE LETTER HITS THE LINE',210,hitY-78,10);}
+ g.restore();return l;
 }

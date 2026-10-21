@@ -1,5 +1,5 @@
-export const roomStops={outside:['jay','grace','enter'],show:['merch','brenno','dj','marty','ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim','vip','outside'],vip:['photo','refresh','listen','show']};
-export const stopNames={jay:'Invite Jay',grace:'Invite Grace',enter:'Enter the show',merch:'Merch',brenno:'Brenno',dj:'Eli',marty:'Marty','ryan-ellis':'Ryan Ellis','gavin-the-hotrod':'Gavin the HotRod','lj-the-messenger':'LJ the Messenger',dearis:'De’aris',tonyxtrotter:'tonyxtrotter','andrew-prim':'Andrew Prim',vip:'VIP',outside:'Outside',photo:'VIP photo',refresh:'Snacks + drinks',listen:'Listening corner',show:'Main stage'};
+export const roomStops={outside:['jay','grace','enter'],show:['brenno','dj','marty','ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim','vip','outside'],vip:['photo','listen','show']};
+export const stopNames={jay:'Invite Jay',grace:'Invite Grace',enter:'Enter the show',merch:'Merch',brenno:'Brenno',dj:'Eli',marty:'Marty','ryan-ellis':'Ryan Ellis','gavin-the-hotrod':'Gavin the HotRod','lj-the-messenger':'LJ the Messenger',dearis:'De’aris',tonyxtrotter:'tonyxtrotter','andrew-prim':'Andrew Prim',vip:'VIP',outside:'Outside',photo:'VIP photo',refresh:'Snacks + drinks',listen:'Green Room Sessions',show:'Main stage'};
 export const visitIds=[...new Set(Object.values(roomStops).flat()),'ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim'];
 export function hasVisited(s,id){
  if(s.visited?.includes(id))return true;

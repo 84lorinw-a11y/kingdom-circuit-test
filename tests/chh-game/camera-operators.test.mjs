@@ -24,7 +24,7 @@ test('Camera paths are continuous, slow and clear of every listening ring',()=>{
  for(let time=0;time<=120000;time+=100){
   cameraActors(time).forEach((a,i)=>{
    positions[i].add(`${Math.round(a.x)},${Math.round(a.y)}`);
-   assert.ok(a.x>220&&a.x<830&&a.y>=438&&a.y<=444);
+   assert.ok(a.x>220&&a.x<830&&a.y>=408&&a.y<=414);
    for(const spot of [...stageSpots,practiceSpot])assert.ok(a.y+7<spot.y-18);
    const next=cameraActors(time+100)[i];
    assert.ok(Math.hypot(next.x-a.x,next.y-a.y)<3.3,'no teleport between filming positions');

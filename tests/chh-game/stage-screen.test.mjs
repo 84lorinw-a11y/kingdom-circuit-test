@@ -3,11 +3,11 @@ import {screenPlacement,stageScreen,drawStageScreen} from '../../test-overrides/
 import {drawApolloMarquee} from '../../test-overrides/chh-show-night/apollo-crew.mjs';
 test('Stage video follows the world camera just above the rear stage floor',()=>{
  assert.ok(stageScreen.y+stageScreen.height>=300&&stageScreen.y+stageScreen.height<=313);
- assert.deepEqual(screenPlacement({width:1024,height:683}),{left:323,top:110,width:454,height:200});
+ assert.deepEqual(screenPlacement({width:1024,height:683}),{left:283,top:110,width:454,height:200});
  const phone=screenPlacement({width:375,height:683,camera:300,viewWidth:375});
- assert.deepEqual(phone,{left:23,top:110,width:454,height:200});
+ assert.deepEqual(phone,{left:-17,top:110,width:454,height:200});
  const half=screenPlacement({width:512,height:341.5});
- assert.deepEqual(half,{left:161.5,top:55,width:227,height:100});
+ assert.deepEqual(half,{left:141.5,top:55,width:227,height:100});
 });
 test('Film and still poster fill the same screen without letterboxing or distorting the picture',()=>{
  const pictures=[],text=[];
@@ -16,7 +16,7 @@ test('Film and still poster fill the same screen without letterboxing or distort
   drawStageScreen(ctx,frame);
   const [,sx,sy,sw,sh,x,y,w,h]=pictures.at(-1);
   assert.equal(sw/sh,w/h);assert.ok(sx>=0&&sy>=0&&sx+sw<=960&&sy+sh<=540);
-  assert.deepEqual([x,y,w,h],[323,110,454,200]);
+  assert.deepEqual([x,y,w,h],[283,110,454,200]);
  }
  assert.equal(text.length,0,'The film has no text overlay; the supplied logo banner is drawn separately.');
 });
