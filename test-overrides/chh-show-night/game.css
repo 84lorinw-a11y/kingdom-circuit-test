@@ -159,3 +159,19 @@ html,body{height:100%;overflow:hidden}.shell{width:min(1280px,100%);height:100dv
 
 /* Notifications stay on the audience floor, away from the screen. */
 .toast{top:auto;bottom:112px}
+
+/* Results stay reachable on short phones and in landscape, including Eli. */
+.round-overlay{overflow-y:auto;overscroll-behavior:contain;justify-content:flex-start}
+.round-overlay>*{flex-shrink:0}
+.round-overlay>:first-child{margin-top:auto}
+.round-overlay>:last-child{margin-bottom:auto}
+.round[data-phase=result] .round-pads,.round[data-phase=result] .round-hint{display:none}
+.round-local-board li{display:flex;justify-content:space-between;gap:12px;overflow-wrap:anywhere}
+.round-local-board li b{float:none;flex-shrink:0}
+.listening-sound{min-height:44px;padding:12px;background:#203447;color:#ffcb6c;border:1px solid #526c7a}
+.loading-room{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;padding:28px;text-align:center;background:#0b1625}
+.loading-room strong{font-size:20px;color:#ffcb6c}
+.loading-room p{font:14px/1.5 system-ui,sans-serif;max-width:28ch;margin:0;color:#d0dfdf}
+.loading-room progress{width:min(260px,100%);height:7px;accent-color:#ffcb6c}
+.loading-room[hidden]{display:none}
+.round-local-board .score-card-save{color:#102033;font-weight:800}

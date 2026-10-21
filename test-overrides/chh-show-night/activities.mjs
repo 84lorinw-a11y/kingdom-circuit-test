@@ -1,6 +1,6 @@
-import {drawPerson} from './sprites.mjs?v=apollo-21';
-import {photoLineup} from './apollo-crew.mjs?v=apollo-21';
-import {drawRoomArtwork} from './venue-art.mjs?v=apollo-21';
+import {drawPerson} from './sprites.mjs?v=apollo-22';
+import {photoLineup} from './apollo-crew.mjs?v=apollo-22';
+import {drawRoomArtwork} from './venue-art.mjs?v=apollo-22';
 
 const make=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text)el.textContent=text;return el;};
 const button=(label,fn,cls='')=>{const b=make('button',cls,label);b.type='button';b.onclick=fn;return b;};

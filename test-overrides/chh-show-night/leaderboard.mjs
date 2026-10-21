@@ -1,5 +1,5 @@
-import {score,journeyScore,act} from './state.mjs?v=apollo-21';
-import {gameIds} from './scoring.mjs?v=apollo-21';
+import {score,journeyScore,act} from './state.mjs?v=apollo-22';
+import {gameIds} from './scoring.mjs?v=apollo-22';
 const nameKey=name=>'name:'+String(name||'').trim().toLocaleLowerCase();
 export function bestSession(previous,candidate){return !previous||candidate.total>previous.total?candidate:previous;}
 export async function confirmSessionSave(state,online,{localSaved=true}={}){
@@ -13,8 +13,14 @@ export async function confirmSessionSave(state,online,{localSaved=true}={}){
  }catch{return {status:localSaved?'waiting':'unsaved',total,localSaved};}
 }
 export function createScoreStore(storage=localStorage){
- const key='kc-apollo-night-scores-v2';let data;try{data=JSON.parse(storage.getItem(key))||{};}catch{data={};}
- data.playerId??=crypto.randomUUID();data.best??=null;data.players??={};
+ const key='kc-apollo-night-scores-v2';let saved;try{saved=JSON.parse(storage.getItem(key));}catch{}
+ const object=value=>value&&typeof value==='object'&&!Array.isArray(value);
+ const integer=value=>Number.isSafeInteger(value)&&value>=0?value:0;
+ const cleanRow=row=>object(row)&&typeof row.nickname==='string'&&row.nickname.trim()&&Number.isSafeInteger(row.total)&&row.total>=0?
+  {...row,nickname:row.nickname.trim().slice(0,24),journey:integer(row.journey),rounds:integer(row.rounds),...Object.fromEntries(gameIds.map(id=>[id,integer(row[id])]))}:null;
+ // A damaged historical board must not prevent the current night from opening.
+ const data={playerId:typeof saved?.playerId==='string'&&saved.playerId?saved.playerId:crypto.randomUUID(),best:cleanRow(saved?.best),players:{}};
+ if(object(saved?.players))for(const value of Object.values(saved.players)){const row=cleanRow(value);if(row)data.players[nameKey(row.nickname)]=bestSession(data.players[nameKey(row.nickname)],row);}
  if(data.best?.nickname)data.players[nameKey(data.best.nickname)]=bestSession(data.players[nameKey(data.best.nickname)],data.best);
  function save(){try{storage.setItem(key,JSON.stringify(data));}catch{}}
  return {get playerId(){return data.playerId;},get best(){return data.best;},

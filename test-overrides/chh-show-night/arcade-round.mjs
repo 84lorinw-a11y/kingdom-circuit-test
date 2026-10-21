@@ -1,8 +1,9 @@
-import {artistGames,createArtistRound} from './artist-arcade.mjs?v=apollo-21';
-import {roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-21';
-import {gameTracks} from './music-config.mjs?v=apollo-21';
-import {drawScoreCard} from './round-records.mjs?v=apollo-21';
-import {drawPerson} from './sprites.mjs?v=apollo-21';
+import {artistGames,createArtistRound} from './artist-arcade.mjs?v=apollo-22';
+import {roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-22';
+import {gameTracks} from './music-config.mjs?v=apollo-22';
+import {drawScoreCard} from './round-records.mjs?v=apollo-22';
+import {drawPerson} from './sprites.mjs?v=apollo-22';
+import {musicRetryMessage} from './audio-errors.mjs?v=apollo-22';
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
 const keyboard={marty:'Keys 1–3 stamp the three rows.',brenno:'Arrow keys steer.','ryan-ellis':'Up and down arrows ride the wave.','gavin-the-hotrod':'Left and right arrows change lanes.','lj-the-messenger':'Space sends an invitation.',dearis:'Arrows choose a card; Enter flips it.',tonyxtrotter:'Left and right arrows move.','andrew-prim':'Keys 1–3 sort the next asset.'};
 export function mountArtistArcade(host,{game,audio,art,records,name,onFinish,onExit,onSoundToggle}){
@@ -28,7 +29,7 @@ export function mountArtistArcade(host,{game,audio,art,records,name,onFinish,onE
   const token=++run;setPhase('loading');start.disabled=true;start.textContent='Getting ready…';summary.textContent='';extra.hidden=true;details.hidden=true;details.replaceChildren();releaseCard();
   try{await Promise.all([audio.unlock(),audio.preload(game)]);if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
    roundId=crypto.randomUUID();seed=crypto.getRandomValues(new Uint32Array(1))[0];notes=roundSchedule(game,seed);events=[];breakBefore=false;engine=createEngine();elapsed=0;lastResult=null;points.textContent='0';combo.textContent='0×';progress.value=0;time.textContent=`${config.seconds}s`;overlay.hidden=true;setPhase('playing');last=lastProgress=performance.now();canvas.focus({preventScroll:true});
-  }catch{if(!disposed&&token===run)retry('Tap Start Game to turn on the music.');}
+  }catch(error){if(!disposed&&token===run)retry(musicRetryMessage(error));}
  }
  function retry(reason){run++;audio.stop();setPhase('ready');overlay.hidden=false;headline.textContent='READY WHEN YOU ARE';message.textContent=reason;start.disabled=false;start.textContent='Start Game';extra.hidden=true;details.hidden=true;}
  start.onclick=begin;

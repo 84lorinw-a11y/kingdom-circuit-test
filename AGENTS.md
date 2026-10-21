@@ -1,5 +1,13 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 full game audit
+
+- TEST only. Every artist and merch round requires venue admission, then an explicit Start Game tap. Keep the artist chooser and physical discovery paths. Completed rounds bank once; leaving or interrupting a round never awards partial points.
+- Keep result content scrollable on small and landscape screens, hide inactive pads after results, and maintain readable score-card download contrast.
+- Preserve valid saved players when scoreboard storage is damaged. If device saving fails, explain that directly; never imply a disconnected online board will save the session.
+- Keep visible startup progress, bounded image loading with reload recovery, and shared background image decoding. VIP listening has its own master-sound control and pauses when the tab is hidden. Distinguish music network failures from blocked autoplay.
+- All 49 approved media files remain byte-identical. The cold entrance still fetches about 11.55 MB of images and took 60 seconds at a simulated 1.6 Mbps; this audit does not establish physical-device compatibility or 100K-player launch capacity.
+
 ## October 20 asset-size reduction (latest owner direction)
 
 - TEST only. Use the reviewed 256px wall-logo derivative, 1000×500 DJ booth derivative and pixel-identical WebP poster. Keep source originals outside the published inventory. Preserve the new blue Apollo banner, all current artist/player/fan artwork and all gameplay.

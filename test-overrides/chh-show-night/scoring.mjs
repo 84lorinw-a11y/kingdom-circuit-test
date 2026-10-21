@@ -1,4 +1,4 @@
-import {merchItems} from './merch-items.mjs?v=apollo-21';
+import {merchItems} from './merch-items.mjs?v=apollo-22';
 // The same twenty opportunities and 40 + 10 rule apply to every game.
 export const ROUND_MAX=1000, OPPORTUNITIES=20;
 export const gameIds=['eli','marty','brenno','ryan-ellis','gavin-the-hotrod','lj-the-messenger','dearis','tonyxtrotter','andrew-prim','apollo'];

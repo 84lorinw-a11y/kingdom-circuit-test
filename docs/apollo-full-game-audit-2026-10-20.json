@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-20",
+  "scope": "Full Apollo game audit and repairs on TEST only",
+  "baseline": "3aef5d2d517735fde2b055a0aee87eaa738084c8",
+  "cacheVersion": "apollo-22",
+  "fixed": [
+    {
+      "area": "Venue admission",
+      "finding": "Merch could start outside before admission, while the state reducer refused to bank those points.",
+      "change": "All game entry paths now share admission checks and an actionable next step."
+    },
+    {
+      "area": "Saved scores",
+      "finding": "A non-object scoreboard save could throw before the game opened.",
+      "change": "Validate stored rows, preserve valid names and scores, and recover from malformed data."
+    },
+    {
+      "area": "Small-screen results",
+      "finding": "Result and share content overflowed the fixed arena; inactive Eli pads continued taking space.",
+      "change": "Scroll result content, hide inactive result controls, and increase download-link contrast."
+    },
+    {
+      "area": "Round instructions",
+      "finding": "Eli and merch started immediately while other artist games waited for Start.",
+      "change": "All ten rounds wait for an explicit Start tap."
+    },
+    {
+      "area": "Failed audio",
+      "finding": "A failed audio download incorrectly prompted the player to enable music.",
+      "change": "Connection and autoplay failures now give different retry guidance."
+    },
+    {
+      "area": "VIP listening",
+      "finding": "Muted previews had no visible local sound toggle, and playback could continue when the tab was hidden.",
+      "change": "Add master-sound control, accurate muted status, hidden-tab pause, and cleanup."
+    },
+    {
+      "area": "Loading",
+      "finding": "Initial image loading provided no visible progress and an unresolved decode could stall startup.",
+      "change": "Show progress, bound loading, keep entry controls disabled until ready, and provide reload recovery; decode reused scenery once."
+    },
+    {
+      "area": "Full device storage",
+      "finding": "A failed device save referred to an unconnected online scoreboard.",
+      "change": "Explain that the night was not saved, keep the current tab open, and offer a device-save retry."
+    }
+  ],
+  "verification": {
+    "automatedTests": {
+      "game": 141,
+      "site": 29,
+      "python": 121,
+      "total": 291
+    },
+    "realTimePlaythroughs": 2,
+    "gamesPerPlaythrough": 10,
+    "responsiveMatrix": {
+      "screens": [
+        [
+          320,
+          568
+        ],
+        [
+          360,
+          640
+        ],
+        [
+          390,
+          844
+        ],
+        [
+          844,
+          390
+        ],
+        [
+          1200,
+          900
+        ]
+      ],
+      "games": 10,
+      "passedCases": 50,
+      "checks": [
+        "ready",
+        "20-event result",
+        "record once",
+        "leaderboard",
+        "score-card download",
+        "replay"
+      ]
+    },
+    "journeyEdgeCases": [
+      {
+        "name": "entry-validation-and-all-avatars",
+        "pass": true
+      },
+      {
+        "name": "asset-failure-and-reload",
+        "pass": true
+      },
+      {
+        "name": "music-failure-retry-and-abandon",
+        "pass": true
+      },
+      {
+        "name": "round-interruption",
+        "pass": true
+      },
+      {
+        "name": "vip-listening-controls",
+        "pass": true
+      },
+      {
+        "name": "silent-screen-menu-and-room-pause",
+        "pass": true
+      },
+      {
+        "name": "new-game-preserves-board",
+        "pass": true
+      },
+      {
+        "name": "storage-full-honest-save",
+        "pass": true
+      }
+    ],
+    "coverage": [
+      "six avatar choices",
+      "missing-name and missing-avatar validation",
+      "friend recruitment and admission",
+      "all nine artist games plus merch",
+      "touch and keyboard input",
+      "VIP wrong/right passcodes",
+      "snack selection",
+      "VIP photo export",
+      "save/reload and new player",
+      "device scoreboard",
+      "failed asset/audio recovery",
+      "round interruption without partial score",
+      "silent video loop and playback suspension",
+      "reduced-motion result layout"
+    ]
+  },
+  "performance": {
+    "downloadMbps": 1.6,
+    "latencyMs": 150,
+    "progressAtTenSeconds": 7,
+    "seconds": 60.054,
+    "imageBytes": 11553102,
+    "pass": true
+  },
+  "assetPreservation": {
+    "beforeBytes": 22126968,
+    "afterBytes": 22132824,
+    "addedBytes": 5856,
+    "unchangedMediaAssets": 49,
+    "allMediaByteIdentical": true,
+    "runtimeFiles": 92
+  },
+  "remaining": [
+    "First-time loading is still heavy on slow connections: about 11.55 MB of images before character selection. Staged room/asset loading is the next performance priority.",
+    "Phone checks used Chrome touch emulation, not physical iPhone Safari or Android devices.",
+    "No 100K concurrent-player or launch-bandwidth test was performed. The scoreboard remains device-only.",
+    "Game-rule tests and automated playthroughs do not establish human difficulty balance or replay enjoyment; a short fresh-player playtest remains useful.",
+    "Canvas games have keyboard controls, but this was not a complete assistive-technology accessibility certification."
+  ],
+  "evidenceDirectory": "/Users/lorinwilliamson/Documents/Kingdom Circuit Audits/2026-10-20/full-game-audit"
+}

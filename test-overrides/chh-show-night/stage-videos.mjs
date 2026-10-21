@@ -1,4 +1,4 @@
-import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-21';
+import {screenPlacement,stageScreen} from './stage-screen.mjs?v=apollo-22';
 
 // Owner-supplied draft recording, exported without an audio stream.
 export const stageFilm={

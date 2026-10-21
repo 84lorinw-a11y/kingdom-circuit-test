@@ -1,14 +1,15 @@
-import {mountRoundResultTools} from './round-records.mjs?v=apollo-21';
-import {crewGames,currentPrompt,wordOptions,judgeChoice,judgePosition,drawCrewGame,laneCenter,phrases} from './crew-games.mjs?v=apollo-21';
-import {judgeOffer,offerLane,offerX,drawOfferBoard} from './marty-offers.mjs?v=apollo-21';
-import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-21';
-import {drawMerchItem} from './merch-items.mjs?v=apollo-21';
-import {gameTracks,merchTrack} from './music-config.mjs?v=apollo-21';
-import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-21';
-import {drawPerson} from './sprites.mjs?v=apollo-21';
-import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-21';
-import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-21';
-import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-21';
+import {mountRoundResultTools} from './round-records.mjs?v=apollo-22';
+import {crewGames,currentPrompt,wordOptions,judgeChoice,judgePosition,drawCrewGame,laneCenter,phrases} from './crew-games.mjs?v=apollo-22';
+import {judgeOffer,offerLane,offerX,drawOfferBoard} from './marty-offers.mjs?v=apollo-22';
+import {roundSeconds,roundSchedule,roundScore,gameNames} from './scoring.mjs?v=apollo-22';
+import {drawMerchItem} from './merch-items.mjs?v=apollo-22';
+import {gameTracks,merchTrack} from './music-config.mjs?v=apollo-22';
+import {brennoFan,collectedFans} from './crowds.mjs?v=apollo-22';
+import {drawPerson} from './sprites.mjs?v=apollo-22';
+import {createBassDetector,createBassPulse} from './bass-fx.mjs?v=apollo-22';
+import {drawBeatBoard,beatLayout,beatLane,laneColors,judgeBeat} from './eli-board.mjs?v=apollo-22';
+import {merchDrop,merchCatch} from './merch-motion.mjs?v=apollo-22';
+import {musicRetryMessage} from './audio-errors.mjs?v=apollo-22';
 const titles={eli:'B–I–B–L–E',marty:'NOT 4 SALE',brenno:'CREW RUN',apollo:'NOT 4 SALE',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.title]))};
 const instructions={eli:'Tap the matching pad when the letter hits the gold line.',marty:'Three proposals at the table. Reject the one trying to buy Apollo; keep the crew independent. Keys 1–3 work too.',brenno:'Drag Brenno. Bring people into the crew. Keep the crew together!',apollo:'Drag the tote left and right. Catch the shirts, hoodie and cap in the middle!',...Object.fromEntries(Object.entries(crewGames).map(([id,g])=>[id,g.instruction]))};
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;};
@@ -59,7 +60,7 @@ export function mountRound(host,{game,audio,art,online,records,name,onFinish,onE
   resultTools?.hide();const token=++run;phase='loading';host.dataset.phase=phase;start.disabled=true;start.textContent='Getting ready…';results.textContent='';back.hidden=true;
   try{const ticket=await prepareRoundStart(audio,online,game);ranked=!!ticket;if(disposed||token!==run)return;const ready=await audio.play(game);if(disposed||token!==run)return;if(!ready)throw Error('Music did not start');
    roundId=ticket?.id||crypto.randomUUID();seed=crypto.getRandomValues(new Uint32Array(1))[0];notes=roundSchedule(game,seed);events=[];particles=[];combo=0;px=target=210;selectedLane=1;held.clear();elapsed=0;feedback='';feedbackUntil=0;bassGlow=0;laneFlashes=[0,0,0,0];callout.hidden=true;host.dataset.bassHits='0';detector.reset();points.textContent='0';streak.textContent=game==='eli'?'0':'0×';phase='playing';host.dataset.phase=phase;overlay.hidden=true;started=performance.now();last=lastAudioProgress=started;canvas.focus({preventScroll:true});
-  }catch{if(disposed||token!==run)return;retry('Tap Start Game to turn on the music.');}
+  }catch(error){if(disposed||token!==run)return;retry(musicRetryMessage(error));}
  }
  function retry(text){run++;audio.stop();pulse.clear();phase='ready';host.dataset.phase=phase;overlay.hidden=false;headline.textContent='READY WHEN YOU ARE.';message.textContent=text;start.disabled=false;start.textContent='Start Game';back.hidden=true;callout.hidden=true;held.clear();}
  start.onclick=begin;

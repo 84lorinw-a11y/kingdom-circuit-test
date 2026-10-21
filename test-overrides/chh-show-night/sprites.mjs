@@ -1,6 +1,7 @@
-import {clubFanPoses,actualFanPoses} from './crowds.mjs?v=apollo-21';
-import {apolloCrew} from './apollo-crew.mjs?v=apollo-21';
-import {playerSpritePose} from './avatars.mjs?v=apollo-21';
+import {loadImage} from './asset-loader.mjs?v=apollo-22';
+import {clubFanPoses,actualFanPoses} from './crowds.mjs?v=apollo-22';
+import {apolloCrew} from './apollo-crew.mjs?v=apollo-22';
+import {playerSpritePose} from './avatars.mjs?v=apollo-22';
 // Transparent sprite atlases adapted from the supplied CHH scene references.
 // Trim bounds are calculated once at load; sprites are composited at runtime.
 const heroIds=['player','jay','grace'];
@@ -11,10 +12,11 @@ const rowCuts={};
 // Only current cast atlases are preloaded. The legacy women/brand IDs resolve to
 // actualFans/clubFans above their old fallback branches; saved avatar IDs resolve
 // to playersA/playersB. Keep all current poses and original cutout pixels.
-export async function loadPeople(){
- await Promise.all([['jay',3,1,'jay-apollo-v2'],['peace',5,2,'vip-peace-v18'],['heroes',6,2,'heroes-v3'],['cameraOne',3,1,'camera-operator-one-v1'],['cameraTwo',3,1,'camera-operator-two-v1'],['social',6,5,'fans-social-v1'],['campers',2,1,'campers-v1'],['clubFans',8,4,'club-fans-v1'],['actualFans',4,4,'actual-fans-v1'],['playersA',3,3,'players-a-eli-v1'],['playersB',3,3,'players-b-eli-v1'],...apolloCrew.map(p=>[p.id,1,1,p.file]),['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']].map(async([name,cols,rows,file,extension='webp'])=>{
-  const img=new Image();img.src=`/play/assets/${file}.${extension}`;
-  await img.decode();const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(img,0,0);const pixels=g.getImageData(0,0,c.width,c.height).data;
+const peopleAssets=[['jay',3,1,'jay-apollo-v2'],['peace',5,2,'vip-peace-v18'],['heroes',6,2,'heroes-v3'],['cameraOne',3,1,'camera-operator-one-v1'],['cameraTwo',3,1,'camera-operator-two-v1'],['social',6,5,'fans-social-v1'],['campers',2,1,'campers-v1'],['clubFans',8,4,'club-fans-v1'],['actualFans',4,4,'actual-fans-v1'],['playersA',3,3,'players-a-eli-v1'],['playersB',3,3,'players-b-eli-v1'],...apolloCrew.map(p=>[p.id,1,1,p.file]),['fansFront',6,5,'fans-front-v12'],['fansBack',6,5,'fans-back-v12']];
+export const peopleAssetCount=peopleAssets.length;
+export async function loadPeople({onProgress=()=>{}}={}){
+ await Promise.all(peopleAssets.map(async([name,cols,rows,file,extension='webp'])=>{
+  const img=await loadImage(`/play/assets/${file}.${extension}`);const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(img,0,0);const pixels=g.getImageData(0,0,c.width,c.height).data;
   const cells=[];const cw=img.width/cols,ch=img.height/rows;
   const cuts=[0];for(let row=1;row<rows;row++){let cut=Math.round(row*ch),best=Infinity;for(let y=Math.max(0,Math.round(row*ch-ch*.3));y<Math.min(img.height,Math.round(row*ch+ch*.3));y++){let count=0;for(let x=0;x<img.width;x++)if(pixels[(y*img.width+x)*4+3]>100)count++;if(count<best){best=count;cut=y;}}cuts.push(cut);}cuts.push(img.height);rowCuts[name]=cuts;
   for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
@@ -23,7 +25,7 @@ export async function loadPeople(){
    for(let y=top;y<bottom;y++)for(let x=left;x<right;x++)if(pixels[(y*img.width+x)*4+3]>100){minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);}
    cells.push({x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1});
   }
-  atlases[name]={img,cells};
+  atlases[name]={img,cells};onProgress();
  }));
 }
 export function drawPerson(ctx,x,y,who='player',{scale=2.25,frame=0,walking=false,back=false,hands=false,alpha=1,flip=false,lean=0,peace=false,outsidePose,campPose,cameraPose=0}={}){
