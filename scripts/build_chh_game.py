@@ -64,7 +64,10 @@ def verify(site: Path) -> dict:
         assert PurePosixPath(name).name not in {
             'apollo-badge-v1.png', 'apollo-official-heart.png',
             'merch-apollo-v1.webp', 'jay-apollo-v1.webp',
-        }, 'Retired cartoon Apollo badge in published inventory'
+            'blue-soul-v25.png', 'crowd-vip-v7.webp', 'fan-women-v13.webp',
+            'apollo-fans-v1.webp', 'vip-apollo-v2.webp',
+            'venue-logo-v14.webp', 'dj-booth-v12.webp', 'apollo-official-not4sale.png',
+        }, 'Retired artwork in published inventory'
     for name in expected:
         path = site / name
         if path.suffix not in TEXT_EXTENSIONS:

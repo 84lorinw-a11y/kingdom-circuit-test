@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-20",
+  "testOnly": true,
+  "beforeBytes": 28464078,
+  "afterBytes": 22126968,
+  "changes": [
+    {
+      "before": "venue-logo-v14.webp",
+      "after": "venue-logo-v15.webp",
+      "beforeBytes": 1719328,
+      "afterBytes": 74960
+    },
+    {
+      "before": "dj-booth-v12.webp",
+      "after": "dj-booth-v13.webp",
+      "beforeBytes": 1470396,
+      "afterBytes": 485572
+    },
+    {
+      "before": "apollo-official-not4sale.png",
+      "after": "apollo-official-not4sale.webp",
+      "beforeBytes": 263909,
+      "afterBytes": 147280
+    },
+    {
+      "retired": "blue-soul-v25.png",
+      "beforeBytes": 1086154,
+      "afterBytes": 0
+    },
+    {
+      "retired": "crowd-vip-v7.webp",
+      "beforeBytes": 1181308,
+      "afterBytes": 0
+    },
+    {
+      "retired": "fan-women-v13.webp",
+      "beforeBytes": 637266,
+      "afterBytes": 0
+    },
+    {
+      "retired": "apollo-fans-v1.webp",
+      "beforeBytes": 236476,
+      "afterBytes": 0
+    },
+    {
+      "retired": "vip-apollo-v2.webp",
+      "beforeBytes": 450194,
+      "afterBytes": 0
+    }
+  ],
+  "preservedMediaHashes": {
+    "assets/music/marty-everything-is-fine-preview.m4a": "cd33a901561c54836203675386a1af6cdbd538c3d4ca4940c5e3e434d6112dbf",
+    "assets/music/eli-bible-original.m4a": "a60aee277fc0ce8a7946833074185a582a3f06281ea82b97a81b02db1bc43115",
+    "assets/music/marty-ned-flanders-preview.m4a": "262a87689468097b78a17bb19476be81e8f4fe3ce781f69a100d2a9899d1e16e",
+    "assets/music/marty-wow-preview.m4a": "15204f38abf8a0a8e1fe1b9b8dd29fcfeff1a5df102a7bdc9be2334d43a39734",
+    "assets/music/marty-cult-classic-preview.m4a": "0eecbc0daec9fcf9a6d7276c56a310d41b46306813e87960674de25da25ad354",
+    "assets/music/marty-today-preview.m4a": "a4dde5bc1c7fb84311675a62e3612a2f781123512dd94e0cd244e184a858c392",
+    "assets/music/marty-father-love-preview.m4a": "aee698dcd5966ca9de52fda364f67882ef688f680bee30fc4216fe1e4f7fe54b",
+    "assets/video/apollo-stage-draft-v2.mp4": "251c3f73e5af751add2cdc02cd6a9b85ddba7f58b9c817dca028704413488855"
+  },
+  "originalsAndQA": "/Users/lorinwilliamson/Documents/Kingdom Circuit Audits/2026-10-20/asset-efficiency",
+  "validation": {
+    "characterPoseCases": 346,
+    "characterPixelsIdentical": true,
+    "desktopAndMobileRooms": 6,
+    "browserErrors": 0,
+    "posterDecodedPixelsIdentical": true
+  },
+  "audioTrial": {
+    "file": "marty-today-192k.m4a",
+    "originalBytes": 1027774,
+    "trialBytes": 747713,
+    "durationSeconds": 30.000454,
+    "sampleRate": 44100,
+    "channels": 2,
+    "published": false,
+    "listeningComparisonPending": true
+  }
+}

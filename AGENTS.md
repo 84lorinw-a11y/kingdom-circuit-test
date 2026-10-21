@@ -1,5 +1,11 @@
 # Kingdom Circuit test-site instructions
 
+## October 20 asset-size reduction (latest owner direction)
+
+- TEST only. Use the reviewed 256px wall-logo derivative, 1000×500 DJ booth derivative and pixel-identical WebP poster. Keep source originals outside the published inventory. Preserve the new blue Apollo banner, all current artist/player/fan artwork and all gameplay.
+- Do not preload or republish the superseded blue-soul-v25, crowd-vip-v7, fan-women-v13, apollo-fans-v1 or vip-apollo-v2 atlases/background. Current legacy women/brand IDs resolve to the approved actualFans/clubFans sheets; saved avatar IDs resolve to the six current players. Every active pose must stay visible.
+- Music and the approved silent 3.72 MB looping video remain byte-identical. A 192 kbps TODAY trial is local only pending a listening comparison; do not claim lossy audio is identical.
+
 ## October 20 lighter video and stage prop realism (latest owner direction)
 
 - TEST only. Use the smaller 800x450, 30 fps H.264 stage clip (3.72 MB); preserve the full 49.1-second loop, zero audio tracks, existing poster and all playback suspension/manual controls. Retire the superseded 8.64 MB video from the published inventory.
