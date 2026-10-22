@@ -1,5 +1,22 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 private Cloudflare review gate
+
+- Owner requested a shared password for the Cloudflare draft. Implement and test
+  the gate with existing released media; never commit the owner-provided password
+  or unreleased files to this public repository. Browser credential entry/save is
+  an owner handoff. Do not claim the password is active until deployed and tested.
+- `game-backend/cloudflare-review/` holds the server-only gate, schema, protected
+  builder and recovery instructions. GitHub TEST stays public and unchanged.
+- Keep automatic deployments disabled and production concert hosting untouched.
+  The security-only Cloudflare build pins game commit
+  `2bb401c164dcdb85d2bfd14e646e94a48a912517`; newer game publication is separate.
+- Require Fail closed for all Pages environments, protect all paths, keep secrets
+  only in Cloudflare, and reject immutable deployment aliases. Reset passwords
+  through the Cloudflare account and a deliberate protected deployment; never
+  disable the gate as a recovery shortcut. Private media sourcing remains future
+  work before any unreleased songs can be added.
+
 ## October 21 approved arcade and venue release
 
 - Owner approved publishing the accumulated mobile preview to GitHub TEST after a complete audit and auditing the published result again. This supersedes earlier hold-only notes for these selected game/layout changes. Keep Cloudflare automatic builds paused and production untouched.

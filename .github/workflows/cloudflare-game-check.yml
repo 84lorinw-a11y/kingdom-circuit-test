@@ -8,6 +8,8 @@ on:
       - 'scripts/build_chh_game.py'
       - 'test-overrides/chh-show-night/**'
       - 'test-overrides/chh-show-night-manifest.json'
+      - 'game-backend/cloudflare-review/**'
+      - 'tests/chh-game/cloudflare-review.test.mjs'
       - 'tests/test_cloudflare_game.py'
       - '.github/workflows/cloudflare-game-check.yml'
   workflow_dispatch:
@@ -23,6 +25,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/chh-game/cloudflare-review.test.mjs
       - run: python3 -m unittest discover -s tests -p 'test_cloudflare_game.py'
       - run: python3 scripts/build_cloudflare_game.py .cloudflare-dist
       - run: python3 scripts/build_cloudflare_game.py .cloudflare-dist --check
+      - run: python3 game-backend/cloudflare-review/build_review.py .cloudflare-review-dist
+      - run: python3 game-backend/cloudflare-review/build_review.py .cloudflare-review-dist --check

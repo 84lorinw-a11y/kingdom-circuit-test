@@ -7,6 +7,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import build_cloudflare_game as cloudflare
 import build_chh_game as github
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'game-backend/cloudflare-review'))
+import build_review as review
 
 
 class CloudflareGameTests(unittest.TestCase):
@@ -55,6 +57,45 @@ class CloudflareGameTests(unittest.TestCase):
                 cloudflare.build(Path(directory))
             self.assertEqual(path.read_text(), 'keep me')
         self.assertEqual(before, hashlib.sha256(github.SOURCE.joinpath('game.mjs').read_bytes()).hexdigest())
+
+
+class ReviewPackageTests(unittest.TestCase):
+    def test_gate_preserves_game_and_media_exactly(self):
+        original = review.base_files()
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            result = review.build(site)
+            self.assertTrue(result['privateReview'])
+            self.assertFalse(result['credentialsIncluded'])
+            for name, data in original.items():
+                if name != '_headers':
+                    self.assertEqual((site / name).read_bytes(), data, name)
+            self.assertEqual(result, review.verify(site))
+            (site / '_routes.json').write_text('{"version":1,"include":["/*"],"exclude":["/play/assets/*"]}')
+            with self.assertRaisesRegex(AssertionError, 'mismatch'):
+                review.verify(site)
+
+    def test_does_not_allow_added_secret_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            review.build(site)
+            (site / '.env').write_text('fixture only')
+            with self.assertRaisesRegex(AssertionError, 'Unexpected'):
+                review.verify(site)
+
+    def test_pin_must_be_an_exact_commit(self):
+        with self.assertRaises(AssertionError):
+            review.base_files('main')
+
+    def test_rate_limit_schema_is_valid_and_atomic(self):
+        import sqlite3
+        db = sqlite3.connect(':memory:')
+        db.executescript((review.ROOT / 'game-backend/cloudflare-review/schema.sql').read_text())
+        sql = 'INSERT INTO review_login_attempts (bucket, attempts, expires_at) VALUES (?, 1, ?) ON CONFLICT(bucket) DO UPDATE SET attempts = attempts + 1 RETURNING attempts'
+        for i in range(12):
+            self.assertEqual(db.execute(sql, ('opaque-hash', 120)).fetchone()[0], i + 1)
+        db.execute('DELETE FROM review_login_attempts WHERE expires_at < ?', (121,))
+        self.assertEqual(db.execute('SELECT count(*) FROM review_login_attempts').fetchone()[0], 0)
 
 
 if __name__ == '__main__':
