@@ -32,6 +32,9 @@ Ten attempts per IP per fixed minute are allowed; the next minute recovers.
 Missing secrets/bindings, limiter failures and handler errors deny access.
 An authorized session uses an 8-hour, host-only Secure/HttpOnly/SameSite cookie.
 Protected responses use private/no-store cache headers, including media ranges.
+The same-origin referrer policy preserves the Origin on native login/logout
+forms while suppressing referrers to external sites. Null, missing and foreign
+Origins remain rejected; do not loosen this check to compensate for a header.
 
 ## Owner recovery
 

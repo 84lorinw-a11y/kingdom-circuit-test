@@ -24,7 +24,10 @@ function headers(extra = {}) {
     'X-Robots-Tag': 'noindex, nofollow, noarchive',
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
-    'Referrer-Policy': 'no-referrer',
+    // Native form POSTs need their same-origin Origin for the CSRF check.
+    // no-referrer can turn that Origin into null in browsers. External links
+    // still receive no referrer with this policy.
+    'Referrer-Policy': 'same-origin',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
     ...extra,
   };

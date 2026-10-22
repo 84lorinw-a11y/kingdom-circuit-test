@@ -52,6 +52,7 @@ test('browser navigation redirects to an accessible password page', async () => 
   assert.equal(redirect.headers.get('Location'), '/review/login');
   const r = await worker.fetch(req('/review/login'), env);
   assert.equal(r.status, 200);
+  assert.equal(r.headers.get('Referrer-Policy'), 'same-origin', 'Native login/logout POSTs must preserve their same-origin Origin');
   const html = await r.text();
   assert.match(html, /type="password"/);
   assert.match(html, /label for="password"/);
@@ -151,6 +152,7 @@ test('cross-origin, oversized, unsupported and duplicate-field login forms fail'
   const env = fixture();
   assert.equal((await login(env, PASSWORD, { Origin: 'https://other.example' })).status, 403);
   assert.equal((await login(env, PASSWORD, { Origin: '' })).status, 403);
+  assert.equal((await login(env, PASSWORD, { Origin: 'null' })).status, 403);
   assert.equal((await login(env, PASSWORD, { 'Content-Type': 'application/json' })).status, 415);
   assert.equal((await login(env, 'x'.repeat(2048))).status, 413);
   const duplicate = req('/review/login', { method: 'POST', body: `password=${PASSWORD}&password=${PASSWORD}`, headers: { Origin: ORIGIN, 'CF-Connecting-IP': '192.0.2.15', 'Content-Type': 'application/x-www-form-urlencoded' } });
