@@ -1,5 +1,16 @@
 # Kingdom Circuit test-site instructions
 
+## October 21 owner-approved protected Cloudflare game release
+
+- Owner explicitly requested publishing the current GitHub TEST game changes to
+  Cloudflare. The reviewed game revision is
+  `807d91edb73b5525c37dfa4907955b5ae1ddc0e5` (runtime `apollo-25`). Use that exact
+  `--game-revision` with the protected builder; this supersedes the older
+  security-only game pin below. Keep the working password gate, all-path
+  protection, Fail closed, disabled automatic/preview deployments and separate
+  production concert website unchanged. Future Cloudflare batches still need
+  owner authorization. This approval does not add unreleased music.
+
 ## October 21 private Cloudflare review gate
 
 - Owner requested a shared password for the Cloudflare draft. Implement and test
