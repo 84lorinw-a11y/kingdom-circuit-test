@@ -1,4 +1,7 @@
 import hashlib
+import json
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -12,6 +15,36 @@ import build_review as review
 
 
 class CloudflareGameTests(unittest.TestCase):
+    def test_lazy_game_loaders_resolve_real_versioned_artwork(self):
+        # Exercise the packaged loaders themselves, including template URLs.
+        # Comparing output bytes alone missed the Cloudflare-only 404s.
+        node = shutil.which('node')
+        self.assertIsNotNone(node, 'Node is required to check runtime asset URLs')
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            built = cloudflare.build(site)
+            code = r'''
+              import {pathToFileURL} from 'node:url';
+              const root = process.argv[1], calls = [];
+              const module = name => import(pathToFileURL(root + '/play/' + name));
+              const load = async url => { calls.push(new URL(url).pathname); return {}; };
+              const art = {};
+              await (await module('hotrod-scene.mjs')).loadHotrodArt(art, {load});
+              await (await module('marty-scene.mjs')).loadMartyArt(art, {load});
+              await (await module('brenno-surf.mjs')).loadCrowdSurfArt(art, {load});
+              const arcade = await module('arcade-art.mjs');
+              for (const game of Object.keys(arcade.gameArtwork))
+                await arcade.loadArcadeArt(game, art, {load});
+              console.log(JSON.stringify(calls));
+            '''
+            result = subprocess.run([node, '--input-type=module', '-e', code, str(site)],
+                                    check=True, text=True, capture_output=True)
+            paths = json.loads(result.stdout)
+            self.assertEqual(len(paths), 8)
+            for path in paths:
+                self.assertTrue(path.startswith(f"/play/assets/{built['assetVersion']}/"), path)
+                self.assertTrue((site / path.lstrip('/')).is_file(), path)
+
     def test_complete_static_build_preserves_every_media_byte(self):
         with tempfile.TemporaryDirectory() as directory:
             site = Path(directory)

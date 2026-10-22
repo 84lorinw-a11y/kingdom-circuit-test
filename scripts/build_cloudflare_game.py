@@ -43,7 +43,11 @@ def expected_files() -> dict[str, bytes]:
         if name.startswith('play/assets/'):
             name = name.replace('play/assets/', prefix.lstrip('/'), 1)
         elif Path(name).suffix in game.TEXT_EXTENSIONS:
-            data = data.decode().replace(game.BASE, '/play/').replace('/play/assets/', prefix).encode()
+            # Lazy arcade loaders resolve ./assets/ against import.meta.url.
+            # They need the same media namespace as the venue's absolute URLs,
+            # including template strings such as ./assets/${file}.
+            text = data.decode().replace(game.BASE, '/play/')
+            data = text.replace('/play/assets/', prefix).replace('./assets/', prefix).encode()
         result[name] = data
 
     result['index.html'] = b'''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="refresh" content="0;url=/play/"><title>Apollo draft</title><a href="/play/">Enter the Apollo draft</a></html>'''
@@ -83,6 +87,7 @@ def verify(site: Path, expected=None) -> dict:
         if path.suffix in game.TEXT_EXTENSIONS:
             text = data.decode()
             assert game.BASE not in text, f'GitHub-only base path remains: {name}'
+            assert './assets/' not in text, f'Unversioned lazy artwork URL remains: {name}'
             for ref in re.findall(r'''(?:from\s+|(?:href|src)=)["'](\.[^"']+|/play/[^"']*)''', text):
                 ref = ref.split('?')[0].split('#')[0]
                 target = site / ref.lstrip('/') if ref.startswith('/') else path.parent / ref
