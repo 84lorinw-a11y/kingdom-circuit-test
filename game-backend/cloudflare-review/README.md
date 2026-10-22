@@ -10,10 +10,11 @@ make public GitHub files private and does not prevent authorized recording.
 
 - Project: `apollo-game-draft`, canonical host `apollo-game-draft.pages.dev`.
 - Automatic production and preview deployments remain disabled.
-- Build command: `python3 game-backend/cloudflare-review/build_review.py .cloudflare-dist --game-revision 807d91edb73b5525c37dfa4907955b5ae1ddc0e5`.
+- Build command: `python3 game-backend/cloudflare-review/build_review.py .cloudflare-dist --game-revision 696865eb07690a3f196cd98c677cda92407b4aff`.
 - Output: `.cloudflare-dist`. The owner approved publishing this GitHub TEST
   game batch (runtime `apollo-25`) to protected Cloudflare on October 21. This
-  replaces the initial security-only pin at `2bb401c`. Change the pin only when
+  includes the Cloudflare lazy-artwork URL fix, with game content unchanged from
+  `807d91ed`, and replaces the initial security-only pin at `2bb401c`. Change the pin only when
   a newer Cloudflare game batch is explicitly approved.
 - Production secret: `APOLLO_REVIEW_PASSWORD`, entered by the owner as **Secret**
   in Settings > Variables and secrets. Never use a public client/build constant.
