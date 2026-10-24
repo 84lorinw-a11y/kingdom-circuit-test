@@ -9,6 +9,7 @@ from build_mobile_show_test import verify as verify_calendar
 from build_artist_intake_mockup import verify as verify_intake
 from mobile_seo_preview import ASSETS, VERSION, verify_overlay, live_has_promoted_discovery
 import national_discovery_preview as discovery
+import fan_engagement_preview as engagement
 from build_chh_game import GAME_FILES, verify as verify_game
 
 EXPERIMENT_FILES = frozenset({
@@ -25,27 +26,30 @@ def verify(live: Path, site: Path) -> dict:
     game = verify_game(site)
     manifest_path = site / "test-live-mirror-manifest.json"
     manifest = json.loads(manifest_path.read_text())
+    fan_context = engagement.context(live, manifest["fanEngagement"]["asOf"])
+    fan_report = engagement.verify(live, site, fan_context)
     if live_has_promoted_discovery(live):
         additions = EXPERIMENT_FILES | {'test-live-mirror-manifest.json'}
         if not (live / '.nojekyll').exists():
             additions = additions | {'.nojekyll'}
         parity = verify_exact_mirror(live, site,
-            allowed_additions=additions)
+            allowed_additions=additions | engagement.FILES,
+            approved_transform=lambda path, data: engagement.transform(path, data, fan_context))
         verify_calendar(site, isolated=True)
         verify_intake(site)
         manifest.update(parity)
-        manifest.update({'mode': 'exact-live-artifact-mirror', 'contentAndLayoutParity': True,
+        manifest.update({'mode': 'exact-live-artifact-mirror', 'contentAndLayoutParity': False,
                          'dataFilesByteIdentical': True, 'binaryAssetsByteIdentical': True,
                          'testRedesignApplied': False, 'promotedDiscoveryMirrored': True,
                          'preservedExperimentPaths': ['/test-all-shows/', '/test-show-feed/', '/test-artist-intake/', '/play/'],
-                         'chhShowNight': game,
+                         'chhShowNight': game, 'fanEngagement': fan_report,
                          'isolatedExperimentFileCount': len(EXPERIMENT_FILES)})
         manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
         print(json.dumps(manifest, indent=2))
         return manifest
     context = discovery.load_context(live, date.fromisoformat(manifest['nationalDiscovery']['asOfDate']))
-    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS,
-                                approved_transform=lambda path, data: discovery.combined_transform(path, data, context))
+    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | engagement.FILES,
+                                approved_transform=lambda path, data: engagement.transform(path, discovery.combined_transform(path, data, context), fan_context))
     national = discovery.verify(live, site, context)
     overlay = verify_overlay(live, site, national_home=True)
     verify_calendar(site, isolated=True)

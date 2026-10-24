@@ -357,3 +357,11 @@
 - Production uses native scripts/mobile_discovery.py, scripts/national_discovery.py and scripts/finalize_fan_discovery.py after the retained legacy SEO/design pipeline. Do not copy this test harness or test identity settings into production.
 - Once capture detects the complete promoted production layout, test must mirror that artifact exactly with environment-only safety conversion; do not apply mobile/national overlays a second time. Preserve the three isolated test experiments, noindex/nofollow, blocked robots, disabled analytics, test paths and absent CNAME. Incomplete promotion detection fails closed.
 - Existing 1,178 production pages and all previous sitemap URLs were preserved; only /about-us/ and /shows/this-weekend/ were added. Public release verification passed57pages and6assets. Counts are a dated snapshot; continue mirroring current published content rather than freezing it.
+
+## October 23 no-upcoming-show discovery and analytics (TEST ONLY)
+
+- Owner approved the no-show artist panel and analytics on **test first**. Production promotion is not authorized by this request.
+- Apply `scripts/fan_engagement_preview.py _site _live_site` after the production discovery mirror and before final verification. This is an approved deterministic transform, recomputed by `verify_live_baseline.py`; do not weaken exact comparison or skip the added-asset checks.
+- Preserve current artist pictures, official links, upcoming headings and archives. Empty profiles gain the approved orange Explore/count/state CTA and Kingdom Circuit Instagram CTA. Mobile is the priority; also verify desktop. Current All Shows data controls the automatic count.
+- `assets/fan-engagement.js` records test events only in the current tab's session storage. `/test-analytics/` is the review UI. Test pages do not load Google's collection library. Do not enable production collection or claim test events are real audience data.
+- New source assets are under `test-overrides/fan-*`; tests cover count rollover, privacy, delivery isolation, deduplication and actual submission outcome branches. See `docs/fan-engagement-test.md` for the contract and future GA4 configuration. Keep all game files untouched.

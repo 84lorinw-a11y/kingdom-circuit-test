@@ -8,6 +8,7 @@ on:
       - "scripts/capture_live_site.py"
       - "scripts/live_mirror_v2.py"
       - "scripts/verify_live_baseline.py"
+      - "scripts/fan_engagement_preview.py"
       - "scripts/mobile_seo_preview.py"
       - "scripts/national_discovery_preview.py"
       - "scripts/apply_test_redesign.py"
@@ -144,6 +145,7 @@ jobs:
           python -m py_compile scripts/capture_live_site.py
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/verify_live_baseline.py
+          python -m py_compile scripts/fan_engagement_preview.py
           python -m py_compile scripts/mobile_seo_preview.py
           python -m py_compile scripts/national_discovery_preview.py
           python -m py_compile scripts/apply_test_redesign.py
@@ -157,6 +159,9 @@ jobs:
           node --check test-overrides/mobile-seo-preview.js
           node --check test-overrides/national-discovery.js
           node --check test-overrides/fan-discovery.js
+          node --check test-overrides/fan-engagement.js
+          node --check test-overrides/fan-analytics-viewer.js
+          node --test tests/fan-engagement.test.cjs tests/fan-submission-events.test.cjs
           node --test tests/artist-intake-submit.test.cjs
           node --test tests/mobile-seo-preview.test.cjs
           node --test tests/national-discovery.test.cjs
@@ -224,6 +229,10 @@ jobs:
       - name: Build the approved national discovery preview
         if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/national_discovery_preview.py _site _live_site
+
+      - name: Apply approved no-show discovery and test analytics
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        run: python scripts/fan_engagement_preview.py _site _live_site
 
       - name: Verify the final deployment artifact
         run: |
