@@ -24,10 +24,12 @@ class FanEngagement(unittest.TestCase):
     def test_active_artist_gets_only_inert_fallback_template(self):
         original,ctx=self.fixture(False);d=Document(fan.transform(Path('artists/mike/index.html'),original.encode(),ctx).decode())
         template=d.one(lambda n:n.tag=='template');self.assertFalse(any('data-empty-discovery' in n.attrs and n.start<template.start for n in d.nodes))
-    def test_test_does_not_load_google_collection(self):
+    def test_google_is_explicit_and_inherited_dummy_tag_is_removed(self):
         html='<html><head><script async src="https://www.googletagmanager.com/gtag/js?id=G-TEST-DISABLED"></script></head><body></body></html>'
         s=fan.transform(Path('index.html'),html.encode(),{'artists':{}}).decode()
-        self.assertNotIn('googletagmanager.com',s);self.assertIn('"mode": "test"',s)
+        self.assertNotIn('googletagmanager.com',s);self.assertNotIn('G-TEST-DISABLED',s);self.assertIn(fan.TEST_GA,s);self.assertIn('"mode": "test"',s)
+    def test_report_links_to_google_and_has_no_local_download(self):
+        s=fan.viewer().decode();self.assertIn(fan.GA_REPORT,s);self.assertNotIn('Download test log',s);self.assertIn('REPORTS LIVE IN GOOGLE',s)
     def test_instrumentation_fails_closed_if_upstream_callback_changes(self):
         with self.assertRaises((AssertionError,ValueError)):fan.transform(Path('app.js'),b'function unexpected() {}',{})
     def test_workflow_applies_overlay_before_parity_check(self):

@@ -19,7 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ('fan-engagement.js', 'fan-engagement.css', 'fan-analytics-viewer.js',
           'fan-instagram.svg', 'fan-arrow-right.svg', 'fan-arrow-up-right.svg')
 FILES = frozenset({f'assets/{n}' for n in ASSETS} | {'assets/fan-show-catalog.json', 'test-analytics/index.html'})
-VERSION = '20261023-1'
+VERSION = '20261024-2'
+TEST_GA = 'G-NBY8D9JSDH'
+GA_REPORT = 'https://analytics.google.com/analytics/web/#/a403969159p560599333/realtime/overview'
 
 def context(live, as_of=None):
     shows = []
@@ -87,7 +89,7 @@ def transform(relative, data, ctx):
     if not rel.endswith('.html'):
         return data
     text = data.decode()
-    config = {'mode': 'test', 'base': TEST_BASE, 'version': VERSION, 'pageType': 'other', 'artist': '', 'show': ''}
+    config = {'mode': 'test', 'measurementId': TEST_GA, 'base': TEST_BASE, 'version': VERSION, 'pageType': 'other', 'artist': '', 'show': ''}
     if rel in ctx['artists']:
         artist = ctx['artists'][rel]
         config.update(pageType='artist', artist=artist['name'], showPaths=artist['shows'])
@@ -115,14 +117,17 @@ def transform(relative, data, ctx):
         config['pageType'] = 'show_list'
     elif rel == 'artists/index.html':
         config['pageType'] = 'artist_directory'
-    # Test must not load Google's collection library at all, even with a dummy ID.
+    # The shared client loads only the explicitly pinned TEST destination on the
+    # published test host. Remove inherited tag loaders and dummy config queues.
     text = re.sub(r'<script\b[^>]*src=["\']https://www\.googletagmanager\.com/gtag/js[^>]*>\s*</script>', '', text)
+    text = re.sub(r'<script\b[^>]*>(?:(?!</script>)[\s\S])*?</script>',
+                  lambda m: '' if 'G-TEST-DISABLED' in m.group() else m.group(), text)
     config_json = json.dumps(config, ensure_ascii=True).replace('<','\\u003c')
     head = f'<link rel="stylesheet" href="{TEST_BASE}assets/fan-engagement.css?v={VERSION}"><script id="kc-fan-config" type="application/json">{config_json}</script><script defer src="{TEST_BASE}assets/fan-engagement.js?v={VERSION}"></script>'
     return once(text, '</head>', head + '</head>').encode()
 
 def viewer():
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'"><title>Test analytics — Kingdom Circuit</title><link rel="stylesheet" href="{TEST_BASE}assets/fan-engagement.css"><script defer src="{TEST_BASE}assets/fan-analytics-viewer.js"></script></head><body class="kc-analytics-viewer"><main><p class="kc-test-label">TEST ONLY · NOTHING SENT TO GOOGLE</p><h1>Check the fan journey</h1><p>Events from this browser tab only. These are test interactions, not audience statistics. Visit pages in this same tab, then return here.</p><nav><a href="{TEST_BASE}artists/mike-malagies/">Artist with no shows</a><a href="{TEST_BASE}artists/1k-phew/">Artist with shows</a><a href="{TEST_BASE}shows/">Find shows</a><a href="{TEST_BASE}submit/artist/">Artist submission</a></nav><div class="kc-analytics-controls"><button id="refresh-events">Refresh</button><button id="export-events">Download test log</button><button id="clear-events">Clear test log</button></div><p id="analytics-status" role="status"></p><h2>This test session</h2><div id="analytics-summary"></div><h2>Latest events</h2><div id="analytics-events"></div><h2>Weekly report after production approval</h2><p>Visitors and referral rate; top artists and shows; searches with no results; Instagram referrals; successful submissions; mobile vs desktop engagement and performance. A ticket referral is a click to the official site, not a purchase. An Instagram click is not a confirmed follow.</p></main></body></html>'''.encode()
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'"><title>Google Analytics — Kingdom Circuit TEST</title><link rel="stylesheet" href="{TEST_BASE}assets/fan-engagement.css"><script defer src="{TEST_BASE}assets/fan-analytics-viewer.js"></script></head><body class="kc-analytics-viewer"><main><p class="kc-test-label">TEST ONLY · REPORTS LIVE IN GOOGLE</p><h1>Google Analytics handles the data</h1><p>Google stores the test interactions in <strong>Kingdom Circuit — TEST</strong>. Your production visitor numbers remain separate. There is no local event log to download or maintain.</p><nav><a href="{GA_REPORT}" target="_blank" rel="noopener noreferrer">Open Google Analytics test reports ↗</a></nav><h2>Check the new buttons</h2><nav><a href="{TEST_BASE}artists/mike-malagies/">Artist with no shows</a><a href="{TEST_BASE}artists/1k-phew/">Artist with shows</a><a href="{TEST_BASE}shows/">Find shows</a><a href="{TEST_BASE}submit/artist/">Artist submission</a></nav><p>Use the test website, then view the events in Google's Realtime or DebugView report. Standard reports can take 24–48 hours to process. Ad blockers and browser privacy settings can prevent collection.</p><h2>What the reports mean</h2><p>Track artist and show views, Explore and Instagram clicks, searches with no results, ticket referrals, and successful submissions. A ticket referral is a click to the official site, not a purchase. An Instagram click is not a confirmed follow. No submitted form contents are recorded.</p></main></body></html>'''.encode()
 
 def generated(ctx):
     result = {f'assets/{n}': (ROOT/'test-overrides'/n).read_bytes() for n in ASSETS}
@@ -145,7 +150,7 @@ def verify(live, site, ctx):
         for cls in ('kc-rd-past-shows','kc-rd-profile-section-title'):
             assert [before.raw(n) for n in before.nodes if n.has(cls)] == [after.raw(n) for n in after.nodes if n.has(cls)], f'{rel}: {cls} changed'
         assert [(n.attrs.get('src'),n.attrs.get('srcset')) for n in before.nodes if n.tag=='img'] == [(n.attrs.get('src'),n.attrs.get('srcset')) for n in after.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')], f'{rel}: photo changed'
-    return {'version':VERSION, 'asOf':ctx['asOf'], 'count':ctx['count'], 'artistPages':len(ctx['artists']), 'emptyArtistPages':empty, 'analyticsDestination':'test-browser-session-only'}
+    return {'version':VERSION, 'asOf':ctx['asOf'], 'count':ctx['count'], 'artistPages':len(ctx['artists']), 'emptyArtistPages':empty, 'analyticsDestination':'Google Analytics TEST property 560599333', 'measurementId':TEST_GA}
 
 def build(site, live):
     ctx = context(live)

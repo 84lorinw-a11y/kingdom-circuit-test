@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict');
-const {STORE,safeText,clean,today,countShows,tracker,attemptState}=require('../test-overrides/fan-engagement.js');
+const {STORE,TEST_GA,testDestination,safeText,clean,today,countShows,tracker,attemptState}=require('../test-overrides/fan-engagement.js');
 function storage(){const s=new Map();return{getItem:k=>s.get(k),setItem:(k,v)=>s.set(k,v)};}
 test('count matches inclusive end dates, deduplicates events and crosses Pacific midnight',()=>{
  const shows=[{path:'/a',date:'2026-10-23'},{path:'/b',date:'2026-10-21',end:'2026-10-24'},{path:'/c',date:'2027-01-02'},{path:'/a',date:'2026-10-23'}];
@@ -7,11 +7,18 @@ test('count matches inclusive end dates, deduplicates events and crosses Pacific
  assert.equal(countShows(shows,'2026-10-23'),3);assert.equal(countShows(shows,'2026-10-24'),2);assert.equal(countShows(shows,'2026-10-25'),1);
  assert.equal(countShows([...shows,{path:'/new',date:'2026-11-01'}],'2026-10-25'),2);
 });
-test('test events never reach Google, are bounded and omit unapproved or personal fields',()=>{
- let calls=0;const s=storage();const track=tracker({mode:'test',pageType:'artist'},{storage:s,path:'/artists/mike/',host:'kingdomcircuit.com',width:()=>390,gtag:()=>calls++});
- for(let i=0;i<505;i++)track('artist_view',{artist_name:'Mike Malagies',email:'private@example.com',search_term:'contact@example.com',form_data:'secret',page_location:'https://site/?email=secret'});
- const rows=JSON.parse(s.getItem(STORE));assert.equal(rows.length,500);assert.equal(calls,0);assert.equal(rows[0].search_term,'[redacted]');assert.equal(rows[0].viewport,'mobile');assert.equal(rows[0].email,undefined);assert.equal(rows[0].page_location,undefined);assert.equal(rows[0].form_data,undefined);
- track('unknown_event');assert.equal(JSON.parse(s.getItem(STORE)).length,500);
+test('test events go only to the Google test property, without a local event log or personal fields',()=>{
+ const calls=[],s=storage();const track=tracker({mode:'test',measurementId:TEST_GA,pageType:'artist'},{storage:s,path:'/kingdom-circuit-test/artists/mike/',host:'84lorinw-a11y.github.io',width:()=>390,gtag:(...args)=>calls.push(args)});
+ track('artist_view',{artist_name:'Mike Malagies',email:'private@example.com',search_term:'contact@example.com',form_data:'secret',page_location:'https://site/?email=secret'});
+ assert.equal(s.getItem(STORE),undefined);assert.equal(calls.length,1);const row=calls[0][2];assert.equal(row.send_to,TEST_GA);assert.equal(row.debug_mode,true);assert.equal(row.search_term,'[redacted]');assert.equal(row.viewport,'mobile');assert.equal(row.email,undefined);assert.equal(row.page_location,undefined);assert.equal(row.form_data,undefined);
+ track('unknown_event');assert.equal(calls.length,1);
+});
+test('test delivery rejects wrong measurement IDs, hosts, roots and local previews',()=>{
+ let calls=0;
+ for(const[host,path,id]of[['kingdomcircuit.com','/kingdom-circuit-test/',TEST_GA],['localhost','/kingdom-circuit-test/',TEST_GA],['84lorinw-a11y.github.io','/another-repo/',TEST_GA],['84lorinw-a11y.github.io','/kingdom-circuit-test/','G-N2KK9XF4TJ'],['84lorinw-a11y.github.io','/kingdom-circuit-test/',undefined]]) {
+  const config={mode:'test',measurementId:id},env={storage:storage(),host,path,width:()=>390,gtag:()=>calls++};assert.equal(testDestination(config,env),false);tracker(config,env)('artist_view');
+ }
+ assert.equal(calls,0);
 });
 test('production adapter requires both explicit production mode and production hostname',()=>{
  let calls=[];for(const[mode,host]of[['test','kingdomcircuit.com'],['production','localhost'],['production','84lorinw-a11y.github.io'],['production','kingdomcircuit.com']]){

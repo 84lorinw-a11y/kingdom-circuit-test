@@ -10,7 +10,14 @@ The count comes from the exact All Shows catalog, with unique event URLs and inc
 
 ## Test verification
 
-`/test-analytics/` displays this tab's last 500 test events, summary counts and a JSON download. Stay in the same tab while testing, then return to the viewer. No Google collection library loads on the test pages. Test mode cannot call Google, even on the production hostname. Storage failure cannot block navigation or forms.
+The owner clarified that Google should hold the data and reports. Published test-site activity now goes to a separate **Kingdom Circuit — TEST** property in the existing Google account:
+
+- Account: 403969159; property: 560599333; stream: 16193246798; measurement: `G-NBY8D9JSDH`.
+- Reports: https://analytics.google.com/analytics/web/#/a403969159p560599333/realtime/overview
+- Collection requires the exact test hostname, `/kingdom-circuit-test/` path, explicit test mode, and the pinned test measurement ID. Local preview and production hosts cannot send to this property.
+- The test property has enhanced measurement disabled to avoid duplicate form/search/outbound events. Standard page/session data and the explicit event contract below remain collected. Test sends `debug_mode` for DebugView. Advertising signals/personalization are disabled in the test tag.
+- The former 500-event local QA log and downloads have been retired. `/test-analytics/` is just a link to Google reports and test pages. Only the 30-minute source-artist attribution remains in session storage; that is not a separate reporting database.
+- Page location omits query strings; referring URL is reduced to origin. Google reports are subject to processing delays and browser/consent restrictions.
 
 ## Event contract
 
@@ -42,7 +49,7 @@ No submitted names, email addresses, freeform form values, query strings, tokens
 4. Mark **ticket_referral** and **form_success** as primary key events; Instagram referral is a secondary intent measure. Do not relabel any as sales or confirmed followers. Audit GA enhanced form/search/outbound measurement before promotion so built-in events and custom events are not summed as duplicates.
 5. Build a weekly GA exploration with visitors, ticket-referral users / event-view users, top artist/show views and referrals, zero-result searches, panel impressions and click rate, Instagram referrals, successful submissions and form completion rate. Segment every section mobile/desktop; source/medium/campaign and country/state use existing GA acquisition/coarse geography. Form abandonment is a funnel estimate, not a certain individual outcome.
 
-Real Google property definitions, key-event configuration and the weekly audience report are deliberately not modified during this test-only release. No historical custom events are backfilled. Blocking analytics or declining consent limits coverage.
+Production Google settings remain unchanged during this test-only release. No historical custom events are backfilled. Blocking analytics or declining consent limits coverage.
 
 ## Verification recorded October 24
 
