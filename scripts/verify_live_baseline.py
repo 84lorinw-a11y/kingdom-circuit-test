@@ -28,12 +28,15 @@ def verify(live: Path, site: Path) -> dict:
     manifest = json.loads(manifest_path.read_text())
     fan_context = engagement.context(live, manifest["fanEngagement"]["asOf"])
     fan_report = engagement.verify(live, site, fan_context)
+    # Promoted engagement assets are original source files, still compared exactly.
+    # Only files absent from production qualify as isolated additions.
+    fan_additions = frozenset(p for p in engagement.FILES if not (live / p).exists())
     if live_has_promoted_discovery(live):
         additions = EXPERIMENT_FILES | {'test-live-mirror-manifest.json'}
         if not (live / '.nojekyll').exists():
             additions = additions | {'.nojekyll'}
         parity = verify_exact_mirror(live, site,
-            allowed_additions=additions | engagement.FILES,
+            allowed_additions=additions | fan_additions,
             approved_transform=lambda path, data: engagement.transform(path, data, fan_context))
         verify_calendar(site, isolated=True)
         verify_intake(site)
@@ -48,7 +51,7 @@ def verify(live: Path, site: Path) -> dict:
         print(json.dumps(manifest, indent=2))
         return manifest
     context = discovery.load_context(live, date.fromisoformat(manifest['nationalDiscovery']['asOfDate']))
-    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | engagement.FILES,
+    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | fan_additions,
                                 approved_transform=lambda path, data: engagement.transform(path, discovery.combined_transform(path, data, context), fan_context))
     national = discovery.verify(live, site, context)
     overlay = verify_overlay(live, site, national_home=True)

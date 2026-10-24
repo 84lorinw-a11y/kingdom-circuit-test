@@ -30,6 +30,12 @@ class FanEngagement(unittest.TestCase):
         self.assertNotIn('googletagmanager.com',s);self.assertNotIn('G-TEST-DISABLED',s);self.assertIn('"mode": "test"',s)
     def test_report_links_to_google_and_has_no_local_download(self):
         s=fan.viewer().decode();self.assertNotIn('Download test log',s);self.assertIn('GOOGLE TRACKING DISABLED',s)
+    def test_promoted_production_panel_is_not_applied_twice_and_google_is_disabled(self):
+        original,ctx=self.fixture();once=fan.transform(Path('artists/mike/index.html'),original.encode(),ctx).decode()
+        promoted=once.replace('"mode": "test"','"mode": "production"')
+        again=fan.transform(Path('artists/mike/index.html'),promoted.encode(),ctx).decode()
+        self.assertEqual(again.count('id="kc-fan-config"'),1);self.assertEqual(again.count('id="kc-empty-template"'),1)
+        self.assertEqual(again.count('assets/fan-engagement.js'),1);self.assertNotIn('"mode": "production"',again)
     def test_instrumentation_fails_closed_if_upstream_callback_changes(self):
         with self.assertRaises((AssertionError,ValueError)):fan.transform(Path('app.js'),b'function unexpected() {}',{})
     def test_workflow_applies_overlay_before_parity_check(self):

@@ -18,7 +18,7 @@ from live_mirror_v2 import TEST_BASE
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ('fan-engagement.js', 'fan-engagement.css', 'fan-analytics-viewer.js',
           'fan-instagram.svg', 'fan-arrow-right.svg', 'fan-arrow-up-right.svg')
-FILES = frozenset({f'assets/{n}' for n in ASSETS} | {'assets/fan-show-catalog.json', 'test-analytics/index.html'})
+FILES = frozenset({f'assets/{n}' for n in ASSETS} | {'assets/fan-test-show-catalog.json', 'test-analytics/index.html'})
 VERSION = '20261024-3'
 GA_REPORT = 'https://analytics.google.com/analytics/web/#/a403969159p549068474/realtime/overview'
 
@@ -61,6 +61,8 @@ def transform(relative, data, ctx):
     rel = str(relative)
     if rel == 'app.js':
         text = data.decode()
+        if 'kc:submission-result' in text and 'window.KCFanAnalytics?.track' in text:
+            return data
         start = text.index('function trackArtistInteraction(')
         end = text.index('\nfunction ensureArtistSuggestionDialog', start)
         # A single delegated tracker owns social clicks and server acknowledgments.
@@ -78,6 +80,8 @@ def transform(relative, data, ctx):
         return text.encode()
     if rel == 'assets/artist-intake.js':
         text = data.decode()
+        if 'kc:submission-result' in text:
+            return data
         for old, status in [('success.hidden = false;', 'success'),
                             ('status.classList.add("is-error");', 'error')]:
             # Error anchor intentionally appears in HTTP and network-error branches.
@@ -88,20 +92,22 @@ def transform(relative, data, ctx):
     if not rel.endswith('.html'):
         return data
     text = data.decode()
-    config = {'mode': 'test', 'base': TEST_BASE, 'version': VERSION, 'pageType': 'other', 'artist': '', 'show': ''}
+    promoted = 'id="kc-fan-config"' in text
+    config = {'mode': 'test', 'catalogFile':'assets/fan-test-show-catalog.json', 'base': TEST_BASE, 'version': VERSION, 'pageType': 'other', 'artist': '', 'show': ''}
     if rel in ctx['artists']:
         artist = ctx['artists'][rel]
         config.update(pageType='artist', artist=artist['name'], showPaths=artist['shows'])
         doc = Document(text)
         changes = []
-        if artist['empty']:
+        if artist['empty'] and not promoted:
             empty = doc.one(lambda n: n.has('kc-rd-profile-empty'))
             changes.append((empty.start, empty.end, panel(artist['name'], ctx['count'])))
             for n in doc.nodes:
                 if n.has('kc-rd-next--empty'):
                     changes.append((n.start, n.end, ''))
         text = replace_spans(text, changes)
-        text = text.replace('</body>', f'<template id="kc-empty-template">{panel(artist["name"],ctx["count"])}</template></body>')
+        if not promoted:
+            text = text.replace('</body>', f'<template id="kc-empty-template">{panel(artist["name"],ctx["count"])}</template></body>')
     elif rel.startswith('event/'):
         doc = Document(text)
         titles = [n for n in doc.nodes if n.tag == 'h1']
@@ -120,6 +126,10 @@ def transform(relative, data, ctx):
     text = re.sub(r'<script\b[^>]*src=["\']https://www\.googletagmanager\.com/gtag/js[^>]*>\s*</script>', '', text)
     text = re.sub(r'<script\b[^>]*>(?:(?!</script>)[\s\S])*?</script>',
                   lambda m: '' if 'G-TEST-DISABLED' in m.group() else m.group(), text)
+    if promoted:
+        text = re.sub(r'<script id="kc-fan-config"[^>]*>[\s\S]*?</script>', '', text)
+        text = re.sub(r'<script\b[^>]*src="[^"]*/fan-engagement\.js[^>]*>\s*</script>', '', text)
+        text = re.sub(r'<link\b[^>]*href="[^"]*/fan-engagement\.css[^>]*>', '', text)
     config_json = json.dumps(config, ensure_ascii=True).replace('<','\\u003c')
     head = f'<link rel="stylesheet" href="{TEST_BASE}assets/fan-engagement.css?v={VERSION}"><script id="kc-fan-config" type="application/json">{config_json}</script><script defer src="{TEST_BASE}assets/fan-engagement.js?v={VERSION}"></script>'
     return once(text, '</head>', head + '</head>').encode()
@@ -130,7 +140,7 @@ def viewer():
 def generated(ctx):
     result = {f'assets/{n}': (ROOT/'test-overrides'/n).read_bytes() for n in ASSETS}
     catalog = {'asOf':ctx['asOf'], 'shows':ctx['shows']}
-    result['assets/fan-show-catalog.json'] = (json.dumps(catalog, separators=(',',':'))+'\n').encode()
+    result['assets/fan-test-show-catalog.json'] = (json.dumps(catalog, separators=(',',':'))+'\n').encode()
     result['test-analytics/index.html'] = viewer()
     return result
 
@@ -147,7 +157,7 @@ def verify(live, site, ctx):
         empty += bool(panels)
         for cls in ('kc-rd-past-shows','kc-rd-profile-section-title'):
             assert [before.raw(n) for n in before.nodes if n.has(cls)] == [after.raw(n) for n in after.nodes if n.has(cls)], f'{rel}: {cls} changed'
-        assert [(n.attrs.get('src'),n.attrs.get('srcset')) for n in before.nodes if n.tag=='img'] == [(n.attrs.get('src'),n.attrs.get('srcset')) for n in after.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')], f'{rel}: photo changed'
+        assert [(n.attrs.get('src'),n.attrs.get('srcset')) for n in before.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')] == [(n.attrs.get('src'),n.attrs.get('srcset')) for n in after.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')], f'{rel}: photo changed'
     return {'version':VERSION, 'asOf':ctx['asOf'], 'count':ctx['count'], 'artistPages':len(ctx['artists']), 'emptyArtistPages':empty, 'analyticsDestination':'disabled-on-test'}
 
 def build(site, live):

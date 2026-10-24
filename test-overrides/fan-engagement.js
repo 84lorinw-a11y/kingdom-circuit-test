@@ -82,7 +82,7 @@
   }
   async function refreshCatalog() {
     if(fetchPending || Date.now()-lastFetch<300000)return;fetchPending=true;
-    try{const r=await fetch(config.base+'assets/fan-show-catalog.json',{cache:'no-cache'});if(!r.ok)throw new Error();const data=await r.json();if(!Array.isArray(data.shows))throw new Error();catalog=data;lastFetch=Date.now();updateCatalog();}
+    try{const r=await fetch(config.base+(config.catalogFile||'assets/fan-show-catalog.json'),{cache:'no-cache'});if(!r.ok)throw new Error();const data=await r.json();if(!Array.isArray(data.shows))throw new Error();catalog=data;lastFetch=Date.now();updateCatalog();}
     catch(_){track('site_error',{error_type:'catalog_unavailable'});observePanel();}finally{fetchPending=false;}
   }
   function placement(el){return el.closest('[data-empty-discovery]')?'artist_no_shows':el.closest('header')?'header':el.closest('footer')?'footer':config.pageType;}
