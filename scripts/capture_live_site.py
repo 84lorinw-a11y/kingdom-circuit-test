@@ -48,10 +48,11 @@ OMITTED_OPERATIONAL_PATHS = frozenset(
 )
 
 ATTRIBUTE_URL = re.compile(
-    r"\b(?:href|src|action|poster)\s*=\s*[\"']([^\"']+)[\"']",
+    r"(?<![\w:-])(?:href|src|action|poster)\s*=\s*[\"']([^\"']+)[\"']",
     re.I,
 )
-SRCSET = re.compile(r"\bsrcset\s*=\s*[\"']([^\"']+)[\"']", re.I)
+# Match whole HTML attribute names, never suffixes such as data-empty-action.
+SRCSET = re.compile(r"(?<![\w:-])srcset\s*=\s*[\"']([^\"']+)[\"']", re.I)
 CSS_URL = re.compile(r"url\(\s*[\"']?([^\"')]+)", re.I)
 CSS_IMPORT = re.compile(r"@import\s+(?:url\()?\s*[\"']([^\"']+)", re.I)
 QUOTED_NETWORK_URL = re.compile(r"[\"']((?:https?:)?//[^\"'<>\s]+)[\"']", re.I)

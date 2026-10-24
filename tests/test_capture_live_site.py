@@ -90,6 +90,19 @@ class FixtureHandler(BaseHTTPRequestHandler):
 
 
 class LiveCaptureTests(unittest.TestCase):
+    def test_tracking_attributes_are_not_navigation_or_image_urls(self) -> None:
+        origin = "https://kingdomcircuit.com"
+        required, _ = capture_module.discovered_urls(
+            origin + "/artists/mike-malagies/", "text/html",
+            b'<a data-empty-action="explore" href="/shows/#browse-states">Explore</a>'
+            b'<a data-empty-action="instagram" href="https://www.instagram.com/thekingdomcircuit/">Follow</a>'
+            b'<img data-src="not-a-live-image" SRC="/assets/live.webp" data-srcset="not-live.webp 2x" srcset="/assets/live-2x.webp 2x">'
+            b'<form action="/submit/"></form><video poster="/assets/poster.webp"></video>', origin,
+        )
+        self.assertEqual(required, {origin + path for path in (
+            "/shows/", "/assets/live.webp", "/assets/live-2x.webp", "/submit/", "/assets/poster.webp",
+        )})
+
     def test_retired_catalog_history_is_metadata_but_live_urls_remain_required(self) -> None:
         origin = "https://kingdomcircuit.com"
         payload = json.dumps([{
