@@ -19,10 +19,14 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ('fan-engagement.js', 'fan-engagement.css', 'fan-analytics-viewer.js',
           'fan-instagram.svg', 'fan-arrow-right.svg', 'fan-arrow-up-right.svg')
 FILES = frozenset({f'assets/{n}' for n in ASSETS} | {'assets/fan-test-show-catalog.json', 'test-analytics/index.html'})
-VERSION = '20261024-3'
+VERSION = '20261024-4'
 GA_REPORT = 'https://analytics.google.com/analytics/web/#/a403969159p549068474/realtime/overview'
 
 def context(live, as_of=None):
+    doc = Document(test_source(live, 'shows/index.html'))
+    nav = doc.one(lambda n: n.tag == 'nav' and n.has('kc-state-links'))
+    state_paths = {n.attrs['href']: doc.text(next(c for c in n.children if c.tag == 'span')) for n in doc.nodes
+                   if n.tag == 'a' and nav.start < n.start < nav.end}
     shows = []
     for r in card_records(test_source(live, 'shows/index.html')):
         shows.append({'path': r['href'], 'name': r['name'], 'date': r['attrs']['data-date'],
@@ -42,7 +46,7 @@ def context(live, as_of=None):
         artists[rel] = {'name': doc.text(names[0]), 'shows': rows,
                         'empty': not rows, 'path': TEST_BASE + rel.removesuffix('index.html')}
     today = as_of or datetime.now(ZoneInfo('America/Los_Angeles')).date().isoformat()
-    return {'asOf': today, 'shows': shows, 'artists': artists,
+    return {'asOf': today, 'shows': shows, 'artists': artists, 'statePaths': state_paths,
             'count': sum(s['end'] >= today for s in shows)}
 
 def panel(name, count):
@@ -59,6 +63,10 @@ def once(text, old, new):
 
 def transform(relative, data, ctx):
     rel = str(relative)
+    # This reviewed client also replaces its prior promoted production version.
+    # The exact-baseline verifier uses the same explicit, single-asset transform.
+    if rel == 'assets/fan-engagement.js':
+        return (ROOT/'test-overrides/fan-engagement.js').read_bytes()
     if rel == 'app.js':
         text = data.decode()
         if 'kc:submission-result' in text and 'window.KCFanAnalytics?.track' in text:
@@ -93,7 +101,7 @@ def transform(relative, data, ctx):
         return data
     text = data.decode()
     promoted = 'id="kc-fan-config"' in text
-    config = {'mode': 'test', 'catalogFile':'assets/fan-test-show-catalog.json', 'base': TEST_BASE, 'version': VERSION, 'pageType': 'other', 'artist': '', 'show': ''}
+    config = {'mode': 'test', 'catalogFile':'assets/fan-test-show-catalog.json', 'base': TEST_BASE, 'version': VERSION, 'pageType': 'other', 'artist': '', 'show': '', 'statePaths': ctx.get('statePaths', {})}
     if rel in ctx['artists']:
         artist = ctx['artists'][rel]
         config.update(pageType='artist', artist=artist['name'], showPaths=artist['shows'])
@@ -118,6 +126,8 @@ def transform(relative, data, ctx):
         config['pageType'] = 'submission'
     elif rel == 'index.html':
         config['pageType'] = 'home'
+    elif rel == 'about-us/index.html':
+        config['pageType'] = 'about'
     elif rel.startswith(('shows/', 'festivals/', 'new-shows/')):
         config['pageType'] = 'show_list'
     elif rel == 'artists/index.html':

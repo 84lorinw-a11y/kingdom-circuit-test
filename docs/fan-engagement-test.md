@@ -36,7 +36,7 @@ Latest approval: finish the test audits, then promote to production and configur
 
 No submitted names, email addresses, freeform form values, query strings, tokens or full referral URLs are collected. Search terms and UTM values are bounded and redact obvious contact details/URLs/phone numbers. Content names come from published pages. No fingerprinting or session replay. Empty-panel attribution expires after 30 minutes and records downstream show views/referrals.
 
-## Production rollout (not performed)
+## Production rollout contract
 
 1. Promote the approved overlay to the production generator with the correct production base; do not copy the test repository or its dummy analytics identity.
 2. Enable the production adapter only on kingdomcircuit.com, retaining the existing consent behavior and GA4 property. Existing legacy artist-social events must continue to have one owner to prevent double counting.
@@ -45,6 +45,16 @@ No submitted names, email addresses, freeform form values, query strings, tokens
 5. Build a weekly GA exploration with visitors, ticket-referral users / event-view users, top artist/show views and referrals, zero-result searches, panel impressions and click rate, Instagram referrals, successful submissions and form completion rate. Segment every section mobile/desktop; source/medium/campaign and country/state use existing GA acquisition/coarse geography. Form abandonment is a funnel estimate, not a certain individual outcome.
 
 Production Google settings remain unchanged during this test-only release. No historical custom events are backfilled. Blocking analytics or declining consent limits coverage.
+
+## October 24 follow-up tracking correction (20261024-4)
+
+The production overlay was promoted separately; TEST continues to have no Google collection. The existing production property/report receives the tracking correction, not a new property or local event database.
+
+New events: `artist_select` (destination profile), `facebook_referral` (Kingdom Circuit Facebook only), and `collection_select` (weekend/month/city/category links). Only links in the final state directory produce `state_select`, using the displayed state name without its count. `ticket_referral` adds `referral_type` of `ticket`, `registration`, or `information`; no outbound click establishes a purchase or follow.
+
+`search_results.action` distinguishes initial results, search changes, filter changes, submit and history navigation. Placement identifies the homepage artist and show shelves and search suggestions. Performance events add separate unit-specific fields, while retaining the original diagnostic metric/value fields.
+
+The parity transform explicitly replaces only `assets/fan-engagement.js` with the reviewed TEST client, then compares it byte-for-byte. This supports mirroring the previously promoted client without weakening any other baseline comparison. Production's restored homepage/About Google tag must still be removed in TEST.
 
 ## Verification recorded October 24
 
