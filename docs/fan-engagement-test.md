@@ -10,14 +10,9 @@ The count comes from the exact All Shows catalog, with unique event URLs and inc
 
 ## Test verification
 
-The owner clarified that Google should hold the data and reports. Published test-site activity now goes to a separate **Kingdom Circuit — TEST** property in the existing Google account:
+The owner clarified that Google should hold production data, but **must not be set up for the test website**. Test pages load no Google collection script and retain no local event log. The temporary test property was moved to Google Trash. `/test-analytics/` is a guide, not a separate reporting database. Thirty-minute source-artist attribution remains in session storage only to connect navigation steps.
 
-- Account: 403969159; property: 560599333; stream: 16193246798; measurement: `G-NBY8D9JSDH`.
-- Reports: https://analytics.google.com/analytics/web/#/a403969159p560599333/realtime/overview
-- Collection requires the exact test hostname, `/kingdom-circuit-test/` path, explicit test mode, and the pinned test measurement ID. Local preview and production hosts cannot send to this property.
-- The test property has enhanced measurement disabled to avoid duplicate form/search/outbound events. Standard page/session data and the explicit event contract below remain collected. Test sends `debug_mode` for DebugView. Advertising signals/personalization are disabled in the test tag.
-- The former 500-event local QA log and downloads have been retired. `/test-analytics/` is just a link to Google reports and test pages. Only the 30-minute source-artist attribution remains in session storage; that is not a separate reporting database.
-- Page location omits query strings; referring URL is reduced to origin. Google reports are subject to processing delays and browser/consent restrictions.
+Latest approval: finish the test audits, then promote to production and configure the existing Kingdom Circuit GA4 property (549068474, measurement G-N2KK9XF4TJ). Test delivery stays disabled permanently. Mocked production delivery tests verify the events before the live connection is enabled.
 
 ## Event contract
 

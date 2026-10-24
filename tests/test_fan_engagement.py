@@ -27,9 +27,9 @@ class FanEngagement(unittest.TestCase):
     def test_google_is_explicit_and_inherited_dummy_tag_is_removed(self):
         html='<html><head><script async src="https://www.googletagmanager.com/gtag/js?id=G-TEST-DISABLED"></script></head><body></body></html>'
         s=fan.transform(Path('index.html'),html.encode(),{'artists':{}}).decode()
-        self.assertNotIn('googletagmanager.com',s);self.assertNotIn('G-TEST-DISABLED',s);self.assertIn(fan.TEST_GA,s);self.assertIn('"mode": "test"',s)
+        self.assertNotIn('googletagmanager.com',s);self.assertNotIn('G-TEST-DISABLED',s);self.assertIn('"mode": "test"',s)
     def test_report_links_to_google_and_has_no_local_download(self):
-        s=fan.viewer().decode();self.assertIn(fan.GA_REPORT,s);self.assertNotIn('Download test log',s);self.assertIn('REPORTS LIVE IN GOOGLE',s)
+        s=fan.viewer().decode();self.assertNotIn('Download test log',s);self.assertIn('GOOGLE TRACKING DISABLED',s)
     def test_instrumentation_fails_closed_if_upstream_callback_changes(self):
         with self.assertRaises((AssertionError,ValueError)):fan.transform(Path('app.js'),b'function unexpected() {}',{})
     def test_workflow_applies_overlay_before_parity_check(self):

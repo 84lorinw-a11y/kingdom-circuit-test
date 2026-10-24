@@ -1,11 +1,7 @@
-/* Fan engagement v2. Google Analytics owns reporting; TEST has its own property. */
+/* Fan engagement. Test delivery is disabled; production uses existing Google Analytics. */
 (function (root) {
   'use strict';
   const STORE = 'kc-fan-test-events-v1', JOURNEY = 'kc-fan-empty-journey-v1';
-  const TEST_GA = 'G-NBY8D9JSDH';
-  function testDestination(config, env) {
-    return config.mode === 'test' && config.measurementId === TEST_GA && env.host === '84lorinw-a11y.github.io' && env.path.startsWith('/kingdom-circuit-test/');
-  }
   const EVENTS = new Set(['artist_view','show_view','page_engagement','empty_shows_impression','empty_shows_click','event_select','ticket_referral','instagram_referral','artist_social_click','artist_jump_select','artist_suggestion_open','search_results','form_start','form_attempt','form_success','form_error','web_performance','site_error','traffic_arrival','state_select']);
   const KEYS = new Set(['page_type','page_path','artist_name','show_name','placement','action','platform','destination_host','destination_path','result_count','search_term','state','dates','artist_filter','show_type','form_type','error_type','metric','value','viewport','source_artist','source_action','source','medium','campaign','referrer_host','visible_seconds','scroll_percent','show_count']);
   function safeText(value) {
@@ -29,9 +25,7 @@
       if (!EVENTS.has(name)) return;
       const fields = clean({page_type:config.pageType,page_path:env.path,viewport:env.width()<=720?'mobile':'desktop',...params});
       const entry = {event:name,time:new Date().toISOString(),...fields};
-      if (testDestination(config, env) && typeof env.gtag === 'function') {
-        env.gtag('event', name, {...fields,send_to:TEST_GA,debug_mode:true,transport_type:'beacon'});
-      } else if (config.mode === 'production' && env.host === 'kingdomcircuit.com' && typeof env.gtag === 'function') {
+      if (config.mode === 'production' && env.host === 'kingdomcircuit.com' && typeof env.gtag === 'function') {
         env.gtag('event', name, {...fields,transport_type:'beacon'});
       }
       return entry;
@@ -46,7 +40,7 @@
       finish(form,status){const s=states.get(form);if(!s?.pending || !['success','error'].includes(status))return null;s.pending=false;return {type:s.type,status};}
     };
   }
-  const api={STORE,JOURNEY,TEST_GA,testDestination,safeText,clean,today,countShows,tracker,attemptState};
+  const api={STORE,JOURNEY,safeText,clean,today,countShows,tracker,attemptState};
   if (typeof module==='object' && module.exports) module.exports=api;
   if (!root.document) return;
   const d=root.document, configNode=d.getElementById('kc-fan-config'); if (!configNode || root.KCFanAnalytics) return;
@@ -54,14 +48,6 @@
   let storage;try{storage=root.sessionStorage;}catch(_){storage={getItem(){return null},setItem(){}};}
   // Retire the temporary QA log. Only short-lived source attribution stays in this tab.
   try { storage.removeItem(STORE); } catch (_) {}
-  if (testDestination(config,{host:location.hostname,path:location.pathname})) {
-    root.dataLayer=root.dataLayer||[];
-    root.gtag=function(){root.dataLayer.push(arguments);};
-    let referrer='';try{referrer=new URL(d.referrer).origin+'/';}catch(_){}
-    root.gtag('js',new Date());
-    root.gtag('config',TEST_GA,{debug_mode:true,allow_google_signals:false,allow_ad_personalization_signals:false,page_location:location.origin+location.pathname,page_referrer:referrer});
-    const tag=d.createElement('script');tag.async=true;tag.src='https://www.googletagmanager.com/gtag/js?id='+TEST_GA;d.head.append(tag);
-  }
   const track=tracker(config,{storage,path:location.pathname,host:location.hostname,width:()=>root.innerWidth,gtag:root.gtag,notify:detail=>d.dispatchEvent(new CustomEvent('kc:analytics-recorded',{detail}))});
   root.KCFanAnalytics={track};
   const journey=()=>{const j=read(storage,JOURNEY,{});return Date.now()-j.time<30*60*1000?{source_artist:j.artist,source_action:j.action}:{};};
