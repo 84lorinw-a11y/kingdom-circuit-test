@@ -1,5 +1,16 @@
 # Kingdom Circuit test-site instructions
 
+## November 2 verified show information (TEST ONLY)
+
+- Owner approved implementing the reviewed show-information changes in TEST. Production promotion is not authorized by this request.
+- Preserve the current Status, Date, Venue, Location layout and full artwork. Show available public street/postal/country information in Location; keep calendar cards compact.
+- Keep one main outbound button labeled Official details, preferring a confirmed event-specific ticket/registration destination. Any Offer URL must match that visible destination. Information-only URLs are not ticket offers.
+- Use the server-rendered More show details disclosure for available factual descriptions, prices, organizer/promoter, secondary times, roles and practical information. Keep material age/admission restrictions near the main button. Omit unknown optional facts; never infer free, all ages, public admission, availability or fee-inclusive prices.
+- Do not add Directions, extra Official event page/Full schedule buttons or checkout-total filler. Native disclosure content must exist in the initial HTML.
+- Private shows remain listed and clearly private; omit their public Event/Offer markup and street/postal display. Preserve Canadian records, stable URLs, archive history, source photos and verification statuses.
+- `show_information_model.py` supplies visible facts and JSON-LD; `show_information_preview.py` is the deterministic TEST overlay after fan engagement and before the isolated show experiments. The exact baseline gate independently replays it. Keep source JSON/media byte parity and test noindex/robots/analytics isolation.
+- Curated additions in `test-overrides/show-information-overrides.json` require exact event ID/date and source provenance. See `docs/show-information-test.md`. No game or Cloudflare changes belong in this work.
+
 ## October 21 owner-approved protected Cloudflare game release
 
 - Owner explicitly requested publishing the current GitHub TEST game changes to

@@ -9,6 +9,8 @@ on:
       - "scripts/live_mirror_v2.py"
       - "scripts/verify_live_baseline.py"
       - "scripts/fan_engagement_preview.py"
+      - "scripts/show_information_model.py"
+      - "scripts/show_information_preview.py"
       - "scripts/mobile_seo_preview.py"
       - "scripts/national_discovery_preview.py"
       - "scripts/apply_test_redesign.py"
@@ -146,6 +148,7 @@ jobs:
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/verify_live_baseline.py
           python -m py_compile scripts/fan_engagement_preview.py
+          python -m py_compile scripts/show_information_model.py scripts/show_information_preview.py
           python -m py_compile scripts/mobile_seo_preview.py
           python -m py_compile scripts/national_discovery_preview.py
           python -m py_compile scripts/apply_test_redesign.py
@@ -214,10 +217,6 @@ jobs:
           grep -q "\"liveCommit\": \"$LIVE_SHA\"" _site/test-live-mirror-manifest.json
           grep -q "\"liveDeploymentRunId\": \"$LIVE_RUN_ID\"" _site/test-live-mirror-manifest.json
 
-      - name: Preserve the separate show layout experiments
-        if: steps.publishing.outputs.mode == 'full-refresh'
-        run: python scripts/build_mobile_show_test.py _site --isolated
-
       - name: Build and verify artist intake mockup
         if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/build_artist_intake_mockup.py _site
@@ -233,6 +232,14 @@ jobs:
       - name: Apply approved no-show discovery and test analytics
         if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/fan_engagement_preview.py _site _live_site
+
+      - name: Add verified show information and consistent ticket destinations
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        run: python scripts/show_information_preview.py _site _live_site
+
+      - name: Preserve the separate show layout experiments using final show facts
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        run: python scripts/build_mobile_show_test.py _site --isolated
 
       - name: Verify the final deployment artifact
         run: |

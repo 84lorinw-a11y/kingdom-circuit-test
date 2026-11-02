@@ -6,11 +6,69 @@ import tempfile
 import json
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from build_mobile_show_test import billing, host_label, image_fields, safe_page, valid_official_url, read_detail, lineup_notice, verify_billing
+from build_mobile_show_test import billing, collect, host_label, image_fields, safe_page, valid_official_url, read_detail, lineup_notice, verify_billing
 from apply_test_redesign import create_history_event_page, history_event_href
 
 
 class MobileCalendarContentTests(unittest.TestCase):
+    def archive_fixture(self, site, status='Cancelled', end_date='2026-10-31'):
+        """A current private show and a distinct published cancellation archive."""
+        (site / 'shows').mkdir()
+        (site / 'config').mkdir()
+        (site / 'config/artists.json').write_text('[{"name":"Nate Period"}]')
+        profile = site / 'artists/nate-period/index.html'
+        profile.parent.mkdir(parents=True)
+        profile.write_text('<article class="past-show-row"><a href="/kingdom-circuit-test/event/cancelled/">Archived show</a></article>')
+        for slug, event_status, date, date_heading in (
+            ('private', 'Private Event', '2026-11-21', 'Date'),
+            ('cancelled', status, end_date, 'Originally scheduled'),
+        ):
+            path = site / 'event' / slug / 'index.html'
+            path.parent.mkdir(parents=True)
+            schema = {'@type': 'MusicEvent', 'startDate': date, 'endDate': date,
+                      'eventStatus': 'https://schema.org/EventCancelled' if event_status in {'Cancelled', 'Canceled'} else 'https://schema.org/EventScheduled'}
+            path.write_text('<h1>' + slug + '</h1><p class="artist-line">Nate Period - Guest Artist</p>'
+                            '<dl><div><dt>Status</dt><dd>' + event_status + '</dd></div>'
+                            '<div><dt>' + date_heading + '</dt><dd>Oct 31, 2026</dd></div>'
+                            '<div><dt>Location</dt><dd>Washington, DC</dd></div></dl>'
+                            '<script type="application/ld+json">' + json.dumps(schema) + '</script>')
+        (site / 'shows/index.html').write_text(
+            '<article class="event-card" data-event-card data-date="2026-11-21" data-end-date="2026-11-21" data-state="DC" data-type="concert">'
+            '<h3><a href="/kingdom-circuit-test/event/private/">Private school show</a></h3>'
+            '<p class="artist-line">Nate Period - Guest Artist</p>'
+            '<dl><dt>Date</dt><dd>Nov 21, 2026</dd><dt>Location</dt><dd>Washington, DC</dd></dl></article>')
+
+    def test_cancelled_archive_keeps_original_date_without_becoming_upcoming(self):
+        for status in ('Cancelled', 'Canceled'):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as temp:
+                site = Path(temp)
+                self.archive_fixture(site, status=status)
+                for day in ('2026-10-28', '2026-10-31', '2026-11-02'):
+                    with self.subTest(day=day):
+                        events, artists = collect(site, day)
+                        self.assertEqual([e['href'] for e in events], [
+                            '/kingdom-circuit-test/event/private/', '/kingdom-circuit-test/event/cancelled/'])
+                        self.assertFalse(events[0]['past'])
+                        self.assertEqual(events[0]['status'], 'Private Event')
+                        self.assertEqual(events[0]['artists'], ['Nate Period', 'Guest Artist'])
+                        self.assertTrue(events[1]['past'])
+                        self.assertEqual(events[1]['type'], 'archive')
+                        self.assertEqual(events[1]['status'], status)
+                        self.assertEqual(events[1]['date'], '2026-10-31')
+                        self.assertEqual(events[1]['endDate'], '2026-10-31')
+                        self.assertEqual(events[1]['dateLabel'], 'Oct 31, 2026')
+                        self.assertEqual(events[1]['artists'], ['Nate Period', 'Guest Artist'])
+                        self.assertEqual(artists, ['Nate Period'])
+
+    def test_archive_still_requires_dates_and_explicit_cancellation_for_future_dates(self):
+        for status, end_date in (('Scheduled', '2026-10-31'), ('Private Event', '2026-10-31'),
+                                 ('Cancelled', ''), ('Cancelled', 'unknown')):
+            with self.subTest(status=status, date=end_date), tempfile.TemporaryDirectory() as temp:
+                site = Path(temp)
+                self.archive_fixture(site, status=status, end_date=end_date)
+                with self.assertRaisesRegex(ValueError, 'Archive has missing/nonpast date'):
+                    collect(site, '2026-10-28')
+
     def test_community_event_preserves_schema_dates_and_explicit_no_lineup(self):
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)
@@ -37,6 +95,9 @@ class MobileCalendarContentTests(unittest.TestCase):
                         verify_billing(event)
 
     def test_unannounced_lineup_requires_the_explicit_published_notice(self):
+        rural = 'August 27–29, 2027. Free admission. Lineup and daily times to be announced.'
+        self.assertEqual(lineup_notice('<p data-kc-event-notice>' + rural + '</p>'), rural)
+        verify_billing({'href': '/event/rural/', 'artists': [], 'artistLinks': {}, 'lineupNotice': rural})
         source = '<p data-kc-event-notice>Lineup to be announced. Outdoor Fan Fest starts at 3 PM.</p>'
         notice = lineup_notice(source)
         self.assertEqual(notice, 'Lineup to be announced. Outdoor Fan Fest starts at 3 PM.')

@@ -1,0 +1,15 @@
+{
+  "manual:shai-linne-ready-conference-kansas-city-2027-01-29": {
+    "startDate": "2027-01-29",
+    "postalCode": "64118",
+    "organizer": {"name": "Spurgeon College", "url": "https://spurgeoncollege.com/ready-conference/"},
+    "registrationUrl": "https://ready27.events.mbts.edu/registration/select",
+    "registrationUrlVerified": true,
+    "price": {"amount": "15", "currency": "USD", "ticketType": "Concert only", "includesAllFeesConfirmed": false},
+    "publicDescription": "Shai Linne performs Friday night during Ready Conference. Concert admission is included with regular conference registration; a concert-only ticket is also available.",
+    "registrationTime": "20:30",
+    "registrationLocation": "Welcome Center",
+    "informationSources": ["https://spurgeoncollege.com/ready-conference/", "https://ready27.events.mbts.edu/registration/select", "https://ready27.events.mbts.edu/schedule/"],
+    "informationReviewedAt": "2026-11-02"
+  }
+}

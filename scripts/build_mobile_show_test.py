@@ -51,7 +51,7 @@ def host_label(source):
 
 
 LINEUP_NOTICE = re.compile(
-    r'\b(?:lineup\s+(?:to be announced|has not yet been announced)'
+    r'\b(?:lineup\s+(?:(?:and daily times\s+)?to be announced|has not yet been announced)'
     r'|no performer lineup has been announced)\b', re.I)
 
 
@@ -112,7 +112,8 @@ def read_detail(site, href):
     return {"key": href.rstrip("/").split("/")[-1], "href": href,
             "title": clean_text(match_text(r'<h1\b[^>]*>(.*?)</h1>', source)),
             "date": start_date, "endDate": end_date,
-            "dateLabel": field(source, "Date"), "venue": field(source, "Venue"),
+            "dateLabel": field(source, "Date") or field(source, "Originally scheduled"),
+            "venue": field(source, "Venue"),
             "location": field(source, "Location"), "artists": names, "artistLinks": links,
             "hostLabel": host_label(source),
             "lineupNotice": lineup_notice(source, str(schema.get("description") or "")),
@@ -152,7 +153,11 @@ def collect(site, today):
     past = []
     for href in sorted(archives - current_hrefs):
         event = read_detail(site, href)
-        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", event["endDate"]) or event["endDate"] >= today:
+        # Production also archives explicit cancellations before their original
+        # date. Keep those records out of upcoming results without losing them.
+        cancelled = event["status"].casefold() in {"cancelled", "canceled"}
+        if (not re.fullmatch(r"\d{4}-\d{2}-\d{2}", event["endDate"])
+                or (event["endDate"] >= today and not cancelled)):
             raise ValueError(f"Archive has missing/nonpast date: {href}")
         event.update(state=event["location"].rsplit(",", 1)[-1].strip(), type="archive", past=True)
         past.append(event)
