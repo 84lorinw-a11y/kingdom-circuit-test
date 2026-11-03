@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from show_information_model import normalize
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261102-2'
+VERSION = '20261103-1'
 FILES = frozenset({'assets/show-information.css'})
 EVENT_TYPES = {'Event', 'MusicEvent'}
 
@@ -122,7 +122,9 @@ def address_html(record):
         locality += ' ' + str(record['postalCode'])
     country = {'US': 'United States', 'CA': 'Canada', 'PR': 'Puerto Rico'}.get(record.get('country'), record.get('country', ''))
     lines = ([] if record.get('private') else [record.get('address'), record.get('address2') or record.get('suite')]) + [locality, country]
-    return '<address class="kc-address">' + '<br>'.join(escape(str(x)) for x in lines if x) + '</address>'
+    if not record.get('private') and not record.get('address'):
+        lines.insert(0, 'Address not confirmed')
+    return '<address class="kc-address">' + '<br> '.join(escape(str(x)) for x in lines if x) + '</address>'
 
 
 def more_details(record):
@@ -135,6 +137,8 @@ def more_details(record):
             organizer = f'<a href="{escape(record["organizerUrl"], quote=True)}" target="_blank" rel="noopener noreferrer">{organizer}</a>'
         facts.append(('Organizer / promoter', organizer))
     for source, label in (('doorsTimeLabel', 'Doors'), ('registrationTimeLabel', 'Concert registration'), ('endTimeLabel', 'Ends')):
+        if source == 'doorsTimeLabel' and record.get('primaryTimeKind') == 'doors' and not record.get('startTimeLabel'):
+            continue
         if record.get(source):
             value = record[source]
             if source == 'registrationTimeLabel' and record.get('registrationLocation'):
@@ -191,10 +195,14 @@ def patched_schema(value, record):
         location = value.setdefault('location', {'@type': 'Place'})
         if record.get('venue'):
             location['name'] = record['venue']
+        else:
+            location.pop('name', None)
         address = location.setdefault('address', {'@type': 'PostalAddress'})
         for source, target in (('address', 'streetAddress'), ('city', 'addressLocality'), ('state', 'addressRegion'), ('postalCode', 'postalCode'), ('country', 'addressCountry')):
             if record.get(source):
                 address[target] = record[source]
+            elif source in {'address', 'postalCode'}:
+                address.pop(target, None)
         if record.get('address2') or record.get('suite'):
             address['streetAddress'] = ', '.join(x for x in [record.get('address'), record.get('address2') or record.get('suite')] if x)
         value.pop('offers', None)
@@ -236,8 +244,10 @@ def detail_transform(text, record):
         elif label == 'Date' and record.get('dateLabel'):
             original_date = doc.text(value)
             replacement = escape(record['dateLabel'])
-        elif label == 'Venue' and record.get('venue'):
-            replacement = escape(record['venue'])
+            if not record.get('startTimeLabel'):
+                replacement += '<br> <span class="kc-unconfirmed">Start time not confirmed</span>'
+        elif label == 'Venue':
+            replacement = escape(record['venueLabel'])
         elif label == 'Status' and record.get('private'):
             replacement = escape(record.get('displayStatus') or 'Private Event — not open to the public')
         elif label == 'Status' and record.get('soldOut') and norm(record.get('status')) not in {'cancelled', 'canceled', 'postponed'}:
@@ -310,15 +320,18 @@ def listing_facts(raw, record):
             row = next((row for row in doc.nodes if n in row.children), None)
             labels = [child for child in row.children if child.tag == 'dt'] if row else []
             label = doc.text(labels[0]) if labels else ''
-            replacement = record.get({'Date': 'dateLabel', 'Venue': 'venue'}.get(label, ''))
+            replacement = record.get({'Date': 'dateLabel', 'Venue': 'venueLabel'}.get(label, ''))
         elif n.has('kc-teaser-date'):
             replacement = record.get('dateLabel')
         elif n.has('kc-teaser-venue'):
-            replacement = record.get('venue')
+            replacement = record.get('venueLabel')
         elif n.has('kc-rd-show-venue') or n.has('kc-rd-next-venue'):
-            venue = record.get('venue')
+            venue = record.get('venueLabel')
             if venue:
-                replacement = ' · '.join(x for x in (venue, record.get('startTimeLabel')) if x)
+                time_label = record.get('startTimeLabel')
+                if not time_label and record.get('primaryTimeKind') == 'doors' and record.get('doorsTimeLabel'):
+                    time_label = 'Doors ' + record['doorsTimeLabel']
+                replacement = ' · '.join(x for x in (venue, time_label) if x)
         if replacement:
             changes.append((n.opening_end, n.closing_start, escape(replacement)))
             if 'title' in n.attrs:
@@ -340,7 +353,7 @@ def listing_facts(raw, record):
         # An explicit aria-label replaces all descendant text in the accessible
         # name, including the visible material status badge.
         identity = ' · '.join(x for x in (title, status) if x)
-        root_attributes['aria-label'] = ', '.join(x for x in (record.get('dateLabel'), place, record.get('venue')) if x) + (' | ' + identity if identity else '')
+        root_attributes['aria-label'] = ', '.join(x for x in (record.get('dateLabel'), place, record.get('venueLabel')) if x) + (' | ' + identity if identity else '')
     if root_attributes:
         changes.append((root.start, root.opening_end, attributes(raw[root.start:root.opening_end], root_attributes)))
     result = replace_spans(raw, changes)
@@ -422,9 +435,12 @@ def verify(live, site, ctx):
         for row in facts.children:
             labels = [n for n in row.children if n.tag == 'dt']
             values = [n for n in row.children if n.tag == 'dd']
-            field = {'Date': 'dateLabel', 'Venue': 'venue'}.get(after.text(labels[0])) if labels else None
+            field = {'Date': 'dateLabel', 'Venue': 'venueLabel'}.get(after.text(labels[0])) if labels else None
             if field and record.get(field):
-                assert len(values) == 1 and after.text(values[0]) == record[field], f'{rel}: visible {field} drift'
+                expected = record[field]
+                if field == 'dateLabel' and not record.get('startTimeLabel'):
+                    expected += ' Start time not confirmed'
+                assert len(values) == 1 and after.text(values[0]) == expected, f'{rel}: visible {field} drift'
         schemas = [s for _, v in schema_blocks(after.source) for s in event_schemas(v)]
         if record.get('private'):
             assert not schemas, f'{rel}: private event exposed in schema'
@@ -432,6 +448,8 @@ def verify(live, site, ctx):
         for schema in schemas:
             if record.get('venue'):
                 assert schema.get('location', {}).get('name') == record['venue'], f'{rel}: schema venue drift'
+            else:
+                assert 'name' not in schema.get('location', {}), f'{rel}: unconfirmed venue in schema'
             assert schema.get('offers') == record.get('offer'), f'{rel}: offer drift'
             if record.get('offer'):
                 url = record['offer']['url']

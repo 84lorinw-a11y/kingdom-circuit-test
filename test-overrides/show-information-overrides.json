@@ -1292,7 +1292,10 @@
         "quoteOrSummary": "March2026 published business filing identifies The Father's House of Huntington Beach/Legacy Center OC at the exact stored street15202TransistorLane,HuntingtonBeachCA92649. Used only for ZIP; not proof of venue billing."
       }
     ],
-    "informationConfidence": "high"
+    "informationConfidence": "high",
+    "primaryTimeKind": "doors",
+    "informationPresentationReviewedAt": "2026-11-03",
+    "informationPresentationNote": "Owner approved one useful confirmed time. Display doors 6:30 PM in the date row; actual performance start remains unconfirmed."
   },
   "bandsintown:109072797": {
     "startDate": "2026-11-22",
@@ -1431,5 +1434,29 @@
       }
     ],
     "informationConfidence": "high"
+  },
+  "bandsintown:109085594": {
+    "startDate": "2026-11-10",
+    "informationPresentationReviewedAt": "2026-11-03",
+    "informationPresentationNote": "Owner approved displaying unknown venue/address as not confirmed; retain artist-published date/time and do not infer private admission.",
+    "unconfirmedVenueValue": "RWG TOUR 2026"
+  },
+  "bandsintown:109085657": {
+    "startDate": "2026-11-13",
+    "informationPresentationReviewedAt": "2026-11-03",
+    "informationPresentationNote": "Owner approved displaying unknown venue/address as not confirmed; retain artist-published date/time and do not infer private admission.",
+    "unconfirmedVenueValue": "RWG TOUR 2026"
+  },
+  "bandsintown:109085695": {
+    "startDate": "2026-11-19",
+    "informationPresentationReviewedAt": "2026-11-03",
+    "informationPresentationNote": "Owner approved displaying unknown venue/address as not confirmed; retain artist-published date/time and do not infer private admission.",
+    "unconfirmedVenueValue": "RWG TOUR 2026"
+  },
+  "bandsintown:109085738": {
+    "startDate": "2026-11-21",
+    "informationPresentationReviewedAt": "2026-11-03",
+    "informationPresentationNote": "Owner approved displaying unknown venue/address as not confirmed; retain artist-published date/time and do not infer private admission.",
+    "unconfirmedVenueValue": "RWG TOUR 2026"
   }
 }

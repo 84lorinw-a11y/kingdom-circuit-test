@@ -34,3 +34,11 @@ Reviewed all 85 public shows in the missing-information queue. Added sourced ven
 Unknown performance times remain unknown when only doors, registration, admission windows, previous-year schedules or syndicated metadata are available. The CJ Emulous Cocoa conference location requires organizer confirmation before using a possible Orlando venue. Artist roster, source catalogs/media, Canadian records, archive history and private-address protections remain unchanged.
 
 Verified corrections now flow consistently into visible detail facts, compact listing facts, artist next-show rows, event schema and generated date metadata. Material private/sold-out/cancelled warnings remain in accessible row labels. Event names and URLs are retained. This is TEST-only research and publication, not production promotion.
+
+## November 3 owner review of unconfirmed facts
+
+Missing core facts now display `Venue not confirmed`, `Address not confirmed`, or `Start time not confirmed` in the existing detail slots. These are display labels only: placeholder source values such as TBD and Venue not provided are omitted from factual schema. Missing optional facts and unknown public-access status do not gain boilerplate warnings; explicit private events and known material admission restrictions remain visible.
+
+The four November RWG dates for 808 BEEZY retain their supplied dates/times and city/state. Their repeated tour-title venue values are treated as unconfirmed through an exact value match, so a later real venue from the source replaces the label automatically. EGR Bradley retains Miracle House Ministries and displays its missing address/start time as unconfirmed. Kaden Jordan's November 21 page and compact cards show the confirmed `Doors 6:30 PM PST` once; the actual performance start remains unconfirmed and schema stays date-only. If an actual start arrives later, it takes priority and doors returns to secondary details.
+
+Six accepted-unknown records remain factual gaps, not completed verification. The refreshed owner report keeps 23 other records for review and two separate venue-evidence follow-ups. Ignite's replacement tour source and individual showcards await the source link omitted from the owner's request; no guessed link or artwork is substituted. TEST only.

@@ -1,5 +1,6 @@
 /* Additive event information. Preserve the published layout and complete artwork. */
 .kc-address{font-style:normal;line-height:1.55;margin:0;overflow-wrap:anywhere}
+.kc-unconfirmed{color:#c4bdb6;font-size:14px;line-height:1.5}
 .kc-more-details{border-top:1px solid #513d32;border-bottom:1px solid #513d32;margin:20px 0 0}
 .kc-more-details>summary{min-height:52px;cursor:pointer;display:list-item;list-style-position:inside;padding:14px 0;color:#f5f2ea;font-size:15px;font-weight:700}
 .kc-more-details>summary::marker{color:#f58d71}

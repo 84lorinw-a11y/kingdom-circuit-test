@@ -35,10 +35,13 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 _PRIVATE = re.compile(r"\b(?:private\s+event|invite[\s-]*only|invitation[\s-]*only|not\s+open\s+to\s+the\s+public)\b", re.I)
+_UNKNOWN_FACT = {'tbd', 'tba', 'unknown', 'not confirmed', 'not provided', 'to be announced',
+                 'to be determined', 'venue not confirmed', 'venue not provided',
+                 'address not confirmed', 'address not provided'}
 _DERIVED = (
     "dateLabel", "startTimeLabel", "doorsTimeLabel", "registrationTimeLabel",
     "endTimeLabel", "timezoneLabel", "priceLabel", "organizerName",
-    "organizerUrl", "admissionLabel", "schemaStartDate", "schemaEndDate",
+    "organizerUrl", "admissionLabel", "schemaStartDate", "schemaEndDate", "venueLabel",
 )
 
 
@@ -225,6 +228,18 @@ def normalize(event):
     result = deepcopy(event)
     for key in _DERIVED:
         result.pop(key, None)
+    # Missing facts have presentation labels, never literal placeholder values
+    # in Event location/address fields. Exact reviewed overrides also identify
+    # tour names that were incorrectly occupying the venue slot.
+    venue = _text(event.get("venue"))
+    reviewed_placeholder = _text(event.get("unconfirmedVenueValue"))
+    if (reviewed_placeholder and venue.casefold() == reviewed_placeholder.casefold()) or venue.casefold() in _UNKNOWN_FACT:
+        venue = ""
+    result["venue"] = venue
+    result["venueLabel"] = venue or "Venue not confirmed"
+    for field in ('address', 'address2', 'suite', 'postalCode'):
+        if _text(result.get(field)).casefold() in _UNKNOWN_FACT:
+            result[field] = ''
     status = _text(event.get("status")).casefold().replace("-", "_").replace(" ", "_")
     private = event.get("private") is True or any(_text(event.get(key)).casefold() == "private"
         for key in ("status", "admission", "admissionRestriction")) or any(_PRIVATE.search(_text(event.get(key)))
@@ -282,12 +297,19 @@ def normalize(event):
         if field not in result:
             continue
         reference = end if field == 'endTimeLabel' else start
+        if not reference and zone and start_day and field in ('doorsTimeLabel', 'registrationTimeLabel'):
+            clock = _clock(event.get('doorsTime' if field == 'doorsTimeLabel' else 'registrationTime'))
+            reference = _localize(datetime.combine(start_day, clock), zone) if clock else None
         if reference:
             result[field] += ' ' + reference.tzname()
         elif zone:
             result[field] += ' (' + zone.key + ')'
     if result.get('dateLabel') and result.get('startTimeLabel'):
         result['dateLabel'] += ' - ' + result['startTimeLabel']
+    elif result.get('dateLabel') and event.get('primaryTimeKind') == 'doors' and result.get('doorsTimeLabel'):
+        # A useful confirmed arrival time stays explicitly doors, not a
+        # performance start or a date-time supplied to Google.
+        result['dateLabel'] += ' - Doors ' + result['doorsTimeLabel']
 
     organizer = event.get("organizer")
     if isinstance(organizer, dict):

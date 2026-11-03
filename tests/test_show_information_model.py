@@ -21,6 +21,13 @@ class ShowInformationModelTests(unittest.TestCase):
         result["artists"].append("Other")
         self.assertEqual(source, before)
 
+    def test_new_source_details_replace_previously_unconfirmed_venue(self):
+        placeholder = self.event(venue='RWG TOUR 2026', unconfirmedVenueValue='RWG TOUR 2026')
+        self.assertEqual(normalize(placeholder)['venueLabel'], 'Venue not confirmed')
+        refreshed = normalize({**placeholder, 'venue': 'Confirmed Hall', 'address': '100 Main St'})
+        self.assertEqual(refreshed['venueLabel'], 'Confirmed Hall')
+        self.assertEqual(refreshed['address'], '100 Main St')
+
     def test_public_description_precedes_legacy_description(self):
         result = normalize(self.event(publicDescription=" Public copy ", description="Other", notes="Internal"))
         self.assertEqual(result["description"], "Public copy")

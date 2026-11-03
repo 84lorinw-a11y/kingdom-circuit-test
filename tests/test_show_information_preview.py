@@ -89,6 +89,53 @@ class ShowInformationPreviewTests(unittest.TestCase):
         self.assertNotIn('All ages', text)
         self.assertNotIn('Free', text)
 
+    def test_missing_core_facts_are_clear_without_placeholder_schema_or_admission_claims(self):
+        record = self.record(venue='RWG TOUR 2026', address='', postalCode='',
+                             startTime='', endTime='', unconfirmedVenueValue='RWG TOUR 2026')
+        text = preview.detail_transform(fixture(), record)
+        self.assertIn('Venue not confirmed', text)
+        self.assertIn('Address not confirmed', text)
+        self.assertIn('Start time not confirmed', text)
+        self.assertNotIn('kc-admission-restriction', text)
+        schema = next(preview.event_schemas(preview.schema_blocks(text)[0][1]))
+        self.assertEqual(schema['startDate'], '2027-01-29')
+        self.assertNotIn('name', schema['location'])
+        self.assertNotIn('not confirmed', json.dumps(schema))
+        self.assertNotIn('RWG TOUR', json.dumps(schema))
+        path = '/kingdom-circuit-test/event/sample/'
+        card = preview.listing_transform(listing_fixture('event-card'), {'paths': {path: record}})
+        self.assertIn('Venue not confirmed', card)
+        self.assertNotIn('Address not confirmed', card)
+
+    def test_primary_doors_time_appears_once_and_does_not_become_performance_time(self):
+        record = self.record(startDate='2026-11-21', startTime='', endTime='',
+                             doorsTime='18:30', timezone='America/Los_Angeles', primaryTimeKind='doors')
+        text = preview.detail_transform(fixture(), record)
+        self.assertEqual(text.count('6:30 PM PST'), 1)
+        self.assertIn('Doors 6:30 PM PST', text)
+        self.assertIn('Start time not confirmed', text)
+        self.assertNotIn('kc-more-details', text)
+        schema = next(preview.event_schemas(preview.schema_blocks(text)[0][1]))
+        self.assertEqual(schema['startDate'], '2026-11-21')
+        self.assertNotIn('endDate', schema)
+        path = '/kingdom-circuit-test/event/sample/'
+        for kind in ('event-card', 'kc-discovery-show', 'kc-rd-show-row', 'kc-rd-next-show'):
+            with self.subTest(kind=kind):
+                card = preview.listing_transform(listing_fixture(kind), {'paths': {path: record}})
+                doc = Document(card)
+                self.assertIn('Doors 6:30 PM PST', doc.text(doc.nodes[0]))
+                self.assertNotIn('data-start-time', doc.nodes[0].attrs)
+
+    def test_legacy_tbd_address_and_venue_not_provided_are_not_factual_schema(self):
+        record = self.record(venue='Venue not provided', address='TBD', postalCode='TBA')
+        text = preview.detail_transform(fixture(), record)
+        self.assertIn('Venue not confirmed', text)
+        self.assertIn('Address not confirmed', text)
+        schema = next(preview.event_schemas(preview.schema_blocks(text)[0][1]))
+        self.assertNotIn('name', schema['location'])
+        self.assertNotIn('streetAddress', schema['location']['address'])
+        self.assertNotIn('postalCode', schema['location']['address'])
+
     def test_private_removes_nested_event_schema_and_does_not_display_address(self):
         record = self.record(title='Album session (Invite Only)', address='PRIVATE STREET', postalCode='SECRETZIP')
         text = preview.detail_transform(fixture(), record)
