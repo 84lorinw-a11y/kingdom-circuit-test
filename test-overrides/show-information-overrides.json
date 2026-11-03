@@ -1197,9 +1197,11 @@
     "address": "330 East New York Avenue",
     "postalCode": "32724",
     "informationSources": [
-      "https://cornergatecoffeehouse.com/"
+      "https://cornergatecoffeehouse.com/",
+      "https://www.igniteandunitetour.com/",
+      "https://static.wixstatic.com/media/690614_d1e62803c0e64313ae73e8275825bdae~mv2.png"
     ],
-    "informationReviewedAt": "2026-11-02",
+    "informationReviewedAt": "2026-11-03",
     "informationEvidence": [
       {
         "url": "https://cornergatecoffeehouse.com/",
@@ -1208,18 +1210,74 @@
           "postalCode"
         ],
         "quoteOrSummary": "The venue-owned website identifies Corner Gate Coffee House in DeLand and lists its location as 330 East New York Avenue, Deland, FL 32724. This establishes venue location, not the concert start time."
+      },
+      {
+        "url": "https://www.igniteandunitetour.com/",
+        "fields": [
+          "officialUrl",
+          "artwork",
+          "startTime",
+          "doorsTime",
+          "price",
+          "address",
+          "postalCode"
+        ],
+        "quoteOrSummary": "Owner-selected official tour schedule and this city’s original showcard confirm the venue/address, 5:30 PM doors and 6 PM start. DeLand, Daytona Beach and Plantation are labeled Free Event. Tour-site prices for Jacksonville are older than the dated October 29 venue announcement; retain current free/no-ticket facts. The tour-site January 7 Jacksonville schedule text is a typo: the flyer and dated venue announcement confirm November 7, 2026."
       }
     ],
-    "informationConfidence": "high for address and postalCode; startTime unresolved"
+    "informationConfidence": "high for address, doors/start, source and artwork; current dated Jacksonville admission supersedes older prices; no unannounced end or age restrictions inferred",
+    "startTime": "18:00",
+    "startDateTime": "2026-11-11T18:00:00-05:00",
+    "doorsTime": "17:30",
+    "timezone": "America/New_York",
+    "detailsPending": false,
+    "officialUrl": "https://www.igniteandunitetour.com/",
+    "ticketUrl": "",
+    "registrationUrl": "",
+    "organizer": {
+      "name": "Ignite and Unite Tour",
+      "url": "https://www.igniteandunitetour.com/"
+    },
+    "artwork": {
+      "src": "assets/ignite-tour/deland-2026-11-11-w1080.webp",
+      "width": 1080,
+      "height": 1350,
+      "alt": "Ignite and Unite Tour — DeLand, Florida — November 11, 2026 official showcard",
+      "srcset": "assets/ignite-tour/deland-2026-11-11-w320.webp 320w, assets/ignite-tour/deland-2026-11-11-w640.webp 640w, assets/ignite-tour/deland-2026-11-11-w1080.webp 1080w"
+    },
+    "officialBill": [
+      "OTG Zico",
+      "Altar Ego",
+      "J10",
+      "Legit",
+      "3HRE",
+      "B. Cody Shields"
+    ],
+    "advertisedBilling": [
+      "OTG Zico",
+      "Altar Ego",
+      "J10",
+      "Legit",
+      "3HRE",
+      "B. Cody Shields"
+    ],
+    "hosts": [
+      "Pastor John Humphries (message)"
+    ],
+    "price": "Free admission",
+    "publicDescription": "The Ignite and Unite Tour comes to Corner Gate in DeLand, Florida, on November 11, 2026. Doors open at 5:30 PM; the concert starts at 6 PM Eastern. Free admission. Performing: OTG Zico, Altar Ego, J10, Legit, 3HRE, B. Cody Shields. Pastor John Humphries brings the message.",
+    "scheduleDetails": []
   },
   "manual:ignite-and-unite-tour-daytona-beach-2026-11-13": {
     "startDate": "2026-11-13",
     "address": "212 South Beach Street",
     "postalCode": "32114",
     "informationSources": [
-      "https://theporchhealthbar.com/events"
+      "https://theporchhealthbar.com/events",
+      "https://www.igniteandunitetour.com/",
+      "https://static.wixstatic.com/media/690614_bfc9c5fdd65b408589fe70c16c158e56~mv2.png"
     ],
-    "informationReviewedAt": "2026-11-02",
+    "informationReviewedAt": "2026-11-03",
     "informationEvidence": [
       {
         "url": "https://theporchhealthbar.com/events",
@@ -1228,9 +1286,64 @@
           "postalCode"
         ],
         "quoteOrSummary": "The Porch Health Bar official website lists 212 South Beach Street, Daytona Beach, FL 32114. Its events page currently supplies a September 18 worship night but no November 13 tour time."
+      },
+      {
+        "url": "https://www.igniteandunitetour.com/",
+        "fields": [
+          "officialUrl",
+          "artwork",
+          "startTime",
+          "doorsTime",
+          "price",
+          "address",
+          "postalCode"
+        ],
+        "quoteOrSummary": "Owner-selected official tour schedule and this city’s original showcard confirm the venue/address, 5:30 PM doors and 6 PM start. DeLand, Daytona Beach and Plantation are labeled Free Event. Tour-site prices for Jacksonville are older than the dated October 29 venue announcement; retain current free/no-ticket facts. The tour-site January 7 Jacksonville schedule text is a typo: the flyer and dated venue announcement confirm November 7, 2026."
       }
     ],
-    "informationConfidence": "high for address and postalCode; startTime unresolved"
+    "informationConfidence": "high for address, doors/start, source and artwork; current dated Jacksonville admission supersedes older prices; no unannounced end or age restrictions inferred",
+    "startTime": "18:00",
+    "startDateTime": "2026-11-13T18:00:00-05:00",
+    "doorsTime": "17:30",
+    "timezone": "America/New_York",
+    "detailsPending": false,
+    "officialUrl": "https://www.igniteandunitetour.com/",
+    "ticketUrl": "",
+    "registrationUrl": "",
+    "organizer": {
+      "name": "Ignite and Unite Tour",
+      "url": "https://www.igniteandunitetour.com/"
+    },
+    "artwork": {
+      "src": "assets/ignite-tour/daytona-beach-2026-11-13-w1080.webp",
+      "width": 1080,
+      "height": 1350,
+      "alt": "Ignite and Unite Tour — Daytona Beach, Florida — November 13, 2026 official showcard",
+      "srcset": "assets/ignite-tour/daytona-beach-2026-11-13-w320.webp 320w, assets/ignite-tour/daytona-beach-2026-11-13-w640.webp 640w, assets/ignite-tour/daytona-beach-2026-11-13-w1080.webp 1080w"
+    },
+    "officialBill": [
+      "OTG Zico",
+      "Altar Ego",
+      "J10",
+      "Legit",
+      "3HRE",
+      "B. Cody Shields"
+    ],
+    "advertisedBilling": [
+      "OTG Zico",
+      "Altar Ego",
+      "J10",
+      "Legit",
+      "3HRE",
+      "B. Cody Shields"
+    ],
+    "hosts": [
+      "Pastor John Humphries (message)"
+    ],
+    "suite": "Suite 110",
+    "price": "Free admission",
+    "publicDescription": "The Ignite and Unite Tour comes to The Porch in Daytona Beach, Florida, on November 13, 2026. Doors open at 5:30 PM; the concert starts at 6 PM Eastern. Free admission. Performing: OTG Zico, Altar Ego, J10, Legit, 3HRE, B. Cody Shields. Pastor John Humphries brings the message.",
+    "scheduleDetails": []
   },
   "official:652bb96bc9c6543ec7d3": {
     "startDate": "2026-11-06",
@@ -1458,5 +1571,165 @@
     "informationPresentationReviewedAt": "2026-11-03",
     "informationPresentationNote": "Owner approved displaying unknown venue/address as not confirmed; retain artist-published date/time and do not infer private admission.",
     "unconfirmedVenueValue": "RWG TOUR 2026"
+  },
+  "manual:ignite-and-unite-tour-jacksonville-2026-11-07": {
+    "startDate": "2026-11-07",
+    "startTime": "18:00",
+    "startDateTime": "2026-11-07T18:00:00-05:00",
+    "doorsTime": "17:30",
+    "timezone": "America/New_York",
+    "detailsPending": false,
+    "officialUrl": "https://www.igniteandunitetour.com/",
+    "ticketUrl": "",
+    "registrationUrl": "",
+    "organizer": {
+      "name": "Ignite and Unite Tour",
+      "url": "https://www.igniteandunitetour.com/"
+    },
+    "artwork": {
+      "src": "assets/ignite-tour/jacksonville-2026-11-07-w1122.webp",
+      "width": 1122,
+      "height": 1402,
+      "alt": "Ignite and Unite Tour — Jacksonville, Florida — November 7, 2026 official showcard",
+      "srcset": "assets/ignite-tour/jacksonville-2026-11-07-w320.webp 320w, assets/ignite-tour/jacksonville-2026-11-07-w640.webp 640w, assets/ignite-tour/jacksonville-2026-11-07-w1122.webp 1122w"
+    },
+    "informationReviewedAt": "2026-11-03",
+    "officialBill": [
+      "3HRE",
+      "J10",
+      "Legit",
+      "B. Cody Shields",
+      "Altar Ego",
+      "OTG Zico",
+      "Kelo Cho",
+      "DJ Scott Free"
+    ],
+    "advertisedBilling": [
+      "3HRE",
+      "J10",
+      "Legit",
+      "B. Cody Shields",
+      "Altar Ego",
+      "OTG Zico",
+      "Kelo Cho",
+      "DJ Scott Free"
+    ],
+    "hosts": [
+      "Pastor John Humphries (message)"
+    ],
+    "price": "Free admission — no tickets needed",
+    "publicDescription": "The Ignite and Unite Tour comes to Murray Hill Theatre in Jacksonville, Florida, on November 7, 2026. Doors open at 5:30 PM; the concert starts at 6 PM Eastern. Free admission. Performing: 3HRE, J10, Legit, B. Cody Shields, Altar Ego, OTG Zico, Kelo Cho, DJ Scott Free. Pastor John Humphries brings the message. The outdoor Unity in the Community gathering begins at 3:30 PM. The venue’s October 29 announcement confirms no tickets are needed; older prices printed on the tour flyer do not apply.",
+    "publicNotice": "Free admission — no tickets needed, per the venue’s October 29 announcement. Older prices printed on the tour flyer do not apply.",
+    "scheduleDetails": [
+      {
+        "label": "Community outreach",
+        "text": "3:30 PM — Unity in the Community outside the theatre."
+      },
+      {
+        "label": "Admission",
+        "text": "Free, all ages. No tickets needed. Older flyer prices do not apply."
+      }
+    ],
+    "informationSources": [
+      "https://www.igniteandunitetour.com/",
+      "https://static.wixstatic.com/media/690614_aeb8ed50ceec4fb3bee73725c04554c3~mv2.png",
+      "https://www.instagram.com/p/DfFL_UXtrzr/"
+    ],
+    "informationEvidence": [
+      {
+        "url": "https://www.igniteandunitetour.com/",
+        "fields": [
+          "officialUrl",
+          "artwork",
+          "startTime",
+          "doorsTime",
+          "price",
+          "address",
+          "postalCode"
+        ],
+        "quoteOrSummary": "Owner-selected official tour schedule and this city’s original showcard confirm the venue/address, 5:30 PM doors and 6 PM start. DeLand, Daytona Beach and Plantation are labeled Free Event. Tour-site prices for Jacksonville are older than the dated October 29 venue announcement; retain current free/no-ticket facts. The tour-site January 7 Jacksonville schedule text is a typo: the flyer and dated venue announcement confirm November 7, 2026."
+      },
+      {
+        "url": "https://www.instagram.com/p/DfFL_UXtrzr/",
+        "fields": [
+          "price",
+          "publicNotice",
+          "officialBill"
+        ],
+        "quoteOrSummary": "Venue’s October 29 announcement: everything is free, no tickets needed, outdoor gathering3:30 PM and concert6 PM. This newer dated primary source supersedes older printed prices. Primary text and screenshot were saved in the November3 Ignite source audit."
+      }
+    ],
+    "informationConfidence": "high for address, doors/start, source and artwork; current dated Jacksonville admission supersedes older prices; no unannounced end or age restrictions inferred"
+  },
+  "manual:ignite-and-unite-tour-plantation-2026-11-14": {
+    "startDate": "2026-11-14",
+    "startTime": "18:00",
+    "startDateTime": "2026-11-14T18:00:00-05:00",
+    "doorsTime": "17:30",
+    "timezone": "America/New_York",
+    "detailsPending": false,
+    "officialUrl": "https://www.igniteandunitetour.com/",
+    "ticketUrl": "",
+    "registrationUrl": "",
+    "organizer": {
+      "name": "Ignite and Unite Tour",
+      "url": "https://www.igniteandunitetour.com/"
+    },
+    "artwork": {
+      "src": "assets/ignite-tour/plantation-2026-11-14-w1080.webp",
+      "width": 1080,
+      "height": 1350,
+      "alt": "Ignite and Unite Tour — Plantation, Florida — November 14, 2026 official showcard",
+      "srcset": "assets/ignite-tour/plantation-2026-11-14-w320.webp 320w, assets/ignite-tour/plantation-2026-11-14-w640.webp 640w, assets/ignite-tour/plantation-2026-11-14-w1080.webp 1080w"
+    },
+    "informationReviewedAt": "2026-11-03",
+    "officialBill": [
+      "OTG Zico",
+      "Madigan",
+      "Altar Ego",
+      "J10",
+      "Legit",
+      "3HRE",
+      "B. Cody Shields",
+      "Brother Bo",
+      "K'nek"
+    ],
+    "advertisedBilling": [
+      "OTG Zico",
+      "Madigan",
+      "Altar Ego",
+      "J10",
+      "Legit",
+      "3HRE",
+      "B. Cody Shields",
+      "Brother Bo",
+      "K'nek"
+    ],
+    "hosts": [
+      "Pastor John Humphries (message)"
+    ],
+    "price": "Free admission",
+    "publicDescription": "The Ignite and Unite Tour comes to First Baptist Church of Plantation in Plantation, Florida, on November 14, 2026. Doors open at 5:30 PM; the concert starts at 6 PM Eastern. Free admission. Performing: OTG Zico, Madigan, Altar Ego, J10, Legit, 3HRE, B. Cody Shields, Brother Bo, K'nek. Pastor John Humphries brings the message.",
+    "scheduleDetails": [],
+    "informationSources": [
+      "https://www.igniteandunitetour.com/",
+      "https://static.wixstatic.com/media/690614_6986a6fd2a0b4ee9ad7cb3f44ca6204f~mv2.png"
+    ],
+    "informationEvidence": [
+      {
+        "url": "https://www.igniteandunitetour.com/",
+        "fields": [
+          "officialUrl",
+          "artwork",
+          "startTime",
+          "doorsTime",
+          "price",
+          "address",
+          "postalCode"
+        ],
+        "quoteOrSummary": "Owner-selected official tour schedule and this city’s original showcard confirm the venue/address, 5:30 PM doors and 6 PM start. DeLand, Daytona Beach and Plantation are labeled Free Event. Tour-site prices for Jacksonville are older than the dated October 29 venue announcement; retain current free/no-ticket facts. The tour-site January 7 Jacksonville schedule text is a typo: the flyer and dated venue announcement confirm November 7, 2026."
+      }
+    ],
+    "informationConfidence": "high for address, doors/start, source and artwork; current dated Jacksonville admission supersedes older prices; no unannounced end or age restrictions inferred"
   }
 }

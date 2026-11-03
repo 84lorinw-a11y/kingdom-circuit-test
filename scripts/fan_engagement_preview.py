@@ -154,7 +154,7 @@ def generated(ctx):
     result['test-analytics/index.html'] = viewer()
     return result
 
-def verify(live, site, ctx):
+def verify(live, site, ctx, approved_image_transform=None):
     for rel, data in generated(ctx).items():
         assert (site/rel).read_bytes() == data, f'Engagement asset drift: {rel}'
     empty = 0
@@ -167,7 +167,11 @@ def verify(live, site, ctx):
         empty += bool(panels)
         for cls in ('kc-rd-past-shows','kc-rd-profile-section-title'):
             assert [before.raw(n) for n in before.nodes if n.has(cls)] == [after.raw(n) for n in after.nodes if n.has(cls)], f'{rel}: {cls} changed'
-        assert [(n.attrs.get('src'),n.attrs.get('srcset')) for n in before.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')] == [(n.attrs.get('src'),n.attrs.get('srcset')) for n in after.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')], f'{rel}: photo changed'
+        # Replay only an explicitly approved image expectation. Other profile
+        # and archive checks retain the original source as their strict baseline.
+        expected_images = (Document(approved_image_transform(rel, before.source.encode()).decode())
+                           if approved_image_transform else before)
+        assert [(n.attrs.get('src'),n.attrs.get('srcset')) for n in expected_images.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')] == [(n.attrs.get('src'),n.attrs.get('srcset')) for n in after.nodes if n.tag=='img' and 'fan-' not in n.attrs.get('src','')], f'{rel}: photo changed'
     return {'version':VERSION, 'asOf':ctx['asOf'], 'count':ctx['count'], 'artistPages':len(ctx['artists']), 'emptyArtistPages':empty, 'analyticsDestination':'disabled-on-test'}
 
 def build(site, live):

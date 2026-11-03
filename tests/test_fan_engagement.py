@@ -1,8 +1,11 @@
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 import fan_engagement_preview as fan
+import show_information_preview as information
+from show_information_model import normalize
 from mobile_seo_preview import Document
 
 class FanEngagement(unittest.TestCase):
@@ -41,3 +44,39 @@ class FanEngagement(unittest.TestCase):
     def test_workflow_applies_overlay_before_parity_check(self):
         s=(fan.ROOT/'.github/workflows/mirror-live.yml').read_text()
         self.assertLess(s.index('python scripts/fan_engagement_preview.py _site _live_site'),s.index('python scripts/verify_live_baseline.py _live_site _site'))
+
+    def test_approved_card_artwork_keeps_portrait_and_archive_checks_strict(self):
+        original, ctx = self.fixture(False)
+        ctx.update(asOf='2026-11-03', shows=[])
+        card = ('<article class="event-card"><img class="event-artwork" src="/assets/source-card.webp" '
+                'srcset="/assets/source-small.webp 320w, /assets/source-card.webp 800w">'
+                '<h3><a href="/event/a/">A</a></h3></article>')
+        original = original.replace('</body>', card + '</body>')
+        record = normalize({'title': 'A', 'startDate': '2026-11-11', 'artwork': {
+            'src': 'assets/ignite-tour/deland.webp', 'width': 800, 'height': 1000, 'alt': 'DeLand showcard'}})
+        info_ctx = {'paths': {'/kingdom-circuit-test/event/a/': record}, 'pages': {}}
+        approved = lambda rel, data: information.transform(rel, data, info_ctx)
+        with tempfile.TemporaryDirectory() as temp:
+            live, site = Path(temp) / 'live', Path(temp) / 'site'
+            rel = Path('artists/mike/index.html')
+            for base in (live, site):
+                (base / rel).parent.mkdir(parents=True)
+            (live / rel).write_text(original)
+            for path, data in fan.generated(ctx).items():
+                target = site / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+            fan_only = fan.transform(rel, fan.test_source(live, rel).encode(), ctx)
+            (site / rel).write_bytes(fan_only)
+            self.assertEqual(fan.verify(live, site, ctx)['artistPages'], 1)
+            reviewed = approved(rel, fan_only)
+            (site / rel).write_bytes(reviewed)
+            with self.assertRaisesRegex(AssertionError, 'photo changed'):
+                fan.verify(live, site, ctx)
+            self.assertEqual(fan.verify(live, site, ctx, approved_image_transform=approved)['artistPages'], 1)
+            (site / rel).write_bytes(reviewed.replace(b'/portrait.webp', b'/tampered-portrait.webp'))
+            with self.assertRaisesRegex(AssertionError, 'photo changed'):
+                fan.verify(live, site, ctx, approved_image_transform=approved)
+            (site / rel).write_bytes(reviewed.replace(b'Archive</details>', b'Altered archive</details>'))
+            with self.assertRaisesRegex(AssertionError, 'kc-rd-past-shows changed'):
+                fan.verify(live, site, ctx, approved_image_transform=approved)

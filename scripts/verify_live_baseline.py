@@ -28,8 +28,9 @@ def verify(live: Path, site: Path) -> dict:
     manifest_path = site / "test-live-mirror-manifest.json"
     manifest = json.loads(manifest_path.read_text())
     fan_context = engagement.context(live, manifest["fanEngagement"]["asOf"])
-    fan_report = engagement.verify(live, site, fan_context)
     information_context = information.context(live)
+    fan_report = engagement.verify(live, site, fan_context,
+        approved_image_transform=lambda rel, data: information.transform(rel, data, information_context))
     information_report = information.verify(live, site, information_context)
     # Promoted engagement assets are original source files, still compared exactly.
     # Only files absent from production qualify as isolated additions.
