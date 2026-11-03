@@ -26,3 +26,11 @@ Validation: 176 Python tests, 48 relevant JavaScript tests and the complete arti
 The build also repairs existing test-mirror failures: future cancelled archive entries, their Originally scheduled date label, and the explicit Rural Music Festival lineup-pending placeholder. Regression checks retain strict archive and lineup validation.
 
 TEST remains noindex/nofollow with blocked robots, no CNAME and no Google Analytics loader or test logging. Production publishing and Cloudflare game configuration are unchanged. Future production work should integrate the model into the native publishing pipeline, not copy test identity conversion.
+
+## November 2 address and start-time research
+
+Reviewed all 85 public shows in the missing-information queue. Added sourced venue/street/postal facts to 65 exact ID/date records, including confirmed performance starts for Hulvey at ITOWN Madison (7 PM November 13) and FOLLOW Conference (9 PM December 29). Resolved all originally missing fields for 56 shows; 29 still have gaps (16 addresses, 19 start times, six overlap). Sources and field-specific evidence are retained in the test overrides.
+
+Unknown performance times remain unknown when only doors, registration, admission windows, previous-year schedules or syndicated metadata are available. The CJ Emulous Cocoa conference location requires organizer confirmation before using a possible Orlando venue. Artist roster, source catalogs/media, Canadian records, archive history and private-address protections remain unchanged.
+
+Verified corrections now flow consistently into visible detail facts, compact listing facts, artist next-show rows, event schema and generated date metadata. Material private/sold-out/cancelled warnings remain in accessible row labels. Event names and URLs are retained. This is TEST-only research and publication, not production promotion.

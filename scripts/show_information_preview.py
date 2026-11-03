@@ -22,7 +22,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from show_information_model import normalize
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261102-1'
+VERSION = '20261102-2'
 FILES = frozenset({'assets/show-information.css'})
 EVENT_TYPES = {'Event', 'MusicEvent'}
 
@@ -188,7 +188,10 @@ def patched_schema(value, record):
             value['organizer'] = {'@type': 'Organization', 'name': record['organizerName']}
             if record.get('organizerUrl'):
                 value['organizer']['url'] = record['organizerUrl']
-        address = value.setdefault('location', {'@type': 'Place'}).setdefault('address', {'@type': 'PostalAddress'})
+        location = value.setdefault('location', {'@type': 'Place'})
+        if record.get('venue'):
+            location['name'] = record['venue']
+        address = location.setdefault('address', {'@type': 'PostalAddress'})
         for source, target in (('address', 'streetAddress'), ('city', 'addressLocality'), ('state', 'addressRegion'), ('postalCode', 'postalCode'), ('country', 'addressCountry')):
             if record.get(source):
                 address[target] = record[source]
@@ -216,6 +219,7 @@ def detail_transform(text, record):
         raise ValueError('Expected one main Status/Date/Venue/Location list')
     details = lists[0]
     changes = []
+    original_date = ''
     if record.get('scheduleDetails'):
         for n in copy.children:
             if 'data-kc-event-schedule' in n.attrs:
@@ -230,7 +234,10 @@ def detail_transform(text, record):
         if label == 'Location':
             replacement = address_html(record)
         elif label == 'Date' and record.get('dateLabel'):
+            original_date = doc.text(value)
             replacement = escape(record['dateLabel'])
+        elif label == 'Venue' and record.get('venue'):
+            replacement = escape(record['venue'])
         elif label == 'Status' and record.get('private'):
             replacement = escape(record.get('displayStatus') or 'Private Event — not open to the public')
         elif label == 'Status' and record.get('soldOut') and norm(record.get('status')) not in {'cancelled', 'canceled', 'postponed'}:
@@ -240,6 +247,24 @@ def detail_transform(text, record):
             changes.append((row.start, row.end, ''))
         if replacement is not None:
             changes.append((value.opening_end, value.closing_start, replacement))
+    # Update only the generated date fragments in metadata. The event name,
+    # canonical path, description copy and artwork remain the source identity.
+    if original_date and original_date != record.get('dateLabel'):
+        for n in doc.nodes:
+            meta = n.attrs.get('name') or n.attrs.get('property')
+            is_title = n.tag == 'title' or (n.tag == 'meta' and meta in {'og:title', 'twitter:title'})
+            is_description = n.tag == 'meta' and meta in {'description', 'og:description', 'twitter:description'}
+            if not (is_title or is_description):
+                continue
+            old = doc.text(n) if n.tag == 'title' else n.attrs.get('content', '')
+            pattern = (r'( — )' + re.escape(original_date) + r'(?= \|)' if is_title else
+                       r'(\bon )' + re.escape(original_date) + r'(?=[.!]|$)')
+            new = re.sub(pattern, lambda m: m[1] + record['dateLabel'], old)
+            if new != old:
+                if n.tag == 'title':
+                    changes.append((n.opening_end, n.closing_start, escape(new)))
+                else:
+                    changes.append((n.start, n.opening_end, attributes(doc.raw(n), {'content': new})))
     primary = [n for n in doc.nodes if n.tag == 'a' and n.has('primary-button') and copy.start < n.start < copy.end and doc.text(n) == 'Official details']
     if primary and record.get('officialDestination'):
         n = primary[0]
@@ -261,6 +286,74 @@ def detail_transform(text, record):
     return replace_spans(text, changes)
 
 
+def attributes(opening, values):
+    """Replace selected attributes without reserializing unrelated markup."""
+    for name, value in values.items():
+        attribute = name + '="' + escape(str(value), quote=True) + '"'
+        pattern = r'(?<![\w:-])' + re.escape(name) + r'\s*=\s*(?:"[^"]*"|\'[^\']*\')'
+        if re.search(pattern, opening):
+            opening = re.sub(pattern, lambda m: attribute, opening, count=1)
+        else:
+            opening = re.sub(r'\s*/?>$', lambda m: ' ' + attribute + m[0], opening, count=1)
+    return opening
+
+
+def listing_facts(raw, record):
+    """Refresh the existing compact fact slots and their accessible labels."""
+    doc = Document(raw)
+    root = doc.nodes[0]
+    changes = []
+    for n in doc.nodes:
+        replacement = None
+        if n.tag == 'dd':
+            # Calendar facts are explicit dt/dd siblings, not title text.
+            row = next((row for row in doc.nodes if n in row.children), None)
+            labels = [child for child in row.children if child.tag == 'dt'] if row else []
+            label = doc.text(labels[0]) if labels else ''
+            replacement = record.get({'Date': 'dateLabel', 'Venue': 'venue'}.get(label, ''))
+        elif n.has('kc-teaser-date'):
+            replacement = record.get('dateLabel')
+        elif n.has('kc-teaser-venue'):
+            replacement = record.get('venue')
+        elif n.has('kc-rd-show-venue') or n.has('kc-rd-next-venue'):
+            venue = record.get('venue')
+            if venue:
+                replacement = ' · '.join(x for x in (venue, record.get('startTimeLabel')) if x)
+        if replacement:
+            changes.append((n.opening_end, n.closing_start, escape(replacement)))
+            if 'title' in n.attrs:
+                changes.append((n.start, n.opening_end, attributes(raw[n.start:n.opening_end], {'title': replacement})))
+    root_attributes = {}
+    if record.get('startTimeLabel') and record.get('startTime'):
+        root_attributes['data-start-time'] = record['startTime']
+    if root.has('kc-rd-show-row') or root.has('kc-rd-next-show'):
+        title_node = next((n for n in doc.nodes if n.has('kc-rd-event-title')), None)
+        title = doc.text(title_node) if title_node else record.get('title', '')
+        place = ', '.join(record.get(k, '') for k in ('city', 'state') if record.get(k))
+        status_node = next((n for n in doc.nodes if n.has('kc-rd-event-status')), None)
+        status = doc.text(status_node) if status_node else ''
+        display_status = record.get('displayStatus') or record.get('status') or ''
+        if record.get('private') or record.get('soldOut'):
+            status = record.get('displayStatus') or ('Private Event — not open to the public' if record.get('private') else 'Sold out')
+        elif re.search(r'private|invite[ -]?only|sold[ _-]?out|cancelled|canceled|postponed', display_status, re.I):
+            status = display_status
+        # An explicit aria-label replaces all descendant text in the accessible
+        # name, including the visible material status badge.
+        identity = ' · '.join(x for x in (title, status) if x)
+        root_attributes['aria-label'] = ', '.join(x for x in (record.get('dateLabel'), place, record.get('venue')) if x) + (' | ' + identity if identity else '')
+    if root_attributes:
+        changes.append((root.start, root.opening_end, attributes(raw[root.start:root.opening_end], root_attributes)))
+    result = replace_spans(raw, changes)
+    if 'data-search' in root.attrs:
+        # Search follows the corrected rendered facts. Keep billing, location
+        # and title text as rendered instead of substituting inside event names.
+        updated = Document(result)
+        search_nodes = [n for n in updated.nodes if n.tag in {'h3', 'dd'} or n.has('artist-line')]
+        search = ' '.join(updated.text(n) for n in search_nodes).casefold()
+        result = attributes(result[:updated.nodes[0].opening_end], {'data-search': search}) + result[updated.nodes[0].opening_end:]
+    return result
+
+
 def listing_transform(text, ctx):
     doc = Document(text)
     changes = []
@@ -272,6 +365,7 @@ def listing_transform(text, ctx):
         record = next((ctx['paths'][href] for href in links if href in ctx['paths']), None)
         if not record:
             continue
+        raw = listing_facts(raw, record)
         destination = record.get('officialDestination')
         if destination:
             raw = re.sub(r'(<a\b[^>]*class="[^"]*official-button[^"]*"[^>]*href=")[^"]*', lambda m: m[1] + escape(destination['url'], quote=True), raw)
@@ -323,11 +417,21 @@ def verify(live, site, ctx):
             assert [before.raw(n) for n in before.nodes if n.tag == tag] == [after.raw(n) for n in after.nodes if n.tag == tag], f'{rel}: {tag} drift'
         for name in ('canonical',):
             assert [n.attrs for n in before.nodes if n.attrs.get('rel') == name] == [n.attrs for n in after.nodes if n.attrs.get('rel') == name], f'{rel}: URL drift'
+        main = after.one(lambda n: n.has('event-detail-copy'))
+        facts = next(n for n in main.children if n.has('detail-list'))
+        for row in facts.children:
+            labels = [n for n in row.children if n.tag == 'dt']
+            values = [n for n in row.children if n.tag == 'dd']
+            field = {'Date': 'dateLabel', 'Venue': 'venue'}.get(after.text(labels[0])) if labels else None
+            if field and record.get(field):
+                assert len(values) == 1 and after.text(values[0]) == record[field], f'{rel}: visible {field} drift'
         schemas = [s for _, v in schema_blocks(after.source) for s in event_schemas(v)]
         if record.get('private'):
             assert not schemas, f'{rel}: private event exposed in schema'
             report['privatePages'] += 1
         for schema in schemas:
+            if record.get('venue'):
+                assert schema.get('location', {}).get('name') == record['venue'], f'{rel}: schema venue drift'
             assert schema.get('offers') == record.get('offer'), f'{rel}: offer drift'
             if record.get('offer'):
                 url = record['offer']['url']
