@@ -10,7 +10,8 @@ are sanitized. Consumers should use the derived fields below for publication:
   kind is tickets, registration, or details. This is also the sole Offer URL.
 * ``offer``: a schema.org Offer or None. Private, cancelled, postponed and merged
   records have no offer. Only confirmed direct admission destinations qualify.
-* ``schemaStartDate`` / ``schemaEndDate``: ISO dates or confirmed zoned datetimes.
+* ``schemaStartDate`` / ``schemaEndDate``: ISO dates or known local datetimes,
+  with confirmed offsets when available; never invent a timezone.
   Raw time fields are retained for compatibility; use these derived schema values.
 * Optional display strings: dateLabel, startTimeLabel, doorsTimeLabel,
   registrationTimeLabel, endTimeLabel, timezoneLabel, priceLabel, organizerName,
@@ -82,6 +83,8 @@ def _direct_ticket_platform(url):
         (r"eventbrite\.(?:com|ca|co\.uk)", r"/e/(?:[^/]+-tickets-)?\d+$"),
         (r"(?:ticketmaster\.(?:com|ca|co\.uk)|(?:concerts\.)?livenation\.com)", r"/(?:[^/]+/)?event/[A-Za-z0-9]+(?:/[^/]+)?$"),
         (r"tickettailor\.com", r"/events/[^/]+/\d+(?:/[^/]+)?$"),
+        (r"tickettailor\.com", r"/checkout/view-event/id/\d+/chk/[A-Za-z0-9]+$"),
+        (r"brushfire\.com", r"/[^/]+/[^/]+/\d+$"),
         (r"ticketweb\.(?:com|ca|uk)", r"/event/[^/]+/\d+$"),
         (r"posh\.vip", r"/e/[^/]+$"),
         (r"axs\.com", r"/events/\d+(?:/[^/]+)*$"),
@@ -96,8 +99,11 @@ def _direct_ticket_platform(url):
         (r"stubwire\.com", r"/e/\d+(?:/[^/]+)*$"),
         (r"events\.ticketleap\.com", r"/tickets/[^/]+/[^/]+$"),
         (r"universe\.com", r"/events/[^/]+-tickets-[A-Za-z0-9]+$"),
-        (r"events\.humanitix\.com", r"/[^/]+$"),
+        (r"events\.humanitix\.com", r"/[^/]+(?:/tickets)?$"),
         (r"[^.]+\.ticketspice\.com", r"/[^/]+$"),
+        # Reviewed November 5, 2026: this dedicated official event root opens
+        # the registration selector, including the $15 Shai concert-only pass.
+        (r"ready27\.events\.mbts\.edu", r"(?:/registration/select)?$"),
     )
     return any(re.fullmatch(domain, host) and re.fullmatch(event_path, path)
                for domain, event_path in patterns)
@@ -116,7 +122,11 @@ def _destination(event):
     for key in ("officialUrl", "ticketUrl", "registrationUrl"):
         url = _url(event.get(key))
         if url:
-            return {"url": url, "label": "Official details", "kind": "details"}
+            # A canonical official link can itself be the event's ticket page.
+            # Explicit negative verification still wins over platform detection.
+            kind = "tickets" if (key == "officialUrl" and _direct_ticket_platform(url)
+                                 and event.get("ticketUrlVerified") is not False) else "details"
+            return {"url": url, "label": "Official details", "kind": kind}
     return None
 
 
@@ -176,8 +186,9 @@ def _temporal(event, prefix, zone, fallback_date=None):
     clock = _clock(event.get(prefix + "Time"))
     if explicit:
         if explicit.utcoffset() is not None:
-            aware = explicit.astimezone(zone) if zone else explicit
-            return aware.date(), aware.time(), aware
+            # Explicit source clock and offset are already verified together.
+            # Do not let a host's timezone database shift that published clock.
+            return explicit.date(), explicit.time(), explicit
         day, clock = explicit.date(), explicit.time()
     day = day or fallback_date
     aware = _localize(datetime.combine(day, clock), zone) if day and clock and zone else None
@@ -190,6 +201,27 @@ def _time_label(value):
 
 def _date_label(value):
     return f"{value:%a, %b} {value.day}, {value.year}"
+
+
+def _timezone_label(aware, zone):
+    if zone:
+        local = _localize(aware.replace(tzinfo=None), zone)
+        if local and local.utcoffset() == aware.utcoffset():
+            return local.tzname()
+    # Fixed-offset ISO timestamps have a truthful numeric UTC label when a
+    # location's IANA abbreviation cannot be verified against that offset.
+    return aware.tzname()
+
+
+def _schema_datetime(day, clock, aware, zone):
+    if aware:
+        return aware.isoformat()
+    # Google can resolve a supplied local clock from the event location when
+    # no timezone is supplied. Preserve that known time without guessing an
+    # offset. A known zone's ambiguous/nonexistent DST clock remains date-only.
+    if clock and zone is None:
+        return datetime.combine(day, clock).isoformat()
+    return day.isoformat()
 
 
 def _amount(value):
@@ -232,8 +264,12 @@ def normalize(event):
     # in Event location/address fields. Exact reviewed overrides also identify
     # tour names that were incorrectly occupying the venue slot.
     venue = _text(event.get("venue"))
+    title = _text(event.get("title"))
     reviewed_placeholder = _text(event.get("unconfirmedVenueValue"))
-    if (reviewed_placeholder and venue.casefold() == reviewed_placeholder.casefold()) or venue.casefold() in _UNKNOWN_FACT:
+    # The established production SEO finalizer removes event titles used as
+    # location names. Keep that protection in the shared visible/schema model.
+    title_placeholder = bool(venue and title and ' '.join(venue.casefold().split()) == ' '.join(title.casefold().split()))
+    if (reviewed_placeholder and venue.casefold() == reviewed_placeholder.casefold()) or venue.casefold() in _UNKNOWN_FACT or title_placeholder:
         venue = ""
     result["venue"] = venue
     result["venueLabel"] = venue or "Venue not confirmed"
@@ -276,19 +312,19 @@ def normalize(event):
     invalid_end = bool(start_day and end_day and (end_day < start_day or (
         end_day == start_day and start_clock and end_clock and end_clock < start_clock)))
     if start_day:
-        result["schemaStartDate"] = start.isoformat() if start else start_day.isoformat()
+        result["schemaStartDate"] = _schema_datetime(start_day, start_clock, start, zone)
         result["dateLabel"] = _date_label(start_day)
         if end_day and end_day > start_day:
             result["dateLabel"] += " – " + _date_label(end_day)
-    if end_day and not invalid_end and (event.get("endDate") or event.get("endDateTime") or end):
-        result["schemaEndDate"] = end.isoformat() if end else end_day.isoformat()
+    if end_day and not invalid_end and (event.get("endDate") or event.get("endDateTime") or event.get("endTime") or end):
+        result["schemaEndDate"] = _schema_datetime(end_day, end_clock, end, zone)
     for key, clock in (("startTimeLabel", start_clock), ("endTimeLabel", end_clock),
                        ("doorsTimeLabel", _clock(event.get("doorsTime"))),
                        ("registrationTimeLabel", _clock(event.get("registrationTime")))):
         if clock:
             result[key] = _time_label(clock)
     if start:
-        result["timezoneLabel"] = start.tzname()
+        result["timezoneLabel"] = _timezone_label(start, zone)
     elif zone:
         result["timezoneLabel"] = zone.key
     # Date rows retain the actual clock time. Each secondary time carries its
@@ -301,7 +337,7 @@ def normalize(event):
             clock = _clock(event.get('doorsTime' if field == 'doorsTimeLabel' else 'registrationTime'))
             reference = _localize(datetime.combine(start_day, clock), zone) if clock else None
         if reference:
-            result[field] += ' ' + reference.tzname()
+            result[field] += ' ' + _timezone_label(reference, zone)
         elif zone:
             result[field] += ' (' + zone.key + ')'
     if result.get('dateLabel') and result.get('startTimeLabel'):

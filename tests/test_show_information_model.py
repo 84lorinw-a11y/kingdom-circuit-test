@@ -2,6 +2,8 @@ import copy
 import pathlib
 import sys
 import unittest
+from datetime import timezone, timedelta
+from unittest.mock import patch
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
 from show_information_model import normalize
@@ -28,6 +30,15 @@ class ShowInformationModelTests(unittest.TestCase):
         self.assertEqual(refreshed['venueLabel'], 'Confirmed Hall')
         self.assertEqual(refreshed['address'], '100 Main St')
 
+    def test_event_titles_are_not_restored_as_venue_names(self):
+        for title in ('RWG TOUR 2026', 'UNITY POP-UP TOUR', "THE KINGDOM'S COOL KIDZ PLAYLIST CONCERT"):
+            result = normalize(self.event(title=title, venue=title, address='8809 Schoolcraft'))
+            self.assertEqual(result['venue'], '')
+            self.assertEqual(result['venueLabel'], 'Venue not confirmed')
+            self.assertEqual(result['address'], '8809 Schoolcraft')
+        confirmed = normalize(self.event(title='An evening at Chapel', venue='Chapel'))
+        self.assertEqual(confirmed['venue'], 'Chapel')
+
     def test_public_description_precedes_legacy_description(self):
         result = normalize(self.event(publicDescription=" Public copy ", description="Other", notes="Internal"))
         self.assertEqual(result["description"], "Public copy")
@@ -39,6 +50,21 @@ class ShowInformationModelTests(unittest.TestCase):
         self.assertEqual(winter["schemaStartDate"], "2027-01-29T21:00:00-06:00")
         self.assertEqual(summer["schemaStartDate"], "2027-07-29T21:00:00-05:00")
         self.assertEqual((winter["timezoneLabel"], summer["timezoneLabel"]), ("CST", "CDT"))
+
+    def test_verified_explicit_clock_and_offset_win_over_conflicting_host_timezone(self):
+        source = self.event(startDate='2026-11-13', startTime='22:00',
+            startDateTime='2026-11-13T22:00:00-07:00', endDate='2026-11-14', endTime='01:00',
+            endDateTime='2026-11-14T01:00:00-07:00', timezone='America/Edmonton')
+        # Exercise the failure even on machines with an accurate IANA database.
+        with patch('show_information_model._zone', return_value=timezone(timedelta(hours=-6), 'CST')):
+            result = normalize(source)
+        self.assertEqual(result['schemaStartDate'], '2026-11-13T22:00:00-07:00')
+        self.assertEqual(result['schemaEndDate'], '2026-11-14T01:00:00-07:00')
+        self.assertEqual(result['startTimeLabel'], '10:00 PM UTC-07:00')
+        self.assertEqual(result['endTimeLabel'], '1:00 AM UTC-07:00')
+        self.assertNotIn('CST', result['dateLabel'])
+        consistent = normalize(self.event(startDateTime='2027-01-29T21:00:00-06:00'))
+        self.assertEqual(consistent['startTimeLabel'], '9:00 PM CST')
 
     def test_ambiguous_and_nonexistent_clocks_do_not_choose_an_offset(self):
         for day, clock in (("2026-11-01", "01:30"), ("2027-03-14", "02:30")):
@@ -52,10 +78,20 @@ class ShowInformationModelTests(unittest.TestCase):
         self.assertEqual(result["schemaStartDate"], "2027-01-29")
         self.assertNotIn("startTimeLabel", result)
         unknown = normalize(self.event(timezone="Invalid/Zone"))
-        self.assertEqual(unknown["schemaStartDate"], "2027-01-29")
+        self.assertEqual(unknown["schemaStartDate"], "2027-01-29T21:00:00")
         self.assertEqual(unknown["startTimeLabel"], "9:00 PM")
         offset = normalize({"startDateTime": "2027-01-29T21:00:00-06:00"})
         self.assertEqual(offset["schemaStartDate"], "2027-01-29T21:00:00-06:00")
+
+    def test_known_start_and_end_local_clocks_survive_without_timezone(self):
+        for fields in ({'startDate': '2027-01-29', 'startTime': '21:00', 'endTime': '22:00'},
+                       {'startDateTime': '2027-01-29T21:00:00', 'endDateTime': '2027-01-29T22:00:00'}):
+            result = normalize(fields)
+            self.assertEqual(result['schemaStartDate'], '2027-01-29T21:00:00')
+            self.assertEqual(result['schemaEndDate'], '2027-01-29T22:00:00')
+            self.assertEqual(result['startTimeLabel'], '9:00 PM')
+            self.assertNotIn('timezoneLabel', result)
+        self.assertNotIn('schemaEndDate', normalize({'startDate': '2027-01-29', 'startTime': '21:00', 'endTime': '02:00'}))
 
     def test_optional_end_and_admission_clocks(self):
         result = normalize(self.event(endTime="22:00", doorsTime="20:00", registrationTime="20:30"))
@@ -101,10 +137,16 @@ class ShowInformationModelTests(unittest.TestCase):
             "https://dice.fm/partner/tickets/event/abc12-a-concert-tickets",
             "https://wl.eventim.us/event/a-concert/707572?afflky=Venue",
             "https://events.ticketleap.com/tickets/organizer/a-canadian-concert",
+            "https://www.tickettailor.com/checkout/view-event/id/9144465/chk/28bb42e7981e7b98ad292022136429f3/",
+            "https://brushfire.com/anthemnights/dmv/643773",
+            "https://events.humanitix.com/g-ng-in-concert-one-night-only/tickets",
         ):
             self.assertEqual(normalize(self.event(ticketUrl=url))["offer"]["url"], url)
         for url in ("https://eventbrite.com.attacker.example/e/a-concert-tickets-123",
-                    "https://www.livenation.com/artist/123/", "https://dice.fm/partner/tickets/"):
+                    "https://www.livenation.com/artist/123/", "https://dice.fm/partner/tickets/",
+                    "https://www.tickettailor.com/checkout/view-event/", "https://brushfire.com/anthemnights/",
+                    "https://brushfire.com.attacker.example/anthemnights/dmv/643773",
+                    "https://events.humanitix.com/a-show/tickets/unverified-subpath"):
             self.assertIsNone(normalize(self.event(ticketUrl=url))["offer"])
 
     def test_verification_flags_are_boolean_and_cannot_turn_social_into_offer(self):
@@ -113,6 +155,15 @@ class ShowInformationModelTests(unittest.TestCase):
         result = normalize(self.event(ticketUrl="https://www.instagram.com/artist/", ticketUrlVerified=True))
         self.assertIsNone(result["offer"])
         self.assertIsNone(normalize(self.event(ticketUrl="javascript:alert(1)", ticketUrlVerified=True))["officialDestination"])
+
+    def test_reviewed_ready27_registration_root_retains_source_url_and_one_destination(self):
+        for url in ('https://ready27.events.mbts.edu/', 'https://ready27.events.mbts.edu/registration/select'):
+            result = normalize(self.event(ticketUrl=url, officialUrl='https://spurgeoncollege.com/ready-conference/'))
+            self.assertEqual(result['officialDestination']['url'], url)
+            self.assertEqual(result['offer']['url'], url)
+        for url in ('https://ready28.events.mbts.edu/', 'https://ready27.events.mbts.edu/schedule/',
+                    'https://ready27.events.mbts.edu.attacker.example/'):
+            self.assertIsNone(normalize(self.event(ticketUrl=url))['offer'])
 
     def test_price_strings_are_display_only_and_totals_require_currency_and_fees(self):
         source = self.event(ticketUrl="https://posh.vip/e/a-show", price="Concert only: $15")
