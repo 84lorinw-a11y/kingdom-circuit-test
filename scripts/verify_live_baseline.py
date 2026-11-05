@@ -35,12 +35,15 @@ def verify(live: Path, site: Path) -> dict:
     # Promoted engagement assets are original source files, still compared exactly.
     # Only files absent from production qualify as isolated additions.
     fan_additions = frozenset(p for p in engagement.FILES if not (live / p).exists())
+    # The show-information stylesheet is now native production content. Keep it
+    # under exact source comparison, rather than exempting it as a TEST addition.
+    information_additions = frozenset(p for p in information.FILES if not (live / p).exists())
     if live_has_promoted_discovery(live):
         additions = EXPERIMENT_FILES | {'test-live-mirror-manifest.json'}
         if not (live / '.nojekyll').exists():
             additions = additions | {'.nojekyll'}
         parity = verify_exact_mirror(live, site,
-            allowed_additions=additions | fan_additions | information.FILES,
+            allowed_additions=additions | fan_additions | information_additions,
             approved_transform=lambda path, data: information.transform(path, engagement.transform(path, data, fan_context), information_context))
         verify_calendar(site, isolated=True)
         verify_intake(site)
@@ -56,7 +59,7 @@ def verify(live: Path, site: Path) -> dict:
         print(json.dumps(manifest, indent=2))
         return manifest
     context = discovery.load_context(live, date.fromisoformat(manifest['nationalDiscovery']['asOfDate']))
-    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | fan_additions | information.FILES,
+    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | fan_additions | information_additions,
                                 approved_transform=lambda path, data: information.transform(path, engagement.transform(path, discovery.combined_transform(path, data, context), fan_context), information_context))
     national = discovery.verify(live, site, context)
     overlay = verify_overlay(live, site, national_home=True)
