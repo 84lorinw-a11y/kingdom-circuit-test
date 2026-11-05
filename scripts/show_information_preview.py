@@ -25,7 +25,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from show_information_model import normalize
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261103-2'
+VERSION = '20261105-1'
 EVENT_TYPES = {'Event', 'MusicEvent'}
 ARTWORK_PREFIX = 'assets/ignite-tour/'
 PENDING_STATUS = re.compile(r'\b(?:details pending|to be announced|not confirmed)\b', re.I)
@@ -329,15 +329,17 @@ def address_html(record):
     return '<address class="kc-address">' + '<br> '.join(escape(str(x)) for x in lines if x) + '</address>'
 
 
+def organizer_html(record):
+    organizer = escape(record['organizerName'])
+    if record.get('organizerUrl'):
+        organizer = f'<a href="{escape(record["organizerUrl"], quote=True)}" target="_blank" rel="noopener noreferrer">{organizer}</a>'
+    return organizer
+
+
 def more_details(record):
     facts = []
     if record.get('priceLabel') and not record.get('private'):
         facts.append(('Price', escape(record['priceLabel'])))
-    if record.get('organizerName'):
-        organizer = escape(record['organizerName'])
-        if record.get('organizerUrl'):
-            organizer = f'<a href="{escape(record["organizerUrl"], quote=True)}" target="_blank" rel="noopener noreferrer">{organizer}</a>'
-        facts.append(('Organizer / promoter', organizer))
     for source, label in (('doorsTimeLabel', 'Doors'), ('registrationTimeLabel', 'Concert registration'), ('endTimeLabel', 'Ends')):
         if source == 'doorsTimeLabel' and record.get('primaryTimeKind') == 'doors' and not record.get('startTimeLabel'):
             continue
@@ -394,6 +396,8 @@ def patched_schema(value, record):
             value['organizer'] = {'@type': 'Organization', 'name': record['organizerName']}
             if record.get('organizerUrl'):
                 value['organizer']['url'] = record['organizerUrl']
+        else:
+            value.pop('organizer', None)
         bill = official_bill(record)
         if bill is not None:
             existing = value.get('performer') or []
@@ -446,6 +450,9 @@ def detail_transform(text, record):
     details = lists[0]
     changes = []
     original_date = ''
+    for n in copy.children:
+        if n.has('kc-more-details') or n.has('kc-admission-restriction'):
+            changes.append((n.start, n.end, ''))
     if record.get('scheduleDetails'):
         for n in copy.children:
             if 'data-kc-event-schedule' in n.attrs:
@@ -480,8 +487,13 @@ def detail_transform(text, record):
         elif label == 'Age restriction':
             # One visible admission line by the main action avoids a duplicate row.
             changes.append((row.start, row.end, ''))
+        elif label == 'Organizer / promoter':
+            changes.append((row.start, row.end, ''))
         if replacement is not None:
             changes.append((value.opening_end, value.closing_start, replacement))
+    if record.get('organizerName'):
+        changes.append((details.closing_start, details.closing_start,
+                        '<div><dt>Organizer / promoter</dt><dd>' + organizer_html(record) + '</dd></div>'))
     # An exact reviewed public description also replaces stale search/sharing
     # claims. Other records retain source copy with generated date updates only.
     date_changed = original_date and original_date != record.get('dateLabel')
@@ -710,6 +722,7 @@ def transform(relative, data, ctx):
         text = listing_transform(text, ctx)
     if text == data.decode():
         return data
+    text = re.sub(r'<link\b[^>]*href=["\'][^"\']*/assets/show-information\.css(?:\?[^"\']*)?["\'][^>]*>', '', text)
     stylesheet = f'<link rel="stylesheet" href="{TEST_BASE}assets/show-information.css?v={VERSION}">'
     return text.replace('</head>', stylesheet + '</head>', 1).encode()
 

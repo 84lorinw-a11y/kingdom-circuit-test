@@ -308,7 +308,11 @@ class ShowInformationPreviewTests(unittest.TestCase):
         self.assertIn('5001 N Oak Trafficway', text)
         panel = doc.one(lambda n: n.tag == 'details')
         self.assertIn('15 USD', doc.text(panel))
-        self.assertIn('College', doc.text(panel))
+        self.assertNotIn('College', doc.text(panel))
+        main_facts = doc.one(lambda n: n.has('detail-list'))
+        self.assertIn('Organizer / promoter', doc.text(main_facts))
+        self.assertIn('College', doc.text(main_facts))
+        self.assertEqual(schema['organizer']['name'], 'College')
         self.assertIn('Friday concert.', doc.text(panel))
         self.assertNotIn('open', panel.attrs)
         self.assertNotIn('Directions', text)
@@ -322,6 +326,14 @@ class ShowInformationPreviewTests(unittest.TestCase):
         self.assertNotIn('kc-more-details', text)
         self.assertNotIn('All ages', text)
         self.assertNotIn('Free', text)
+
+    def test_already_published_details_keep_one_organizer_row_and_disclosure(self):
+        record = self.record(organizer='College', publicDescription='Friday concert.')
+        first = preview.detail_transform(fixture(), record)
+        second = preview.detail_transform(first, record)
+        self.assertEqual(first, second)
+        self.assertEqual(second.count('<dt>Organizer / promoter</dt>'), 1)
+        self.assertEqual(second.count('<summary>More show details</summary>'), 1)
 
     def test_missing_core_facts_are_clear_without_placeholder_schema_or_admission_claims(self):
         record = self.record(venue='RWG TOUR 2026', address='', postalCode='',

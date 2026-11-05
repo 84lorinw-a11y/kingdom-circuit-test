@@ -6,7 +6,7 @@ This change preserves the existing event layout and adds known attendance facts.
 
 - Status, Date, Venue and Location remain the primary facts. Public Location includes available street, suite, postal code and country. Confirmed local times include their time zone.
 - Official details is the single main event outbound button. Confirmed event-specific ticket/registration URLs take priority. Any structured Offer uses that same URL; information pages alone do not create offers.
-- Native More show details contains available description, price, organizer/promoter, secondary times, roles and attendance information. Existing schedule sections move into it without losing content. Its HTML is present before interaction.
+- Confirmed Organizer / promoter appears as its own primary fact row below Location. Native More show details contains available description, price, secondary times, roles and attendance information. Existing schedule sections move into it without losing content. Its HTML is present before interaction.
 - Known material age/admission restrictions remain visible near the button. Unknown optional fields are omitted. There is no inferred free admission, all-ages policy, public access, ticket stock or fee total.
 - Numeric Offer prices require a confirmed fee-inclusive amount and currency. A verified base price can remain visible without a numeric Offer price. Shai Linne's concert-only $15 amount is such a case.
 - Private events remain listed and labeled. Their detail HTML omits street/postal addresses and public Event/Offer objects. The original captured JSON is byte-preserved; this overlay is not a redaction of pre-existing public source JSON.
