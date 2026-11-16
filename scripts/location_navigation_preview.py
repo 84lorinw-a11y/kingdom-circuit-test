@@ -15,7 +15,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261115-1'
+VERSION = '20261115-2'
 FILES = frozenset({'shows/states/index.html', 'shows/cities/index.html',
                    'assets/location-navigation.css', 'assets/location-navigation.js',
                    'assets/location-navigation-data.json'})
@@ -92,7 +92,9 @@ def context(live):
         region['cities'].sort(key=lambda p:(-cities[p]['count'],cities[p]['name']))
     assert regions and cities and public
     template=test_source(live,'about-us/index.html')
-    ctx={'regions':regions,'cities':cities,'locations':locations,'publicCount':len(public),'template':template}
+    template_doc=Document(template)
+    actions=template_doc.one(lambda n:n.has('kc-rd-actions'))
+    ctx={'regions':regions,'cities':cities,'locations':locations,'publicCount':len(public),'template':template,'headerActions':template_doc.raw(actions)}
     ctx['generated']=generate(ctx)
     return ctx
 
@@ -145,7 +147,8 @@ def transform(relative,data,ctx):
     if not oldnav:
         root=hdoc.one(lambda n:n.tag=='header' and n.has('kc-rd-header'));hc.append((root.closing_start,root.closing_start,nav(active)))
     primary=hdoc.one(lambda n:n.has('kc-rd-primary'))
-    hc.append((primary.closing_start,primary.closing_start,menu()))
+    extras=(ctx.get('headerActions','') if not any(n.has('kc-rd-actions') for n in hdoc.nodes) else '')+menu()
+    hc.append((primary.closing_start,primary.closing_start,extras))
     head=replace_spans(hdoc.source,hc).replace('class="kc-rd-header','data-location-navigation-version="'+VERSION+'" class="kc-rd-header',1)
     changes.append((header.start,header.end,head))
     for n in doc.nodes:
@@ -191,23 +194,33 @@ def transform(relative,data,ctx):
 def directory(ctx,kind):
     is_city=kind=='cities';regions=sorted(ctx['regions'].values(),key=lambda r:r['name'])
     cities=[c for c in ctx['cities'].values() if c['count']]
-    title='Find CHH shows by '+('city' if is_city else 'state')
-    desc='Browse Christian hip hop concerts by city, grouped by state and province.' if is_city else 'Explore Christian hip hop concerts across the United States and Canada.'
+    title='Find CHH shows in your city' if is_city else 'Find CHH shows by state'
+    desc='Find your next concert. Search cities with upcoming Christian hip hop shows.' if is_city else 'Explore Christian hip hop concerts across the United States and Canada.'
     options='<option value="">All states and provinces</option>'+''.join(f'<option value="{escape(href(r["path"]))}">{escape(r["name"])}</option>' for r in regions if r['cities'])
     search=f'<div class="kc-location-filters" data-location-filters hidden><label class="kc-location-search"><span>Search {kind}</span><div>{SEARCH}<input type="search" placeholder="'+('City or state' if is_city else 'State or province')+'" data-location-search autocomplete="off"></div></label>'
     if is_city:search+=f'<label class="kc-location-region"><span>State or province</span><select data-location-region>{options}</select></label>'
     search+='<button type="button" class="kc-location-clear" data-location-clear hidden>Clear</button></div>'
     groups=''
     if is_city:
-        for r in regions:
-            if not r['cities']:continue
-            entries=''.join(location_link(ctx['cities'][p],secondary=count_label(ctx['cities'][p]['count'])+' upcoming') for p in sorted(r['cities'],key=lambda p:ctx['cities'][p]['name']))
-            groups+=f'<section class="kc-location-group" data-location-group data-region="{escape(href(r["path"]))}" data-region-name="{escape(r["name"].casefold())}"><div class="kc-location-section-heading"><h2>{escape(r["name"])}</h2><a href="{href(r["path"])}">All shows {ARROW}</a></div><div class="kc-location-city-grid">{entries}</div></section>'
+        letters=defaultdict(list)
+        for c in sorted(cities,key=lambda c:(c['name'].casefold(),ctx['regions'][c['region']]['name'])):
+            letters[c['name'][0].upper()].append(c)
+        for letter, entries in letters.items():
+            links=''
+            for c in entries:
+                region=ctx['regions'][c['region']]['name']
+                search_text=(c['name']+' '+region).casefold()
+                links+=(f'<a class="kc-city-list-row" href="{href(c["path"])}" data-location-entry data-search="{escape(search_text,quote=True)}" '
+                        f'data-region="{escape(href(c["region"]),quote=True)}"><span class="kc-city-list-place"><strong>{escape(c["name"])}</strong><small>{escape(region)}</small></span>'
+                        f'<span class="kc-city-list-count"><strong>{c["count"]}</strong><small>{"show" if c["count"]==1 else "shows"}</small></span>{ARROW}</a>')
+            groups+=f'<section class="kc-city-letter-group" data-location-group aria-label="Cities starting with {escape(letter)}"><h2>{escape(letter)}</h2><div class="kc-city-list">{links}</div></section>'
     else:
         groups='<div class="kc-location-state-grid" data-location-group>'+''.join(location_link(r) for r in regions)+'</div>'
     total=len(cities) if is_city else len(regions)
     label='cities with upcoming public shows' if is_city else 'states and provinces'
     body=f'<main id="kc-main-content" class="kc-location-directory" data-location-directory data-location-kind="{kind}"><div class="kc-location-breadcrumb"><a href="{TEST_BASE}">Home</a><span aria-hidden="true">/</span><span>{kind.title()}</span></div><header class="kc-location-hero"><h1>{title}</h1><p>{desc}</p></header><nav class="kc-location-switch" aria-label="Location directories"><a href="{href("/shows/states/")}"'+(' aria-current="page"' if not is_city else '')+'>States</a><a href="'+href('/shows/cities/')+'"'+(' aria-current="page"' if is_city else '')+f'>Cities</a></nav>{search}<p class="kc-location-result-count" role="status" aria-live="polite" data-location-count>{total} {label}</p><div class="kc-location-groups">{groups}</div><div class="kc-location-empty" data-location-empty hidden><h2>No matching locations</h2><p>Try another name or clear your filters.</p></div><p class="kc-location-note">Counts include public upcoming shows. Confirm final details with the organizer before traveling.</p></main>'
+    if is_city:
+        body=re.sub(r'<nav class="kc-location-switch".*?</nav>','',body, count=1,flags=re.S)
     template=ctx['template'];doc=Document(template);main=doc.one(lambda n:n.tag=='main')
     changes=[(main.start,main.end,body)]
     url=TEST_SITE+'/shows/'+kind+'/'

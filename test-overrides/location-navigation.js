@@ -17,7 +17,7 @@
       groups.forEach(group => {
         let visible = 0;
         group.querySelectorAll('[data-location-entry]').forEach(entry => {
-          const match = (!region || !region.value || region.value === group.dataset.region) &&
+          const match = (!region || !region.value || region.value === (entry.dataset.region || group.dataset.region)) &&
             normalize(entry.dataset.search + ' ' + (group.dataset.regionName || '')).includes(term);
           entry.hidden = !match; if (match) visible++;
         });

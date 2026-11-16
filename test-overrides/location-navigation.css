@@ -74,10 +74,14 @@ body :is(.kc-location-nav,.kc-location-menu,.kc-location-directory,.kc-location-
  body .kc-location-state-grid {grid-template-columns:repeat(3,minmax(0,1fr));}
 }
 @media(max-width:600px){
- body [data-location-navigation-version] .kc-rd-primary {padding:10px 16px!important;gap:10px!important;min-height:60px!important;}
- body [data-location-navigation-version] .kc-rd-brand img {width:176px!important;}
- body [data-location-navigation-version] .kc-rd-actions {display:none!important;}
- body .kc-location-menu {margin-left:auto;}
+ body [data-location-navigation-version] .kc-rd-primary {padding:10px 12px!important;gap:6px!important;min-height:60px!important;}
+ body [data-location-navigation-version] .kc-rd-brand img {width:clamp(112px,calc(100vw - 206px),176px)!important;}
+ body [data-location-navigation-version] .kc-rd-actions {display:flex!important;gap:4px!important;margin-left:auto;}
+ body [data-location-navigation-version] .kc-rd-actions .kc-rd-submit {display:none!important;}
+ body [data-location-navigation-version] .kc-rd-actions :is(.kc-rd-instagram-button,.kc-facebook-button) {display:grid!important;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;margin:0;padding:8px;}
+ body [data-location-navigation-version] .kc-rd-actions svg {width:28px;height:28px;}
+ body .kc-location-menu {margin-left:0;}
+ body .kc-location-menu summary>span {display:none;}
  body .kc-location-menu summary {padding:8px;gap:5px;font-size:12px;}
  body .kc-location-menu nav {min-width:210px;}
  body .kc-location-nav {padding:0 10px 6px;gap:2px;}
@@ -113,3 +117,29 @@ body :is(.kc-location-nav,.kc-location-menu,.kc-location-directory,.kc-location-
  body .kc-location-dates a {padding:8px 10px;font-size:12px;}
 }
 @media(prefers-reduced-motion:reduce){body .kc-location-row{transition:none;}}
+
+/* The Cities directory leads with city names. States are context, not headings. */
+body [data-location-kind="cities"] .kc-location-hero {margin-bottom:28px;}
+body .kc-city-letter-group {display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;border-top:1px solid #4b382d;margin:28px 0 0;padding-top:8px;}
+body .kc-city-letter-group>h2 {font-size:24px;color:#eeaa89;line-height:1.2;padding-top:21px;margin:0;}
+body .kc-city-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px;}
+body .kc-city-list-row {display:flex;align-items:center;gap:16px;min-height:88px;padding:16px 4px;border-bottom:1px solid #30261f;text-decoration:none;color:#f5efe7;min-width:0;}
+body .kc-city-list-row:hover {background:#1a130f;}
+body .kc-city-list-place {flex:1;min-width:0;}
+body .kc-city-list-place strong {display:block;font-size:21px;line-height:1.2;overflow-wrap:anywhere;}
+body .kc-city-list-place small {display:block;margin-top:7px;font-size:13px;color:#c4ad9d;}
+body .kc-city-list-count {text-align:center;min-width:32px;}
+body .kc-city-list-count strong {display:block;font-size:18px;line-height:1.2;color:#f6d2b8;}
+body .kc-city-list-count small {display:block;font-size:11px;color:#ba9f8c;line-height:1.4;}
+body .kc-city-list-row svg {width:20px;height:20px;flex-shrink:0;color:#ed9a75;}
+@media(max-width:600px){
+ body [data-location-kind="cities"] .kc-location-hero h1 {font-size:33px;}
+ body .kc-city-letter-group {grid-template-columns:20px minmax(0,1fr);gap:12px;margin-top:18px;padding-top:0;}
+ body .kc-city-letter-group>h2 {font-size:18px;padding-top:22px;}
+ body .kc-city-list {grid-template-columns:1fr;}
+ body .kc-city-list-row {min-height:80px;padding:16px 0;gap:10px;}
+ body .kc-city-list-place strong {font-size:20px;}
+ body .kc-city-list-place small {font-size:12px;}
+ body .kc-city-list-row svg {width:18px;height:18px;}
+ body .kc-city-list-count {min-width:30px;}
+}
