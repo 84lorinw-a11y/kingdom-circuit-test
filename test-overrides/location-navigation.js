@@ -7,29 +7,80 @@
     const filter = directory.querySelector('[data-location-filters]');
     const input = directory.querySelector('[data-location-search]');
     const region = directory.querySelector('[data-location-region]');
+    const selectedCity = directory.querySelector('[data-location-city]');
+    const country = directory.querySelector('[data-location-country]');
     const clear = directory.querySelector('[data-location-clear]');
     const status = directory.querySelector('[data-location-count]');
     const empty = directory.querySelector('[data-location-empty]');
     const groups = Array.from(directory.querySelectorAll('[data-location-group]'));
     const city = directory.dataset.locationKind === 'cities';
+    const featured = directory.querySelector('.kc-featured-locations');
+    const heading = directory.querySelector('#all-locations-heading');
+    const originalHeading = heading.textContent;
+    const regionOptions = Array.from(region.options).map(option => option.cloneNode(true));
+    const cityOptions = Array.from(selectedCity.options).map(option => option.cloneNode(true));
+    const rebuild = (select, options, include) => {
+      const value = select.value;
+      select.replaceChildren(...options.filter(option => !option.value || include(option)).map(option => option.cloneNode(true)));
+      select.value = Array.from(select.options).some(option => option.value === value) ? value : '';
+    };
+    const syncOptions = () => {
+      rebuild(region, regionOptions, option => !country.value || option.dataset.country === country.value);
+      rebuild(selectedCity, cityOptions, option => (!country.value || option.dataset.country === country.value) && (!region.value || option.dataset.region === region.value));
+    };
     const update = () => {
       const term = normalize(input.value); let count = 0;
+      const cityRegion = selectedCity.selectedOptions[0]?.dataset.region;
+      const filtered = !!(term || region.value || selectedCity.value || country.value);
       groups.forEach(group => {
         let visible = 0;
         group.querySelectorAll('[data-location-entry]').forEach(entry => {
-          const match = (!region || !region.value || region.value === (entry.dataset.region || group.dataset.region)) &&
+          const entryRegion = entry.dataset.region || group.dataset.region;
+          const match = (!region.value || region.value === entryRegion) &&
+            (!country.value || country.value === entry.dataset.country) &&
+            (!selectedCity.value || (city ? selectedCity.value === entry.dataset.city : cityRegion === entryRegion)) &&
             normalize(entry.dataset.search + ' ' + (group.dataset.regionName || '')).includes(term);
           entry.hidden = !match; if (match) visible++;
         });
         group.hidden = visible === 0; count += visible;
       });
       status.textContent = `${count} ${city ? (count === 1 ? 'city' : 'cities') : (count === 1 ? 'state or province' : 'states and provinces')}${city ? ' with upcoming public shows' : ''}`;
-      empty.hidden = count > 0; clear.hidden = !term && !(region && region.value);
+      empty.hidden = count > 0; clear.hidden = !filtered;
+      if (featured) featured.hidden = filtered;
+      heading.textContent = filtered ? (city ? 'Matching cities' : 'Matching states and provinces') : originalHeading;
     };
     filter.hidden = false;
     input.addEventListener('input', update);
-    region?.addEventListener('change', update);
-    clear.addEventListener('click', () => { input.value = ''; if (region) region.value = ''; update(); input.focus(); });
+    region.addEventListener('change', () => { syncOptions(); update(); });
+    country.addEventListener('change', () => { syncOptions(); update(); });
+    selectedCity.addEventListener('change', () => {
+      const option = selectedCity.selectedOptions[0];
+      if (option?.value) { country.value = option.dataset.country; rebuild(region, regionOptions, item => item.dataset.country === country.value); region.value = option.dataset.region; }
+      syncOptions(); update();
+    });
+    clear.addEventListener('click', () => { input.value = ''; country.value = ''; region.value = ''; selectedCity.value = ''; syncOptions(); update(); input.focus(); });
+  });
+  document.querySelectorAll('.kc-featured-locations').forEach(section => {
+    const rail = section.querySelector('[data-featured-rail]');
+    const controls = section.querySelector('[data-featured-controls]');
+    const previous = section.querySelector('[data-featured-prev]');
+    const next = section.querySelector('[data-featured-next]');
+    const refresh = () => {
+      const max = rail.scrollWidth - rail.clientWidth;
+      controls.hidden = max < 2;
+      previous.disabled = rail.scrollLeft < 2;
+      next.disabled = rail.scrollLeft >= max - 2;
+    };
+    const move = direction => {
+      const card = rail.querySelector('[data-featured-location]');
+      const distance = card.getBoundingClientRect().width + parseFloat(getComputedStyle(rail).columnGap);
+      rail.scrollBy({left:direction * distance,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+    };
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    rail.addEventListener('scroll', refresh, {passive:true});
+    new ResizeObserver(refresh).observe(rail);
+    refresh();
   });
   const menus = document.querySelectorAll('.kc-location-menu');
   document.addEventListener('keydown', event => {

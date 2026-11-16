@@ -38,6 +38,26 @@ class LocationNavigationTests(unittest.TestCase):
 
     def test_zero_count_does_not_claim_future_event(self):
         self.assertIn('No upcoming shows listed',location.location_link({'path':'/shows/florida/','name':'Florida','count':0}))
+    def test_featured_locations_rank_by_count_with_stable_ties_and_exclude_empty(self):
+        rows=[{'path':f'/shows/city-{i}/','name':f'City {i:02d}','count':i} for i in range(14)]
+        rows += [{'path':'/shows/alpha/','name':'Alpha','count':13}]
+        ctx={'cities':{r['path']:r for r in reversed(rows)}}
+        ranked=location.featured_locations(ctx,'cities')
+        self.assertEqual(len(ranked),10)
+        self.assertEqual([r['name'] for r in ranked[:3]],['Alpha','City 13','City 12'])
+        self.assertTrue(all(r['count']>0 for r in ranked))
+        self.assertEqual(len({r['path'] for r in ranked}),10)
+    def test_country_mapping_keeps_california_distinct_from_canada(self):
+        self.assertEqual(location.country_of({'name':'California'}),'US')
+        self.assertEqual(location.country_of({'name':'Saskatchewan'}),'CA')
+        self.assertEqual(location.country_of({'name':'Quebec'}),'CA')
+    def test_featured_links_do_not_become_duplicate_filter_results(self):
+        rows={'/shows/florida/':{'path':'/shows/florida/','name':'Florida','count':4}}
+        doc=Document(location.featured_section({'regions':rows},'states'))
+        featured=[n for n in doc.nodes if 'data-featured-location' in n.attrs]
+        self.assertEqual(len(featured),1)
+        self.assertEqual(featured[0].attrs['data-show-count'],'4')
+        self.assertNotIn('data-location-entry',featured[0].attrs)
     def test_new_navigation_contains_five_links_and_current_state(self):
         doc=Document(location.nav('/shows/states/'))
         links=[n for n in doc.nodes if n.tag=='a']

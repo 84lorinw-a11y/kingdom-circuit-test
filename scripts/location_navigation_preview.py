@@ -15,7 +15,7 @@ from mobile_seo_preview import Document, replace_spans, test_source
 from live_mirror_v2 import TEST_BASE, TEST_SITE
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '20261115-2'
+VERSION = '20261116-1'
 FILES = frozenset({'shows/states/index.html', 'shows/cities/index.html',
                    'assets/location-navigation.css', 'assets/location-navigation.js',
                    'assets/location-navigation-data.json'})
@@ -24,6 +24,13 @@ SEARCH = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle 
 NEARBY = [('orlando-florida','kissimmee-florida'), ('dallas-texas','arlington-texas'),
           ('dallas-texas','fort-worth-texas'), ('phoenix-arizona','mesa-arizona'),
           ('detroit-michigan','belleville-michigan'), ('fort-lauderdale-florida','north-lauderdale-florida')]
+CANADIAN_REGIONS = {'Alberta', 'British Columbia', 'Manitoba', 'New Brunswick',
+                    'Newfoundland and Labrador', 'Nova Scotia', 'Ontario',
+                    'Prince Edward Island', 'Quebec', 'Saskatchewan',
+                    'Northwest Territories', 'Nunavut', 'Yukon'}
+
+def country_of(region):
+    return 'CA' if region['name'] in CANADIAN_REGIONS else 'US'
 
 def path_of(href):
     path = urlsplit(href).path
@@ -191,14 +198,42 @@ def transform(relative,data,ctx):
     assets=f'<link rel="stylesheet" href="{TEST_BASE}assets/location-navigation.css?v={VERSION}"><script src="{TEST_BASE}assets/location-navigation.js?v={VERSION}" defer></script>'
     return text.replace('</head>',assets+'</head>',1).encode()
 
+def featured_locations(ctx, kind):
+    is_city = kind == 'cities'
+    rows = ctx['cities'].values() if is_city else ctx['regions'].values()
+    return sorted((r for r in rows if r['count'] > 0),
+                  key=lambda r: (-r['count'], r['name'].casefold(), r['path']))[:10]
+
+def featured_section(ctx, kind):
+    rows = featured_locations(ctx, kind)
+    if not rows:
+        return ''
+    cards = ''
+    for rank, row in enumerate(rows, 1):
+        region = ctx['regions'][row['region']]['name'] if kind == 'cities' else ('Canada' if country_of(row) == 'CA' else 'United States')
+        cards += (f'<a class="kc-featured-card kc-featured-tone-{(rank-1)%5}" href="{href(row["path"])}" data-featured-location '
+                  f'data-show-count="{row["count"]}"><span class="kc-featured-rank"><span class="sr-only">Rank </span>{rank:02d}</span>'
+                  f'<span class="kc-featured-pattern" aria-hidden="true"></span><span class="kc-featured-place"><small>{escape(region)}</small>'
+                  f'<strong>{escape(row["name"])}</strong></span><span class="kc-featured-bottom"><span>{count_label(row["count"])} <small>upcoming</small></span>{ARROW}</span></a>')
+    return (f'<section class="kc-featured-locations" aria-labelledby="popular-{kind}"><div class="kc-featured-heading"><div>'
+            f'<h2 id="popular-{kind}">Popular {kind}</h2><p>Top {len(rows)} by upcoming public shows</p></div>'
+            f'<a class="kc-featured-view-all" href="#all-locations">View all {kind} {ARROW}</a></div>'
+            f'<div class="kc-featured-rail" id="featured-{kind}" data-featured-rail aria-label="Popular {kind}">{cards}</div>'
+            f'<div class="kc-featured-controls" data-featured-controls hidden><span>Swipe to explore</span><div>'
+            f'<button type="button" data-featured-prev aria-label="Previous popular {kind}" aria-controls="featured-{kind}">{ARROW}</button>'
+            f'<button type="button" data-featured-next aria-label="Next popular {kind}" aria-controls="featured-{kind}">{ARROW}</button></div></div></section>')
+
 def directory(ctx,kind):
     is_city=kind=='cities';regions=sorted(ctx['regions'].values(),key=lambda r:r['name'])
     cities=[c for c in ctx['cities'].values() if c['count']]
     title='Find CHH shows in your city' if is_city else 'Find CHH shows by state'
     desc='Find your next concert. Search cities with upcoming Christian hip hop shows.' if is_city else 'Explore Christian hip hop concerts across the United States and Canada.'
-    options='<option value="">All states and provinces</option>'+''.join(f'<option value="{escape(href(r["path"]))}">{escape(r["name"])}</option>' for r in regions if r['cities'])
-    search=f'<div class="kc-location-filters" data-location-filters hidden><label class="kc-location-search"><span>Search {kind}</span><div>{SEARCH}<input type="search" placeholder="'+('City or state' if is_city else 'State or province')+'" data-location-search autocomplete="off"></div></label>'
-    if is_city:search+=f'<label class="kc-location-region"><span>State or province</span><select data-location-region>{options}</select></label>'
+    options='<option value="">All regions</option>'+''.join(f'<option value="{escape(href(r["path"]))}" data-country="{country_of(r)}">{escape(r["name"])}</option>' for r in regions)
+    city_options='<option value="">All cities</option>'+''.join(f'<option value="{escape(href(c["path"]))}" data-region="{escape(href(c["region"]))}" data-country="{country_of(ctx["regions"][c["region"]])}">{escape(c["name"]+", "+ctx["regions"][c["region"]]["name"])}</option>' for c in sorted(cities,key=lambda c:(c['name'].casefold(),c['path'])))
+    search=f'<div class="kc-location-filters" data-location-filters hidden><label class="kc-location-search"><span>Search</span><div>{SEARCH}<input type="search" placeholder="City or state name" data-location-search autocomplete="off"></div></label>'
+    search+=f'<label><span>City</span><select data-location-city>{city_options}</select></label>'
+    search+=f'<label><span>State or province</span><select data-location-region>{options}</select></label>'
+    search+='<label><span>Country</span><select data-location-country><option value="">All countries</option><option value="US">United States</option><option value="CA">Canada</option></select></label>'
     search+='<button type="button" class="kc-location-clear" data-location-clear hidden>Clear</button></div>'
     groups=''
     if is_city:
@@ -211,16 +246,28 @@ def directory(ctx,kind):
                 region=ctx['regions'][c['region']]['name']
                 search_text=(c['name']+' '+region).casefold()
                 links+=(f'<a class="kc-city-list-row" href="{href(c["path"])}" data-location-entry data-search="{escape(search_text,quote=True)}" '
-                        f'data-region="{escape(href(c["region"]),quote=True)}"><span class="kc-city-list-place"><strong>{escape(c["name"])}</strong><small>{escape(region)}</small></span>'
+                        f'data-region="{escape(href(c["region"]),quote=True)}" data-city="{escape(href(c["path"]),quote=True)}" data-country="{country_of(ctx["regions"][c["region"]])}"><span class="kc-city-list-place"><strong>{escape(c["name"])}</strong><small>{escape(region)}</small></span>'
                         f'<span class="kc-city-list-count"><strong>{c["count"]}</strong><small>{"show" if c["count"]==1 else "shows"}</small></span>{ARROW}</a>')
             groups+=f'<section class="kc-city-letter-group" data-location-group aria-label="Cities starting with {escape(letter)}"><h2>{escape(letter)}</h2><div class="kc-city-list">{links}</div></section>'
     else:
-        groups='<div class="kc-location-state-grid" data-location-group>'+''.join(location_link(r) for r in regions)+'</div>'
+        entries=[]
+        for r in regions:
+            entry=location_link(r)
+            # A state search also matches its public cities without altering statewide counts.
+            names=' '.join([r['name'],*(ctx['cities'][p]['name'] for p in r['cities'])]).casefold()
+            entry=re.sub(r'data-search="[^"]*"',f'data-search="{escape(names,quote=True)}" data-region="{href(r["path"])}" data-country="{country_of(r)}"',entry,count=1)
+            entries.append(entry)
+        groups='<div class="kc-location-state-grid" data-location-group>'+''.join(entries)+'</div>'
     total=len(cities) if is_city else len(regions)
     label='cities with upcoming public shows' if is_city else 'states and provinces'
-    body=f'<main id="kc-main-content" class="kc-location-directory" data-location-directory data-location-kind="{kind}"><div class="kc-location-breadcrumb"><a href="{TEST_BASE}">Home</a><span aria-hidden="true">/</span><span>{kind.title()}</span></div><header class="kc-location-hero"><h1>{title}</h1><p>{desc}</p></header><nav class="kc-location-switch" aria-label="Location directories"><a href="{href("/shows/states/")}"'+(' aria-current="page"' if not is_city else '')+'>States</a><a href="'+href('/shows/cities/')+'"'+(' aria-current="page"' if is_city else '')+f'>Cities</a></nav>{search}<p class="kc-location-result-count" role="status" aria-live="polite" data-location-count>{total} {label}</p><div class="kc-location-groups">{groups}</div><div class="kc-location-empty" data-location-empty hidden><h2>No matching locations</h2><p>Try another name or clear your filters.</p></div><p class="kc-location-note">Counts include public upcoming shows. Confirm final details with the organizer before traveling.</p></main>'
-    if is_city:
-        body=re.sub(r'<nav class="kc-location-switch".*?</nav>','',body, count=1,flags=re.S)
+    all_title = 'All cities' if is_city else 'All states and provinces'
+    body=(f'<main id="kc-main-content" class="kc-location-directory" data-location-directory data-location-kind="{kind}">'
+          f'<div class="kc-location-breadcrumb"><a href="{TEST_BASE}">Home</a><span aria-hidden="true">/</span><span>{kind.title()}</span></div>'
+          f'<header class="kc-location-hero"><h1>{title}</h1><p>{desc}</p></header>{search}{featured_section(ctx,kind)}'
+          f'<section class="kc-all-locations" id="all-locations" aria-labelledby="all-locations-heading"><h2 id="all-locations-heading">{all_title}</h2>'
+          f'<p class="kc-location-result-count" role="status" aria-live="polite" data-location-count>{total} {label}</p>'
+          f'<div class="kc-location-groups">{groups}</div><div class="kc-location-empty" data-location-empty hidden><h2>No matching locations</h2>'
+          '<p>Try another name or clear your filters.</p></div></section><p class="kc-location-note">Counts include public upcoming shows. Confirm final details with the organizer before traveling.</p></main>')
     template=ctx['template'];doc=Document(template);main=doc.one(lambda n:n.tag=='main')
     changes=[(main.start,main.end,body)]
     url=TEST_SITE+'/shows/'+kind+'/'
@@ -263,6 +310,11 @@ def verify(live,site,ctx):
         assert TEST_SITE+'/shows/'+kind+'/' in (site/'sitemap.xml').read_text()
         doc=Document((site/f'shows/{kind}/index.html').read_text())
         assert len([n for n in doc.nodes if n.tag=='h1'])==1
+        featured = [n for n in doc.nodes if 'data-featured-location' in n.attrs]
+        expected = featured_locations(ctx, kind)
+        assert [n.attrs['href'] for n in featured] == [href(r['path']) for r in expected]
+        assert [int(n.attrs['data-show-count']) for n in featured] == [r['count'] for r in expected]
+        assert all('data-location-entry' not in n.attrs for n in featured), 'Featured links inflate search counts'
         assert not any(n.attrs.get('type')=='application/ld+json' and re.search(r'"@type":\s*"(?:MusicEvent|Event|Offer)"',doc.raw(n)) for n in doc.nodes)
     about_before=Document(test_source(live,'about-us/index.html'));about_after=Document((site/'about-us/index.html').read_text())
     assert about_before.raw(about_before.one(lambda n:n.tag=='main'))==about_after.raw(about_after.one(lambda n:n.tag=='main')),'About Us content changed'
