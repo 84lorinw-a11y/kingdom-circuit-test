@@ -727,8 +727,12 @@ def transform(relative, data, ctx):
     return text.replace('</head>', stylesheet + '</head>', 1).encode()
 
 
+def stylesheet(live):
+    return test_source(live,'assets/show-information.css').encode() if (live/'assets/show-information.css').is_file() else (ROOT/'test-overrides/show-information.css').read_bytes()
+
+
 def verify(live, site, ctx):
-    assert (site / 'assets/show-information.css').read_bytes() == (ROOT / 'test-overrides/show-information.css').read_bytes()
+    assert (site / 'assets/show-information.css').read_bytes() == stylesheet(live)
     report = {'version': VERSION, 'eventPages': len(ctx['pages']), 'detailsPanels': 0, 'ticketOffers': 0, 'privatePages': 0, 'canadianPages': 0,
               'artworkAssets': verify_artwork_files(site, live), 'artworkPages': 0}
     for rel, record in ctx['pages'].items():
@@ -806,7 +810,7 @@ def build(site, live):
         target = site / rel
         if target.exists():
             target.write_bytes(transform(rel, target.read_bytes(), ctx))
-    (site / 'assets/show-information.css').write_bytes((ROOT / 'test-overrides/show-information.css').read_bytes())
+    (site / 'assets/show-information.css').write_bytes(stylesheet(live))
     report = verify(live, site, ctx)
     path = site / 'test-live-mirror-manifest.json'
     manifest = json.loads(path.read_text())

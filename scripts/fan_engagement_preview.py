@@ -46,7 +46,8 @@ def context(live, as_of=None):
         artists[rel] = {'name': doc.text(names[0]), 'shows': rows,
                         'empty': not rows, 'path': TEST_BASE + rel.removesuffix('index.html')}
     today = as_of or datetime.now(ZoneInfo('America/Los_Angeles')).date().isoformat()
-    return {'asOf': today, 'shows': shows, 'artists': artists, 'statePaths': state_paths,
+    native_css = {'assets/fan-engagement.css':test_source(live,'assets/fan-engagement.css').encode()} if (live/'assets/fan-engagement.css').is_file() else {}
+    return {'nativeCss':native_css, 'asOf': today, 'shows': shows, 'artists': artists, 'statePaths': state_paths,
             'count': sum(s['end'] >= today for s in shows)}
 
 def panel(name, count):
@@ -149,6 +150,7 @@ def viewer():
 
 def generated(ctx):
     result = {f'assets/{n}': (ROOT/'test-overrides'/n).read_bytes() for n in ASSETS}
+    result.update(ctx.get('nativeCss',{}))
     catalog = {'asOf':ctx['asOf'], 'shows':ctx['shows']}
     result['assets/fan-test-show-catalog.json'] = (json.dumps(catalog, separators=(',',':'))+'\n').encode()
     result['test-analytics/index.html'] = viewer()

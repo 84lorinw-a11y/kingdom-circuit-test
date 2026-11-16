@@ -69,6 +69,40 @@ class MobileCalendarContentTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'Archive has missing/nonpast date'):
                     collect(site, '2026-10-28')
 
+    def test_retained_archive_reads_visible_date_billing_and_original_link(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site=Path(temp);(site/'config').mkdir();(site/'config/artists.json').write_text('[{"name":"808 BEEZY"}]')
+            target=safe_page(site,'/kingdom-circuit-test/event/old-name-1999-01-01/')
+            target.parent.mkdir(parents=True)
+            target.write_text('<main><h1>Retained concert</h1><p>This date has passed.</p><dl><dt>Recorded date</dt><dd>2026-09-18</dd><dt>City</dt><dd>Dola</dd><dt>State / region</dt><dd>OH</dd></dl><p>Archived source listings for this date record different start times.</p><p>808 BEEZY</p><img src="/kingdom-circuit-test/assets/original.webp"><p><a href="https://example.com/original">Original official information</a></p></main>')
+            event=read_detail(site,'/kingdom-circuit-test/event/old-name-1999-01-01/')
+            self.assertEqual(event['date'],'2026-09-18')
+            self.assertEqual(event['dateLabel'],'2026-09-18')
+            self.assertEqual(event['artists'],['808 BEEZY'])
+            self.assertEqual(event['location'],'Dola, OH')
+            self.assertEqual(event['official'],'https://example.com/original')
+            self.assertEqual(event['image'],'/kingdom-circuit-test/assets/original.webp')
+
+    def test_private_archive_uses_visible_date_without_public_event_schema(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site=Path(temp);target=safe_page(site,'/kingdom-circuit-test/event/private/')
+            target.parent.mkdir(parents=True)
+            target.write_text('<article class="event-detail"><h1>Invite Only</h1><p class="artist-line">Artist</p><dl><dt>Date</dt><dd>Nov 10, 2026</dd></dl></article>')
+            event=read_detail(site,'/kingdom-circuit-test/event/private/')
+            self.assertEqual(event['date'],'2026-11-10')
+            self.assertNotIn('application/ld+json',target.read_text())
+
+    def test_explicit_unnamed_performance_notices_are_preserved_without_invented_artists(self):
+        notices=['The flyer announces a special guest without naming them.',
+                 'Individual performance sets by Scootie Wop or DJ Cam have not been announced.',
+                 'All ages are welcome; individual performers have not been announced.',
+                 'Lineup TBA; performers have not been announced.',
+                 'A free gathering with a live DJ playing Christian hip-hop and holiday favorites.']
+        for notice in notices:
+            self.assertEqual(lineup_notice('',notice),notice)
+            verify_billing({'href':'/event/community/','artists':[],'artistLinks':{},'lineupNotice':notice})
+        self.assertEqual(lineup_notice('','A free gathering. DJ invited. No music confirmed.'),'')
+
     def test_community_event_preserves_schema_dates_and_explicit_no_lineup(self):
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)

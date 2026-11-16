@@ -30,7 +30,7 @@ def field(source, label):
 def image_fields(source):
     image = match_text(r'(<img\b[^>]*>)', source)
     position = match_text(r'object-position\s*:\s*([^;"\']+)', attribute(image, "style"), "center")
-    return {"image": attribute(image, "src"), "srcset": attribute(image, "srcset"),
+    return {"image": attribute(image, "src") or BASE + "assets/event-fallback.webp", "srcset": attribute(image, "srcset"),
             "artwork": "event-artwork" in attribute(image, "class"),
             "position": position if re.fullmatch(r"[a-z0-9.% -]+", position, re.I) else "center"}
 
@@ -52,7 +52,9 @@ def host_label(source):
 
 LINEUP_NOTICE = re.compile(
     r'\b(?:lineup\s+(?:(?:and daily times\s+)?to be announced|has not yet been announced)'
-    r'|no performer lineup has been announced)\b', re.I)
+    r'|no performer lineup has been announced|lineup TBA|performers have not been announced'
+    r'|individual performance sets[^.]*have not been announced'
+    r'|special guest without naming them|live DJ playing Christian hip-hop)\b', re.I)
 
 
 def lineup_notice(source, description=""):
@@ -108,16 +110,42 @@ def read_detail(site, href):
     detail = match_text(r'(<article\b[^>]*class="event-detail"[^>]*>)', source)
     start_date = str(schema.get("startDate") or attribute(detail, "data-date"))[:10]
     end_date = str(schema.get("endDate") or attribute(detail, "data-end-date") or start_date)[:10]
+    if not start_date:
+        # Private archives intentionally omit public Event markup. Read their
+        # explicit visible calendar date without adding markup or guessing a time.
+        visible_date = field(source, "Date")
+        if re.fullmatch(r'[A-Za-z]{3} \d{1,2}, \d{4}', visible_date):
+            start_date = dt.datetime.strptime(visible_date, '%b %d, %Y').date().isoformat()
+            end_date = start_date
     names, links = billing(source)
+    recorded = field(source, "Recorded date")
+    retained_status = ""
+    if recorded and not start_date:
+        # Retained production pages expose factual dates in the visible definition list.
+        # Never derive dates or billing from the URL slug.
+        start_date = recorded[:10]
+        end_date = start_date
+        image_block = match_text(r'(<img\b[^>]*>)', source)
+        official = next((attribute(a, "href") for a in re.findall(r'<a\b[^>]*>.*?</a>', source, re.S)
+                         if clean_text(a) == "Original official information"), "")
+        if official and not valid_official_url(site, official): raise ValueError("Unexpected retained official URL")
+        tail = source.split('</dl>', 1)[-1]
+        tail = re.sub(r'^\s*<p>Archived source listings.*?</p>', '', tail, count=1, flags=re.S)
+        published_names = clean_text(match_text(r'^\s*<p>([^<]+)</p>', tail))
+        roster = {a['name'] for a in json.loads((site/'config/artists.json').read_text())}
+        candidates = [name.strip() for name in published_names.split(' · ') if name.strip()]
+        if candidates and any(name in roster for name in candidates): names = candidates
+        if 'This event was cancelled.' in source: retained_status = 'Cancelled'
+        elif 'This event was postponed.' in source: retained_status = 'Postponed'
     return {"key": href.rstrip("/").split("/")[-1], "href": href,
             "title": clean_text(match_text(r'<h1\b[^>]*>(.*?)</h1>', source)),
             "date": start_date, "endDate": end_date,
-            "dateLabel": field(source, "Date") or field(source, "Originally scheduled"),
+            "dateLabel": field(source, "Date") or field(source, "Originally scheduled") or recorded,
             "venue": field(source, "Venue"),
-            "location": field(source, "Location"), "artists": names, "artistLinks": links,
+            "location": field(source, "Location") or ", ".join(filter(None, [field(source, "City"), field(source, "State / region")])), "artists": names, "artistLinks": links,
             "hostLabel": host_label(source),
             "lineupNotice": lineup_notice(source, str(schema.get("description") or "")),
-            "official": official, "status": field(source, "Status"),
+            "official": official, "status": field(source, "Status") or retained_status,
             "age": field(source, "Age restriction"), "original": attribute(original, "href"),
             **image_fields(image_block)}
 
@@ -155,7 +183,7 @@ def collect(site, today):
         event = read_detail(site, href)
         # Production also archives explicit cancellations before their original
         # date. Keep those records out of upcoming results without losing them.
-        cancelled = event["status"].casefold() in {"cancelled", "canceled"}
+        cancelled = event["status"].casefold() in {"cancelled", "canceled", "postponed"}
         if (not re.fullmatch(r"\d{4}-\d{2}-\d{2}", event["endDate"])
                 or (event["endDate"] >= today and not cancelled)):
             raise ValueError(f"Archive has missing/nonpast date: {href}")

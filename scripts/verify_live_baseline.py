@@ -11,6 +11,7 @@ from mobile_seo_preview import ASSETS, VERSION, verify_overlay, live_has_promote
 import national_discovery_preview as discovery
 import fan_engagement_preview as engagement
 import show_information_preview as information
+import location_navigation_preview as locations
 from build_chh_game import GAME_FILES, verify as verify_game
 
 EXPERIMENT_FILES = frozenset({
@@ -29,6 +30,8 @@ def verify(live: Path, site: Path) -> dict:
     manifest = json.loads(manifest_path.read_text())
     fan_context = engagement.context(live, manifest["fanEngagement"]["asOf"])
     information_context = information.context(live)
+    location_context = locations.context(live)
+    location_report = locations.verify(live, site, location_context)
     fan_report = engagement.verify(live, site, fan_context,
         approved_image_transform=lambda rel, data: information.transform(rel, data, information_context))
     information_report = information.verify(live, site, information_context)
@@ -43,8 +46,8 @@ def verify(live: Path, site: Path) -> dict:
         if not (live / '.nojekyll').exists():
             additions = additions | {'.nojekyll'}
         parity = verify_exact_mirror(live, site,
-            allowed_additions=additions | fan_additions | information_additions,
-            approved_transform=lambda path, data: information.transform(path, engagement.transform(path, data, fan_context), information_context))
+            allowed_additions=additions | fan_additions | information_additions | locations.FILES,
+            approved_transform=lambda path, data: locations.transform(path, information.transform(path, engagement.transform(path, data, fan_context), information_context), location_context))
         verify_calendar(site, isolated=True)
         verify_intake(site)
         manifest.update(parity)
@@ -53,14 +56,14 @@ def verify(live: Path, site: Path) -> dict:
                          'testRedesignApplied': False, 'promotedDiscoveryMirrored': True,
                          'preservedExperimentPaths': ['/test-all-shows/', '/test-show-feed/', '/test-artist-intake/', '/play/'],
                          'chhShowNight': game, 'fanEngagement': fan_report,
-                         'showInformation': information_report,
+                         'showInformation': information_report, 'locationNavigation': location_report,
                          'isolatedExperimentFileCount': len(EXPERIMENT_FILES)})
         manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
         print(json.dumps(manifest, indent=2))
         return manifest
     context = discovery.load_context(live, date.fromisoformat(manifest['nationalDiscovery']['asOfDate']))
-    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | fan_additions | information_additions,
-                                approved_transform=lambda path, data: information.transform(path, engagement.transform(path, discovery.combined_transform(path, data, context), fan_context), information_context))
+    parity = verify_exact_mirror(live, site, allowed_additions=ADDITIONS | fan_additions | information_additions | locations.FILES,
+                                approved_transform=lambda path, data: locations.transform(path, information.transform(path, engagement.transform(path, discovery.combined_transform(path, data, context), fan_context), information_context), location_context))
     national = discovery.verify(live, site, context)
     overlay = verify_overlay(live, site, national_home=True)
     verify_calendar(site, isolated=True)
@@ -70,6 +73,7 @@ def verify(live: Path, site: Path) -> dict:
     manifest["preservedExperimentPaths"] = ["/test-all-shows/", "/test-show-feed/", "/test-artist-intake/", "/play/"]
     manifest['chhShowNight'] = game
     manifest['showInformation'] = information_report
+    manifest['locationNavigation'] = location_report
     manifest["isolatedExperimentFileCount"] = len(EXPERIMENT_FILES)
     manifest["testRedesignApplied"] = False
     manifest["mode"] = "live-mirror-with-national-discovery-preview"

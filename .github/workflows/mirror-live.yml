@@ -9,6 +9,7 @@ on:
       - "scripts/live_mirror_v2.py"
       - "scripts/verify_live_baseline.py"
       - "scripts/fan_engagement_preview.py"
+      - "scripts/location_navigation_preview.py"
       - "scripts/show_information_model.py"
       - "scripts/show_information_preview.py"
       - "scripts/mobile_seo_preview.py"
@@ -147,7 +148,8 @@ jobs:
           python -m py_compile scripts/capture_live_site.py
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/verify_live_baseline.py
-          python -m py_compile scripts/fan_engagement_preview.py
+          python -m py_compile scripts/fan_engagement_preview.py scripts/location_navigation_preview.py
+          node --check test-overrides/location-navigation.js
           python -m py_compile scripts/show_information_model.py scripts/show_information_preview.py
           python -m py_compile scripts/mobile_seo_preview.py
           python -m py_compile scripts/national_discovery_preview.py
@@ -240,6 +242,10 @@ jobs:
       - name: Preserve the separate show layout experiments using final show facts
         if: steps.publishing.outputs.mode == 'full-refresh'
         run: python scripts/build_mobile_show_test.py _site --isolated
+
+      - name: Build and verify location navigation preview
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        run: python scripts/location_navigation_preview.py _site _live_site
 
       - name: Verify the final deployment artifact
         run: |
