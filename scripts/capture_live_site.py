@@ -46,6 +46,10 @@ OMITTED_OPERATIONAL_PATHS = frozenset(
         "/seo-overlay-manifest.json",
     }
 )
+# The existing Apollo test game is independently owned and verified by its
+# dedicated build. A website refresh must not replace it with the older game
+# retained in production. All ordinary website routes remain exact mirrors.
+SEPARATELY_MANAGED_PATH_PREFIXES = ('/play/',)
 
 ATTRIBUTE_URL = re.compile(
     r"(?<![\w:-])(?:href|src|action|poster)\s*=\s*[\"']([^\"']+)[\"']",
@@ -98,7 +102,7 @@ def canonical_url(value: str, base_url: str, origin: str) -> str | None:
     if parsed.netloc.casefold() not in allowed_hosts:
         return None
     path = parsed.path or "/"
-    if path in OMITTED_OPERATIONAL_PATHS:
+    if path in OMITTED_OPERATIONAL_PATHS or path.startswith(SEPARATELY_MANAGED_PATH_PREFIXES):
         return None
     return urllib.parse.urlunsplit((origin_parsed.scheme, origin_parsed.netloc, path, "", ""))
 
@@ -269,7 +273,7 @@ def capture(
                 continue
             normalized = canonical_url(path, origin + '/', origin)
             if normalized is None:
-                if path in OMITTED_OPERATIONAL_PATHS:
+                if path in OMITTED_OPERATIONAL_PATHS or path.startswith(SEPARATELY_MANAGED_PATH_PREFIXES):
                     continue
                 raise ValueError('Invalid publication path: ' + path)
             if normalized != origin + path or not re.fullmatch(r'[0-9a-f]{64}', entry.get('sha256', '')):
@@ -337,7 +341,7 @@ def capture(
     consistency_failures: list[str] = []
     if release is not None:
         for path, entry in release['files'].items():
-            if entry.get('kind') == 'not-found' or path in OMITTED_OPERATIONAL_PATHS:
+            if entry.get('kind') == 'not-found' or path in OMITTED_OPERATIONAL_PATHS or path.startswith(SEPARATELY_MANAGED_PATH_PREFIXES):
                 continue
             saved = output_path(origin + path, 'text/html' if entry.get('kind') == 'html' else '', output)
             if not saved.is_file() or hashlib.sha256(saved.read_bytes()).hexdigest() != entry['sha256']:
@@ -386,6 +390,7 @@ def capture(
         ),
         "publicationReleaseId": release['releaseId'] if release else None,
         "publicationManifestVerified": release is not None,
+        "separatelyManagedPaths": list(SEPARATELY_MANAGED_PATH_PREFIXES),
     }
     print(json.dumps(result, indent=2))
     return result
