@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import pathlib
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
@@ -90,6 +92,39 @@ class FixtureHandler(BaseHTTPRequestHandler):
 
 
 class LiveCaptureTests(unittest.TestCase):
+    def test_publication_manifest_captures_unlinked_files_and_checks_release(self):
+        payloads = dict(FixtureHandler.payloads)
+        payloads['/assets/dynamic-map.json'] = ('application/json', b'{"locations":{}}')
+        payloads['/event/old-alias/'] = ('text/html', b'<meta name="robots" content="noindex"><p>Retained alias</p>')
+        manifest = {'releaseId': 'fixture-release', 'files': {
+            path: {'kind': 'html' if 'html' in payloads[path][0] else 'asset',
+                   'sha256': hashlib.sha256(payloads[path][1]).hexdigest()}
+            for path in ('/assets/dynamic-map.json', '/event/old-alias/')
+        }}
+        manifest['files']['/__publication-audit-not-found__/'] = {'kind': 'not-found', 'status': 404}
+        payloads['/publication-manifest.json'] = ('application/json', json.dumps(manifest).encode())
+        with patch.object(FixtureHandler, 'payloads', payloads):
+            server = ThreadingHTTPServer(('127.0.0.1', 0), FixtureHandler)
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            try:
+                origin = f'http://127.0.0.1:{server.server_port}'
+                with tempfile.TemporaryDirectory() as temporary:
+                    output = pathlib.Path(temporary) / 'site'
+                    report = capture_module.capture(origin, output, workers=4, publication_manifest=True)
+                    self.assertTrue(report['publicationManifestVerified'])
+                    self.assertEqual(report['publicationReleaseId'], 'fixture-release')
+                    self.assertTrue((output / 'assets/dynamic-map.json').is_file())
+                    self.assertTrue((output / 'event/old-alias/index.html').is_file())
+                    self.assertFalse((output / '__publication-audit-not-found__').exists())
+                    payloads['/assets/dynamic-map.json'] = ('application/json', b'{"changed":true}')
+                    with self.assertRaises(SystemExit) as failed:
+                        capture_module.capture(origin, output, workers=4, publication_manifest=True)
+                    self.assertIn('publication-mismatch:/assets/dynamic-map.json', str(failed.exception))
+            finally:
+                server.shutdown()
+                server.server_close()
+
     def test_tracking_attributes_are_not_navigation_or_image_urls(self) -> None:
         origin = "https://kingdomcircuit.com"
         required, _ = capture_module.discovered_urls(

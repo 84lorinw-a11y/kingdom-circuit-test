@@ -246,6 +246,7 @@ def capture(
     workers: int = 16,
     min_html: int = 1,
     min_files: int = 1,
+    publication_manifest: bool = False,
 ) -> dict[str, object]:
     origin = normalize_origin(origin)
     if output.exists():
@@ -254,6 +255,26 @@ def capture(
 
     pending = sitemap_urls(origin)
     pending.update(origin + path for path in DEFAULT_SEEDS)
+    release = None
+    release_payload = None
+    if publication_manifest:
+        _, _, release_payload = fetch(origin + '/publication-manifest.json')
+        release = json.loads(release_payload)
+        if not release.get('releaseId') or not release.get('files'):
+            raise ValueError('Invalid production publication manifest')
+        for path, entry in release['files'].items():
+            # The synthetic missing route verifies production's 404 response.
+            # It is not a file to publish in the test copy.
+            if entry.get('kind') == 'not-found':
+                continue
+            normalized = canonical_url(path, origin + '/', origin)
+            if normalized is None:
+                if path in OMITTED_OPERATIONAL_PATHS:
+                    continue
+                raise ValueError('Invalid publication path: ' + path)
+            if normalized != origin + path or not re.fullmatch(r'[0-9a-f]{64}', entry.get('sha256', '')):
+                raise ValueError('Invalid publication identity: ' + path)
+            pending.add(normalized)
     required_urls = set(pending)
     seen: set[str] = set()
     failures: list[str] = []
@@ -314,6 +335,16 @@ def capture(
     )
     missing = [relative for relative in required if not (output / relative).is_file()]
     consistency_failures: list[str] = []
+    if release is not None:
+        for path, entry in release['files'].items():
+            if entry.get('kind') == 'not-found' or path in OMITTED_OPERATIONAL_PATHS:
+                continue
+            saved = output_path(origin + path, 'text/html' if entry.get('kind') == 'html' else '', output)
+            if not saved.is_file() or hashlib.sha256(saved.read_bytes()).hexdigest() != entry['sha256']:
+                consistency_failures.append('publication-mismatch:' + path)
+        _, _, current_release = fetch(origin + '/publication-manifest.json')
+        if current_release != release_payload:
+            consistency_failures.append('publication-changed-during-capture')
     for path in CONSISTENCY_PATHS:
         saved = output / ("index.html" if path == "/" else path.lstrip("/"))
         if not saved.is_file():
@@ -353,6 +384,8 @@ def capture(
         "optionalMissingMetadataFiles": sum(
             1 for url in optional_failures if url not in required_urls
         ),
+        "publicationReleaseId": release['releaseId'] if release else None,
+        "publicationManifestVerified": release is not None,
     }
     print(json.dumps(result, indent=2))
     return result
@@ -365,6 +398,7 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=16)
     parser.add_argument("--min-html", type=int, default=800)
     parser.add_argument("--min-files", type=int, default=900)
+    parser.add_argument("--publication-manifest", action="store_true")
     arguments = parser.parse_args()
     capture(
         arguments.origin,
@@ -372,6 +406,7 @@ def main() -> None:
         workers=arguments.workers,
         min_html=arguments.min_html,
         min_files=arguments.min_files,
+        publication_manifest=arguments.publication_manifest,
     )
 
 

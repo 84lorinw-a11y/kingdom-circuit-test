@@ -184,6 +184,7 @@ jobs:
           python scripts/capture_live_site.py \
             "$LIVE_SITE" _live_site \
             --workers 16 \
+            --publication-manifest \
             --min-html 800 \
             --min-files 900
 
