@@ -27,4 +27,16 @@ class ProductionMirrorTests(unittest.TestCase):
         self.assertEqual(actual['locations']['Montréal, QC'],TEST_BASE+'shows/montreal-qc/')
         for name in ['events.json','supplemental-events.json','config/artists.json']:
             self.assertEqual(transformed_bytes(Path(name),data),data)
+    def test_native_analytics_and_catalog_are_isolated_on_test(self):
+        html = '<html><head><script async src="https://www.googletagmanager.com/gtag/js?id=G-N2KK9XF4TJ"></script><script>gtag("config","G-N2KK9XF4TJ")</script></head><body><script id="kc-fan-config" type="application/json">{"mode":"production","base":"/","showPaths":["/event/show/"]}</script></body></html>'
+        out=transformed_bytes(Path('index.html'),html.encode()).decode()
+        self.assertNotIn('googletagmanager',out);self.assertNotIn('gtag(',out)
+        self.assertIn('"mode": "test"',out);self.assertIn('"base": "'+TEST_BASE+'"',out)
+        catalog={'shows':[{'path':'/event/show/','date':'2027-01-01','name':'Actual title'}], 'artists':{'/artists/anike/':['/event/show/']}}
+        out=json.loads(transformed_bytes(Path('assets/fan-show-catalog.json'),json.dumps(catalog).encode()))
+        self.assertEqual(out['shows'][0],{**catalog['shows'][0],'path':TEST_BASE+'event/show/'})
+        self.assertEqual(out['artists'][TEST_BASE+'artists/anike/'],[TEST_BASE+'event/show/'])
+        js=r'if (/^\/event\/[^/?#]+\/$/.test(show.path)) add(show);'
+        mapped=transformed_bytes(Path('assets/fan-engagement.js'),js.encode()).decode()
+        self.assertIn(r'^\/kingdom-circuit-test\/event\/',mapped)
 if __name__=='__main__':unittest.main()

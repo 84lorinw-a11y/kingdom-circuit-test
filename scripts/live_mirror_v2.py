@@ -91,6 +91,15 @@ def rewrite_html(text: str) -> str:
         text,
     )
     text = rewrite_root_paths(text)
+    # A TEST mirror must not load Google or initialize a measurement property.
+    text = re.sub(r'<script\b[^>]*src=["\']https://www\.googletagmanager\.com/gtag/js[^>]*>\s*</script>', '', text)
+    text = re.sub(r'<script\b[^>]*>(?:(?!</script>)[\s\S])*?</script>',
+                  lambda m: '' if TEST_GA in m.group() else m.group(), text)
+    def test_config(match):
+        config = json.loads(match.group(2))
+        config.update(mode='test', base=TEST_BASE)
+        return match.group(1) + json.dumps(config, ensure_ascii=False) + match.group(3)
+    text = re.sub(r'(<script\b[^>]*id="kc-fan-config"[^>]*>)(.*?)(</script>)', test_config, text, flags=re.S)
     robots = re.compile(
         r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*["\']\s*/?>',
         re.I,
@@ -143,6 +152,14 @@ def transformed_bytes(relative: pathlib.Path, source: bytes) -> bytes:
     if relative.as_posix() == "robots.txt":
         return b"User-agent: *\nDisallow: /\n"
 
+    if relative.as_posix() == "assets/fan-show-catalog.json":
+        catalog = json.loads(source)
+        for show in catalog['shows']:
+            show['path'] = TEST_BASE + show['path'].lstrip('/')
+        catalog['artists'] = {TEST_BASE + path.lstrip('/'): [TEST_BASE + event.lstrip('/') for event in events]
+                              for path, events in catalog['artists'].items()}
+        return (json.dumps(catalog, ensure_ascii=False) + "\n").encode()
+
     if relative.as_posix() == "assets/location-navigation-data.json":
         mapping = json.loads(source)
         mapping['locations'] = {label: TEST_BASE + path.lstrip('/')
@@ -168,6 +185,8 @@ def transformed_bytes(relative: pathlib.Path, source: bytes) -> bytes:
         text = rewrite_html(text)
     elif suffix == ".js":
         text = rewrite_js(text)
+        if relative.as_posix() == 'assets/fan-engagement.js':
+            text = text.replace(r'/^\/event\/[^/?#]+\/$/', r'/^\/kingdom-circuit-test\/event\/[^/?#]+\/$/')
     elif suffix == ".css":
         text = rewrite_css(text)
     else:
@@ -266,6 +285,8 @@ def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path, *,
             failures.append(f"unprefixed-site-path:{relative}")
         if LIVE_GA in text:
             failures.append(f"live-analytics:{relative}")
+        if "googletagmanager.com/gtag/js" in text:
+            failures.append(f"google-loader-on-test:{relative}")
 
     app = (out_dir / "app.js").read_text(encoding="utf-8")
     if f'const BASE = "{TEST_BASE}";' not in app:
