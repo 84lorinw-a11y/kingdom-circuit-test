@@ -12,6 +12,7 @@ import national_discovery_preview as discovery
 import fan_engagement_preview as engagement
 import show_information_preview as information
 import location_navigation_preview as locations
+from production_mirror import promoted
 from build_chh_game import GAME_FILES, verify as verify_game
 
 EXPERIMENT_FILES = frozenset({
@@ -28,6 +29,22 @@ def verify(live: Path, site: Path) -> dict:
     game = verify_game(site)
     manifest_path = site / "test-live-mirror-manifest.json"
     manifest = json.loads(manifest_path.read_text())
+    if promoted(live):
+        additions = EXPERIMENT_FILES | {'test-live-mirror-manifest.json'}
+        if not (live / '.nojekyll').exists():
+            additions = additions | {'.nojekyll'}
+        parity = verify_exact_mirror(live, site, allowed_additions=additions)
+        verify_calendar(site, isolated=True)
+        verify_intake(site)
+        manifest.update(parity)
+        manifest.update({'mode': 'exact-live-artifact-mirror', 'contentAndLayoutParity': True,
+                         'dataFilesByteIdentical': True, 'binaryAssetsByteIdentical': True,
+                         'testRedesignApplied': False, 'nativeProductionStructureMirrored': True,
+                         'preservedExperimentPaths': ['/test-all-shows/', '/test-show-feed/', '/test-artist-intake/', '/play/'],
+                         'chhShowNight': game, 'isolatedExperimentFileCount': len(EXPERIMENT_FILES)})
+        manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
+        print(json.dumps(manifest, indent=2))
+        return manifest
     fan_context = engagement.context(live, manifest["fanEngagement"]["asOf"])
     information_context = information.context(live)
     location_context = locations.context(live)

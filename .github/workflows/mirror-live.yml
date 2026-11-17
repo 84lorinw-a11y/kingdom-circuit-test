@@ -7,6 +7,7 @@ on:
       - ".github/workflows/mirror-live.yml"
       - "scripts/capture_live_site.py"
       - "scripts/live_mirror_v2.py"
+      - "scripts/production_mirror.py"
       - "scripts/verify_live_baseline.py"
       - "scripts/fan_engagement_preview.py"
       - "scripts/location_navigation_preview.py"
@@ -186,6 +187,11 @@ jobs:
             --min-html 800 \
             --min-files 900
 
+      - name: Detect the complete native production structure
+        if: steps.publishing.outputs.mode == 'full-refresh'
+        id: production_layout
+        run: python scripts/production_mirror.py _live_site --github-output
+
       - name: Convert only the deployment identity for test
         if: steps.publishing.outputs.mode == 'full-refresh'
         shell: bash
@@ -224,19 +230,19 @@ jobs:
         run: python scripts/build_artist_intake_mockup.py _site
 
       - name: Apply the approved test-only mobile SEO preview
-        if: steps.publishing.outputs.mode == 'full-refresh'
+        if: steps.publishing.outputs.mode == 'full-refresh' && steps.production_layout.outputs.promoted != 'true'
         run: python scripts/mobile_seo_preview.py _site _live_site
 
       - name: Build the approved national discovery preview
-        if: steps.publishing.outputs.mode == 'full-refresh'
+        if: steps.publishing.outputs.mode == 'full-refresh' && steps.production_layout.outputs.promoted != 'true'
         run: python scripts/national_discovery_preview.py _site _live_site
 
       - name: Apply approved no-show discovery and test analytics
-        if: steps.publishing.outputs.mode == 'full-refresh'
+        if: steps.publishing.outputs.mode == 'full-refresh' && steps.production_layout.outputs.promoted != 'true'
         run: python scripts/fan_engagement_preview.py _site _live_site
 
       - name: Add verified show information and consistent ticket destinations
-        if: steps.publishing.outputs.mode == 'full-refresh'
+        if: steps.publishing.outputs.mode == 'full-refresh' && steps.production_layout.outputs.promoted != 'true'
         run: python scripts/show_information_preview.py _site _live_site
 
       - name: Preserve the separate show layout experiments using final show facts
@@ -244,7 +250,7 @@ jobs:
         run: python scripts/build_mobile_show_test.py _site --isolated
 
       - name: Build and verify location navigation preview
-        if: steps.publishing.outputs.mode == 'full-refresh'
+        if: steps.publishing.outputs.mode == 'full-refresh' && steps.production_layout.outputs.promoted != 'true'
         run: python scripts/location_navigation_preview.py _site _live_site
 
       - name: Verify the final deployment artifact

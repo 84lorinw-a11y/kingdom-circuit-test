@@ -143,6 +143,12 @@ def transformed_bytes(relative: pathlib.Path, source: bytes) -> bytes:
     if relative.as_posix() == "robots.txt":
         return b"User-agent: *\nDisallow: /\n"
 
+    if relative.as_posix() == "assets/location-navigation-data.json":
+        mapping = json.loads(source)
+        mapping['locations'] = {label: TEST_BASE + path.lstrip('/')
+                                for label, path in mapping['locations'].items()}
+        return (json.dumps(mapping, ensure_ascii=False) + "\n").encode()
+
     if relative.suffix == ".webmanifest":
         manifest = json.loads(source)
         for key in ("id", "start_url", "scope"):
@@ -231,7 +237,7 @@ def verify_exact_mirror(live_dir: pathlib.Path, out_dir: pathlib.Path, *,
             failures.append(f"content-mismatch:{relative}")
         if expected != source:
             adjusted_files += 1
-        if relative.parts and relative.parts[0] == "assets" and relative.suffix.casefold() not in {".html", ".js", ".css", ".xml"}:
+        if relative.parts and relative.parts[0] == "assets" and relative.suffix.casefold() not in {".html", ".js", ".css", ".xml", ".json"}:
             binary_assets += 1
             if sha256_bytes(actual) != sha256_bytes(source):
                 failures.append(f"binary-asset-mismatch:{relative}")

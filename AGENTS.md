@@ -377,3 +377,7 @@
 - Owner clarified that **Google must NOT be configured for the test website**. No Google loader, test property, or local event log. `/test-analytics/` is only a verification guide. Test `track()` has no external side effects; use mocked delivery tests.
 - Latest owner instruction authorizes production promotion **after all test audits pass**, then setting up the new events in the existing production Google Analytics property. Preserve its historical data; do not create another property. The briefly created test property was moved to Trash at the owner's correction.
 - New source assets are under `test-overrides/fan-*`; tests cover count rollover, privacy, delivery isolation, deduplication and actual submission outcome branches. See `docs/fan-engagement-test.md` for the contract and future GA4 configuration. Keep all game files untouched.
+
+## November 16 production structure mirror
+
+The owner requested that the normal test website mirror the current production website after the internal connection audit. When the complete native location release is present, skip the earlier presentation and show information overlays. Keep exact production content and layout with only the established test identity, base path, noindex, robots and analytics isolation changes. Preserve the separate game and isolated experiments. Partial production markers fail closed. Dynamic location mapping targets must use the test base path. The full final artifact comparison remains mandatory.
