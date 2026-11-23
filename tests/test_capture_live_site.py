@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import importlib.util
+from email.message import Message
+from email.utils import formatdate
 import hashlib
+import io
 import json
 import pathlib
 import tempfile
 import threading
 import unittest
+import urllib.error
 from unittest.mock import patch
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -92,6 +96,18 @@ class FixtureHandler(BaseHTTPRequestHandler):
 
 
 class LiveCaptureTests(unittest.TestCase):
+    def setUp(self):
+        # Loopback fixtures exercise capture integrity. Request pacing and
+        # retries have injected-clock coverage below without real sleeps.
+        class ImmediatePacer:
+            def wait(self, deadline):
+                return
+            def cooldown(self, seconds):
+                return
+        self.pacer_patch = patch.object(capture_module, 'REQUEST_PACER', ImmediatePacer())
+        self.pacer_patch.start()
+        self.addCleanup(self.pacer_patch.stop)
+
     def test_publication_manifest_captures_unlinked_files_and_checks_release(self):
         payloads = dict(FixtureHandler.payloads)
         payloads['/assets/dynamic-map.json'] = ('application/json', b'{"locations":{}}')
@@ -242,6 +258,125 @@ class LiveCaptureTests(unittest.TestCase):
         finally:
             server.shutdown()
             server.server_close()
+
+
+class FakeClock:
+    def __init__(self):
+        self.value = 0.0
+        self.sleeps = []
+
+    def now(self):
+        return self.value
+
+    def sleep(self, seconds):
+        self.sleeps.append(seconds)
+        self.value += seconds
+
+
+class CaptureRequestPolicyTests(unittest.TestCase):
+    URL = 'https://kingdomcircuit.com/publication-manifest.json'
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self.pacer = capture_module.RequestPacer(clock=self.clock.now, sleep=self.clock.sleep)
+
+    def response(self, payload=b'{}'):
+        response = io.BytesIO(payload)
+        response.headers = Message()
+        response.headers['Content-Type'] = 'application/json'
+        response.geturl = lambda: self.URL
+        return response
+
+    def error(self, status, retry_after=None):
+        headers = Message()
+        if retry_after is not None:
+            headers['Retry-After'] = retry_after
+        return urllib.error.HTTPError(self.URL, status, 'fixture', headers, io.BytesIO(b'error'))
+
+    def fetch(self, opener, **kwargs):
+        return capture_module.fetch(self.URL, pacer=self.pacer, opener=opener,
+                                    clock=self.clock.now, sleep=self.clock.sleep, **kwargs)
+
+    def test_shared_pacer_spaces_requests_and_cooldown_extends_every_caller(self):
+        started = []
+        for _ in range(4):
+            self.pacer.wait(100)
+            started.append(self.clock.now())
+        self.assertEqual([0, .25, .5, .75], started)
+        self.pacer.cooldown(7)
+        self.pacer.cooldown(2)
+        self.pacer.wait(100)
+        self.assertEqual(7.75, self.clock.now())
+        self.pacer.wait(100)
+        self.assertEqual(8, self.clock.now())
+
+    def test_429_obeys_retry_after_and_the_same_pacer_is_shared_with_next_fetch(self):
+        starts = []
+        def opener(request, timeout):
+            starts.append(self.clock.now())
+            if len(starts) == 1:
+                raise self.error(429, '7')
+            return self.response()
+        self.assertEqual(b'{}', self.fetch(opener)[2])
+        self.fetch(opener)
+        self.assertEqual([0, 7, 7.25], starts)
+
+    def test_retry_after_accepts_numeric_and_http_dates_and_rejects_nonfinite(self):
+        self.assertEqual(9, capture_module.retry_after_seconds('9'))
+        self.assertEqual(20, capture_module.retry_after_seconds(formatdate(1020, usegmt=True), wall_clock=lambda: 1000))
+        self.assertEqual(0, capture_module.retry_after_seconds(formatdate(990, usegmt=True), wall_clock=lambda: 1000))
+        for value in ('invalid', 'inf', 'nan', None):
+            self.assertIsNone(capture_module.retry_after_seconds(value))
+
+    def test_persistent_429_is_bounded_and_missing_retry_after_uses_global_backoff(self):
+        starts = []
+        def opener(request, timeout):
+            starts.append(self.clock.now())
+            raise self.error(429)
+        with self.assertRaisesRegex(RuntimeError, '429'):
+            self.fetch(opener)
+        self.assertEqual([0, 5, 15, 35, 75], starts)
+        self.assertEqual(5, len(starts))
+
+    def test_long_server_cooldown_fails_deadline_without_retrying_early(self):
+        calls = []
+        def opener(request, timeout):
+            calls.append(timeout)
+            raise self.error(429, '600')
+        with self.assertRaisesRegex(RuntimeError, 'deadline'):
+            self.fetch(opener)
+        self.assertEqual([30], calls)
+        self.assertEqual([], self.clock.sleeps)
+
+    def test_authentication_and_missing_resources_fail_once_but_404_page_is_preserved(self):
+        for status in (401, 403, 404):
+            calls = []
+            def opener(request, timeout):
+                calls.append(request.full_url)
+                raise self.error(status)
+            with self.assertRaisesRegex(RuntimeError, str(status)):
+                self.fetch(opener)
+            self.assertEqual(1, len(calls))
+        error = urllib.error.HTTPError('https://kingdomcircuit.com/404.html', 404, 'missing', Message(), io.BytesIO(b'custom missing page'))
+        with patch.object(capture_module.urllib.request, 'urlopen', side_effect=error):
+            result = capture_module.fetch('https://kingdomcircuit.com/404.html', pacer=self.pacer,
+                                          clock=self.clock.now, sleep=self.clock.sleep)
+        self.assertEqual(('https://kingdomcircuit.com/404.html', 'text/html', b'custom missing page'), result)
+
+    def test_temporary_network_failure_retries_but_late_response_cannot_pass(self):
+        starts = []
+        def opener(request, timeout):
+            starts.append(self.clock.now())
+            if len(starts) == 1:
+                raise urllib.error.URLError('temporary network failure')
+            return self.response(b'complete')
+        self.assertEqual(b'complete', self.fetch(opener)[2])
+        self.assertEqual([0, 1], starts)
+        def slow(request, timeout):
+            self.clock.value += 301
+            return self.response(b'too late')
+        with self.assertRaisesRegex(RuntimeError, 'deadline'):
+            self.fetch(slow)
 
 
 if __name__ == "__main__":

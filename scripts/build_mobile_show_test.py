@@ -51,7 +51,7 @@ def host_label(source):
 
 
 LINEUP_NOTICE = re.compile(
-    r'\b(?:lineup\s+(?:(?:and daily times\s+)?to be announced|has not yet been announced)'
+    r'\b(?:lineup\s+(?:(?:and daily times\s+)?(?:(?:is|are)\s+)?to be announced|(?:has|have) not(?: yet)? been announced)'
     r'|no performer lineup has been announced|lineup TBA|performers have not been announced'
     r'|individual performance sets[^.]*have not been announced'
     r'|special guest without naming them|live DJ playing Christian hip-hop)\b', re.I)
@@ -61,10 +61,16 @@ def lineup_notice(source, description=""):
     notice = clean_text(match_text(r'<p\b[^>]*data-kc-event-notice[^>]*>(.*?)</p>', source))
     if LINEUP_NOTICE.search(notice):
         return notice
-    # Community events publish their no-lineup statement in Event schema.
-    # Keep the exact explicit sentence; a missing performer field alone is
-    # never evidence that a lineup has not been announced.
-    return next((sentence.strip() for sentence in re.split(r'(?<=[.!?])\s+', description)
+    # An announced event with an unconfirmed location correctly omits public
+    # Event schema. Its visible More show details can still state explicitly
+    # that the lineup is unannounced. Read only that event detail disclosure,
+    # not unrelated navigation, scripts or linked event cards.
+    more = match_text(r'<details\b[^>]*class="[^"]*\bkc-more-details\b[^"]*"[^>]*>(.*?)</details>', source)
+    visible = [clean_text(block) for block in re.findall(r'<(?:p|dd)\b[^>]*>(.*?)</(?:p|dd)>', more, re.S | re.I)]
+    # Keep the exact published sentence. A missing performer field or general
+    # details pending status alone never authorizes an empty lineup.
+    return next((sentence.strip() for text in [description, *visible]
+                 for sentence in re.split(r'(?<=[.!?])\s+', text)
                  if LINEUP_NOTICE.search(sentence)), '')
 
 

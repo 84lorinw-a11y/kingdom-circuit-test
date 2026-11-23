@@ -228,7 +228,7 @@ class WorkflowIsolationTests(unittest.TestCase):
     def test_live_network_and_website_rebuild_steps_are_full_refresh_only(self):
         workflow = (ROOT / publish.WORKFLOW).read_text()
         steps = workflow.split('      - name: ')
-        for command in ('gh api', 'scripts/capture_live_site.py \\',
+        for command in ('python scripts/capture_published_release.py',
                         'python scripts/live_mirror_v2.py \\',
                         'python scripts/build_mobile_show_test.py _site --isolated',
                         'python scripts/build_artist_intake_mockup.py _site',

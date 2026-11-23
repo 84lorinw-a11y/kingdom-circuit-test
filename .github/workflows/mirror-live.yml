@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/mirror-live.yml"
       - "scripts/capture_live_site.py"
+      - "scripts/capture_published_release.py"
       - "scripts/live_mirror_v2.py"
       - "scripts/production_mirror.py"
       - "scripts/verify_live_baseline.py"
@@ -112,30 +113,6 @@ jobs:
           python scripts/game_test_publish.py restore
           --source-run "$SNAPSHOT_RUN" --source-commit "$SNAPSHOT_SHA" --source-key "$SNAPSHOT_KEY"
 
-      - name: Resolve the currently deployed live revision
-        if: steps.publishing.outputs.mode == 'full-refresh'
-        id: live_deployment
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          API_PATH="repos/${LIVE_REPO}/actions/workflows/update-and-deploy.yml/runs?branch=main&per_page=20"
-          if ! RESPONSE=$(gh api "$API_PATH"); then
-            RESPONSE=$(curl -fsSL "https://api.github.com/$API_PATH")
-          fi
-          LIVE_SHA=$(jq -r \
-            '.workflow_runs | map(select(.status == "completed" and .conclusion == "success"))[0].head_sha // empty' \
-            <<<"$RESPONSE")
-          LIVE_RUN_ID=$(jq -r \
-            '.workflow_runs | map(select(.status == "completed" and .conclusion == "success"))[0].id // empty' \
-            <<<"$RESPONSE")
-          test -n "$LIVE_SHA"
-          test -n "$LIVE_RUN_ID"
-          echo "sha=$LIVE_SHA" >> "$GITHUB_OUTPUT"
-          echo "run_id=$LIVE_RUN_ID" >> "$GITHUB_OUTPUT"
-          echo "Capturing successful live deployment $LIVE_RUN_ID at $LIVE_SHA"
-
       - name: Set up Node for game score-service tests
         uses: actions/setup-node@v4
         with:
@@ -146,7 +123,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m py_compile scripts/game_test_publish.py
-          python -m py_compile scripts/capture_live_site.py
+          python -m py_compile scripts/capture_live_site.py scripts/capture_published_release.py
           python -m py_compile scripts/live_mirror_v2.py
           python -m py_compile scripts/verify_live_baseline.py
           python -m py_compile scripts/fan_engagement_preview.py scripts/location_navigation_preview.py
@@ -178,15 +155,11 @@ jobs:
 
       - name: Capture the exact published live site
         if: steps.publishing.outputs.mode == 'full-refresh'
-        shell: bash
-        run: |
-          set -euo pipefail
-          python scripts/capture_live_site.py \
-            "$LIVE_SITE" _live_site \
-            --workers 16 \
-            --publication-manifest \
-            --min-html 800 \
-            --min-files 900
+        id: live_deployment
+        timeout-minutes: 45
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/capture_published_release.py "$LIVE_SITE" _live_site --github-output --min-html 800 --min-files 900
 
       - name: Detect the complete native production structure
         if: steps.publishing.outputs.mode == 'full-refresh'

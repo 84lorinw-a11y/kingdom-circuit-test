@@ -142,6 +142,44 @@ class MobileCalendarContentTests(unittest.TestCase):
         with self.assertRaises(AssertionError): verify_billing(dict(event, artistLinks={'Invented': '/artist/'}))
         verify_billing(dict(event, artists=['Confirmed Artist'], lineupNotice=''))
 
+    def test_announced_festival_reads_visible_lineup_notice_without_event_schema(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            href = '/kingdom-circuit-test/event/hrvstland-festival-27/'
+            target = safe_page(site, href)
+            target.parent.mkdir(parents=True)
+            source = ('<article class="event-detail event-detail--landscape"><h1>HRVSTLAND Festival 27</h1>'
+                      '<p class="artist-line"></p><dl><dt>Status</dt><dd>Announced, details pending</dd>'
+                      '<dt>Date</dt><dd>Sat, Oct 23, 2027</dd><dt>Venue</dt><dd>Venue not confirmed</dd></dl>'
+                      '<details class="kc-more-details"><summary>More show details</summary><div class="kc-more-body">'
+                      '<p>HRVSTLAND Festival celebrates Christian rap, Christian R&amp;B and gospel music on October 23, 2027. '
+                      'The location and artist lineup have not been announced. The official schedule lists the show at 4 PM Eastern.</p>'
+                      '<dl><dt>Location and lineup</dt><dd>The city, venue, address and named performers have not been announced.</dd></dl>'
+                      '</div></details></article>')
+            target.write_text(source)
+            event = read_detail(site, href)
+            self.assertEqual(event['artists'], [])
+            self.assertEqual(event['artistLinks'], {})
+            self.assertEqual(event['lineupNotice'], 'The location and artist lineup have not been announced.')
+            self.assertNotIn('application/ld+json', target.read_text())
+            verify_billing(event)
+
+    def test_visible_pending_lineup_requires_event_details_and_explicit_unannounced_billing(self):
+        for published in ('Location and artist lineup are to be announced.',
+                          'The named performers have not been announced.',
+                          'The artist lineup has not been announced.'):
+            source = '<details class="kc-more-details"><p>' + published + '</p></details>'
+            self.assertEqual(lineup_notice(source), published)
+        for source in ('<footer><p>Lineup to be announced.</p></footer>',
+                       '<script>"Lineup TBA"</script>',
+                       '<details class="kc-more-details"><p>Doors to be announced.</p></details>',
+                       '<details class="kc-more-details"><p>The lineup has been announced.</p></details>',
+                       '<dl><dt>Status</dt><dd>Announced, details pending</dd></dl>'):
+            notice = lineup_notice(source)
+            self.assertEqual(notice, '')
+            with self.assertRaises(AssertionError):
+                verify_billing({'href': '/event/unverified/', 'artists': [], 'artistLinks': {}, 'lineupNotice': notice})
+
     def test_renamed_archive_reuses_reviewed_title_and_artwork(self):
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)

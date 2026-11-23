@@ -5,12 +5,15 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+from email.utils import parsedate_to_datetime
 import hashlib
 import html
 import json
+import math
 import pathlib
 import re
 import shutil
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -20,6 +23,9 @@ import xml.etree.ElementTree as ET
 
 USER_AGENT = "KingdomCircuitTestMirror/2.0"
 DEFAULT_ORIGIN = "https://kingdomcircuit.com"
+REQUESTS_PER_SECOND = 4
+REQUEST_ATTEMPTS = 5
+REQUEST_DEADLINE_SECONDS = 300
 DEFAULT_SEEDS = (
     "/",
     "/404.html",
@@ -120,7 +126,66 @@ def output_path(url: str, content_type: str, output: pathlib.Path) -> pathlib.Pa
     return target
 
 
-def fetch(url: str, attempts: int = 3) -> tuple[str, str, bytes]:
+class RequestPacer:
+    """Share request spacing and server cooldown across all capture workers."""
+
+    def __init__(self, rate=REQUESTS_PER_SECOND, *, clock=time.monotonic, sleep=time.sleep):
+        if not math.isfinite(rate) or rate <= 0:
+            raise ValueError('Capture request rate must be positive and finite')
+        self.interval = 1 / rate
+        self.clock, self.sleep = clock, sleep
+        self.lock = threading.Lock()
+        self.next_request = 0.0
+        self.blocked_until = 0.0
+
+    def wait(self, deadline):
+        while True:
+            with self.lock:
+                now = self.clock()
+                ready = max(self.next_request, self.blocked_until)
+                if now >= deadline or ready >= deadline:
+                    raise TimeoutError('Capture request deadline exceeded while waiting for server cooldown')
+                if now >= ready:
+                    self.next_request = now + self.interval
+                    return
+                delay = ready - now
+            # Never hold the lock while sleeping. A new 429 can extend the
+            # shared cooldown, which every waking worker checks again.
+            self.sleep(delay)
+
+    def cooldown(self, seconds):
+        with self.lock:
+            self.blocked_until = max(self.blocked_until, self.clock() + seconds)
+
+
+REQUEST_PACER = RequestPacer()
+
+
+def retry_after_seconds(value, *, wall_clock=time.time):
+    """Accept both forms of Retry-After without retrying before a server limit."""
+    if not value:
+        return None
+    try:
+        seconds = float(value)
+    except (TypeError, ValueError):
+        try:
+            parsed = parsedate_to_datetime(value)
+            if parsed.tzinfo is None:
+                return None
+            seconds = parsed.timestamp() - wall_clock()
+        except (TypeError, ValueError, OverflowError):
+            return None
+    return max(0.0, seconds) if math.isfinite(seconds) else None
+
+
+def fetch(url: str, attempts: int = REQUEST_ATTEMPTS, *, pacer=None, opener=None,
+          clock=time.monotonic, sleep=time.sleep, wall_clock=time.time,
+          max_elapsed=REQUEST_DEADLINE_SECONDS) -> tuple[str, str, bytes]:
+    if attempts < 1 or max_elapsed <= 0:
+        raise ValueError('Capture attempts and deadline must be positive')
+    pacer = REQUEST_PACER if pacer is None else pacer
+    opener = urllib.request.urlopen if opener is None else opener
+    deadline = clock() + max_elapsed
     request = urllib.request.Request(
         url,
         headers={
@@ -132,17 +197,41 @@ def fetch(url: str, attempts: int = 3) -> tuple[str, str, bytes]:
     last_error: Exception | None = None
     for attempt in range(attempts):
         try:
-            with urllib.request.urlopen(request, timeout=30) as response:
+            pacer.wait(deadline)
+        except TimeoutError as error:
+            raise RuntimeError(f"Unable to capture {url}: {error}") from error
+        delay = min(2 ** attempt, 16)
+        try:
+            with opener(request, timeout=min(30, max(0.001, deadline - clock()))) as response:
                 content_type = response.headers.get_content_type()
-                return response.geturl(), content_type, response.read()
+                payload = response.read()
+                if clock() >= deadline:
+                    raise TimeoutError('Capture response exceeded the request deadline')
+                return response.geturl(), content_type, payload
         except urllib.error.HTTPError as error:
             if error.code == 404 and urllib.parse.urlsplit(url).path == "/404.html":
-                return url, "text/html", error.read()
+                try:
+                    return url, "text/html", error.read()
+                finally:
+                    error.close()
             last_error = error
+            retry_after = retry_after_seconds((error.headers or {}).get('Retry-After'), wall_clock=wall_clock)
+            error.close()
+            if error.code not in {408, 429} and error.code < 500:
+                break
+            if error.code == 429 or retry_after is not None:
+                # Back off the entire crawler, not just the worker receiving
+                # 429. Long server waits fail at the bounded request deadline
+                # instead of ignoring Retry-After or looping indefinitely.
+                pacer.cooldown(retry_after if retry_after is not None else min(5 * 2 ** attempt, 60))
+                delay = 0
         except (OSError, urllib.error.URLError) as error:
             last_error = error
         if attempt + 1 < attempts:
-            time.sleep(0.4 * (attempt + 1))
+            if clock() + delay >= deadline:
+                break
+            if delay:
+                sleep(delay)
     raise RuntimeError(f"Unable to capture {url}: {last_error}")
 
 
@@ -247,7 +336,7 @@ def capture(
     origin: str,
     output: pathlib.Path,
     *,
-    workers: int = 16,
+    workers: int = 4,
     min_html: int = 1,
     min_files: int = 1,
     publication_manifest: bool = False,
@@ -391,6 +480,9 @@ def capture(
         "publicationReleaseId": release['releaseId'] if release else None,
         "publicationManifestVerified": release is not None,
         "separatelyManagedPaths": list(SEPARATELY_MANAGED_PATH_PREFIXES),
+        "requestPolicy": {"requestsPerSecond": REQUESTS_PER_SECOND,
+                          "maximumAttempts": REQUEST_ATTEMPTS,
+                          "requestDeadlineSeconds": REQUEST_DEADLINE_SECONDS},
     }
     print(json.dumps(result, indent=2))
     return result
@@ -400,7 +492,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("origin")
     parser.add_argument("output", type=pathlib.Path)
-    parser.add_argument("--workers", type=int, default=16)
+    parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--min-html", type=int, default=800)
     parser.add_argument("--min-files", type=int, default=900)
     parser.add_argument("--publication-manifest", action="store_true")
